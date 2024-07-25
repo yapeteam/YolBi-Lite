@@ -1,9 +1,14 @@
 package cn.yapeteam.agent;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.instrument.Instrumentation;
+import java.net.URLClassLoader;
+import java.util.jar.JarFile;
 
 public class Agent {
+    private static Instrumentation instrumentation;
+
     private static native void loadNative();
 
     private static native void loadJar2URL(String path, ClassLoader loader);
@@ -19,7 +24,20 @@ public class Agent {
         return null;
     }
 
+    private static void loadJar(String path, ClassLoader loader) {
+        if (loader instanceof URLClassLoader)
+            loadJar2URL(path, loader);
+        else {
+            try {
+                instrumentation.appendToSystemClassLoaderSearch(new JarFile(path));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     public static void agentmain(String agent, Instrumentation inst) {
+        instrumentation = inst;
         String suffix;
         if (OS.isFamilyWindows()) suffix = ".dll";
         else if (OS.isFamilyMac()) suffix = ".dylib";
@@ -32,6 +50,13 @@ public class Agent {
         if (thread == null) return;
         ClassLoader classLoader = thread.getContextClassLoader();
         ClassLoader classLoaderLoader = classLoader.getClass().getClassLoader();
+        ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+        String classLoaderName = classLoaderLoader.getClass().getName();
+        boolean shouldHook = !(classLoaderName.startsWith("java.lang.") || classLoaderName.startsWith("com.sun."));
+        String asmPath = new File(yolbiPath, "dependencies/asm-all-9.2.jar").getAbsolutePath();
+        loadJar(asmPath, systemClassLoader);
+        if (shouldHook)
+            loadJar(asmPath, classLoaderLoader);
 
     }
 }

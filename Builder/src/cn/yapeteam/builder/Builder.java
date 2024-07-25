@@ -229,7 +229,7 @@ public class Builder {
         File dir = new File("Loader/dll/build");
         boolean ignored = dir.mkdirs();
         System.out.println("Building DLL...");
-        generateHeaderFromClass(new File("out/production/Builder/cn/yapeteam/builder/Unzip.class"), new File("Loader/dll/src/dll/unzip.h"), "unzip_data");
+        generateHeaderFromClass(new File("out/production/Builder/cn/yapeteam/builder/Unzip.class"), new File("Loader/dll/src/shared/unzip.h"), "unzip_data");
         Terminal terminal = new Terminal(dir, null);
         if (advanced_mode) {
             String target = "--target=x86_64-w64-mingw";
