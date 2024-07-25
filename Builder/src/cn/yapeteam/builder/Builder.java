@@ -226,6 +226,7 @@ public class Builder {
     }
 
     private static void buildDLL() throws Exception {
+        if (!OS.isFamilyWindows()) return;
         File dir = new File("Loader/dll/build");
         boolean ignored = dir.mkdirs();
         System.out.println("Building DLL...");
@@ -436,6 +437,10 @@ public class Builder {
         copyStream(Files.newOutputStream(new File(dir, "jni.h").toPath()), Objects.requireNonNull(Builder.class.getResourceAsStream("/jni.h")));
         copyStream(Files.newOutputStream(new File(dir, "jni_md.h").toPath()), Objects.requireNonNull(Builder.class.getResourceAsStream("/jni_md.h")));
         copyStream(Files.newOutputStream(new File(dir, "jvmti.h").toPath()), Objects.requireNonNull(Builder.class.getResourceAsStream("/jvmti.h")));
+        String suffix;
+        if (OS.isFamilyWindows()) suffix = ".dll";
+        else if (OS.isFamilyMac()) suffix = ".dylib";
+        else suffix = ".so";
         if (advanced_mode) {
             Terminal terminal = new Terminal(output, null);
             String target = "--target=x86_64-w64-mingw";
@@ -468,7 +473,7 @@ public class Builder {
             linkArgs[5 + binaries.size()] = "-Wl,--no-whole-archive";
             linkArgs[6 + binaries.size()] = "-Wl,-Bdynamic";
             linkArgs[7 + binaries.size()] = "-o";
-            linkArgs[8 + binaries.size()] = "native.dll";
+            linkArgs[8 + binaries.size()] = "native" + suffix;
             terminal.execute(linkArgs);
         } else {
             Terminal terminal = new Terminal(output, null);
@@ -498,10 +503,10 @@ public class Builder {
             linkArgs[4 + binaries.size()] = "-Wl,--no-whole-archive";
             linkArgs[5 + binaries.size()] = "-Wl,-Bdynamic";
             linkArgs[6 + binaries.size()] = "-o";
-            linkArgs[7 + binaries.size()] = "native.dll";
+            linkArgs[7 + binaries.size()] = "native" + suffix;
             terminal.execute(linkArgs);
         }
-        return new File(output, "native.dll");
+        return new File(output, "native" + suffix);
     }
 
     private static void generateList(File file, Node exclude) throws IOException {

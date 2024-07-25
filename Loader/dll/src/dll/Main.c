@@ -6,9 +6,8 @@
 #include "../jvm/jni.h"
 #include "../jvm/jvmti.h"
 #include "../shared/main.c"
+#include "utils.h"
 
-extern JavaVM *jvm;
-extern jvmtiEnv *jvmti;
 PVOID UnLoad(PVOID arg)
 {
     HMODULE hModule = NULL;
@@ -24,23 +23,21 @@ void HookMain(JNIEnv *env)
         return;
     hooked = TRUE;
     setlocale(LC_ALL, "");
-    printf("1\n");
+
+    JavaVM *jvm;
     HMODULE jvmHandle = GetModuleHandle(("jvm.dll"));
     if (!jvmHandle)
         return;
-    printf("2\n");
+    jvmtiEnv *jvmti;
     typedef jint(JNICALL * fnJNI_GetCreatedJavaVMs)(JavaVM **, jsize, jsize *);
     fnJNI_GetCreatedJavaVMs JNI_GetCreatedJavaVMs = (fnJNI_GetCreatedJavaVMs)GetProcAddress(jvmHandle, "JNI_GetCreatedJavaVMs");
     jint num = JNI_GetCreatedJavaVMs(&jvm, 1, NULL);
     jint num1 = (*jvm)->GetEnv(jvm, (void **)(&jvmti), JVMTI_VERSION);
-    printf("3\n");
-    printf("%d\n", num);
-    printf("%d\n", num1);
     wchar_t userProfile[MAX_PATH];
     GetEnvironmentVariableW(L"USERPROFILE", userProfile, MAX_PATH);
     yolbiPath = format_wchar(L"%ls\\.yolbi", userProfile);
     wprintf(L"yolbiPath: %ls\n", yolbiPath);
-    Inject_fla_bcf_(env);
+    Inject_fla_bcf_(env, jvmti);
     if ((*env)->ExceptionCheck(env))
     {
         (*env)->ExceptionDescribe(env);
@@ -95,14 +92,15 @@ JVM_NanoTime NanoTime = NULL;
 jlong NanoTime_Hook(JNIEnv *env, jclass ignored)
 {
     UnHookFunction64("jvm.dll", "JVM_NanoTime");
+    printf("hook\n");
     jlong time = NanoTime(env, ignored);
+    printf("hook2\n");
     HookMain(env);
     return time;
 }
 
 PVOID WINAPI remote()
 {
-    // HookFunction64("jvm.dll", "JVM_MonitorNotify", (PROC)MonitorNotify_Hook);
     HookFunction64("jvm.dll", "JVM_NanoTime", (PROC)NanoTime_Hook);
     HMODULE jvm = GetModuleHandleW(L"jvm.dll");
     MonitorNotify = (JVM_MonitorNotify)GetProcAddressPeb(jvm, "JVM_MonitorNotify");
@@ -113,5 +111,6 @@ PVOID WINAPI remote()
 
 void entry()
 {
+    printf("entry\n");
     CreateThread(NULL, 4096, (LPTHREAD_START_ROUTINE)(&remote), NULL, 0, NULL);
 }

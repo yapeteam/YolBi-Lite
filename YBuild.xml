@@ -3,6 +3,9 @@
     <rootdir>./</rootdir>
     <output>build</output>
     <build>
+        <artifact name="agent.jar">
+            <files>out/production/Agent</files>
+        </artifact>
         <artifact name="definer.jar">
             <files>out/production/JarLoader</files>
         </artifact>

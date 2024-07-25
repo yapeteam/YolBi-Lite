@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include<stdbool.h>
+#include <stdbool.h>
 #include <string.h>
 #include <dirent.h>
 #include <wchar.h>
@@ -10,7 +10,6 @@
 #include "../jvm/jni.h"
 #include "../jvm/jvmti.h"
 
-JavaVM *jvm;
 jvmtiEnv *jvmti;
 
 struct Callback
@@ -507,7 +506,7 @@ jobject getThreadByName(JNIEnv *env, const char *name)
     return NULL;
 }
 
-void Inject_fla_bcf_(JNIEnv *jniEnv)
+void Inject_fla_bcf_(JNIEnv *jniEnv, jvmtiEnv *ti)
 {
     printf(".--------------------------------------------------------------------------------------------------------------------.\n");
     printf("|            :::   :::     :::     :::::::::  :::::::::: ::::::::::: ::::::::::     :::     ::::    ::::             |\n");
@@ -543,6 +542,7 @@ void Inject_fla_bcf_(JNIEnv *jniEnv)
     printf("|        //       //     //   ///////   ///////    ///////    //////      //     //   ///////   //      ///          |\n");
     printf("*--------------------------------------------------------------------------------------------------------------------*\n");
 
+    jvmti = ti;
     jclass ClassLoader = (*jniEnv)->FindClass(jniEnv, ("java/lang/ClassLoader"));
     jmethodID getSystemClassLoader = (*jniEnv)->GetStaticMethodID(jniEnv, ClassLoader, ("getSystemClassLoader"), ("()Ljava/lang/ClassLoader;"));
     systemClassLoader = (*jniEnv)->CallStaticObjectMethod(jniEnv, ClassLoader, getSystemClassLoader);
