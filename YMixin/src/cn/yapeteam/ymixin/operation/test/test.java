@@ -1,6 +1,6 @@
 package cn.yapeteam.ymixin.operation.test;
 
-import cn.yapeteam.ymixin.Transformer;
+import cn.yapeteam.ymixin.MixinTransformer;
 import cn.yapeteam.ymixin.YMixin;
 import cn.yapeteam.ymixin.operation.impl.InjectOperation;
 import cn.yapeteam.ymixin.utils.Mapper;
@@ -64,10 +64,10 @@ public class test {
                 }, null
         );
         Mapper.setMode(Mapper.Mode.None);
-        Transformer transformer = new Transformer((name) -> readStream(InjectOperation.class.getResourceAsStream("/" + name.getName().replace('.', '/') + ".class")));
+        MixinTransformer mixinTransformer = new MixinTransformer((name) -> readStream(InjectOperation.class.getResourceAsStream("/" + name.getName().replace('.', '/') + ".class")));
         val bytes1 = readStream(InjectOperation.class.getResourceAsStream("/cn/yapeteam/ymixin/operation/test/source.class"));
-        transformer.addMixin(bytes1);
-        byte[] bytes = transformer.transform().get("cn.yapeteam.ymixin.operation.test.target");
+        mixinTransformer.addMixin(bytes1);
+        byte[] bytes = mixinTransformer.transform().get("cn.yapeteam.ymixin.operation.test.target");
         Files.write(new File("target.class").toPath(), bytes);
         new CustomLoader().load(bytes).getMethod("func").invoke(null);
     }
