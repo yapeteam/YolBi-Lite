@@ -55,8 +55,8 @@
                 <file>build/ymixin.jar</file>
                 <file platform="windows">Loader/dll/build/libinjection.dll</file>
                 <file platform="windows">Loader/dll/build/libapi.dll</file>
-                <file platform="windows">Loader/dll/build/agent.dll</file>
-                <file platform="mac">Loader/dll/build/agent.dylib</file>
+                <file platform="windows">Loader/dll/build/libagent.dll</file>
+                <file platform="mac">Loader/dll/build/libagent.dylib</file>
             </archive>
         </artifact>
     </build>
