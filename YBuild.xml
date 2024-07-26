@@ -52,9 +52,17 @@
                 <file>build/loader.jar</file>
                 <file>build/hooker.jar</file>
                 <file>build/ymixin.jar</file>
-                <file platform="windows">Loader/dll/build/libinjection.dll</file>
-                <file platform="windows">Loader/dll/build/libapi.dll</file>
-                <file>Loader/dll/build/agent.dll</file>
+
+
+                <file platform="windows">Loader/dll/build/libinjection.dylib</file>
+                <file platform="windows">Loader/dll/build/libapi.dylib</file>
+                <file platform="windows">Loader/dll/build/agent.dylib</file>
+<!--                <file platform="windows">Loader/dll/build/libinjection.dll</file>-->
+<!--                <file platform="windows">Loader/dll/build/libapi.dll</file>-->
+<!--                <file platform="windows">Loader/dll/build/agent.dll</file>-->
+
+
+
             </archive>
         </artifact>
     </build>

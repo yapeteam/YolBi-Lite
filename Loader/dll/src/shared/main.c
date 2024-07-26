@@ -7,8 +7,21 @@
 #include <locale.h>
 #include "Native.c"
 #include "unzip.h"
-#include "../jvm/jni.h"
-#include "../jvm/jvmti.h"
+
+
+#if __APPLE__
+    #include "../jvm/darwin/jni.h"
+    #include "../jvm/darwin/jvmti.h"
+    #include <unistd.h>
+#elif _WIN64
+    #include "../jvm/windows/jni.h"
+    #include "../jvm/windows/jvmti.h"
+#endif
+
+
+
+
+
 
 jvmtiEnv *jvmti;
 

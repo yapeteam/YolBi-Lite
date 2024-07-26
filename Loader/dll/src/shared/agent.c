@@ -4,8 +4,16 @@
 #include <wchar.h>
 #include <locale.h>
 
-#include "../jvm/jni.h"
-#include "../jvm/jvmti.h"
+
+#if __APPLE__
+    #include "../jvm/darwin/jni.h"
+    #include "../jvm/darwin/jvmti.h"
+#elif _WIN64
+    #include "../jvm/windows/jni.h"
+    #include "../jvm/windows/jvmti.h"
+#endif
+
+
 #include "main.c"
 #include "agent.h"
 

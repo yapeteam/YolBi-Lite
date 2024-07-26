@@ -236,7 +236,15 @@ public class Builder {
         System.out.println("Building DLL...");
         generateHeaderFromClass(new File("out/production/Builder/cn/yapeteam/builder/Unzip.class"), new File("Loader/dll/src/shared/unzip.h"), "unzip_data");
         Terminal terminal = new Terminal(dir, null);
-        terminal.execute(new String[]{"gcc", "-shared", "../src/shared/agent.c", "-o", "libagent" + suffix});
+
+        String[] command ;
+        if (OS.isFamilyWindows()) command = new String[]{"gcc", "-shared", "../src/shared/agent.c", "-o", "libagent" + suffix};
+        else if (OS.isFamilyMac()) command = new String[]{"gcc","-dynamiclib" ,"-shared", "../src/shared/agent.c", "-o", "libagent" + suffix};
+        else command = new String[]{"gcc", "-shared", "../src/shared/agent.c", "-o", "libagent" + suffix};
+        terminal.execute(command);
+
+
+
         if (!OS.isFamilyWindows()) return;
         if (advanced_mode) {
             String target = "--target=x86_64-w64-mingw";
