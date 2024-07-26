@@ -33,10 +33,11 @@
         <artifact name="injector.jar" launch4j-config="launch4j.xml">
             <files>out/production/Injector</files>
             <dir>Injector/META-INF</dir>
-            <extract>deps/jna.jar</extract>
-            <extract>deps/flatlaf.jar</extract>
-            <extract>deps/flatlaf-intellij-themes.jar</extract>
-            <extract>deps/tools.jar</extract>
+            <extract>deps/shared/jna.jar</extract>
+            <extract>deps/shared/flatlaf.jar</extract>
+            <extract>deps/shared/flatlaf-intellij-themes.jar</extract>
+            <extract platform="windows">deps/windows/tools.jar</extract>
+            <extract platform="mac">deps/darwin/tools.jar</extract>
             <archive name="injection.zip">
                 <dir>resources</dir>
                 <dir name="injection">
@@ -52,17 +53,10 @@
                 <file>build/loader.jar</file>
                 <file>build/hooker.jar</file>
                 <file>build/ymixin.jar</file>
-
-
-                <file platform="windows">Loader/dll/build/libinjection.dylib</file>
-                <file platform="windows">Loader/dll/build/libapi.dylib</file>
-                <file platform="windows">Loader/dll/build/agent.dylib</file>
-<!--                <file platform="windows">Loader/dll/build/libinjection.dll</file>-->
-<!--                <file platform="windows">Loader/dll/build/libapi.dll</file>-->
-<!--                <file platform="windows">Loader/dll/build/agent.dll</file>-->
-
-
-
+                <file platform="windows">Loader/dll/build/libinjection.dll</file>
+                <file platform="windows">Loader/dll/build/libapi.dll</file>
+                <file platform="windows">Loader/dll/build/agent.dll</file>
+                <file platform="mac">Loader/dll/build/agent.dylib</file>
             </archive>
         </artifact>
     </build>
