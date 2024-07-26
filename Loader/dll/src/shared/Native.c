@@ -109,7 +109,7 @@ JNIEXPORT jboolean JNICALL IsKeyDown(JNIEnv *env, jclass _, jint key)
 
 void register_native_methods(JNIEnv *env, jclass clazz)
 {
-#ifdef _WINDOWS_
+#ifdef _WIN32
     JNINativeMethod methods[] = {
         {"Init", "(I)V", (void *)&Init},
         {"SetWindowsTransparent", "(ZLjava/lang/String;)V", (void *)&SetWindowsTransparent},
