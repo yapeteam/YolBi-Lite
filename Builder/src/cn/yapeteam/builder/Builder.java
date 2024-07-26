@@ -302,6 +302,8 @@ public class Builder {
     }
 
     public static void main(String[] args) throws Exception {
+        deleteFileByStream("build");
+        deleteFileByStream("Loader/dll/build");
         if (args.length != 1) return;
         advanced_mode = args[0].equals("release");
         System.setSecurityManager(new NoExitSecurityManager());
