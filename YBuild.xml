@@ -46,7 +46,7 @@
                     <file>build/injection-1.18.1.jar</file>
                 </dir>
                 <dir name="dependencies">
-                    <file>deps/asm-all-9.2.jar</file>
+                    <file>deps/shared/asm-all-9.2.jar</file>
                 </dir>
                 <files>build/natives</files>
                 <file>build/definer.jar</file>
