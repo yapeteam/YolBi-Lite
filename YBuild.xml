@@ -45,18 +45,18 @@
                 </dir>
                 <dir name="dependencies">
                     <file>deps/asm-all-9.2.jar</file>
-                    <file>deps/flatlaf.jar</file>
-                    <file>deps/flatlaf-intellij-themes.jar</file>
                     <archive name="mcef.jar">
                         <files>out/production/mcef</files>
                     </archive>
                 </dir>
+                <files>build/natives</files>
                 <file>build/definer.jar</file>
                 <file>build/loader.jar</file>
                 <file>build/hooker.jar</file>
                 <file>build/ymixin.jar</file>
-                <file>Loader/dll/build/libinjection.dll</file>
-                <file>Loader/dll/build/libapi.dll</file>
+                <file platform="windows">Loader/dll/build/libinjection.dll</file>
+                <file platform="windows">Loader/dll/build/libapi.dll</file>
+                <file>Loader/dll/build/agent.dll</file>
             </archive>
         </artifact>
     </build>

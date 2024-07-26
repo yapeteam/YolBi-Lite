@@ -1,5 +1,6 @@
 package cn.yapeteam.builder;
 
+import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -226,12 +227,13 @@ public class Builder {
     }
 
     private static void buildDLL() throws Exception {
-        if (!OS.isFamilyWindows()) return;
         File dir = new File("Loader/dll/build");
         boolean ignored = dir.mkdirs();
         System.out.println("Building DLL...");
         generateHeaderFromClass(new File("out/production/Builder/cn/yapeteam/builder/Unzip.class"), new File("Loader/dll/src/shared/unzip.h"), "unzip_data");
         Terminal terminal = new Terminal(dir, null);
+        terminal.execute(new String[]{"gcc", "-shared", "../src/shared/agent.c", "-o", "libagent.dll"});
+        if (!OS.isFamilyWindows()) return;
         if (advanced_mode) {
             String target = "--target=x86_64-w64-mingw";
             terminal.execute(new String[]{"clang-cl",
@@ -269,15 +271,15 @@ public class Builder {
             terminal.execute(new String[]{"clang",
                     target, "-shared", "GetProcAddressR.o", "LoadLibraryR.o", "Inject.o", "-o", "libapi.dll"});
         } else {
-            terminal.execute(new String[]{"gcc.exe", "-c", "../src/dll/Main.c", "-o", "Main.o"});
-            terminal.execute(new String[]{"gcc.exe", "-c", "../src/dll/ReflectiveLoader.c", "-o", "ReflectiveLoader.o"});
-            terminal.execute(new String[]{"gcc.exe", "-c", "../src/dll/utils.c", "-o", "utils.o"});
-            terminal.execute(new String[]{"gcc.exe", "-shared", "Main.o", "ReflectiveLoader.o", "utils.o", "-o", "libinjection.dll"});
+            terminal.execute(new String[]{"gcc", "-c", "../src/dll/Main.c", "-o", "Main.o"});
+            terminal.execute(new String[]{"gcc", "-c", "../src/dll/ReflectiveLoader.c", "-o", "ReflectiveLoader.o"});
+            terminal.execute(new String[]{"gcc", "-c", "../src/dll/utils.c", "-o", "utils.o"});
+            terminal.execute(new String[]{"gcc", "-shared", "Main.o", "ReflectiveLoader.o", "utils.o", "-o", "libinjection.dll"});
 
-            terminal.execute(new String[]{"gcc.exe", "-c", "../src/inject/GetProcAddressR.c", "-o", "GetProcAddressR.o"});
-            terminal.execute(new String[]{"gcc.exe", "-c", "../src/inject/LoadLibraryR.c", "-o", "LoadLibraryR.o"});
-            terminal.execute(new String[]{"gcc.exe", "-c", "../src/inject/Inject.c", "-o", "Inject.o"});
-            terminal.execute(new String[]{"gcc.exe", "-shared", "GetProcAddressR.o", "LoadLibraryR.o", "Inject.o", "-o", "libapi.dll"});
+            terminal.execute(new String[]{"gcc", "-c", "../src/inject/GetProcAddressR.c", "-o", "GetProcAddressR.o"});
+            terminal.execute(new String[]{"gcc", "-c", "../src/inject/LoadLibraryR.c", "-o", "LoadLibraryR.o"});
+            terminal.execute(new String[]{"gcc", "-c", "../src/inject/Inject.c", "-o", "Inject.o"});
+            terminal.execute(new String[]{"gcc", "-shared", "GetProcAddressR.o", "LoadLibraryR.o", "Inject.o", "-o", "libapi.dll"});
         }
     }
 
@@ -297,6 +299,13 @@ public class Builder {
             Node node = build.getChildNodes().item(i);
             if (node instanceof Element) {
                 Element element = (Element) node;
+                Node platform_node = element.getAttributes().getNamedItem("platform");
+                if (platform_node != null) {
+                    String platformName = platform_node.getNodeValue();
+                    if (platformName.equals("windows") && !OS.isFamilyWindows()) continue;
+                    else if (platformName.equals("mac") && !OS.isFamilyMac()) continue;
+                    else if (platformName.equals("linux") && !OS.isFamilyUnix()) continue;
+                }
                 switch (element.getTagName()) {
                     case "artifact": {
                         String artifact_name = element.getAttribute("name");
@@ -338,7 +347,7 @@ public class Builder {
                         }
                         if (mosey_cfg != null)
                             rip.hippo.mosey.Main.main(new String[]{String.format("-config%s", mosey_cfg.getNodeValue())});
-                        if (launch4j_cfg != null) {
+                        if (launch4j_cfg != null && OS.isFamilyWindows()) {
                             Terminal terminal = new Terminal(new File("."), null);
                             terminal.execute(new String[]{"launch4jc", launch4j_cfg.getNodeValue()});
                         }
@@ -389,28 +398,73 @@ public class Builder {
                         File obf_out_file = new File(build_dir, artifact_name);
                         File native_file = buildNative(obf_out_dir);
                         File new_artifact_file = new File(output_dir, artifact_name);
-                        ZipOutputStream output = new ZipOutputStream(Files.newOutputStream(new_artifact_file.toPath()));
-                        output.setMethod(ZipOutputStream.DEFLATED);
-                        output.setLevel(Deflater.BEST_COMPRESSION);
-                        try (ZipInputStream input = new ZipInputStream(Files.newInputStream(obf_out_file.toPath()))) {
-                            ZipEntry entry_in;
-                            while ((entry_in = input.getNextEntry()) != null) {
-                                ZipEntry entry_out = new ZipEntry(entry_in);
-                                output.putNextEntry(entry_out);
-                                copyStream(output, input);
-                                output.closeEntry();
-                            }
-                            output.putNextEntry(new ZipEntry(custom_lib_dir + "/x64-windows.dll"));
-                            copyStream(output, Files.newInputStream(native_file.toPath()));
-                            output.closeEntry();
-                        }
-                        output.close();
+                        String fileName = getNativeFileName();
+                        copyStream(Files.newOutputStream(new_artifact_file.toPath()), Files.newInputStream(obf_out_file.toPath()));
+                        File nativesDir = new File("build/natives");
+                        nativesDir.mkdirs();
+                        File out = new File(nativesDir, custom_lib_dir + "/" + fileName);
+                        out.getParentFile().mkdirs();
+                        copyStream(Files.newOutputStream(out.toPath()), Files.newInputStream(native_file.toPath()));
+                        // ZipOutputStream output = new ZipOutputStream(Files.newOutputStream(new_artifact_file.toPath()));
+                        // output.setMethod(ZipOutputStream.DEFLATED);
+                        // output.setLevel(Deflater.BEST_COMPRESSION);
+                        // try (ZipInputStream input = new ZipInputStream(Files.newInputStream(obf_out_file.toPath()))) {
+                        //     ZipEntry entry_in;
+                        //     while ((entry_in = input.getNextEntry()) != null) {
+                        //         ZipEntry entry_out = new ZipEntry(entry_in);
+                        //         output.putNextEntry(entry_out);
+                        //         copyStream(output, input);
+                        //         output.closeEntry();
+                        //     }
+                        //     output.putNextEntry(new ZipEntry(custom_lib_dir + "/" + fileName));
+                        //     copyStream(output, Files.newInputStream(native_file.toPath()));
+                        //     output.closeEntry();
+                        // }
+                        // output.close();
                         break;
                     }
                 }
             }
         }
         System.out.println("BUILD SUCCESS");
+    }
+
+    @NotNull
+    private static String getNativeFileName() {
+        String osName = System.getProperty("os.name").toLowerCase();
+        String platform = System.getProperty("os.arch").toLowerCase();
+        String platformTypeName;
+        switch (platform) {
+            case "x86_64":
+            case "amd64":
+                platformTypeName = "x64";
+                break;
+            case "aarch64":
+                platformTypeName = "arm64";
+                break;
+            case "arm":
+                platformTypeName = "arm32";
+                break;
+            case "x86":
+                platformTypeName = "x86";
+                break;
+            default:
+                platformTypeName = "raw" + platform;
+        }
+
+        String osTypeName;
+        if (!osName.contains("nix") && !osName.contains("nux") && !osName.contains("aix")) {
+            if (osName.contains("win")) {
+                osTypeName = "windows.dll";
+            } else if (osName.contains("mac")) {
+                osTypeName = "macos.dylib";
+            } else {
+                osTypeName = "raw" + osName;
+            }
+        } else {
+            osTypeName = "linux.so";
+        }
+        return platformTypeName + "-" + osTypeName;
     }
 
     public static void deleteFileByStream(String filePath) throws IOException {
@@ -441,7 +495,7 @@ public class Builder {
         if (OS.isFamilyWindows()) suffix = ".dll";
         else if (OS.isFamilyMac()) suffix = ".dylib";
         else suffix = ".so";
-        if (advanced_mode) {
+        if (advanced_mode && OS.isFamilyWindows()) {
             Terminal terminal = new Terminal(output, null);
             String target = "--target=x86_64-w64-mingw";
             ArrayList<String> binaries = new ArrayList<>();
@@ -477,7 +531,7 @@ public class Builder {
             terminal.execute(linkArgs);
         } else {
             Terminal terminal = new Terminal(output, null);
-            String compiler = "g++.exe";
+            String compiler = "g++";
             ArrayList<String> binaries = new ArrayList<>();
             terminal.execute(new String[]{compiler, "-c", "../native_jvm.cpp", "-o", "native_jvm.o"});
             terminal.execute(new String[]{compiler, "-c", "../native_jvm_output.cpp", "-o", "native_jvm_output.o"});

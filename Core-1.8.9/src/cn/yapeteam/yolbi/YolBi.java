@@ -7,7 +7,6 @@ import cn.yapeteam.yolbi.event.EventManager;
 import cn.yapeteam.yolbi.font.FontManager;
 import cn.yapeteam.yolbi.managers.BotManager;
 import cn.yapeteam.yolbi.managers.TargetManager;
-import cn.yapeteam.yolbi.mcef.MCEFInitializer;
 import cn.yapeteam.yolbi.module.ModuleManager;
 import cn.yapeteam.yolbi.notification.Notification;
 import cn.yapeteam.yolbi.notification.NotificationManager;
@@ -19,13 +18,9 @@ import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.player.RotationManager;
 import cn.yapeteam.yolbi.utils.render.ESPUtil;
 import lombok.Getter;
-import net.montoyo.mcef.MCEF;
 
 import java.io.File;
 import java.io.IOException;
-import cn.yapeteam.yolbi.module.impl.misc.IRC;
-//import cn.yapeteam.yolbi.event.impl.player.IRCListener;
-import cn.yapeteam.yolbi.YolBi;
 
 @Getter
 public class YolBi {
@@ -76,7 +71,6 @@ public class YolBi {
         instance.eventManager.register(Shader.class);
         instance.eventManager.register(ESPUtil.class);
         instance.eventManager.register(RotationManager.class);
-        instance.eventManager.register(MCEFInitializer.class);
         instance.moduleManager.load();
         try {
             instance.getConfigManager().load();
@@ -114,7 +108,6 @@ public class YolBi {
             instance.jFrameRenderer.close();
             configManager.save();
             WebServer.stop();
-            MCEF.onMinecraftShutdown();
             instance = new YolBi();
             System.gc();
         } catch (IOException e) {
