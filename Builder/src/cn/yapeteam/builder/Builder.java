@@ -65,10 +65,17 @@ public class Builder {
             }
         }
         if (is_root) root_dir = "";
-        Node attr = node.getAttributes().item(0);
+        Node name_attr = node.getAttributes().getNamedItem("name");
+        Node platform_node = node.getAttributes().getNamedItem("platform");
+        if (platform_node != null) {
+            String platformName = platform_node.getNodeValue();
+            if (platformName.equals("windows") && !OS.isFamilyWindows()) return;
+            else if (platformName.equals("mac") && !OS.isFamilyMac()) return;
+            else if (platformName.equals("linux") && !OS.isFamilyUnix()) return;
+        }
         switch (node.getNodeName()) {
             case "dir": {
-                if (attr == null) {
+                if (name_attr == null) {
                     System.out.println("dir " + node.getTextContent());
                     File dir = new File(node.getTextContent());
                     String parent = dir.getParent();
@@ -87,7 +94,7 @@ public class Builder {
                         }
                     });
                 } else {
-                    root_dir = root_dir + "/" + attr.getNodeValue();
+                    root_dir = root_dir + "/" + name_attr.getNodeValue();
                     for (int i = 0; i < node.getChildNodes().getLength(); i++) {
                         Node child = node.getChildNodes().item(i);
                         if (child.getNodeType() == Node.ELEMENT_NODE)
@@ -153,7 +160,7 @@ public class Builder {
             }
             break;
             case "archive": {
-                String name = attr.getNodeValue();
+                String name = name_attr.getNodeValue();
                 System.out.println("archive " + name);
                 ZipEntry entry = new ZipEntry(root_dir + (root_dir.isEmpty() ? "" : "/") + name);
                 try {
@@ -236,14 +243,13 @@ public class Builder {
         System.out.println("Building DLL...");
         generateHeaderFromClass(new File("out/production/Builder/cn/yapeteam/builder/Unzip.class"), new File("Loader/dll/src/shared/unzip.h"), "unzip_data");
         Terminal terminal = new Terminal(dir, null);
-
-        String[] command ;
-        if (OS.isFamilyWindows()) command = new String[]{"gcc", "-shared", "../src/shared/agent.c", "-o", "libagent" + suffix};
-        else if (OS.isFamilyMac()) command = new String[]{"gcc","-dynamiclib" , "../src/shared/agent.c", "-o", "libagent" + suffix};
+        String[] command;
+        if (OS.isFamilyWindows())
+            command = new String[]{"gcc", "-shared", "../src/shared/agent.c", "-o", "libagent" + suffix};
+        else if (OS.isFamilyMac())
+            command = new String[]{"gcc", "-dynamiclib", "../src/shared/agent.c", "-o", "libagent" + suffix};
         else command = new String[]{"gcc", "-shared", "../src/shared/agent.c", "-o", "libagent" + suffix};
         terminal.execute(command);
-
-
 
         if (!OS.isFamilyWindows()) return;
         if (advanced_mode) {
@@ -417,22 +423,6 @@ public class Builder {
                         File out = new File(nativesDir, custom_lib_dir + "/" + fileName);
                         out.getParentFile().mkdirs();
                         copyStream(Files.newOutputStream(out.toPath()), Files.newInputStream(native_file.toPath()));
-                        // ZipOutputStream output = new ZipOutputStream(Files.newOutputStream(new_artifact_file.toPath()));
-                        // output.setMethod(ZipOutputStream.DEFLATED);
-                        // output.setLevel(Deflater.BEST_COMPRESSION);
-                        // try (ZipInputStream input = new ZipInputStream(Files.newInputStream(obf_out_file.toPath()))) {
-                        //     ZipEntry entry_in;
-                        //     while ((entry_in = input.getNextEntry()) != null) {
-                        //         ZipEntry entry_out = new ZipEntry(entry_in);
-                        //         output.putNextEntry(entry_out);
-                        //         copyStream(output, input);
-                        //         output.closeEntry();
-                        //     }
-                        //     output.putNextEntry(new ZipEntry(custom_lib_dir + "/" + fileName));
-                        //     copyStream(output, Files.newInputStream(native_file.toPath()));
-                        //     output.closeEntry();
-                        // }
-                        // output.close();
                         break;
                     }
                 }
@@ -561,7 +551,7 @@ public class Builder {
             }
             String[] linkArgs = new String[1 + 1 + binaries.size() + 4 + 1 + 1];
             linkArgs[0] = compiler;
-            linkArgs[1] = "-shared";
+            linkArgs[1] = OS.isFamilyMac() ? "-dynamiclib" : "-shared";
             for (int i = 0; i < binaries.size(); i++)
                 linkArgs[2 + i] = binaries.get(i);
             linkArgs[2 + binaries.size()] = "-Wl,-Bstatic,--whole-archive";
