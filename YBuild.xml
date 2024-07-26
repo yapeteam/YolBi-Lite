@@ -49,6 +49,7 @@
                     <file>deps/shared/asm-all-9.2.jar</file>
                 </dir>
                 <files>build/natives</files>
+                <file>build/agent.jar</file>
                 <file>build/definer.jar</file>
                 <file>build/loader.jar</file>
                 <file>build/hooker.jar</file>
