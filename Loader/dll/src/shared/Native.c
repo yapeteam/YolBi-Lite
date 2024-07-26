@@ -11,8 +11,7 @@ const char *jstringToChar(JNIEnv *env, jstring jstr)
     (*env)->ReleaseStringUTFChars(env, jstr, str);
     return str;
 }
-#ifdef _WINDOWS_
-
+#ifdef _WIN32
 #include <windows.h>
 HWND WindowHwnd = NULL;
 

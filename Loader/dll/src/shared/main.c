@@ -28,27 +28,28 @@ struct TransformCallback
 
 static struct TransformCallback *callback_list = NULL;
 
-void replace(char *str, const char *fstr, const char *rstr)
+void replaceFirst(char *str1, char *str2, char *str3)
 {
-    int i, j, k;
-    int len_str = strlen(str);
-    int len_fstr = strlen(fstr);
-    int len_rstr = strlen(rstr);
-
-    for (i = 0; i <= len_str - len_fstr; i++)
+    char str4[strlen(str1) + 1];
+    char *p;
+    strcpy(str4, str1);
+    if ((p = strstr(str1, str2)) != NULL) /*p指向str2在str1中第一次出现的位置*/
     {
-        for (j = 0; j < len_fstr; j++)
+        while (str1 != p && str1 != NULL) /*将str1指针移动到p的位置*/
         {
-            if (str[i + j] != fstr[j])
-                break;
+            str1++;
         }
-        if (j == len_fstr)
-        {
-            memmove(str + i + len_rstr, str + i + len_fstr, len_str - i - len_fstr + 1);
-            memcpy(str + i, rstr, len_rstr);
-            i += len_rstr - 1;
-            len_str = len_str - len_fstr + len_rstr;
-        }
+        str1[0] = '\0';                                  /*将str1指针指向的值变成/0,以此来截断str1,舍弃str2及以后的内容，只保留str2以前的内容*/
+        strcat(str1, str3);                              /*在str1后拼接上str3,组成新str1*/
+        strcat(str1, strstr(str4, str2) + strlen(str2)); /*strstr(str4,str2)是指向str2及以后的内容(包括str2),strstr(str4,str2)+strlen(str2)就是将指针向前移动strlen(str2)位，跳过str2*/
+    }
+}
+/*将str1出现的所有的str2都替换为str3*/
+void replace(char *str1, char *str2, char *str3)
+{
+    while (strstr(str1, str2) != NULL)
+    {
+        replaceFirst(str1, str2, str3);
     }
 }
 
@@ -60,11 +61,12 @@ jclass JNICALL loadClass(JNIEnv *jniEnv, const char *name, jobject classloader)
 
 jclass findClass(JNIEnv *jniEnv, const char *name, jobject classLoader)
 {
+    char *temp_name = strdup(name);
     jclass result = NULL;
-    replace(name, "/", ".");
+    replace(temp_name, "/", ".");
     jclass Class = (*jniEnv)->FindClass(jniEnv, "java/lang/Class");
     jmethodID forName = (*jniEnv)->GetStaticMethodID(jniEnv, Class, "forName", "(Ljava/lang/String;ZLjava/lang/ClassLoader;)Ljava/lang/Class;");
-    jstring className = (*jniEnv)->NewStringUTF(jniEnv, name);
+    jstring className = (*jniEnv)->NewStringUTF(jniEnv, temp_name);
     result = (*jniEnv)->CallStaticObjectMethod(jniEnv, Class, forName, className, JNI_TRUE, classLoader);
     if ((*jniEnv)->ExceptionCheck(jniEnv))
     {
@@ -72,11 +74,23 @@ jclass findClass(JNIEnv *jniEnv, const char *name, jobject classLoader)
         (*jniEnv)->ExceptionClear(jniEnv);
     }
     if (result)
+    {
+        free(temp_name);
         return result;
-    replace(name, ".", "/");
-    result = (*jniEnv)->FindClass(jniEnv, name);
+    }
+    replace(temp_name, ".", "/");
+    result = (*jniEnv)->FindClass(jniEnv, temp_name);
+    if ((*jniEnv)->ExceptionCheck(jniEnv))
+    {
+        (*jniEnv)->ExceptionDescribe(jniEnv);
+        (*jniEnv)->ExceptionClear(jniEnv);
+    }
     if (result)
+    {
+        free(temp_name);
         return result;
+    }
+    free(temp_name);
     return NULL;
 }
 
@@ -241,8 +255,7 @@ wchar_t *get_current_directory_w()
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "UnusedParameter"
 
-void JNICALL classFileLoadHook(jvmtiEnv
-                                   *jvmti_env,
+void JNICALL classFileLoadHook(jvmtiEnv *jvmti_env,
                                JNIEnv *env,
                                jclass
                                    class_being_redefined,
