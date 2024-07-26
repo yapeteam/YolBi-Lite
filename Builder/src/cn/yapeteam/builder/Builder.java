@@ -138,7 +138,7 @@ public class Builder {
                         if (entry_in.isDirectory()) continue;
                         String entry_name = entry_in.getName();
                         if (entry_name.startsWith("module-info.class")) continue;
-                        if (entry_name.startsWith("META-INF/")) continue;
+                        if (entry_name.startsWith("META-INF/MANIFEST.MF")) continue;
                         if (entry_name.startsWith(root_dir))
                             entry_name = entry_name.substring(root_dir.length());
                         if (entry_name.startsWith("/"))
@@ -227,12 +227,16 @@ public class Builder {
     }
 
     private static void buildDLL() throws Exception {
+        String suffix;
+        if (OS.isFamilyWindows()) suffix = ".dll";
+        else if (OS.isFamilyMac()) suffix = ".dylib";
+        else suffix = ".so";
         File dir = new File("Loader/dll/build");
         boolean ignored = dir.mkdirs();
         System.out.println("Building DLL...");
         generateHeaderFromClass(new File("out/production/Builder/cn/yapeteam/builder/Unzip.class"), new File("Loader/dll/src/shared/unzip.h"), "unzip_data");
         Terminal terminal = new Terminal(dir, null);
-        terminal.execute(new String[]{"gcc", "-shared", "../src/shared/agent.c", "-o", "libagent.dll"});
+        terminal.execute(new String[]{"gcc", "-shared", "../src/shared/agent.c", "-o", "libagent" + suffix});
         if (!OS.isFamilyWindows()) return;
         if (advanced_mode) {
             String target = "--target=x86_64-w64-mingw";

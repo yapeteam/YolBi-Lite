@@ -36,6 +36,7 @@
             <extract>deps/jna.jar</extract>
             <extract>deps/flatlaf.jar</extract>
             <extract>deps/flatlaf-intellij-themes.jar</extract>
+            <extract>deps/tools.jar</extract>
             <archive name="injection.zip">
                 <dir>resources</dir>
                 <dir name="injection">
@@ -45,9 +46,6 @@
                 </dir>
                 <dir name="dependencies">
                     <file>deps/asm-all-9.2.jar</file>
-                    <archive name="mcef.jar">
-                        <files>out/production/mcef</files>
-                    </archive>
                 </dir>
                 <files>build/natives</files>
                 <file>build/definer.jar</file>

@@ -1,5 +1,10 @@
 package cn.yapeteam.injector;
 
+import com.sun.tools.attach.AgentInitializationException;
+import com.sun.tools.attach.AgentLoadException;
+import com.sun.tools.attach.AttachNotSupportedException;
+import com.sun.tools.attach.VirtualMachine;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -8,7 +13,6 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import cn.yapeteam.injector.Main;
 
 public class MainFrame extends JFrame {
     private JPanel panel;
@@ -31,7 +35,7 @@ public class MainFrame extends JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenWidth = (int) screenSize.getWidth();
         int screenHeight = (int) screenSize.getHeight();
-        int[] size = {(int) (width / 1920 * screenWidth + 225 ), (int) (height / 1080 * screenHeight + 100)};
+        int[] size = {(int) (width / 1920 * screenWidth + 225), (int) (height / 1080 * screenHeight + 100)};
         setSize(size[0], size[1]);
         setResizable(false);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -71,7 +75,7 @@ public class MainFrame extends JFrame {
                 cache += (value2 - cache) * speed;
                 progressBar2.setValue((int) cache);
                 try {
-                    Thread.sleep((long) (1000 / fps));
+                    Thread.sleep(1000 / fps);
                 } catch (InterruptedException ignored) {
                     break;
                 }
@@ -137,26 +141,27 @@ public class MainFrame extends JFrame {
             }
         });
         updateThread = new Thread(() -> {
-            while (true) {
-                ArrayList<Pair<String, Integer>> minecraftProcesses = Utils.getMinecraftProcesses();
-                int selected = process.getSelectedIndex();
-                process.removeAllItems();
-                if (minecraftProcesses.isEmpty()) continue;
-                for (Pair<String, Integer> minecraftProcess : minecraftProcesses)
-                    process.addItem(minecraftProcess.a);
-                if (selected != -1)
-                    process.setSelectedIndex(selected);
-                targets = minecraftProcesses;
-                long time = System.currentTimeMillis();
-                while (true) if (System.currentTimeMillis() - time >= 500) break;
-            }
+            if (OS.isFamilyWindows())
+                while (true) {
+                    ArrayList<Pair<String, Integer>> minecraftProcesses = Utils.getMinecraftProcesses();
+                    int selected = process.getSelectedIndex();
+                    process.removeAllItems();
+                    if (minecraftProcesses.isEmpty()) continue;
+                    for (Pair<String, Integer> minecraftProcess : minecraftProcesses)
+                        process.addItem(minecraftProcess.a);
+                    if (selected != -1)
+                        process.setSelectedIndex(selected);
+                    targets = minecraftProcesses;
+                    long time = System.currentTimeMillis();
+                    while (true) if (System.currentTimeMillis() - time >= 500) break;
+                }
         });
     }
 
     @Override
     public void setVisible(boolean b) {
         super.setVisible(b);
-        if (b) updateThread.start();
+        if (b && OS.isFamilyWindows()) updateThread.start();
     }
 
     public void inject(int pid) {
@@ -169,8 +174,24 @@ public class MainFrame extends JFrame {
         new Thread(() -> Utils.injectDLL(pid, new File(Main.YolBi_Dir, Main.dllName).getAbsolutePath())).start();
     }
 
+    public void inject_agent(String pid) {
+        new Thread(() -> {
+            try {
+                VirtualMachine virtualMachine = VirtualMachine.attach(pid);
+                virtualMachine.loadAgent(new File(Main.YolBi_Dir, Main.agentName).getAbsolutePath());
+            } catch (AttachNotSupportedException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Couldn't attach target VM", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException | AgentLoadException | AgentInitializationException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Exception", JOptionPane.ERROR_MESSAGE);
+            }
+        }).start();
+    }
+
     public void inject_ui() {
-        updateThread.interrupt();
+        if (updateThread.isAlive())
+            updateThread.interrupt();
         serverThread.start();
         process.setVisible(false);
         inject.setVisible(false);
