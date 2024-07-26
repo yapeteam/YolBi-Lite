@@ -177,46 +177,37 @@ public class Hooker {
             System.err.println("Failed to find target thread!");
             return;
         }
-
-        boolean hasLaunchClassLoader = true;
         try {
-            Class.forName("net.minecraft.launchwrapper.LaunchClassLoader", true, client_thread.getContextClassLoader());
-        } catch (ClassNotFoundException e) {
-            hasLaunchClassLoader = false;
-        }
-        if (hasLaunchClassLoader) {
-            try {
-                ClassNode targetNode = null;
-                while (targetNode == null) {
-                    try {
-                        targetNode = node(getClassBytes(client_thread.getContextClassLoader().getClass()));
-                    } catch (Exception e) {
-                        Thread.sleep(500);
-                    }
+            ClassNode targetNode = null;
+            while (targetNode == null) {
+                try {
+                    targetNode = node(getClassBytes(client_thread.getContextClassLoader().getClass()));
+                } catch (Exception e) {
+                    Thread.sleep(500);
                 }
-                for (MethodNode method : targetNode.methods) {
-                    if (method.name.equals("findClass") && method.desc.equals("(Ljava/lang/String;)Ljava/lang/Class;")) {
-                        LabelNode labelNode = new LabelNode();
-                        InsnList insnList = new InsnList();
-                        insnList.add(new VarInsnNode(Opcodes.ALOAD, 0));
-                        insnList.add(new VarInsnNode(Opcodes.ALOAD, 1));
-                        insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(Hooker.class),
-                                "onFindClass", "(Ljava/lang/ClassLoader;Ljava/lang/String;)Ljava/lang/Class;"));
-                        insnList.add(new VarInsnNode(Opcodes.ASTORE, 2));
-                        insnList.add(new VarInsnNode(Opcodes.ALOAD, 2));
-                        insnList.add(new JumpInsnNode(Opcodes.IFNULL, labelNode));
-                        insnList.add(new VarInsnNode(Opcodes.ALOAD, 2));
-                        insnList.add(new InsnNode(Opcodes.ARETURN));
-                        insnList.add(labelNode);
-                        method.instructions.insert(insnList);
-                        break;
-                    }
-                }
-                val bytes = rewriteClass(targetNode);
-                redefineClass(client_thread.getContextClassLoader().getClass(), bytes);
-            } catch (Throwable e) {
-                e.printStackTrace();
             }
+            for (MethodNode method : targetNode.methods) {
+                if (method.name.equals("findClass") && method.desc.equals("(Ljava/lang/String;)Ljava/lang/Class;")) {
+                    LabelNode labelNode = new LabelNode();
+                    InsnList insnList = new InsnList();
+                    insnList.add(new VarInsnNode(Opcodes.ALOAD, 0));
+                    insnList.add(new VarInsnNode(Opcodes.ALOAD, 1));
+                    insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(Hooker.class),
+                            "onFindClass", "(Ljava/lang/ClassLoader;Ljava/lang/String;)Ljava/lang/Class;"));
+                    insnList.add(new VarInsnNode(Opcodes.ASTORE, 2));
+                    insnList.add(new VarInsnNode(Opcodes.ALOAD, 2));
+                    insnList.add(new JumpInsnNode(Opcodes.IFNULL, labelNode));
+                    insnList.add(new VarInsnNode(Opcodes.ALOAD, 2));
+                    insnList.add(new InsnNode(Opcodes.ARETURN));
+                    insnList.add(labelNode);
+                    method.instructions.insert(insnList);
+                    break;
+                }
+            }
+            val bytes = rewriteClass(targetNode);
+            redefineClass(client_thread.getContextClassLoader().getClass(), bytes);
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
     }
 }

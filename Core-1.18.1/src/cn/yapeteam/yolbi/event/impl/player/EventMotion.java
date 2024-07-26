@@ -11,5 +11,4 @@ import lombok.Setter;
 public class EventMotion extends Event {
     private double x, y, z;
     private float yaw, pitch;
-    private boolean onGround;
 }
