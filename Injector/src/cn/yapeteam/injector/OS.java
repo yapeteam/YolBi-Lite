@@ -54,7 +54,7 @@ public final class OS {
     }
 
     public static boolean isFamilyWindows() {
-        return false;//isFamily("windows");
+        return isFamily("windows");
     }
 
     public static boolean isFamilyWin9x() {

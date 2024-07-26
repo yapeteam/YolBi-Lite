@@ -13,15 +13,14 @@ public class Agent {
         else suffix = ".so";
         System.out.println("[YolBi Lite] 开始加载Agent库");
         try {
-
-            System.load("/Users/yuxiangll/Documents/YolBi/YolBi-Lite/Loader/dll/build/libagent"+suffix);
-
+            if (OS.isFamilyMac())
+                System.load("/Users/yuxiangll/Documents/YolBi/YolBi-Lite/Loader/dll/build/libagent" + suffix);
+            else System.load(new File(System.getProperty("user.path"), ".yolbi/libagent" + suffix).getAbsolutePath());
             System.out.println("[YolBi Lite] 开始加载Native");
             loadNative();
             System.out.println("[YolBi Lite] 加载完成");
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("[YolBi Lite] 加载失败");
         }
-
     }
 }
