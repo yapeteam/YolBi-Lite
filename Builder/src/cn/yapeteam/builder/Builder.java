@@ -239,7 +239,7 @@ public class Builder {
 
         String[] command ;
         if (OS.isFamilyWindows()) command = new String[]{"gcc", "-shared", "../src/shared/agent.c", "-o", "libagent" + suffix};
-        else if (OS.isFamilyMac()) command = new String[]{"gcc","-dynamiclib" ,"-shared", "../src/shared/agent.c", "-o", "libagent" + suffix};
+        else if (OS.isFamilyMac()) command = new String[]{"gcc","-dynamiclib" , "../src/shared/agent.c", "-o", "libagent" + suffix};
         else command = new String[]{"gcc", "-shared", "../src/shared/agent.c", "-o", "libagent" + suffix};
         terminal.execute(command);
 
