@@ -8,19 +8,14 @@ import cn.yapeteam.yolbi.utils.render.RenderManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Gui;
 
-import org.objectweb.asm.tree.*;
 import org.objectweb.asm_9_2.Opcodes;
 import org.objectweb.asm_9_2.Type;
 import org.objectweb.asm_9_2.tree.*;
 
 public class GuiIngameTransformer extends ASMTransformer {
-    //private static final String GL_STATE_MANAGER_NAME = "net/minecraft/client/renderer/GlStateManager";
-
-
     public GuiIngameTransformer() {
         super(Gui.class);
     }
-
 
     @Inject(method = "render", desc = "(Lcom/mojang/blaze3d/vertex/PoseStack;F)V")
     public void render(MethodNode methodNode) {
@@ -36,8 +31,8 @@ public class GuiIngameTransformer extends ASMTransformer {
                 MethodInsnNode meth = (MethodInsnNode) aisn; // hehe
 
                 if (meth.owner.equals(Mapper.getObfClass("com/mojang/blaze3d/systems/RenderSystem"))
-                //MD: com/mojang/blaze3d/systems/RenderSystem/m_157429_ (FFFF)V com/mojang/blaze3d/systems/RenderSystem/setShaderColor (FFFF)V
-                        && meth.name.equals(Mapper.map("com/mojang/blaze3d/systems/RenderSystem","setShaderColor","(FFFF)V", Mapper.Type.Method))
+                        //MD: com/mojang/blaze3d/systems/RenderSystem/m_157429_ (FFFF)V com/mojang/blaze3d/systems/RenderSystem/setShaderColor (FFFF)V
+                        && meth.name.equals(Mapper.map("com/mojang/blaze3d/systems/RenderSystem", "setShaderColor", "(FFFF)V", Mapper.Type.Method))
                         && meth.desc.equals("(FFFF)V")) {
                     point = aisn;
 
@@ -50,14 +45,15 @@ public class GuiIngameTransformer extends ASMTransformer {
 
         }
         list.add(new VarInsnNode(Opcodes.ALOAD, 1));
-        list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(GuiIngameTransformer.class),"onRender2D","(Ljava/lang/Object;)V"));
+        list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(GuiIngameTransformer.class), "onRender2D", "(Ljava/lang/Object;)V"));
 
 
         methodNode.instructions.insert(point, list);
 
     }
-    public static void onRender2D(Object poseStack){
-        if(!(poseStack instanceof PoseStack)) throw new RuntimeException("invalid poseStack");
-        RenderManager.currentPoseStack= (PoseStack) poseStack;
+
+    public static void onRender2D(Object poseStack) {
+        if (!(poseStack instanceof PoseStack)) throw new RuntimeException("invalid poseStack");
+        RenderManager.currentPoseStack = (PoseStack) poseStack;
     }
 }
