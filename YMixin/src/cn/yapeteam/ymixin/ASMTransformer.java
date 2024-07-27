@@ -12,6 +12,9 @@ import java.lang.annotation.RetentionPolicy;
 
 public class ASMTransformer {
     private Class<?> target;
+    public ASMTransformer(String target) {
+
+    }
 
     @Retention(RetentionPolicy.RUNTIME)
     @java.lang.annotation.Target(ElementType.METHOD)

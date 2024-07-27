@@ -1,37 +1,32 @@
 package cn.yapeteam.yolbi.mixin.transformer;
 
 import cn.yapeteam.ymixin.ASMTransformer;
-import com.fun.eventapi.EventManager;
-import com.fun.eventapi.event.events.EventStrafe;
-import com.fun.inject.injection.asm.api.Inject;
 
-import com.fun.inject.injection.asm.api.Transformer;
-
-import com.fun.inject.Agent;
-import com.fun.inject.Mappings;
-import com.fun.inject.MinecraftVersion;
+import cn.yapeteam.ymixin.utils.Mapper;
+import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.event.impl.player.EventStrafe;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.*;
+import org.objectweb.asm_9_2.Opcodes;
+import org.objectweb.asm_9_2.Type;
+import org.objectweb.asm_9_2.tree.*;
 
-import java.util.ArrayList;
 
 public class EntityTransformer extends ASMTransformer {
     public EntityTransformer() {
-        super("net/minecraft/world/entity/Entity");
+        super(Entity.class);
     }
-    @Inject(method = "moveRelative",descriptor = "(FLnet/minecraft/world/phys/Vec3;)V")
+    @Inject(method = "moveRelative",desc = "(FLnet/minecraft/world/phys/Vec3;)V")
     public void onMoveFly(MethodNode methodNode) {
         InsnList list=new InsnList();//m_19920_
         AbstractInsnNode point = null;
         for (int i = 0; i < methodNode.instructions.size(); ++i) {
             AbstractInsnNode aisn = methodNode.instructions.get(i);
-            if (aisn instanceof MethodInsnNode meth) {
-
-                if (meth.name.equals(Mappings.getObfMethod("m_20015_"))) {
+            if (aisn instanceof MethodInsnNode) {
+                MethodInsnNode meth=(MethodInsnNode)aisn;
+                //MD: net/minecraft/world/entity/Entity/m_20015_ (Lnet/minecraft/world/phys/Vec3;FF)Lnet/minecraft/world/phys/Vec3; net/minecraft/world/entity/Entity/getInputVector (Lnet/minecraft/world/phys/Vec3;FF)Lnet/minecraft/world/phys/Vec3;
+                if (meth.name.equals(Mapper.map("net/minecraft/world/entity/Entity","getInputVector","(Lnet/minecraft/world/phys/Vec3;FF)Lnet/minecraft/world/phys/Vec3;", Mapper.Type.Method))) {
                     point = aisn;
                 }
             }
@@ -42,7 +37,7 @@ public class EntityTransformer extends ASMTransformer {
         list.add(new VarInsnNode(Opcodes.ASTORE,event));
 
         list.add(new VarInsnNode(Opcodes.ALOAD,event));
-        list.add(new FieldInsnNode(Opcodes.GETFIELD,Type.getInternalName(EventStructure.class),"vec","L"+Mappings.getObfClass("net/minecraft/world/phys/Vec3")+";"));
+        list.add(new FieldInsnNode(Opcodes.GETFIELD, Type.getInternalName(EventStructure.class),"vec","L"+ Mapper.getObfClass("net/minecraft/world/phys/Vec3")+";"));
 
         list.add(new VarInsnNode(Opcodes.ALOAD,event));
         list.add(new FieldInsnNode(Opcodes.GETFIELD,Type.getInternalName(EventStructure.class),"friction","F"));
@@ -58,7 +53,7 @@ public class EntityTransformer extends ASMTransformer {
         if(!(moveVec instanceof Vec3))throw new RuntimeException("invalid vec");
 
         EventStrafe eventStrafe=new EventStrafe((float) ((Vec3) moveVec).z, (float) ((Vec3) moveVec).x,yaw,friction);
-        if(entity instanceof LocalPlayer) EventManager.call(eventStrafe);
+        if(entity instanceof LocalPlayer) YolBi.instance.getEventManager().post(eventStrafe);
         return new EventStructure(new Vec3(eventStrafe.strafe, ((Vec3) moveVec).y, eventStrafe.forward),
                 eventStrafe.friction, eventStrafe.yaw);
     }

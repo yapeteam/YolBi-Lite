@@ -2,30 +2,27 @@ package cn.yapeteam.yolbi.mixin.transformer;
 
 
 import cn.yapeteam.ymixin.ASMTransformer;
-import com.fun.eventapi.EventManager;
-import com.fun.eventapi.event.events.EventRender2D;
-import com.fun.inject.injection.asm.api.Inject;
-import com.fun.inject.injection.asm.api.Transformer;
-import com.fun.inject.injection.asm.api.Transformers;
-import com.fun.inject.Agent;
-import com.fun.inject.Mappings;
-import com.fun.inject.MinecraftType;
-import com.fun.utils.RenderManager;
+import cn.yapeteam.ymixin.utils.Mapper;
+
+import cn.yapeteam.yolbi.utils.render.RenderManager;
 import com.mojang.blaze3d.vertex.PoseStack;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import net.minecraft.client.gui.Gui;
+
 import org.objectweb.asm.tree.*;
+import org.objectweb.asm_9_2.Opcodes;
+import org.objectweb.asm_9_2.Type;
+import org.objectweb.asm_9_2.tree.*;
 
 public class GuiIngameTransformer extends ASMTransformer {
     //private static final String GL_STATE_MANAGER_NAME = "net/minecraft/client/renderer/GlStateManager";
 
 
     public GuiIngameTransformer() {
-        super(!(Agent.minecraftType == MinecraftType.FORGE) ?"net/minecraft/client/gui/Gui":"net/minecraftforge/client/gui/ForgeIngameGui");
+        super(Gui.class);
     }
 
 
-    @Inject(method = "render", descriptor = "(Lcom/mojang/blaze3d/vertex/PoseStack;F)V")
+    @Inject(method = "render", desc = "(Lcom/mojang/blaze3d/vertex/PoseStack;F)V")
     public void render(MethodNode methodNode) {
         InsnList list = new InsnList();
 
@@ -38,9 +35,9 @@ public class GuiIngameTransformer extends ASMTransformer {
 
                 MethodInsnNode meth = (MethodInsnNode) aisn; // hehe
 
-                if (meth.owner.equals(Mappings.getObfClass("com/mojang/blaze3d/systems/RenderSystem"))
-                        // MD: bfl/c (FFFF)V net/minecraft/client/renderer/GlStateManager/func_179131_c (FFFF)V
-                        && meth.name.equals(Mappings.getObfMethod("m_157429_"))
+                if (meth.owner.equals(Mapper.getObfClass("com/mojang/blaze3d/systems/RenderSystem"))
+                //MD: com/mojang/blaze3d/systems/RenderSystem/m_157429_ (FFFF)V com/mojang/blaze3d/systems/RenderSystem/setShaderColor (FFFF)V
+                        && meth.name.equals(Mapper.map("com/mojang/blaze3d/systems/RenderSystem","setShaderColor","(FFFF)V", Mapper.Type.Method))
                         && meth.desc.equals("(FFFF)V")) {
                     point = aisn;
 
@@ -49,8 +46,8 @@ public class GuiIngameTransformer extends ASMTransformer {
         }
 
         if (point == null) {
-            Transformers.logger.error("Failed to find last GlStateManager#color call in GuiInGame");
-            return;
+            throw new RuntimeException("Failed to find last GlStateManager#color call in GuiInGame");//Transformers.logger.error("Failed to find last GlStateManager#color call in GuiInGame");
+
         }
         list.add(new VarInsnNode(Opcodes.ALOAD, 1));
         list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(GuiIngameTransformer.class),"onRender2D","(Ljava/lang/Object;)V"));
@@ -62,6 +59,5 @@ public class GuiIngameTransformer extends ASMTransformer {
     public static void onRender2D(Object poseStack){
         if(!(poseStack instanceof PoseStack)) throw new RuntimeException("invalid poseStack");
         RenderManager.currentPoseStack= (PoseStack) poseStack;
-        EventManager.call(new EventRender2D());
     }
 }

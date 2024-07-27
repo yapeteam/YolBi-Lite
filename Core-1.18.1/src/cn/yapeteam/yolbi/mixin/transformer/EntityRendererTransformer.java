@@ -2,37 +2,36 @@ package cn.yapeteam.yolbi.mixin.transformer;
 
 
 import cn.yapeteam.ymixin.ASMTransformer;
-import com.fun.eventapi.EventManager;
-import com.fun.eventapi.event.events.EventAttackReach;
-import com.fun.eventapi.event.events.EventBlockReach;
-import com.fun.client.FunGhostClient;
-import com.fun.inject.injection.asm.api.Inject;
-import com.fun.inject.injection.asm.api.Transformer;
-import com.fun.inject.Mappings;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.*;
 
-import static org.objectweb.asm.Opcodes.FLOAD;
-import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+import cn.yapeteam.ymixin.utils.Mapper;
+import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.event.impl.game.EventAttackReach;
+import cn.yapeteam.yolbi.event.impl.game.EventBlockReach;
+import cn.yapeteam.yolbi.event.impl.render.EventRender3D;
+import cn.yapeteam.yolbi.utils.render.RenderManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.GameRenderer;
+import org.objectweb.asm_9_2.Type;
+import org.objectweb.asm_9_2.tree.*;
+
+import static org.objectweb.asm_9_2.Opcodes.*;
 
 
 public class EntityRendererTransformer extends ASMTransformer {
     public EntityRendererTransformer() {
-        super("net/minecraft/client/renderer/GameRenderer");
+        super(GameRenderer.class);
     }
 
-    @Inject(method = "renderLevel", descriptor = "(FJLcom/mojang/blaze3d/vertex/PoseStack;)V")
+    @Inject(method = "renderLevel", desc = "(FJLcom/mojang/blaze3d/vertex/PoseStack;)V")
     public void renderWorldPass(MethodNode methodNode) {
         AbstractInsnNode ldcNode = null;
         for (int i = 0; i < methodNode.instructions.size(); ++i) {
             AbstractInsnNode a = methodNode.instructions.get(i);
             if (a instanceof MethodInsnNode) {
                 MethodInsnNode m = (MethodInsnNode) a;
-                if (m.owner.equals(Mappings.getObfClass("net/minecraft/util/profiling/ProfilerFiller"))
-                        && m.name.equals(Mappings.getObfMethod("m_6182_"))) { // endStartSection
+                if (m.owner.equals(Mapper.getObfClass("net/minecraft/util/profiling/ProfilerFiller"))
+                        && m.name.equals(Mapper.map("net/minecraft/util/profiling/ProfilerFiller","popPush","(Ljava/lang/String;)V", Mapper.Type.Method))) { //MD: net/minecraft/util/profiling/ProfilerFiller/m_6182_ (Ljava/lang/String;)V net/minecraft/util/profiling/ProfilerFiller/popPush (Ljava/lang/String;)V
+
                     ldcNode = a;
                 }
             }
@@ -42,22 +41,23 @@ public class EntityRendererTransformer extends ASMTransformer {
 
         InsnList list = new InsnList();
 
-        //list.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(Lepton.class), "getEventBus", "()Lcn/matrixaura/lepton/listener/bus/EventBus;", false));
-        //list.add(new TypeInsnNode(NEW, Type.getInternalName(EventRender3D.class)));
-        //list.add(new InsnNode(DUP));
+
         list.add(new VarInsnNode(FLOAD, 1));
-        list.add(new MethodInsnNode(INVOKESTATIC,Type.getInternalName(FunGhostClient.class),"onRender3D","(F)V"));
-        //list.add(new MethodInsnNode(INVOKESPECIAL, Type.getInternalName(EventRender3D.class), "<initFrame>", "(F)V", false));
-        //list.add(new MethodInsnNode(INVOKEVIRTUAL, Type.getInternalName(EventBus.class), "dispatch", "(Ljava/lang/Object;)Z", false));
-        //list.add(new InsnNode(POP));
+        list.add(new VarInsnNode(ALOAD, 2));
+        list.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(EntityRendererTransformer.class),"onRender3D","(FLjava/lang/Object;)V"));
 
         methodNode.instructions.insert(ldcNode, list);
 
 
 
     }
+    public static void onRender3D(float f,Object pose){
+        RenderManager.currentPoseStack= (PoseStack) pose;
+        YolBi.instance.getEventManager().post(new EventRender3D(f));
 
-    @Inject(method = "pick", descriptor = "(F)V")
+    }
+
+    @Inject(method = "pick", desc = "(F)V")
     public void getMouseOver(MethodNode methodNode) {
 
         InsnList list = new InsnList();
@@ -65,9 +65,10 @@ public class EntityRendererTransformer extends ASMTransformer {
         MethodInsnNode min = null;
         for (int i = 0; i < methodNode.instructions.size(); ++i) {
             AbstractInsnNode x = methodNode.instructions.get(i);
-            if(x instanceof MethodInsnNode){//func_78757_d,getBlockReachDistance,0,player reach distance = 4F
-                if(Mappings.getObfMethod("m_105286_").equals(((MethodInsnNode) x).name)&&
-                ((MethodInsnNode) x).owner.equals(Mappings.getObfClass("net/minecraft/client/multiplayer/MultiPlayerGameMode")))
+            if(x instanceof MethodInsnNode){
+                //MD: net/minecraft/client/multiplayer/MultiPlayerGameMode/m_105286_ ()F net/minecraft/client/multiplayer/MultiPlayerGameMode/getPickRange ()F
+                if(Mapper.map("net/minecraft/client/multiplayer/MultiPlayerGameMode","getPickRange","()F", Mapper.Type.Method).equals(((MethodInsnNode) x).name)&&
+                ((MethodInsnNode) x).owner.equals(Mapper.getObfClass("net/minecraft/client/multiplayer/MultiPlayerGameMode")))
                     min= (MethodInsnNode) x;
             }
             if (x instanceof LdcInsnNode) {
@@ -82,9 +83,7 @@ public class EntityRendererTransformer extends ASMTransformer {
 
         if (ldc == null) return;
         methodNode.instructions.insert(min,new MethodInsnNode(INVOKESTATIC, Type.getInternalName(EntityRendererTransformer.class), "onBlockReach", "(F)F"));
-        //methodNode.instructions.remove(min);
         methodNode.instructions.insert(ldc, new MethodInsnNode(INVOKESTATIC, Type.getInternalName(EntityRendererTransformer.class), "onAttackReach", "()D"));
-//        methodNode.instructions.insert(ldc, new VarInsnNode(ALOAD, 23));
         methodNode.instructions.remove(ldc);
 
 
@@ -92,12 +91,12 @@ public class EntityRendererTransformer extends ASMTransformer {
 
     public static double onAttackReach(){
         EventAttackReach e=new EventAttackReach(3.0d);
-        EventManager.call(e);
-        return e.reach;
+        YolBi.instance.getEventManager().post(e);
+        return e.getReach();
     }
     public static float onBlockReach(float f){
         EventBlockReach e=new EventBlockReach(f);
-        EventManager.call(e);
-        return (float) e.reach;
+        YolBi.instance.getEventManager().post(e);
+        return e.getReach();
     }
 }

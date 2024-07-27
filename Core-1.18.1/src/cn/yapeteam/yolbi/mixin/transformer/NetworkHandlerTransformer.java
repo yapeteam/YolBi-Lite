@@ -1,26 +1,29 @@
 package cn.yapeteam.yolbi.mixin.transformer;
 
 import cn.yapeteam.ymixin.ASMTransformer;
-import com.fun.eventapi.EventManager;
-import com.fun.eventapi.event.events.EventPacket;
-import com.fun.inject.injection.asm.api.Inject;
-import com.fun.inject.injection.asm.api.Transformer;
-import net.minecraft.client.Minecraft;
-import org.objectweb.asm.Type;
 
-import static org.objectweb.asm.Opcodes.*;
-import static org.objectweb.asm.Opcodes.RETURN;
-import org.objectweb.asm.tree.*;
+import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.event.impl.network.EventPacketSend;
+import cn.yapeteam.yolbi.event.type.CancellableEvent;
+import lombok.val;
+import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ServerGamePacketListener;
+import org.objectweb.asm_9_2.Type;
+import org.objectweb.asm_9_2.tree.*;
+
+import static org.objectweb.asm_9_2.Opcodes.*;
+
 
 public class NetworkHandlerTransformer extends ASMTransformer {
     public NetworkHandlerTransformer() {
-        super("net/minecraft/client/multiplayer/ClientPacketListener");
+        super(ClientPacketListener.class);
     }
 
 
-    @Inject(method = "send",descriptor = "(Lnet/minecraft/network/protocol/Packet;)V")
+    @Inject(method = "send",desc = "(Lnet/minecraft/network/protocol/Packet;)V")
     public void sendPacket(MethodNode mn) {
-        InsnList list = new InsnList();
+        val list = new InsnList();
         LabelNode label = new LabelNode();
 
         list.add(new VarInsnNode(ALOAD, 1));
@@ -33,6 +36,6 @@ public class NetworkHandlerTransformer extends ASMTransformer {
     }
     public static boolean onPacket(Object packet){
         //Agent.logger.info(Mappings.getUnobfClass(packet.getClass().getName()));
-        return EventManager.call(new EventPacket(packet)).cancel;
+        return ((CancellableEvent)YolBi.instance.getEventManager().post(new EventPacketSend((Packet) packet))).isCancelled();
     }
 }

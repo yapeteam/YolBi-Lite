@@ -1,19 +1,19 @@
 package cn.yapeteam.yolbi.mixin.transformer;
 
 import cn.yapeteam.ymixin.ASMTransformer;
-import com.fun.client.command.CommandHandle;
-import com.fun.inject.injection.asm.api.Inject;
-import com.fun.inject.injection.asm.api.Transformer;
+
+import cn.yapeteam.yolbi.YolBi;
 import net.minecraft.client.gui.screens.Screen;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.*;
+
+import org.objectweb.asm_9_2.Opcodes;
+import org.objectweb.asm_9_2.Type;
+import org.objectweb.asm_9_2.tree.*;
 
 public class GuiScreenTransformer extends ASMTransformer {
     public GuiScreenTransformer() {
-        super("net/minecraft/client/gui/screens/Screen");
+        super(Screen.class);
     }
-    @Inject(method = "sendMessage",descriptor = "(Ljava/lang/String;Z)V")
+    @Inject(method = "sendMessage",desc = "(Ljava/lang/String;Z)V")
     public void onMessage(MethodNode methodNode){
         InsnList list=new InsnList();
         LabelNode label=new LabelNode();
@@ -30,6 +30,7 @@ public class GuiScreenTransformer extends ASMTransformer {
         methodNode.instructions.insert(list);
     }
     public static boolean handler(String msg){
-        return CommandHandle.onSendMessage(msg);
+        return ;
+        //todo bind handler
     }
 }

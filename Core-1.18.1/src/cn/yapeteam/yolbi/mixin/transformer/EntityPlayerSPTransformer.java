@@ -4,6 +4,8 @@ import cn.yapeteam.ymixin.ASMTransformer;
 import cn.yapeteam.ymixin.utils.Mapper;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.impl.player.EventMotion;
+import cn.yapeteam.yolbi.event.impl.player.EventMoveInput;
+import cn.yapeteam.yolbi.event.impl.player.EventMovement;
 import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
 import net.minecraft.client.player.LocalPlayer;
 import org.objectweb.asm_9_2.Opcodes;
@@ -29,7 +31,7 @@ public class EntityPlayerSPTransformer extends ASMTransformer {
     public static void onLivingUpdateEvent() {
         //Agent.System.out.println("livingupdate");
         //Agent.System.out.println(EventManager.REGISTRY_MAP);
-        YolBi.instance.getEventManager().post(new EventMoment());
+        YolBi.instance.getEventManager().post(new EventMovement());
     }
 
     //MD: bew/m ()V net/minecraft/client/entity/EntityPlayerSP/func_70636_d ()V onLivingUpdate
@@ -41,9 +43,11 @@ public class EntityPlayerSPTransformer extends ASMTransformer {
         for (int i = 0; i < methodNode.instructions.size(); ++i) {
             AbstractInsnNode node = methodNode.instructions.get(i);
             if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(
-                    Mappings.getObfMethod("m_120586_"))
+                    Mapper.map("net/minecraft/client/tutorial/Tutorial","onInput","(Lnet/minecraft/client/player/Input;)V", Mapper.Type.Method))//Mappings.getObfMethod("m_120586_")
                     && ((MethodInsnNode) node).owner.equals(
-                    Mappings.getObfClass("net/minecraft/client/tutorial/Tutorial"))) {//
+                    Mapper.getObfClass("net/minecraft/client/tutorial/Tutorial"))) {
+                //MD: net/minecraft/client/tutorial/Tutorial/m_120586_ (Lnet/minecraft/client/player/Input;)V net/minecraft/client/tutorial/Tutorial/onInput (Lnet/minecraft/client/player/Input;)V
+
                 target = (MethodInsnNode) node;
             }
 
@@ -69,17 +73,17 @@ public class EntityPlayerSPTransformer extends ASMTransformer {
         int j = 0;
         list.add(new VarInsnNode(Opcodes.ALOAD, 0));//net.minecraft.world.entity.Entity
         list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
-                Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.getObfMethod("getX", "net/minecraft/world/entity/Entity", "()D"), "()D"));//"field_70165_t" Mapper.getObfClass("net/minecraft/world/entity/Entity")
+                Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("getX", "net/minecraft/world/entity/Entity", "()D", Mapper.Type.Method), "()D"));//"field_70165_t" Mapper.getObfClass("net/minecraft/world/entity/Entity")
         list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.getObfMethod("getY", "net/minecraft/world/entity/Entity", "()D"), "()D"));
+        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("getY", "net/minecraft/world/entity/Entity", "()D",Mapper.Type.Method), "()D"));
         //field_70163_u,posY,2,Entity position Y
         //FD: pk/t net/minecraft/world/entity/Entity/field_70163_u
         list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.getObfMethod("getZ", "net/minecraft/world/entity/Entity", "()D"), "()D"));
+        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("getZ", "net/minecraft/world/entity/Entity", "()D",Mapper.Type.Method), "()D"));
         list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.getObfMethod("getYRot", "net/minecraft/world/entity/Entity", "()F"), "()F"));//yaw
+        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("getYRot", "net/minecraft/world/entity/Entity", "()F",Mapper.Type.Method), "()F"));//yaw
         list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.getObfMethod("getXRot", "net/minecraft/world/entity/Entity", "()F"), "()F"));//pitch
+        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("getXRot", "net/minecraft/world/entity/Entity", "()F",Mapper.Type.Method), "()F"));//pitch
         list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(EntityPlayerSPTransformer.class), "onMotion", "(DDDFF)Lcom/fun/eventapi/event/events/EventMotion;"));
         list.add(new VarInsnNode(Opcodes.ASTORE, 1));
         j++;
@@ -94,7 +98,7 @@ public class EntityPlayerSPTransformer extends ASMTransformer {
             //FD: pk/u net/minecraft/world/entity/Entity/field_70161_v
             //FD: pk/y net/minecraft/world/entity/Entity/field_70177_z
             //FD: pk/z net/minecraft/world/entity/Entity/field_70125_A
-            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.getObfMethod("getYRot", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()F"))) {
+            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.map("getYRot", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()F",Mapper.Type.Method))) {
                 //标记替换yaw轴
                 AbstractInsnNode aload_0 = methodNode.instructions.get(i - 1);
                 if (aload_0 instanceof VarInsnNode) {
@@ -104,7 +108,7 @@ public class EntityPlayerSPTransformer extends ASMTransformer {
                     //rl.add(node);
                 }
             }
-            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.getObfMethod("getXRot", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()F"))) {
+            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.map("getXRot", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()F",Mapper.Type.Method))) {
                 //标记替换yaw轴
                 AbstractInsnNode aload_0 = methodNode.instructions.get(i - 1);
                 if (aload_0 instanceof VarInsnNode) {
@@ -114,7 +118,7 @@ public class EntityPlayerSPTransformer extends ASMTransformer {
                     //rl.add(node);
                 }
             }
-            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.getObfMethod("getX", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()D"))) {
+            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.map("getX", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()D",Mapper.Type.Method))) {
                 //标记替换yaw轴
                 AbstractInsnNode aload_0 = methodNode.instructions.get(i - 1);
                 if (aload_0 instanceof VarInsnNode) {
@@ -124,7 +128,7 @@ public class EntityPlayerSPTransformer extends ASMTransformer {
                     //rl.add(node);
                 }
             }
-            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.getObfMethod("getY", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()D"))) {
+            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.map("getY", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()D",Mapper.Type.Method))) {
                 //标记替换yaw轴
                 AbstractInsnNode aload_0 = methodNode.instructions.get(i - 1);
                 if (aload_0 instanceof VarInsnNode) {
@@ -134,7 +138,7 @@ public class EntityPlayerSPTransformer extends ASMTransformer {
                     //rl.add(node);
                 }
             }
-            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.getObfMethod("getZ", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()D"))) {
+            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.map("getZ", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()D",Mapper.Type.Method))) {
                 //标记替换yaw轴
                 AbstractInsnNode aload_0 = methodNode.instructions.get(i - 1);
                 if (aload_0 instanceof VarInsnNode) {
