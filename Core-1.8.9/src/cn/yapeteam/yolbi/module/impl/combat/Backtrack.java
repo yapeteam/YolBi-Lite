@@ -11,7 +11,6 @@ import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.misc.TimerUtil;
 import cn.yapeteam.yolbi.utils.network.PacketUtil;
-import cn.yapeteam.yolbi.utils.render.RenderUtil;
 
 import lombok.var;
 import net.minecraft.entity.Entity;
@@ -492,8 +491,9 @@ public class Backtrack extends Module {
 
     @Listener
     private void onRender3D(EventRender3D event) {
-        if (renderBox.getValue())
-            RenderUtil.drawEntityBox(getEntityBoundingBox(x, y, z, 0.6, 1.8), x, y, z, x, y, z, new Color(-1), outline.getValue(), true, outlineWidth.getValue(), event.getPartialTicks());
+        // to be implemented
+//        if (renderBox.getValue())
+//            RenderUtil.drawEntityBox(getEntityBoundingBox(x, y, z, 0.6, 1.8), x, y, z, x, y, z, new Color(-1), outline.getValue(), true, outlineWidth.getValue(), event.getPartialTicks());
     }
 
     public AxisAlignedBB getEntityBoundingBox(double posX, double posY, double posZ, double width, double height) {
