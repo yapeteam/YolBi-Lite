@@ -30,10 +30,7 @@ public class Hooker {
     public static boolean shouldHook(String name) {
         return name.startsWith("cn.yapeteam.") ||
                 name.startsWith("org.objectweb.") ||
-                name.startsWith("com.formdev.") ||
-                name.split("\\.")[0].endsWith("_yolbi") ||
-                name.startsWith("org.cef") ||
-                name.startsWith("net.montoyo.mcef");
+                name.split("\\.")[0].endsWith("_yolbi");
     }
 
     private static byte[] readStream(InputStream inStream) throws Exception {
@@ -177,6 +174,8 @@ public class Hooker {
             System.err.println("Failed to find target thread!");
             return;
         }
+        String clName = client_thread.getContextClassLoader().getClass().getName();
+        if (clName.startsWith("java.lang.") || clName.startsWith("com.sun.")) return;
         try {
             ClassNode targetNode = null;
             while (targetNode == null) {
