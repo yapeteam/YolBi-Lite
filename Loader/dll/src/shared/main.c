@@ -8,20 +8,14 @@
 #include "Native.c"
 #include "unzip.h"
 
-
 #if __APPLE__
-    #include "../jvm/darwin/jni.h"
-    #include "../jvm/darwin/jvmti.h"
-    #include <unistd.h>
+#include "../jvm/darwin/jni.h"
+#include "../jvm/darwin/jvmti.h"
+#include <unistd.h>
 #elif _WIN64
-    #include "../jvm/windows/jni.h"
-    #include "../jvm/windows/jvmti.h"
+#include "../jvm/windows/jni.h"
+#include "../jvm/windows/jvmti.h"
 #endif
-
-
-
-
-
 
 jvmtiEnv *jvmti;
 
@@ -413,27 +407,47 @@ void loadJar2URL(JNIEnv *env, wchar_t *path, jobject loader)
     }
 }
 
+int vscwprintf(const wchar_t *format, va_list argptr)
+{
+    int buf_size = 1024; // 初始缓冲区大小
+    while (buf_size < 1024 * 1024)
+    {
+        va_list args;
+        va_copy(args, argptr);
+        wchar_t buffer[buf_size];
+        int fmt_size = vswprintf(buffer, sizeof(buffer) / sizeof(buffer[0]), format, args);
+        if (fmt_size >= 0)
+            return fmt_size; // 成功，返回格式化后字符串的长度
+        buf_size *= 2;       // 扩大缓冲区大小
+    }
+    return -1; // 失败
+}
+
 wchar_t *format_wchar(const wchar_t *format, ...)
 {
     va_list args;
     va_start(args, format);
-    int size = vswprintf(NULL, 0, format, args);
+
+    // Calculate the required buffer size
+    int size = vscwprintf(format, args);
     if (size < 0)
     {
         va_end(args);
-        return NULL;
+        return NULL; // Error
     }
 
+    // Allocate memory for the formatted string
     wchar_t *buffer = (wchar_t *)malloc((size + 1) * sizeof(wchar_t));
     if (buffer == NULL)
     {
         va_end(args);
-        return NULL;
+        return NULL; // Memory allocation failed
     }
 
+    // Format the string
     vswprintf(buffer, size + 1, format, args);
     va_end(args);
-    buffer[size] = '\0'; // Ensure null-termination
+
     return buffer;
 }
 
