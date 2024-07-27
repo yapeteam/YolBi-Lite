@@ -5,13 +5,14 @@
     <groovy codeStyle="LEGACY" />
   </component>
   <component name="EntryPointsManager">
-    <list size="6">
-      <item index="0" class="java.lang.String" itemvalue="cn.yapeteam.ymixin.annotations.Inject" />
-      <item index="1" class="java.lang.String" itemvalue="cn.yapeteam.ymixin.annotations.Mixin" />
-      <item index="2" class="java.lang.String" itemvalue="cn.yapeteam.ymixin.annotations.Overwrite" />
-      <item index="3" class="java.lang.String" itemvalue="cn.yapeteam.ymixin.annotations.Shadow" />
-      <item index="4" class="java.lang.String" itemvalue="cn.yapeteam.yolbi.event.Listener" />
-      <item index="5" class="java.lang.String" itemvalue="cn.yapeteam.yolbi.module.ModuleInfo" />
+    <list size="7">
+      <item index="0" class="java.lang.String" itemvalue="cn.yapeteam.ymixin.ASMTransformer.Inject" />
+      <item index="1" class="java.lang.String" itemvalue="cn.yapeteam.ymixin.annotations.Inject" />
+      <item index="2" class="java.lang.String" itemvalue="cn.yapeteam.ymixin.annotations.Mixin" />
+      <item index="3" class="java.lang.String" itemvalue="cn.yapeteam.ymixin.annotations.Overwrite" />
+      <item index="4" class="java.lang.String" itemvalue="cn.yapeteam.ymixin.annotations.Shadow" />
+      <item index="5" class="java.lang.String" itemvalue="cn.yapeteam.yolbi.event.Listener" />
+      <item index="6" class="java.lang.String" itemvalue="cn.yapeteam.yolbi.module.ModuleInfo" />
     </list>
     <writeAnnotations>
       <writeAnnotation name="cn.yapeteam.ymixin.annotations.Shadow" />
