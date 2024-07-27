@@ -1,7 +1,8 @@
 package cn.yapeteam.yolbi.utils.player;
 
+import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.utils.IMinecraft;
-import cn.yapeteam.yolbi.utils.reflect.ReflectUtil;
+import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.BlockPos;
@@ -22,7 +23,7 @@ public class RotationsUtil implements IMinecraft {
         return new float[]{yaw, pitch};
     }
 
-    public static final Timer timer = ReflectUtil.Minecraft$getTimer(mc);
+    public static final Timer timer = ReflectionManager.Minecraft$getTimer(mc);
 
     public static float[] getRotationsToEntity(EntityLivingBase entity, boolean usePartialTicks) {
         if (timer == null) return new float[]{0, 0};

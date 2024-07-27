@@ -1,4 +1,4 @@
-package cn.yapeteam.yolbi.utils.reflect;
+package cn.yapeteam.yolbi.managers;
 
 import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.ymixin.utils.Mapper;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Objects;
 
 @SuppressWarnings("unchecked")
-public class ReflectUtil {
+public class ReflectionManager {
     private static Field
             EntityRenderer$theShaderGroup;
     private static Field KeyBinding$pressed;

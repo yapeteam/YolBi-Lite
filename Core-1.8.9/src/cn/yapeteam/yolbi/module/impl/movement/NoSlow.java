@@ -6,7 +6,7 @@ import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
-import cn.yapeteam.yolbi.utils.network.PacketUtil;
+import cn.yapeteam.yolbi.managers.PacketManager;
 import net.minecraft.item.ItemFood;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
@@ -29,7 +29,7 @@ public class NoSlow extends Module {
             if (autoThrow.getValue()) {
                 if (onEatSlowDown()) {
                     if (!throwingItem) {
-                        PacketUtil.sendPacket(new C08PacketPlayerBlockPlacement(mc.thePlayer.inventory.getCurrentItem()));
+                        PacketManager.sendPacket(new C08PacketPlayerBlockPlacement(mc.thePlayer.inventory.getCurrentItem()));
                         throwingItem = true;
                     }
                 } else {
@@ -40,9 +40,9 @@ public class NoSlow extends Module {
             if (autoThrow.getValue()) {
                 if (onEatSlowDown()) {
                     if (!throwingItem) {
-                        PacketUtil.sendPacket(new C08PacketPlayerBlockPlacement(mc.thePlayer.inventory.getCurrentItem()));
+                        PacketManager.sendPacket(new C08PacketPlayerBlockPlacement(mc.thePlayer.inventory.getCurrentItem()));
                         // 模拟丢弃一个物品
-                        PacketUtil.sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.DROP_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+                        PacketManager.sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.DROP_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
                         throwingItem = true;
                     }
                 } else {

@@ -6,7 +6,7 @@ import cn.yapeteam.yolbi.event.impl.player.EventChat;
 import cn.yapeteam.yolbi.event.impl.player.EventMotion;
 import cn.yapeteam.yolbi.event.impl.player.EventPostMotion;
 import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
-import cn.yapeteam.yolbi.utils.player.RotationManager;
+import cn.yapeteam.yolbi.managers.RotationManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.network.NetHandlerPlayClient;

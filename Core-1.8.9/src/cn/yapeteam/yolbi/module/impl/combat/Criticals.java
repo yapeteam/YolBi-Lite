@@ -6,7 +6,7 @@ import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.utils.math.MathUtils;
-import cn.yapeteam.yolbi.utils.network.PacketUtil;
+import cn.yapeteam.yolbi.managers.PacketManager;
 import net.minecraft.network.play.client.C03PacketPlayer;
 
 public class Criticals extends Module {
@@ -31,13 +31,13 @@ public class Criticals extends Module {
 
         switch (curMode) {
             case "Packet":
-                PacketUtil.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(x, y + 0.0625, z, false));
-                PacketUtil.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(x, y, z, false));
-                PacketUtil.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(x, y + MathUtils.getRandom(0.001, 0.01), z, false));
-                PacketUtil.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(x, y, z, false));
+                PacketManager.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(x, y + 0.0625, z, false));
+                PacketManager.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(x, y, z, false));
+                PacketManager.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(x, y + MathUtils.getRandom(0.001, 0.01), z, false));
+                PacketManager.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(x, y, z, false));
                 break;
             case "Single Packet":
-                PacketUtil.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(x, y + 0.11, z, false));
+                PacketManager.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(x, y + 0.11, z, false));
                 break;
             case "Low Jump":
                 // just for fun :)

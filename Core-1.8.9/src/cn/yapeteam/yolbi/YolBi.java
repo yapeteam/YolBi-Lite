@@ -4,12 +4,11 @@ import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.command.CommandManager;
 import cn.yapeteam.yolbi.config.ConfigManager;
 import cn.yapeteam.yolbi.event.EventManager;
-import cn.yapeteam.yolbi.font.FontManager;
 import cn.yapeteam.yolbi.managers.BotManager;
 import cn.yapeteam.yolbi.managers.TargetManager;
 import cn.yapeteam.yolbi.module.ModuleManager;
 import cn.yapeteam.yolbi.server.WebServer;
-import cn.yapeteam.yolbi.utils.player.RotationManager;
+import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.utils.render.ESPUtil;
 import lombok.Getter;
 
@@ -27,7 +26,6 @@ public class YolBi {
     private CommandManager commandManager;
     private ConfigManager configManager;
     private ModuleManager moduleManager;
-    private FontManager fontManager;
     private BotManager botManager;
     private TargetManager targetManager;
 
@@ -35,12 +33,6 @@ public class YolBi {
         if (eventManager == null)
             eventManager = new EventManager();
         return eventManager;
-    }
-
-    public FontManager getFontManager() {
-        if (fontManager == null)
-            fontManager = new FontManager();
-        return fontManager;
     }
 
     public static void initialize() {

@@ -5,7 +5,7 @@ import cn.yapeteam.yolbi.event.impl.network.EventPacketSend;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
-import cn.yapeteam.yolbi.utils.network.PacketUtil;
+import cn.yapeteam.yolbi.managers.PacketManager;
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
@@ -36,8 +36,8 @@ public class ClientSpoof extends Module {
             if (mode.is("LabyMod")) {
                 Packet<INetHandlerPlayServer> packet1 = new C17PacketCustomPayload("labymod3:main", getInfo());
                 Packet<INetHandlerPlayServer> packet2 = new C17PacketCustomPayload("LMC", getInfo());
-                PacketUtil.skip(packet1);
-                PacketUtil.skip(packet2);
+                PacketManager.skip(packet1);
+                PacketManager.skip(packet2);
                 mc.getNetHandler().addToSendQueue(packet1);
                 mc.getNetHandler().addToSendQueue(packet2);
                 return;
@@ -66,7 +66,7 @@ public class ClientSpoof extends Module {
                     break;
             }
             Packet<INetHandlerPlayServer> packet = new C17PacketCustomPayload("MC|Brand", buffer);
-            PacketUtil.skip(packet);
+            PacketManager.skip(packet);
             mc.getNetHandler().addToSendQueue(packet);
         }
     }

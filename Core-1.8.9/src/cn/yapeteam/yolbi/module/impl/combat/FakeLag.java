@@ -10,7 +10,7 @@ import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.misc.TimerUtil;
-import cn.yapeteam.yolbi.utils.network.PacketUtil;
+import cn.yapeteam.yolbi.managers.PacketManager;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.network.Packet;
@@ -67,7 +67,7 @@ public class FakeLag extends Module {
                         pitch = ((C03PacketPlayer) packet).getPitch();
                     }
 
-                    PacketUtil.sendPacketNoEvent(packet);
+                    PacketManager.sendPacketNoEvent(packet);
                     this.packetList.remove(packet);
                 }
             }

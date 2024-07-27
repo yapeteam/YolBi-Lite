@@ -5,7 +5,7 @@ import cn.yapeteam.yolbi.event.impl.player.EventMoveInput;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.utils.player.MoveUtil;
-import cn.yapeteam.yolbi.utils.player.RotationManager;
+import cn.yapeteam.yolbi.managers.RotationManager;
 
 public class MoveFix extends Module {
     public MoveFix() {

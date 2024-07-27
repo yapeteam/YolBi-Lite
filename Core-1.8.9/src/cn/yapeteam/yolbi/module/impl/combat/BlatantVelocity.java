@@ -7,7 +7,7 @@ import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
-import cn.yapeteam.yolbi.utils.reflect.ReflectUtil;
+import cn.yapeteam.yolbi.managers.ReflectionManager;
 import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 
@@ -35,9 +35,9 @@ public class BlatantVelocity extends Module {
                     if (horizontal.getValue() == 0.0 && vertically.getValue() == 0.0) {
                         event.setCancelled(true);
                     } else {
-                        ReflectUtil.S12PacketEntityVelocity$setMotionX(velocity, velocity.getMotionX() * (horizontal.getValue() / 100));
-                        ReflectUtil.S12PacketEntityVelocity$setMotionY(velocity, velocity.getMotionY() * (vertically.getValue() / 100));
-                        ReflectUtil.S12PacketEntityVelocity$setMotionZ(velocity, velocity.getMotionZ() * (horizontal.getValue() / 100));
+                        ReflectionManager.S12PacketEntityVelocity$setMotionX(velocity, velocity.getMotionX() * (horizontal.getValue() / 100));
+                        ReflectionManager.S12PacketEntityVelocity$setMotionY(velocity, velocity.getMotionY() * (vertically.getValue() / 100));
+                        ReflectionManager.S12PacketEntityVelocity$setMotionZ(velocity, velocity.getMotionZ() * (horizontal.getValue() / 100));
                     }
                 }
                 break;

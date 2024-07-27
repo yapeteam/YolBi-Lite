@@ -11,7 +11,7 @@ import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.misc.TimerUtil;
-import cn.yapeteam.yolbi.utils.network.PacketUtil;
+import cn.yapeteam.yolbi.managers.PacketManager;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.enchantment.Enchantment;
@@ -98,7 +98,7 @@ public class ChestStealer extends Module {
                     float z = chest.getPos().getZ();
                     if (!isStealing && !(chestIsEmptyMap.containsKey(chest) && chestIsEmptyMap.get(chest)) && mc.thePlayer.getDistance(x, y, z) < 4 && stealTimer.hasTimePassed(1000) && mc.currentScreen == null) {
                         isStealing = true;
-                        PacketUtil.sendPacketNoEvent(new C08PacketPlayerBlockPlacement(chest.getPos(), getFacingDirection(chest.getPos()).getIndex(), mc.thePlayer.getCurrentEquippedItem(), x, y, z));
+                        PacketManager.sendPacketNoEvent(new C08PacketPlayerBlockPlacement(chest.getPos(), getFacingDirection(chest.getPos()).getIndex(), mc.thePlayer.getCurrentEquippedItem(), x, y, z));
                         chestIsEmptyMap.put(chest, true);
                         stealTimer.reset();
                         break;

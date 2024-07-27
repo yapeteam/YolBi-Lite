@@ -13,7 +13,7 @@ import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.misc.VirtualKeyBoard;
 import cn.yapeteam.yolbi.utils.player.PlayerUtil;
 import cn.yapeteam.yolbi.utils.player.RayCastUtil;
-import cn.yapeteam.yolbi.utils.player.RotationManager;
+import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

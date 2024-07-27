@@ -2,7 +2,7 @@ package cn.yapeteam.yolbi.utils.player;
 
 
 import cn.yapeteam.yolbi.utils.IMinecraft;
-import cn.yapeteam.yolbi.utils.reflect.ReflectUtil;
+import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import com.google.common.base.Predicates;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -31,13 +31,13 @@ public final class RayCastUtil implements IMinecraft {
 
     public static MovingObjectPosition rayTraceCustom(Entity entity, double blockReachDistance, float yaw, float pitch) {
         Vec3 vec3 = entity.getPositionEyes(1.0F);
-        Vec3 vec31 = Objects.requireNonNull(ReflectUtil.Entity$getVectorForRotation(entity, yaw, pitch));
+        Vec3 vec31 = Objects.requireNonNull(ReflectionManager.Entity$getVectorForRotation(entity, yaw, pitch));
         Vec3 vec32 = vec3.addVector(vec31.xCoord * blockReachDistance, vec31.yCoord * blockReachDistance, vec31.zCoord * blockReachDistance);
         return mc.theWorld.rayTraceBlocks(vec3, vec32, false, false, true);
     }
 
     public static MovingObjectPosition rayCast(final Vector2f rotation, final double range, final float expand, Entity entity) {
-        final float partialTicks = Objects.requireNonNull(ReflectUtil.Minecraft$getTimer(mc)).renderPartialTicks;
+        final float partialTicks = Objects.requireNonNull(ReflectionManager.Minecraft$getTimer(mc)).renderPartialTicks;
         MovingObjectPosition objectMouseOver;
 
         if (entity != null && mc.theWorld != null) {
@@ -49,7 +49,7 @@ public final class RayCastUtil implements IMinecraft {
                 d1 = objectMouseOver.hitVec.distanceTo(vec3);
             }
 
-            final Vec3 vec31 = Objects.requireNonNull(ReflectUtil.Entity$getVectorForRotation(mc.thePlayer, rotation.y, rotation.x));
+            final Vec3 vec31 = Objects.requireNonNull(ReflectionManager.Entity$getVectorForRotation(mc.thePlayer, rotation.y, rotation.x));
             final Vec3 vec32 = vec3.addVector(vec31.xCoord * range, vec31.yCoord * range, vec31.zCoord * range);
             Entity pointedEntity = null;
             Vec3 vec33 = null;

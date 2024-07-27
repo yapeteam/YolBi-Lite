@@ -12,7 +12,7 @@ import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.math.MathUtils;
 import cn.yapeteam.yolbi.utils.misc.TimerUtil;
-import cn.yapeteam.yolbi.utils.player.RotationManager;
+import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.utils.player.RotationsUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import lombok.Getter;
@@ -22,7 +22,6 @@ import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.ChatComponentText;
-import org.lwjgl.input.Keyboard;
 
 public class KillAura extends Module {
     public KillAura() {

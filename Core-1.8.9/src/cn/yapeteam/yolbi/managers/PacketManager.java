@@ -1,4 +1,4 @@
-package cn.yapeteam.yolbi.utils.network;
+package cn.yapeteam.yolbi.managers;
 
 import cn.yapeteam.ymixin.utils.Mapper;
 import cn.yapeteam.loader.logger.Logger;
@@ -25,7 +25,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 @SuppressWarnings("unused")
-public class PacketUtil implements IMinecraft {
+public class PacketManager implements IMinecraft {
     public static void sendPacket(Packet<INetHandlerPlayServer> packet) {
         mc.getNetHandler().getNetworkManager().sendPacket(packet);
     }
@@ -47,7 +47,7 @@ public class PacketUtil implements IMinecraft {
     public static void sendPacketFinal(Packet<INetHandlerPlayServer> packet) {
         if (flushOutboundQueue != null && dispatchPacket != null) {
             EventFinalPacketSend event = new EventFinalPacketSend(packet);
-            if (!PacketUtil.shouldIgnorePacket(packet))
+            if (!PacketManager.shouldIgnorePacket(packet))
                 YolBi.instance.getEventManager().post(event);
             if (event.isCancelled()) return;
             try {
@@ -60,7 +60,7 @@ public class PacketUtil implements IMinecraft {
     }
 
     public static void sendPacketNoEvent(Packet<INetHandlerPlayServer> packet) {
-        PacketUtil.skip(packet);
+        PacketManager.skip(packet);
         mc.getNetHandler().getNetworkManager().sendPacket(packet);
     }
 

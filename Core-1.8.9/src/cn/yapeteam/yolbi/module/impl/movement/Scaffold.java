@@ -2,14 +2,15 @@ package cn.yapeteam.yolbi.module.impl.movement;
 
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
+import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.math.MathUtils;
-import cn.yapeteam.yolbi.utils.network.PacketUtil;
+import cn.yapeteam.yolbi.managers.PacketManager;
 import cn.yapeteam.yolbi.utils.player.*;
-import cn.yapeteam.yolbi.utils.reflect.ReflectUtil;
+import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import cn.yapeteam.yolbi.utils.vector.Vector3d;
 import lombok.AllArgsConstructor;
@@ -78,10 +79,10 @@ public class Scaffold extends Module {
         //Used to detect when to place a block, if over air, allow placement of blocks
         if (PlayerUtil.blockRelativeToPlayer(0, -1, 0) instanceof BlockAir) {
             ticksOnAir++;
-            ReflectUtil.SetPressed(mc.gameSettings.keyBindSneak, true);
+            ReflectionManager.SetPressed(mc.gameSettings.keyBindSneak, true);
         } else {
             ticksOnAir = 0;
-            ReflectUtil.SetPressed(mc.gameSettings.keyBindSneak, false);
+            ReflectionManager.SetPressed(mc.gameSettings.keyBindSneak, false);
         }
 
         // Gets block to place
@@ -113,7 +114,7 @@ public class Scaffold extends Module {
         }
 
         if (this.sameY.is("Auto Jump")) {
-            ReflectUtil.SetPressed(mc.gameSettings.keyBindJump, (mc.thePlayer.onGround && PlayerUtil.isMoving()) || mc.gameSettings.keyBindJump.isPressed());
+            ReflectionManager.SetPressed(mc.gameSettings.keyBindJump, (mc.thePlayer.onGround && PlayerUtil.isMoving()) || mc.gameSettings.keyBindJump.isPressed());
         }
 
         // Same Y
@@ -128,14 +129,14 @@ public class Scaffold extends Module {
             Vec3 hitVec = this.getHitVec();
 
             if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, mc.thePlayer.getHeldItem(), blockFace, enumFacing.getEnumFacing(), convertVec3(hitVec))) {
-                PacketUtil.sendPacket(new C0APacketAnimation());
+                PacketManager.sendPacket(new C0APacketAnimation());
             }
 
-            ReflectUtil.SetRightClickDelayTimer(mc, 0);
+            ReflectionManager.SetRightClickDelayTimer(mc, 0);
             ticksOnAir = 0;
-        } else if (Math.random() > 0.92 && ReflectUtil.GetRightClickDelayTimer(mc) <= 0) {
-            PacketUtil.sendPacket(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
-            ReflectUtil.SetRightClickDelayTimer(mc, 0);
+        } else if (Math.random() > 0.92 && ReflectionManager.GetRightClickDelayTimer(mc) <= 0) {
+            PacketManager.sendPacket(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+            ReflectionManager.SetRightClickDelayTimer(mc, 0);
         }
 
         //For Same Y

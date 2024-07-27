@@ -1,15 +1,14 @@
-package cn.yapeteam.yolbi.utils.player;
+package cn.yapeteam.yolbi.managers;
 
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.Priority;
 import cn.yapeteam.yolbi.event.impl.player.*;
 import cn.yapeteam.yolbi.event.impl.render.EventRotationsRender;
 import cn.yapeteam.yolbi.utils.IMinecraft;
-import cn.yapeteam.yolbi.utils.reflect.ReflectUtil;
+import cn.yapeteam.yolbi.utils.player.PlayerUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import cn.yapeteam.yolbi.utils.vector.Vector3d;
 import lombok.experimental.UtilityClass;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
@@ -48,7 +47,7 @@ public class RotationManager implements IMinecraft {
         //backward sprint fix
         if (active) {
             if (Math.abs(rotations.x - Math.toDegrees(PlayerUtil.direction())) > 45) {
-                ReflectUtil.SetPressed(mc.gameSettings.keyBindSprint, false);
+                ReflectionManager.SetPressed(mc.gameSettings.keyBindSprint, false);
                 mc.thePlayer.setSprinting(false);
             }
         }
@@ -195,7 +194,7 @@ public class RotationManager implements IMinecraft {
     }
 
     private Vector2f getPreviousRotation(EntityPlayerSP playerSP) {
-        return new Vector2f(ReflectUtil.GetLastReportedYaw(playerSP), ReflectUtil.GetLastReportedPitch(playerSP));
+        return new Vector2f(ReflectionManager.GetLastReportedYaw(playerSP), ReflectionManager.GetLastReportedPitch(playerSP));
     }
 
     public Vector2f calculate(final Entity entity) {
