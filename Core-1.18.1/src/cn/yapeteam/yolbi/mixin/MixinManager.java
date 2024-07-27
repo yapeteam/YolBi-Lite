@@ -8,6 +8,7 @@ import cn.yapeteam.ymixin.ASMTransformer;
 import cn.yapeteam.ymixin.MixinTransformer;
 import cn.yapeteam.ymixin.annotations.Mixin;
 import cn.yapeteam.ymixin.utils.ASMUtils;
+import cn.yapeteam.yolbi.mixin.transformer.*;
 import org.objectweb.asm_9_2.tree.ClassNode;
 
 import javax.swing.*;
@@ -27,6 +28,15 @@ public class MixinManager {
     public static void init() throws Throwable {
         mixinTransformer = new MixinTransformer(JVMTIWrapper.instance::getClassBytes);
         addMixin("MixinFirstPersonRenderer");
+        addTransformer(new EntityPlayerSPTransformer());
+        addTransformer(new EntityRendererTransformer());
+        addTransformer(new EntityTransformer());
+        addTransformer(new GuiIngameTransformer());
+        addTransformer(new GuiScreenTransformer());
+        addTransformer(new KeyBindTransformer());
+        addTransformer(new MinecraftTransformer());
+        addTransformer(new NetworkHandlerTransformer());
+        addTransformer(new NetworkManagerTransFormer());
     }
 
     public static void destroyClient() throws IOException {
