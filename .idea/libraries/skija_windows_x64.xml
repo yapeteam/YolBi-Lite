@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="skija-windows-x64">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/skija/natives/windows/skija-windows-x64-0.116.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

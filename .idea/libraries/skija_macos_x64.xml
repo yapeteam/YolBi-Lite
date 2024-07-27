@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="skija-macos-x64">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/skija/natives/mac-x64/skija-macos-x64-0.116.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

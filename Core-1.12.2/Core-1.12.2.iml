@@ -27,5 +27,10 @@
     <orderEntry type="library" name="libs-low" level="project" />
     <orderEntry type="library" name="shared" level="project" />
     <orderEntry type="library" name="darwin" level="project" />
+    <orderEntry type="library" name="skija-shared-0.116.2-sources" level="project" />
+    <orderEntry type="library" name="skija-linux-x64-0.116.2" level="project" />
+    <orderEntry type="library" name="skija-macos-arm64-0.116.2" level="project" />
+    <orderEntry type="library" name="skija-macos-x64-0.116.2" level="project" />
+    <orderEntry type="library" name="skija-windows-x64-0.116.2" level="project" />
   </component>
 </module>
