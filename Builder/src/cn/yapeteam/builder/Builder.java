@@ -234,12 +234,13 @@ public class Builder {
     }
 
     private static void buildDLL() throws Exception {
+        deleteFileByStream("Loader/dll/build");
+        File dir = new File("Loader/dll/build");
+        boolean ignored = dir.mkdirs();
         String suffix;
         if (OS.isFamilyWindows()) suffix = ".dll";
         else if (OS.isFamilyMac()) suffix = ".dylib";
         else suffix = ".so";
-        File dir = new File("Loader/dll/build");
-        boolean ignored = dir.mkdirs();
         System.out.println("Building DLL...");
         generateHeaderFromClass(new File("out/production/Builder/cn/yapeteam/builder/Unzip.class"), new File("Loader/dll/src/shared/unzip.h"), "unzip_data");
         Terminal terminal = new Terminal(dir, null);
@@ -302,8 +303,6 @@ public class Builder {
     }
 
     public static void main(String[] args) throws Exception {
-        deleteFileByStream("build");
-        deleteFileByStream("Loader/dll/build");
         if (args.length != 1) return;
         advanced_mode = args[0].equals("release");
         System.setSecurityManager(new NoExitSecurityManager());
@@ -315,6 +314,8 @@ public class Builder {
         String root_dir = root.getElementsByTagName("rootdir").item(0).getTextContent();
         String output_dir = root.getElementsByTagName("output").item(0).getTextContent();
         Element build = (Element) root.getElementsByTagName("build").item(0);
+        deleteFileByStream(root_dir);
+        new File(root_dir).mkdirs();
         for (int i = 0; i < build.getChildNodes().getLength(); i++) {
             Node node = build.getChildNodes().item(i);
             if (node instanceof Element) {
@@ -471,10 +472,12 @@ public class Builder {
         return platformTypeName + "-" + osTypeName;
     }
 
-    public static void deleteFileByStream(String filePath) throws IOException {
+    public static void deleteFileByStream(String filePath) {
         Path path = Paths.get(filePath);
         try (Stream<Path> walk = Files.walk(path)) {
             walk.sorted(Comparator.reverseOrder()).forEach(Builder::deleteDirectoryStream);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
