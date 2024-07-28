@@ -27,8 +27,7 @@ import java.util.Objects;
 
 @SuppressWarnings("unchecked")
 public class ReflectionManager {
-    private static Field
-            EntityRenderer$theShaderGroup;
+    private static Field EntityRenderer$theShaderGroup;
     private static Field KeyBinding$pressed;
     private static Field ShaderGroup$listShaders;
     private static Field Minecraft$timer;
