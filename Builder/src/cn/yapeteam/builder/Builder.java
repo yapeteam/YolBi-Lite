@@ -314,8 +314,8 @@ public class Builder {
         String root_dir = root.getElementsByTagName("rootdir").item(0).getTextContent();
         String output_dir = root.getElementsByTagName("output").item(0).getTextContent();
         Element build = (Element) root.getElementsByTagName("build").item(0);
-        deleteFileByStream(root_dir);
-        new File(root_dir).mkdirs();
+        deleteFileByStream(output_dir);
+        new File(output_dir).mkdirs();
         for (int i = 0; i < build.getChildNodes().getLength(); i++) {
             Node node = build.getChildNodes().item(i);
             if (node instanceof Element) {
