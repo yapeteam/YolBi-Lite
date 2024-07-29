@@ -9,13 +9,9 @@ import java.lang.annotation.RetentionPolicy;
 
 @Getter
 @AllArgsConstructor
-
+@SuppressWarnings("unused")
 public class ASMTransformer {
     private Class<?> target;
-    public ASMTransformer(String target) {
-
-    }
-
     @Retention(RetentionPolicy.RUNTIME)
     @java.lang.annotation.Target(ElementType.METHOD)
     public @interface Inject {

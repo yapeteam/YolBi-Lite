@@ -2,7 +2,6 @@ package cn.yapeteam.yolbi.mixin.transformer;
 
 
 import cn.yapeteam.ymixin.ASMTransformer;
-
 import cn.yapeteam.ymixin.utils.Mapper;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.impl.game.EventAttackReach;
@@ -27,29 +26,22 @@ public class EntityRendererTransformer extends ASMTransformer {
         AbstractInsnNode ldcNode = null;
         for (int i = 0; i < methodNode.instructions.size(); ++i) {
             AbstractInsnNode a = methodNode.instructions.get(i);
-            if (a instanceof MethodInsnNode) {
-                MethodInsnNode m = (MethodInsnNode) a;
+            if (a instanceof MethodInsnNode m) {
                 if (m.owner.equals(Mapper.getObfClass("net/minecraft/util/profiling/ProfilerFiller"))
-                        && m.name.equals(Mapper.map("net/minecraft/util/profiling/ProfilerFiller","popPush","(Ljava/lang/String;)V", Mapper.Type.Method))) { //MD: net/minecraft/util/profiling/ProfilerFiller/m_6182_ (Ljava/lang/String;)V net/minecraft/util/profiling/ProfilerFiller/popPush (Ljava/lang/String;)V
-
+                        && m.name.equals(Mapper.map("net/minecraft/util/profiling/ProfilerFiller","popPush","(Ljava/lang/String;)V", Mapper.Type.Method))) {
+                    //MD: net/minecraft/util/profiling/ProfilerFiller/m_6182_ (Ljava/lang/String;)V net/minecraft/util/profiling/ProfilerFiller/popPush (Ljava/lang/String;)V
                     ldcNode = a;
                 }
             }
         }
 
-
-
         InsnList list = new InsnList();
-
 
         list.add(new VarInsnNode(FLOAD, 1));
         list.add(new VarInsnNode(ALOAD, 2));
         list.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(EntityRendererTransformer.class),"onRender3D","(FLjava/lang/Object;)V"));
 
         methodNode.instructions.insert(ldcNode, list);
-
-
-
     }
     public static void onRender3D(float f,Object pose){
         RenderManager.currentPoseStack= (PoseStack) pose;
