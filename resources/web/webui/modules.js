@@ -1,5 +1,5 @@
 console.log('modules.js loaded');
-loadModules('Combat')
+loadModules('COMBAT')
 
 // func for altmanager
 
@@ -318,12 +318,6 @@ async function addModule(module) {
     settingsContainer.style.display = 'none'; // Initially hidden
     moduleContent.appendChild(settingsContainer);
 
-    // Check if the module is enabled and update UI
-    // if (module.enabled) {
-    //     console.log('Module is enabled:', module.name);
-    //     updateModuleUI(moduleElement, module.name, true);
-    // }
-
     let page = 1
 
     // Create a toggle button (initially 'Settings')
@@ -337,16 +331,16 @@ async function addModule(module) {
 
     const ModuletoggleButton = document.createElement('a');
     ModuletoggleButton.setAttribute('href', '#');
-    console.log(`module name: ${module.name} module enabled: ${module.enabled}`)
-    ModuletoggleButton.textContent = module.enabled ? 'Toggled' : 'UnToggled';
+    console.log(`module name: ${module.name} module enabled: ${module.Enabled}`)
+    ModuletoggleButton.textContent = module.Enabled ? 'Toggled' : 'UnToggled';
     ModuletoggleButton.style.marginLeft = '10px';
 
     ModuletoggleButton.addEventListener('click', function (event) {
         event.preventDefault();
-        module.enabled = !module.enabled; // Update module.enabled property
-        toggleModuleState(module.name, module.enabled);
-        ModuletoggleButton.textContent = module.enabled ? 'Toggled' : 'UnToggled';
-        updateModuleUI(moduleElement, module.name, module.enabled); // Optional: Refresh module UI
+        module.Enabled = !module.Enabled; // Update module.Enabled property
+        toggleModuleState(module.name, module.Enabled);
+        ModuletoggleButton.textContent = module.Enabled ? 'Toggled' : 'UnToggled';
+        // updateModuleUI(moduleElement, module.name, module.enabled); // Optional: Refresh module UI
     });
 
     // Fetch module settings from the API
@@ -409,6 +403,11 @@ async function addModule(module) {
         moduleContent.appendChild(pageindecation)
         moduleContent.appendChild(toggleButton);
         moduleContent.appendChild(ModuletoggleButton);
+
+        settingsContainer.addEventListener('change', () => {
+            console.log("aa")
+            populateSettings(settingsContainer, module, page)
+        });
     } else {
         console.error('Failed to load settings:', settingsData.message);
         moduleContent.appendChild(toggleButton);
@@ -652,6 +651,7 @@ function createSliderSetting(setting, container, moduleName) {
 
 
 function createRangeSliderSetting(setting, container, moduleName) {
+    let hideIndicatorTimeout;
     // Create a div that will act as the setting box
     const settingBox = document.createElement('div');
     settingBox.className = 'setting';
@@ -702,11 +702,13 @@ function createRangeSliderSetting(setting, container, moduleName) {
     minRange.max = setting.max;
     minRange.value = setting.minvalue;
 
+
     const maxRange = document.createElement('input');
     maxRange.type = 'range';
     maxRange.className = 'range-max';
     maxRange.min = setting.min;
     maxRange.max = setting.max;
+
     maxRange.value = setting.maxvalue;
 
     rangeSlider.appendChild(minRange);
@@ -724,21 +726,52 @@ function createRangeSliderSetting(setting, container, moduleName) {
     maxValueDisplay.appendChild(maxValueInput);
     innerContainer.appendChild(maxValueDisplay);
 
+    const slideValue = document.createElement('span');
+    slideValue.className = 'sliderValue';
+    innerContainer.appendChild(slideValue);
+
     // Add event listeners to range inputs
     minRange.addEventListener('input', () => {
         updateRangeSlider(minRange, maxRange, progressBar, minValueInput, maxValueInput);
         // Update module setting with option indicating 'min' value change
+        updateValueIndicator("min")
+        clearTimeout(hideIndicatorTimeout);
+        hideIndicatorTimeout = setTimeout(hideValueIndicator, 1000); // Hide after 1 second of inactivity
         updateModuleSettings(moduleName, setting.name, minRange.value, 'min');
+
     });
 
     maxRange.addEventListener('input', () => {
         updateRangeSlider(minRange, maxRange, progressBar, minValueInput, maxValueInput);
         // Update module setting with option indicating 'max' value change
+        updateValueIndicator("max")
+        clearTimeout(hideIndicatorTimeout);
+        hideIndicatorTimeout = setTimeout(hideValueIndicator, 1000); // Hide after 1 second of inactivity
         updateModuleSettings(moduleName, setting.name, maxRange.value, 'max');
     });
     // Initial update of the range slider
     updateRangeSlider(minRange, maxRange, progressBar, minValueInput, maxValueInput);
 
+    const updateValueIndicator = (type) => {
+        if (type == "max") {
+            slideValue.textContent = maxRange.value;
+            // Adjust the progress bar's width to align with the center of the thumb
+
+            slideValue.style.left = `calc(${progressBar.offsetWidth + 23}px)`;
+            console.log(minRange.offsetWidth);
+        } else {
+            slideValue.style.left = `calc(${progressBar.offsetLeft + 23}px)`;
+            slideValue.textContent = minRange.value;
+        }
+        slideValue.classList.add("show");
+    };
+
+    function hideValueIndicator() {
+        slideValue.classList.remove("show");
+    }
+
+    minRange.step = setting.step;
+    maxRange.step = setting.step;
     // Append the setting box to the main container
     container.appendChild(settingBox);
 }
@@ -760,12 +793,6 @@ function updateRangeSlider(minInput, maxInput, progress, minValueInput, maxValue
 
     progress.style.left = minPercent + '%';
     progress.style.right = (100 - maxPercent) + '%';
-
-    console.log("style left:", progress.style.left, "style right:", progress.style.right);
-
-    console.log("Min Percent:", minPercent, "Max Percent:", maxPercent);
-    minValueInput.value = minVal;
-    maxValueInput.value = maxVal;
 }
 
 
@@ -1007,17 +1034,16 @@ function createSettingElement(setting, container, moduleName) {
         case 'mode':
             createModeSetting(setting, container, moduleName);
             break;
-
     }
 }
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    const categoryButtons = document.querySelectorAll('.catagory_name');
+    const categoryButtons = document.querySelectorAll('.category_name');
     categoryButtons.forEach(button => {
         button.addEventListener('click', function () {
             const category = this.textContent; // Assuming the category name is the same as expected by the API
-            /*if (category === 'Alt Manager') {
+            if (category === 'Alt Manager') {
                 const mainContentArea = document.querySelector('.module_container');
                 mainContentArea.innerHTML = ''; // Clear the main content area
 
@@ -1041,8 +1067,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 init(); // Call the initialization function to set everything up
 
-            } else*/
-            {
+            } else {
                 loadModules(category);
             }
         });
