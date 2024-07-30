@@ -73,7 +73,6 @@ public class BootStrap {
         try {
             if (JVMTIWrapper.instance == null)
                 JVMTIWrapper.instance = new NativeWrapper();
-            System.setProperty("java.awt.headless", "true");
             client_thread = getThreadByName("Client thread");
             if (client_thread == null)
                 client_thread = getThreadByName("Render thread");
