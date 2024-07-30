@@ -2,9 +2,14 @@ package cn.yapeteam.yolbi.managers;
 
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
+import io.github.humbleui.skija.*;
 import io.github.humbleui.skija.Canvas;
-import io.github.humbleui.skija.ImageInfo;
-import io.github.humbleui.skija.Surface;
+import io.github.humbleui.skija.Color;
+import io.github.humbleui.skija.Font;
+import io.github.humbleui.skija.Image;
+import io.github.humbleui.skija.Paint;
+import io.github.humbleui.types.RRect;
+import io.github.humbleui.types.Rect;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -20,10 +25,15 @@ public class RenderManager {
     public static Canvas canvas = surface.getCanvas();
     private static JPanel panel;
     private static BufferedImage image;
+    private static JFrame frame;
 
     public void init(){
         createwindow();
         makewindowtransparent();
+    }
+
+    public void shutdown(){
+        frame.dispose();
     }
 
     private void createwindow(){
@@ -41,7 +51,7 @@ public class RenderManager {
                     g.drawImage(image, 0, 0, null);
             }
         };
-        panel.setBackground(new Color(0, 0, 0, 0));
+        panel.setBackground(new java.awt.Color(0, 0, 0, 0));
         frame.add(panel);
         frame.setVisible(true);
     }
@@ -65,26 +75,7 @@ public class RenderManager {
 
     public static byte[] renderToBitmap() {
         // Clear the canvas before drawing
-        canvas.clear(new Color(0, 0, 0, 0).getRGB());
-        setCanvas(canvas);
-//        // Draw a rounded rectangle with clipping
-//        drawRoundedRect(0, 0, 800, 600, 15, 0xFF171A21);
-//
-//        drawRect(0, 0, 200, 600, 0xFF121419);
-//
-//        drawRoundedRect(225, 50, 550, 100, 15, 0xFF121419);
-//
-//        Font Nunito20 = FontManager.instance.getNunito20();
-//        drawText("type here to search", Nunito20, 225, 30, 0xFFA0A0A0);
-//
-//        drawText("Yolbi", FontManager.instance.getSans32(), 28, 36 + 16, 0xFFFFFFFF);
-//
-//        drawText("1.0beta", FontManager.instance.getSans16(), 102, 32, 0xFFA0A0A0);
-//
-//        drawImage(img, 28, 82, 24, 24);
-//
-//        drawText("Combat", Nunito20, 60, 100.5, 0xFFFFFFFF);
-
+        canvas.clear(new java.awt.Color(0, 0, 0, 0).getRGB());
         Data data = EncoderPNG.encode(surface.makeImageSnapshot());
         return data != null ? data.getBytes() : null;
     }
