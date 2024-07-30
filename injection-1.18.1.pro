@@ -4,7 +4,6 @@
 -libraryjars minecraft-lib/minecraft-1.18.1.jar
 -libraryjars Builder/libs/rt.jar
 
--target 1.8
 -forceprocessing
 -dontshrink
 -dontoptimize

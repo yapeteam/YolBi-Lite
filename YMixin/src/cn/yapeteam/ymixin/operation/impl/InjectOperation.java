@@ -48,10 +48,11 @@ public class InjectOperation implements Operation {
     }
 
     private static void processReturnLabel(MethodNode source) {
-        if (source.desc.endsWith("V")) {
+        if (source.desc.endsWith("V") && source.instructions.size() > 0) {
             if (source.instructions.get(source.instructions.size() - 1) instanceof LabelNode)
                 source.instructions.remove(source.instructions.get(source.instructions.size() - 1));
-            while (!(source.instructions.get(source.instructions.size() - 1) instanceof LabelNode))
+            while (source.instructions.size() > 0 &&
+                    !(source.instructions.get(source.instructions.size() - 1) instanceof LabelNode))
                 source.instructions.remove(source.instructions.get(source.instructions.size() - 1));
         }
     }

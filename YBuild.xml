@@ -18,13 +18,13 @@
         <artifact name="ymixin.jar">
             <files>out/production/YMixin</files>
         </artifact>
-        <artifact name="injection-1.8.9.jar" proguard-config="injection-1.8.9.pro" mosey-config="injection-1.8.9.js">
+        <artifact name="injection-1.8.9.jar" proguard-config="injection-1.8.9.pro" shield-config="injection-1.8.9.json">
             <files>out/production/Core-1.8.9</files>
         </artifact>
-        <artifact name="injection-1.12.2.jar" proguard-config="injection-1.12.2.pro" mosey-config="injection-1.12.2.js">
+        <artifact name="injection-1.12.2.jar" proguard-config="injection-1.12.2.pro" shield-config="injection-1.12.2.json">
             <files>out/production/Core-1.12.2</files>
         </artifact>
-        <artifact name="injection-1.18.1.jar" proguard-config="injection-1.18.1.pro" mosey-config="injection-1.18.1.js">
+        <artifact name="injection-1.18.1.jar" proguard-config="injection-1.18.1.pro"><!-- shield-config="injection-1.18.1.json"-->
             <files>out/production/Core-1.18.1</files>
         </artifact>
         <native-obfuscate artifact="definer.jar"/>

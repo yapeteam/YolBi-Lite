@@ -1,5 +1,6 @@
 package cn.yapeteam.builder;
 
+import cn.yapeteam.yshield.Scuti;
 import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -334,7 +335,7 @@ public class Builder {
                         File output_file = new File(output_dir, artifact_name);
                         boolean ignored = output_file.getParentFile().mkdirs();
                         Node proguard_cfg = element.getAttributes().getNamedItem("proguard-config");
-                        Node mosey_cfg = element.getAttributes().getNamedItem("mosey-config");
+                        Node shield_cfg = element.getAttributes().getNamedItem("shield-config");
                         Node launch4j_cfg = element.getAttributes().getNamedItem("launch4j-config");
                         System.out.printf("building artifact %s...%n", artifact_name);
                         ZipOutputStream output = new ZipOutputStream(Files.newOutputStream(output_file.toPath()));
@@ -366,8 +367,8 @@ public class Builder {
                             } catch (ExitException ignored1) {
                             }
                         }
-                        if (mosey_cfg != null)
-                            rip.hippo.mosey.Main.main(new String[]{String.format("-config%s", mosey_cfg.getNodeValue())});
+                        if (shield_cfg != null)
+                            Scuti.main(new String[]{shield_cfg.getNodeValue()});
                         if (launch4j_cfg != null && OS.isFamilyWindows()) {
                             Terminal terminal = new Terminal(new File("."), null);
                             terminal.execute(new String[]{"launch4jc", launch4j_cfg.getNodeValue()});

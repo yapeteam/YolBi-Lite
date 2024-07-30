@@ -1,0 +1,73 @@
+{
+    "input": "build/injection-1.12.2/injection-1.12.2-o.jar",
+    "output": "build/injection-1.12.2.jar",
+    "libraries": [
+        "Builder/libs/rt.jar",
+        "libs/annotations-24.0.0.jar",
+        "libs/authlib-1.5.21.jar",
+        "libs/commons-io-2.4.jar",
+        "libs/commons-logging-1.1.3.jar",
+        "libs/gson-2.2.4.jar",
+        "libs/guava-17.0.jar",
+        "libs/httpclient-4.3.3.jar",
+        "libs/httpcore-4.3.2.jar",
+        "libs/log4j-api-2.0-beta9.jar",
+        "minecraft-lib/minecraft-1.8.9.jar",
+        "libs-low/lwjgl_util-2.9.4-nightly-20150209.jar",
+        "libs-low/lwjgl-2.9.4-nightly-20150209.jar",
+        "libs-low/netty-all-4.0.23.Final.jar",
+        "deps/shared/skija-shared-0.116.2.jar",
+        "build/loader.jar",
+        "build/ymixin.jar"
+    ],
+    "corrupt_output_stream": false,
+    "corrupt_class_names": false,
+    "keeps": ["cn/yapeteam/yolbi/mixin/injection/"],
+    "obfuscation": {
+        "control_flow": {
+            "enable_transformer": true,
+            "heavy_try_catch": true,
+            "goto_flooding": true
+        },
+        "hide_code": {
+            "enable_transformer": false
+        },
+        "invoke_dynamic": {
+            "enable_transformer": false
+        },
+        "miscellaneous_obfuscation": {
+            "enable_transformer": true,
+            "invalid_annotation": false,
+            "massive_source": true,
+            "massive_signature": true,
+            "push_transient": true,
+            "push_varargs": true,
+            "duplicate_variables": true,
+            "variable_descriptor": true,
+            "variable_descriptor_list": [
+                "Z",
+                "C",
+                "B",
+                "S",
+                "I",
+                "F",
+                "J",
+                "D",
+                "Ljava/lang/Integer;",
+                "Ljava/lang/String;"
+            ],
+            "random_exceptions": true
+        },
+        "number_obfuscation": {
+            "enable_transformer": true,
+            "execute_twice": true
+        },
+        "shuffle_members": {
+            "enable_transformer": true
+        },
+        "string_encryption": {
+            "enable_transformer": true,
+            "type": "strong"
+        }
+    }
+}

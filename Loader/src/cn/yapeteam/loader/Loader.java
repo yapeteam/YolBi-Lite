@@ -26,6 +26,7 @@ public class Loader {
             Logger.warn("Start Mapping Injection!");
             JarMapper.dispose(new File(YOLBI_DIR, "injection/injection-" + BootStrap.getVersion().first.getVersion() + ".jar"), "injection.jar", ClassMapper.MapMode.Mixed);
             Logger.success("Completed");
+            System.setSecurityManager(null);//Disable fuckin SecurityManager
             Mapper.getCache().clear();
         } catch (Throwable e) {
             Logger.exception(e);
