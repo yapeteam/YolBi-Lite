@@ -9,7 +9,6 @@ import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.math.MathUtils;
 import cn.yapeteam.yolbi.utils.misc.VirtualKeyBoard;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
-import net.minecraft.util.ChatComponentText;
 
 import java.util.Random;
 import java.util.concurrent.Executors;
@@ -67,9 +66,6 @@ public class Velocity extends Module {
 //                            2500, NotificationType.WARNING
 //                    )
 //            );
-            mc.thePlayer.addChatMessage(new ChatComponentText(
-                    String.format("[Yolbi] You are using a blatant module and it will not get bypassed")
-            ));
 
             if ((new Random((long) (Math.random() * 114514)).nextInt(101) <= probability.getValue())) {
                 jumpreset();
