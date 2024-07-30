@@ -2,9 +2,14 @@ package cn.yapeteam.yolbi.managers;
 
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
+import io.github.humbleui.skija.*;
 import io.github.humbleui.skija.Canvas;
-import io.github.humbleui.skija.ImageInfo;
-import io.github.humbleui.skija.Surface;
+import io.github.humbleui.skija.Color;
+import io.github.humbleui.skija.Font;
+import io.github.humbleui.skija.Image;
+import io.github.humbleui.skija.Paint;
+import io.github.humbleui.types.RRect;
+import io.github.humbleui.types.Rect;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -46,7 +51,7 @@ public class RenderManager {
                     g.drawImage(image, 0, 0, null);
             }
         };
-        panel.setBackground(new Color(0, 0, 0, 0));
+        panel.setBackground(new java.awt.Color(0, 0, 0, 0));
         frame.add(panel);
         frame.setVisible(true);
     }
@@ -70,8 +75,7 @@ public class RenderManager {
 
     public static byte[] renderToBitmap() {
         // Clear the canvas before drawing
-        canvas.clear(new Color(0, 0, 0, 0).getRGB());
-        setCanvas(canvas);
+        canvas.clear(new java.awt.Color(0, 0, 0, 0).getRGB());
 //        // Draw a rounded rectangle with clipping
 //        drawRoundedRect(0, 0, 800, 600, 15, 0xFF171A21);
 //
