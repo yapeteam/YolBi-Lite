@@ -7,6 +7,7 @@ import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.misc.VirtualKeyBoard;
+import cn.yapeteam.yolbi.utils.player.PlayerUtil;
 import lombok.Getter;
 import net.minecraft.item.ItemFood;
 import net.minecraft.util.MovingObjectPosition;
@@ -16,7 +17,6 @@ import java.util.Random;
 public class AutoClicker extends Module {
     private final NumberValue<Integer> cps = new NumberValue<>("cps", 17, 1, 100, 1);
     private final NumberValue<Double> range = new NumberValue<>("cps range", 1.5, 0.1d, 2.5d, 0.1);
-    private final NumberValue<Integer> pressPercentage = new NumberValue<>("Press Percentage", 20, 0, 100, 1);
     private final BooleanValue leftClick = new BooleanValue("leftClick", true),
             rightClick = new BooleanValue("rightClick", false);
 
@@ -30,8 +30,14 @@ public class AutoClicker extends Module {
         delay = generateGaussian(cps.getValue(), range.getValue());
         clickThread = new Thread(() -> {
             while (isEnabled()) {
+                PlayerUtil.sendMessage("delay: " + delay);
                 delay = generateGaussian(cps.getValue(), range.getValue());
                 sendClick();
+                try {
+                    clickThread.sleep((long) delay * 1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         clickThread.start();
@@ -42,7 +48,7 @@ public class AutoClicker extends Module {
 
     public AutoClicker() {
         super("AutoClicker", ModuleCategory.COMBAT);
-        addValues(cps, range, pressPercentage, leftClick, rightClick, noeat, nomine, clickprio);
+        addValues(cps, range, leftClick, rightClick, noeat, nomine, clickprio);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             Natives.SendLeft(false);
             Natives.SendRight(false);
@@ -52,31 +58,22 @@ public class AutoClicker extends Module {
     private static final Random random = new Random();
 
     public static double generateGaussian(double cps, double range) {
-        double mean = 1 / cps;
-        double stdDev = range / 2;
-        return Math.max(0.05, mean + random.nextGaussian() * stdDev);
+        double mean = 1.0 / cps;
+        double stdDev = range / 2.0;
+        double delay = mean + Math.abs(random.nextGaussian() * stdDev);
+        return Math.max(0.05, delay); // Ensure a minimum delay
     }
 
     private final Runnable leftClickRunnable = () -> {
-        try {
-            float pressPercentageValue = pressPercentage.getValue() / 100f;
-            Natives.SendLeft(true);
-            Thread.sleep((long) (1000 / delay * pressPercentageValue));
-            Natives.SendLeft(false);
-            Thread.sleep((long) (1000 / delay * (1 - pressPercentageValue)));
-        } catch (InterruptedException ignored) {
-        }
+        Natives.SendLeft(true);
+        PlayerUtil.sendMessage("Left click sent");
+        Natives.SendLeft(false);
     };
 
     private final Runnable rightClickRunnable = () -> {
-        try {
-            float pressPercentageValue = pressPercentage.getValue() / 100f;
-            Natives.SendRight(true);
-            Thread.sleep((long) (1000 / delay * pressPercentageValue));
-            Natives.SendRight(false);
-            Thread.sleep((long) (1000 / delay * (1 - pressPercentageValue)));
-        } catch (InterruptedException ignored) {
-        }
+        Natives.SendRight(true);
+        PlayerUtil.sendMessage("Right click sent");
+        Natives.SendRight(false);
     };
 
     public void sendClick() {
