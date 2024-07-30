@@ -20,10 +20,15 @@ public class RenderManager {
     public static Canvas canvas = surface.getCanvas();
     private static JPanel panel;
     private static BufferedImage image;
+    private static JFrame frame;
 
     public void init(){
         createwindow();
         makewindowtransparent();
+    }
+
+    public void shutdown(){
+        frame.dispose();
     }
 
     private void createwindow(){

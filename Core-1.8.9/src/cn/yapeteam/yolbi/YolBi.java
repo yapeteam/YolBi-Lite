@@ -4,11 +4,9 @@ import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.command.CommandManager;
 import cn.yapeteam.yolbi.config.ConfigManager;
 import cn.yapeteam.yolbi.event.EventManager;
-import cn.yapeteam.yolbi.managers.BotManager;
-import cn.yapeteam.yolbi.managers.TargetManager;
+import cn.yapeteam.yolbi.managers.*;
 import cn.yapeteam.yolbi.module.ModuleManager;
 import cn.yapeteam.yolbi.server.WebServer;
-import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.utils.render.ESPUtil;
 import lombok.Getter;
 
@@ -28,6 +26,8 @@ public class YolBi {
     private ModuleManager moduleManager;
     private BotManager botManager;
     private TargetManager targetManager;
+    private FontManager fontManager;
+    private RenderManager renderManager;
 
     public EventManager getEventManager() {
         if (eventManager == null)
@@ -46,14 +46,18 @@ public class YolBi {
         instance.moduleManager = new ModuleManager();
         instance.botManager = new BotManager();
         instance.targetManager = new TargetManager();
+        instance.fontManager = new FontManager();
+        instance.renderManager = new RenderManager();
         instance.eventManager.register(instance.commandManager);
         instance.eventManager.register(instance.moduleManager);
         instance.eventManager.register(instance.botManager);
         instance.eventManager.register(instance.targetManager);
+        instance.eventManager.register(instance.renderManager);
         instance.eventManager.register(ESPUtil.class);
         instance.eventManager.register(RotationManager.class);
         instance.moduleManager.load();
         try {
+            instance.renderManager.init();
             instance.getConfigManager().load();
             WebServer.start();
         } catch (Throwable e) {
