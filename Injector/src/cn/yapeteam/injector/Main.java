@@ -1,12 +1,13 @@
 package cn.yapeteam.injector;
 
+import cn.yapeteam.loader.VersionInfo;
 import com.formdev.flatlaf.intellijthemes.FlatXcodeDarkIJTheme;
 
 import javax.swing.*;
 import java.io.File;
 
 public class Main {
-    public static final String version = "0.3.6";
+    public static final String version = VersionInfo.version;
     public static final File YolBi_Dir = new File(System.getProperty("user.home"), ".yolbi");
     public static final String dllName = "libinjection.dll";
     public static final String agentName = "agent.jar";

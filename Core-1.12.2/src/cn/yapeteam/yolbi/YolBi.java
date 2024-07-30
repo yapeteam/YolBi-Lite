@@ -1,5 +1,6 @@
 package cn.yapeteam.yolbi;
 
+import cn.yapeteam.loader.VersionInfo;
 import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.command.CommandManager;
 import cn.yapeteam.yolbi.config.ConfigManager;
@@ -26,7 +27,7 @@ import java.io.IOException;
 public class YolBi {
     public static YolBi instance = new YolBi();
     public static final String name = "YolBi Lite";
-    public static final String version = "0.3.6";
+    public static final String version = VersionInfo.version;
     public static final File YOLBI_DIR = new File(System.getProperty("user.home"), ".yolbi");
     public static boolean initialized = false;
     private EventManager eventManager;
