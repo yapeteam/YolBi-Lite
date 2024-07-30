@@ -13,7 +13,7 @@ public class Loader {
         try {
             if (JVMTIWrapper.instance == null)
                 JVMTIWrapper.instance = new NativeWrapper();
-            if (BootStrap.getVersion().first != VersionInfo.V1_8_9) {
+            if (BootStrap.getVersion().first != Version.V1_8_9) {
                 Logger.error("Unsupported Minecraft version: {}", BootStrap.getVersion().first.getVersion());
                 SocketSender.send("CLOSE");
                 return;
