@@ -147,12 +147,17 @@ public class BootStrap {
 
             Logger.warn("Loading Minecraft Hook...");
 
-            ClassNode target;
-            try {
-                target = getMinecraftClassNode();
-            } catch (Exception e) {
-                Thread.sleep(500);
-                target = getMinecraftClassNode();
+            ClassNode target = null;
+            int chances = 1000;
+            while (target == null && chances > 0) {
+                try {
+                    chances--;
+                    target = getMinecraftClassNode();
+                    if (target == null)
+                        Thread.sleep(100);
+                } catch (Exception e) {
+                    Thread.sleep(100);
+                }
             }
             if (target == null) {
                 Logger.error("Failed to get Minecraft class node.");
