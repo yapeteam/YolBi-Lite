@@ -454,7 +454,6 @@ function populateSettings(settingsContainer, module, page) {
 }
 
 
-// Fetch and add modules based on the API response
 async function loadModules(category) {
     try {
         // Clear existing modules
@@ -467,6 +466,7 @@ async function loadModules(category) {
         // Assuming modulesData is an object with module names as keys
         Object.keys(modulesData).forEach(moduleName => {
             const module = modulesData[moduleName];
+            module.Enabled = module.enabled; // Use lowercase 'e'
             addModule(module);
         });
     } catch (error) {
