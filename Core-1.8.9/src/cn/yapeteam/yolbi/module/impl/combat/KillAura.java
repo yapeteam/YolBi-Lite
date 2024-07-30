@@ -5,6 +5,7 @@ import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventLoadWorld;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
+import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.managers.TargetManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
@@ -12,7 +13,6 @@ import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.math.MathUtils;
 import cn.yapeteam.yolbi.utils.misc.TimerUtil;
-import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.utils.player.RotationsUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import lombok.Getter;
@@ -21,7 +21,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.util.ChatComponentText;
 
 import java.util.Random;
 
@@ -172,12 +171,8 @@ public class KillAura extends Module {
 
     @Override
     protected void onEnable() {
-        if (mc.theWorld == null || mc.thePlayer == null) {
+        if (mc.theWorld == null || mc.thePlayer == null)
             setEnabled(false);
-        }
-        mc.thePlayer.addChatMessage(new ChatComponentText(
-                String.format("&6[Yolbi] &3You are using a blatant module and it will not get bypassed")
-        ));
     }
 
     @Override
