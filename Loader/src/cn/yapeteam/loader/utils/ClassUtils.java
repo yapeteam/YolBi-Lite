@@ -8,7 +8,7 @@ public class ClassUtils {
     public static Class<?> getClass(String name) {
         name = name.replace('/', '.');
         try {
-            return BootStrap.client_thread.getContextClassLoader().loadClass(name);
+            return Class.forName(name, true, BootStrap.client_thread.getContextClassLoader());
         } catch (ClassNotFoundException ignored) {
             return null;
         } catch (Exception e) {
