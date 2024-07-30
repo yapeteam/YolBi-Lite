@@ -21,10 +21,12 @@
         <artifact name="injection-1.8.9.jar" proguard-config="injection-1.8.9.pro" shield-config="injection-1.8.9.json">
             <files>out/production/Core-1.8.9</files>
         </artifact>
-        <artifact name="injection-1.12.2.jar" proguard-config="injection-1.12.2.pro" shield-config="injection-1.12.2.json">
+        <artifact name="injection-1.12.2.jar" proguard-config="injection-1.12.2.pro"
+                  shield-config="injection-1.12.2.json">
             <files>out/production/Core-1.12.2</files>
         </artifact>
-        <artifact name="injection-1.18.1.jar" proguard-config="injection-1.18.1.pro"><!-- shield-config="injection-1.18.1.json"-->
+        <artifact name="injection-1.18.1.jar"
+                  proguard-config="injection-1.18.1.pro"><!-- shield-config="injection-1.18.1.json"-->
             <files>out/production/Core-1.18.1</files>
         </artifact>
         <native-obfuscate artifact="definer.jar"/>
@@ -47,6 +49,8 @@
                 </dir>
                 <dir name="dependencies">
                     <file>deps/shared/asm-all-9.2.jar</file>
+                    <file>deps/shared/skija-shared-0.116.2.jar</file>
+                    <file platform="windows">deps/windows/skija-windows-x64-0.116.2.jar</file>
                 </dir>
                 <files>build/natives</files>
                 <file>build/agent.jar</file>
