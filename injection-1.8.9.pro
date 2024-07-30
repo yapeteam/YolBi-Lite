@@ -9,9 +9,9 @@
 -dontshrink
 -dontoptimize
 -printmapping build/injection-1.8.9.mapping
--obfuscationdictionary dictionary.txt
--classobfuscationdictionary dictionary.txt
--packageobfuscationdictionary dictionary.txt
+-obfuscationdictionary dictionaries/keywords.txt
+-classobfuscationdictionary dictionaries/glitchy.txt
+-packageobfuscationdictionary dictionaries/yolbi.txt
 -overloadaggressively
 -dontusemixedcaseclassnames
 -keepattributes Exceptions,InnerClasses,Signature,Deprecated,LineNumberTable,LocalVariable*Table,*Annotation*,Synthetic,EnclosingMethod
