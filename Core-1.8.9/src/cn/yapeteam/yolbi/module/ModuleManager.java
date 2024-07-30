@@ -34,7 +34,6 @@ public class ModuleManager {
         modules.add(new AimAssist());
         modules.add(new AntiBot());
         modules.add(new AutoClicker());
-        modules.add(new ClickUI());
         // modules.add(new Backtrack());
         //modules.add(new IRC()); // To be tested
         // modules.add(new BlatantVelocity());
