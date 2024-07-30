@@ -23,6 +23,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.ChatComponentText;
 
+import java.util.Random;
+
 public class KillAura extends Module {
     public KillAura() {
         super("KillAura", ModuleCategory.COMBAT);
@@ -47,6 +49,7 @@ public class KillAura extends Module {
     private boolean blocking = false;
     private boolean fishingRodThrow = false;
     private int fishingRodSwitchOld = 0;
+    private static final Random random = new Random();
 
     @Listener
     private void onUpdate(EventRender2D event) {
@@ -75,7 +78,7 @@ public class KillAura extends Module {
 
             // Attack & AutoRod
             if (target != null) {
-                int cps = (int) AutoClicker.generate(this.cps.getValue(), cpsRange.getValue());
+                int cps = (int) generate(this.cps.getValue(), cpsRange.getValue());
 
                 if (mc.thePlayer.ticksExisted % blockDelay.getValue().intValue() == 0) {
                     startBlock();
@@ -121,6 +124,32 @@ public class KillAura extends Module {
         } catch (Exception e) {
             Logger.exception(e);
         }
+    }
+
+    public static double generateNoise(double min, double max) {
+        double u1, u2, v1, v2, s;
+        do {
+            u1 = random.nextDouble() * 2 - 1;
+            u2 = random.nextDouble() * 2 - 1;
+            s = u1 * u1 + u2 * u2;
+        } while (s >= 1 || s == 0);
+
+        double multiplier = Math.sqrt(-2 * Math.log(s) / s);
+        v1 = u1 * multiplier;
+        v2 = u2 * multiplier;
+        // 将生成的噪声值缩放到指定范围内
+        return (v1 + v2) / 2 * (max - min) / 4 + (max + min) / 2;
+    }
+
+    public static double generate(double cps, double range) {
+        double noise = cps;
+        for (int j = 0; j < 10; j++) {
+            double newNoise = generateNoise(0, cps * 2);
+            if (Math.abs(noise - newNoise) < range)
+                noise = (noise + newNoise) / 2;
+            else j--;
+        }
+        return noise;
     }
 
     private void startBlock() {

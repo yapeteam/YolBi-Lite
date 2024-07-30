@@ -21,17 +21,16 @@ public class AutoClicker extends Module {
             rightClick = new BooleanValue("rightClick", false);
 
     private final BooleanValue noeat = new BooleanValue("No Click When Eating", true);
-
     private final BooleanValue nomine = new BooleanValue("No Click When Mining", true);
     private final ModeValue<String> clickprio = new ModeValue<>("Click Priority", "Left", "Left", "Right");
     private double delay = 1;
 
     @Override
     public void onEnable() {
-        delay = generate(cps.getValue(), range.getValue());
+        delay = generateGaussian(cps.getValue(), range.getValue());
         clickThread = new Thread(() -> {
             while (isEnabled()) {
-                delay = generate(cps.getValue(), range.getValue());
+                delay = generateGaussian(cps.getValue(), range.getValue());
                 sendClick();
             }
         });
@@ -52,30 +51,10 @@ public class AutoClicker extends Module {
 
     private static final Random random = new Random();
 
-    public static double generateNoise(double min, double max) {
-        double u1, u2, v1, v2, s;
-        do {
-            u1 = random.nextDouble() * 2 - 1;
-            u2 = random.nextDouble() * 2 - 1;
-            s = u1 * u1 + u2 * u2;
-        } while (s >= 1 || s == 0);
-
-        double multiplier = Math.sqrt(-2 * Math.log(s) / s);
-        v1 = u1 * multiplier;
-        v2 = u2 * multiplier;
-        // 将生成的噪声值缩放到指定范围内
-        return (v1 + v2) / 2 * (max - min) / 4 + (max + min) / 2;
-    }
-
-    public static double generate(double cps, double range) {
-        double noise = cps;
-        for (int j = 0; j < 10; j++) {
-            double newNoise = generateNoise(0, cps * 2);
-            if (Math.abs(noise - newNoise) < range)
-                noise = (noise + newNoise) / 2;
-            else j--;
-        }
-        return noise;
+    public static double generateGaussian(double cps, double range) {
+        double mean = 1 / cps;
+        double stdDev = range / 2;
+        return Math.max(0.05, mean + random.nextGaussian() * stdDev);
     }
 
     private final Runnable leftClickRunnable = () -> {
@@ -88,7 +67,6 @@ public class AutoClicker extends Module {
         } catch (InterruptedException ignored) {
         }
     };
-
 
     private final Runnable rightClickRunnable = () -> {
         try {
