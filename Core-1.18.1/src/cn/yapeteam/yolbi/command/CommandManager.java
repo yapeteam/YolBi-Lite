@@ -1,6 +1,7 @@
 package cn.yapeteam.yolbi.command;
 
 import cn.yapeteam.yolbi.command.impl.CommandBind;
+
 import cn.yapeteam.yolbi.command.impl.CommandLogin;
 import cn.yapeteam.yolbi.command.impl.CommandToggle;
 import cn.yapeteam.yolbi.command.impl.CommandValue;
