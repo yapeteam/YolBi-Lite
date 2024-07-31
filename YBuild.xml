@@ -20,20 +20,24 @@
         </artifact>
         <artifact name="injection-1.8.9.jar" proguard-config="injection-1.8.9.pro" shield-config="injection-1.8.9.json">
             <files>out/production/Core-1.8.9</files>
+            <files>out/production/VersionInfo</files>
         </artifact>
         <artifact name="injection-1.12.2.jar" proguard-config="injection-1.12.2.pro"
                   shield-config="injection-1.12.2.json">
             <files>out/production/Core-1.12.2</files>
+            <files>out/production/VersionInfo</files>
         </artifact>
         <artifact name="injection-1.18.1.jar"
                   proguard-config="injection-1.18.1.pro"><!-- shield-config="injection-1.18.1.json"-->
             <files>out/production/Core-1.18.1</files>
+            <files>out/production/VersionInfo</files>
         </artifact>
         <native-obfuscate artifact="definer.jar"/>
         <native-obfuscate artifact="hooker.jar"/>
         <native-obfuscate artifact="loader.jar" black="cn.yapeteam.loader.ClassMapper"/>
         <artifact name="injector.jar" launch4j-config="launch4j.xml">
             <files>out/production/Injector</files>
+            <files>out/production/VersionInfo</files>
             <dir>Injector/META-INF</dir>
             <extract>deps/shared/jna.jar</extract>
             <extract>deps/shared/flatlaf.jar</extract>
@@ -50,6 +54,7 @@
                 <dir name="dependencies">
                     <file>deps/shared/asm-all-9.2.jar</file>
                     <file>deps/shared/skija-shared-0.116.2.jar</file>
+                    <file>deps/shared/types-0.1.1.jar</file>
                     <file platform="windows">deps/windows/skija-windows-x64-0.116.2.jar</file>
                 </dir>
                 <files>build/natives</files>

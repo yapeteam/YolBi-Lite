@@ -36,8 +36,6 @@ public class TargetManager implements IMinecraft {
                 )
                 // not ourselves
                 .filter(entity -> entity != mc.player)
-                // no dead entities
-                .filter(Entity::isEntityAlive)
                 // must be in distance
                 .filter(entity -> mc.player.getDistanceToEntity(entity) <= range)
                 // not bots
