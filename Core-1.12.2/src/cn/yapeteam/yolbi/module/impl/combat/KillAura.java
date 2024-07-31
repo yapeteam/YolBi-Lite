@@ -8,6 +8,7 @@ import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import cn.yapeteam.yolbi.managers.TargetManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.ModuleManager;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
@@ -27,6 +28,7 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
 import net.minecraft.util.EnumHand;
+import org.lwjgl.input.Keyboard;
 
 import static net.minecraft.util.EnumHand.OFF_HAND;
 
@@ -67,7 +69,7 @@ public class KillAura extends Module {
                 blocking = false;
 
             val targetList = TargetManager.getTargets(searchRange.getValue());
-            targetList.removeIf(entity -> !invisibility.getValue() && entity.isInvisible() || !death.getValue() && entity.isDead);
+            targetList.removeIf(entity -> invisibility.getValue() && entity.isInvisible() || death.getValue() && entity.isDead);
             if (!targetList.isEmpty()) target = (EntityLivingBase) targetList.get(0);
 
             double rotationSpeed = MathUtils.getRandom(maxRotationSpeed.getValue(), minRotationSpeed.getValue());

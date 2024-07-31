@@ -7,6 +7,7 @@ import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.impl.player.EventJump;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -20,10 +21,11 @@ import net.minecraft.world.World;
  */
 @Mixin(EntityLivingBase.class)
 public class MixinEntityLivingBase extends EntityLivingBase {
+
     public MixinEntityLivingBase(World worldIn) {
         super(worldIn);
     }
-
+    public InventoryPlayer inventory = new InventoryPlayer(super.attackingPlayer);
     @Shadow
     public float getJumpUpwardsMotion() {
         return 0.42F;
@@ -41,7 +43,7 @@ public class MixinEntityLivingBase extends EntityLivingBase {
 
     @Override
     public ItemStack getHeldItem() {
-        return null;
+        return this.inventory.getCurrentItem();
     }
 
     @Override
