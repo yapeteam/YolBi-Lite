@@ -44,6 +44,12 @@ public class PlayerUtil implements IMinecraft {
 
     CombatSettings settings = new CombatSettings();
 
+    public static void sendMessage(String msg) {
+        if (mc.thePlayer != null) {
+            mc.thePlayer.addChatMessage(new ChatComponentText("\247b[Cloudy]\247r " + msg));
+        }
+    }
+
     private int getPing(Entity entity) {
         val uniqueID = mc.getNetHandler().getPlayerInfo(entity.getUniqueID());
         return uniqueID != null ? uniqueID.getResponseTime() : 0;

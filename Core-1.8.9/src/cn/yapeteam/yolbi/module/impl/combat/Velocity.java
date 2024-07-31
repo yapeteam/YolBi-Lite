@@ -1,6 +1,7 @@
 package cn.yapeteam.yolbi.module.impl.combat;
 
 import cn.yapeteam.loader.Natives;
+import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.network.EventPacket;
 import cn.yapeteam.yolbi.module.Module;

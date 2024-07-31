@@ -4,7 +4,7 @@ import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventTick;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
-import cn.yapeteam.yolbi.utils.player.PlayerUtils;
+import cn.yapeteam.yolbi.utils.player.PlayerUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemSword;
@@ -27,7 +27,7 @@ public class MurdererFinder extends Module {
         for (EntityPlayer target : mc.theWorld.playerEntities) {
             if (target.getHeldItem() != null && !target.equals(mc.thePlayer) && !target.isDead && findSword(target) != -1 && !names.contains(target.getName())) {
                 names.add(target.getName());
-                PlayerUtils.sendMessage("\247f" + target.getName() + "\247c是杀手,主播小心点!!!");
+                PlayerUtil.sendMessage("\247f" + target.getName() + "\247c是杀手,主播小心点!!!");
             }
         }
     }

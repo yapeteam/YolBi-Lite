@@ -11,8 +11,8 @@ import lombok.SneakyThrows;
 import java.io.InputStream;
 
 @Getter
-public class SkijaFontManager {
-    public static final SkijaFontManager instance = new SkijaFontManager();
+public class FontManager {
+    public static final FontManager instance = new FontManager();
     private final Font Nunito20 = makeFromStream(ResourceManager.resources.getStream("fonts/Nunito-Regular.ttf"), 20);
     private final Font Sans16 = makeFromStream(ResourceManager.resources.getStream("fonts/product_sans_regular.ttf"), 16);
     private final Font Sans32 = makeFromStream(ResourceManager.resources.getStream("fonts/product_sans_regular.ttf"), 32);
