@@ -28,6 +28,7 @@ public class LoginFrame extends JFrame {
         loginButton.addActionListener(e -> {
             if (callBack.run(UsernameField.getText(), String.valueOf(PasswordField.getPassword()))) {
                 setVisible(false);
+                System.exit(0);
             }
         });
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
