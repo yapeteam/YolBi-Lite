@@ -16,6 +16,8 @@ public class FontManager {
     private final Font Nunito20 = makeFromStream(ResourceManager.resources.getStream("fonts/Nunito-Regular.ttf"), 20);
     private final Font Sans16 = makeFromStream(ResourceManager.resources.getStream("fonts/product_sans_regular.ttf"), 16);
     private final Font Sans32 = makeFromStream(ResourceManager.resources.getStream("fonts/product_sans_regular.ttf"), 32);
+    private final Font JelloRegular18 = makeFromStream(ResourceManager.resources.getStream("fonts/JelloRegular.ttf"), 18);
+    private final Font PingFang18 = makeFromStream(ResourceManager.resources.getStream("fonts/PingFang_Normal.ttf"), 18);
 
     @SneakyThrows
     public static Font makeFromStream(InputStream in, float size) {
