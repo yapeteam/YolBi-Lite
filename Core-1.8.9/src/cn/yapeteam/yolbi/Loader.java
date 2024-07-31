@@ -5,6 +5,7 @@ import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.mixin.MixinManager;
 
 import java.awt.*;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 @SuppressWarnings("unused")
@@ -26,6 +27,7 @@ public class Loader {
             Logger.success("Welcome {} ver {}", YolBi.name, YolBi.version);
             SocketSender.send("CLOSE");
             SocketSender.close();
+            System.setProperty("skija.library.path", new File(YolBi.YOLBI_DIR,"resources/natives").getAbsolutePath());
             YolBi.initialize();
         } catch (InvocationTargetException e) {
             Logger.exception(e);

@@ -6,7 +6,6 @@ import io.github.humbleui.skija.Data;
 import io.github.humbleui.skija.Font;
 import io.github.humbleui.skija.Typeface;
 import lombok.Getter;
-import lombok.SneakyThrows;
 
 import java.io.InputStream;
 
@@ -19,8 +18,16 @@ public class FontManager {
     private final Font JelloRegular18 = makeFromStream(ResourceManager.resources.getStream("fonts/JelloRegular.ttf"), 18);
     private final Font PingFang18 = makeFromStream(ResourceManager.resources.getStream("fonts/PingFang_Normal.ttf"), 18);
 
-    @SneakyThrows
     public static Font makeFromStream(InputStream in, float size) {
-        return new Font(Typeface.makeFromData(Data.makeFromBytes(StreamUtils.readStream(in))), size);
+        try {
+            byte[] bytes = StreamUtils.readStream(in);
+            System.out.println(bytes);
+            Data data = Data.makeFromBytes(bytes);
+            Typeface typeface = Typeface.makeFromData(data);
+            return new Font(typeface, size);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

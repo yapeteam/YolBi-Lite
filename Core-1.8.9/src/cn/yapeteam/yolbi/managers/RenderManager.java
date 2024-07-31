@@ -56,14 +56,17 @@ public class RenderManager implements IMinecraft {
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setUndecorated(true);
         frame.setTitle("Yolbi Renderer");
-
         panel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
+                // 保存当前Canvas状态
+                canvas.save();
+                // 使用透明颜色填充整个Canvas
+                canvas.drawColor(new Color(0, 0, 0, 0).getRGB(), BlendMode.CLEAR);
                 YolBi.instance.getEventManager().post(new EventSkijaRender());
                 try {
                     frameBuffer = Imaging.getBufferedImage(Objects.requireNonNull(EncoderPNG.encode(surface.makeImageSnapshot())).getBytes());
-                    canvas.clear(new Color(0, 0, 0, 0).getRGB());
+                    canvas.restore();
                 } catch (IOException e) {
                     Logger.exception(e);
                 }

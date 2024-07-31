@@ -587,7 +587,7 @@ void Inject_fla_bcf_(JNIEnv *jniEnv, jvmtiEnv *ti)
     jmethodID getSystemClassLoader = (*jniEnv)->GetStaticMethodID(jniEnv, ClassLoader, ("getSystemClassLoader"), ("()Ljava/lang/ClassLoader;"));
     systemClassLoader = (*jniEnv)->CallStaticObjectMethod(jniEnv, ClassLoader, getSystemClassLoader);
 
-    wchar_t *zip_path = format_wchar(L"%ls\\resources\\g++.zip", yolbiPath);
+    wchar_t *zip_path = format_wchar(L"%ls\\resources\\deps.zip", yolbiPath);
     wchar_t *zip_out = get_current_directory_w();
     jstring jzip_out = w2js(jniEnv, zip_out);
     jstring jzip_path = w2js(jniEnv, zip_path);

@@ -57,7 +57,6 @@
                     <file>deps/shared/types-0.1.1.jar</file>
                     <file>deps/shared/commons-io.jar</file>
                     <file>deps/shared/commons-imaging.jar</file>
-                    <file platform="windows">deps/windows/skija-windows-x64-0.116.2.jar</file>
                 </dir>
                 <files>build/natives</files>
                 <file>build/agent.jar</file>
