@@ -63,19 +63,19 @@ public class YolBi {
         instance.botManager = new BotManager();
         instance.targetManager = new TargetManager();
         instance.notificationManager = new NotificationManager();
-        //instance.renderManager = new RenderManager();
+        instance.renderManager = new RenderManager();
         instance.jFrameRenderer = new ExternalFrame(0, 0, 0, 0);
         instance.eventManager.register(instance.commandManager);
         instance.eventManager.register(instance.moduleManager);
         instance.eventManager.register(instance.botManager);
         instance.eventManager.register(instance.targetManager);
-        //instance.eventManager.register(instance.renderManager);
+        instance.eventManager.register(instance.renderManager);
         instance.eventManager.register(Shader.class);
         instance.eventManager.register(ESPUtil.class);
         instance.eventManager.register(RotationManager.class);
         instance.moduleManager.load();
         try {
-            //instance.renderManager.init();
+            instance.renderManager.init();
             instance.getConfigManager().load();
             WebServer.start();
         } catch (Throwable e) {
