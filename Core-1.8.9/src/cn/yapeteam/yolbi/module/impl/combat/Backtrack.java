@@ -4,7 +4,6 @@ import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.network.EventPacket;
 import cn.yapeteam.yolbi.event.impl.render.EventRender3D;
-import cn.yapeteam.yolbi.managers.PacketManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
@@ -184,8 +183,8 @@ public class Backtrack extends Module {
             if (p instanceof S00PacketKeepAlive) {
                 S00PacketKeepAlive p1 = (S00PacketKeepAlive) p;
                 C00PacketKeepAlive packet = new C00PacketKeepAlive(p1.func_149134_c());
-                PacketManager.skip(packet);
-                PacketManager.sendPacket(packet);
+                PacketUtil.skip(packet);
+                PacketUtil.sendPacket(packet);
                 type = "s00";
             }
             // S12PacketEntityVelocity
@@ -250,8 +249,8 @@ public class Backtrack extends Module {
                 }
                 if (container != null && !p1.func_148888_e()) {
                     C0FPacketConfirmTransaction packet = new C0FPacketConfirmTransaction(p1.getWindowId(), p1.getActionNumber(), true);
-                    PacketManager.skip(packet);
-                    PacketManager.sendPacket(packet);
+                    PacketUtil.skip(packet);
+                    PacketUtil.sendPacket(packet);
                 }
                 type = "s32";
             }
@@ -275,8 +274,8 @@ public class Backtrack extends Module {
                 C03PacketPlayer.C06PacketPlayerPosLook packet = new C03PacketPlayer.C06PacketPlayerPosLook(
                         entityplayer.posX, entityplayer.getEntityBoundingBox().minY,
                         entityplayer.posZ, entityplayer.rotationYaw, entityplayer.rotationPitch, false);
-                PacketManager.skip(packet);
-                PacketManager.sendPacket(packet);
+                PacketUtil.skip(packet);
+                PacketUtil.sendPacket(packet);
                 if (mc.thePlayer.isOnLadder()) {
                     mc.thePlayer.prevPosX = mc.thePlayer.posX;
                     mc.thePlayer.prevPosY = mc.thePlayer.posY;
