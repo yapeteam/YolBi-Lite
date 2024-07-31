@@ -56,7 +56,9 @@
                 <minimum-size width="-1" height="30"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <model/>
+            </properties>
           </component>
         </children>
       </grid>
