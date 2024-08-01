@@ -30,6 +30,7 @@ public class ModuleManager {
     private final BooleanValue notiffff = ClientTheme.notif;
     public void load() {
         modules.add(new AimAssist());
+        modules.add(new NoSlow());
         modules.add(new AntiBot());
         modules.add(new AutoClicker());
         modules.add(new Backtrack());
