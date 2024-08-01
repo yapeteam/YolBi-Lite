@@ -11,7 +11,6 @@ import cn.yapeteam.ymixin.utils.ASMUtils;
 import cn.yapeteam.yolbi.mixin.transformer.*;
 import org.objectweb.asm_9_2.tree.ClassNode;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -96,14 +95,6 @@ public class MixinManager {
             Thread.sleep(200);
         }
         SocketSender.send("E2");
-        if (!failed.isEmpty()) {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("Failed to transform").append(' ').append(failed.size() == 1 ? "class" : "classes").append(' ').append('\n');
-            for (String s : failed)
-                stringBuilder.append(s).append('\n');
-            stringBuilder.deleteCharAt(stringBuilder.lastIndexOf("\n"));
-            JOptionPane.showMessageDialog(null, stringBuilder, "Warning", JOptionPane.WARNING_MESSAGE);
-        }
     }
 
     private static void addMixin(String name) throws Throwable {
