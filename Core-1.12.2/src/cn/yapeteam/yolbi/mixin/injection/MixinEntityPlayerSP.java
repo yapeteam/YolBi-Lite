@@ -136,7 +136,12 @@ public class MixinEntityPlayerSP extends EntityPlayerSP {
 
             this.serverSneakState = flag1;
         }
-        EventMotion motionEvent = new EventMotion(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround);
+        EventMotion motionEvent = new EventMotion(this.posX,
+                this.getEntityBoundingBox().minY,
+                this.posZ,
+                this.rotationYaw,
+                this.rotationPitch,
+                this.onGround);
         YolBi.instance.getEventManager().post(motionEvent);
         if (this.isCurrentViewEntity()) {
             AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
