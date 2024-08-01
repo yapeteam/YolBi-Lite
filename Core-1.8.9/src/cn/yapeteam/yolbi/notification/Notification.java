@@ -1,10 +1,10 @@
 package cn.yapeteam.yolbi.notification;
 
 import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.animation.EasingAnimation;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
-import cn.yapeteam.yolbi.utils.render.RenderUtil;
 import lombok.Getter;
 import lombok.val;
 import net.minecraft.client.gui.ScaledResolution;
@@ -56,9 +56,9 @@ public class Notification {
     }
 
     public void render(ScaledResolution sr, int index) {
-        val font = YolBi.instance.getFontManager().getJelloRegular18();
+        val font = YolBi.instance.getFontManager().getPingFang18();
 
-        float width = (float) (font.getStringWidth(content) + 5 * 2);
+        float width = RenderManager.getFontWidth(font, content) + 5 * 2;
         float targetY = sr.getScaledHeight() - (height + 2) * (index + 1);
         if (!initialized) {
             animationX.setStartValue(sr.getScaledWidth());
@@ -72,9 +72,10 @@ public class Notification {
         }
 
         float x = (float) animationX.getValue(targetX), y = (float) animationY.getValue(targetY);
-        RenderUtil.drawBloomShadow(x, y, width, height, 6, ColorUtil.reAlpha(color, 0.6f), true);
-        RenderUtil.drawRect(x, y, x + width, y + height, ColorUtil.reAlpha(color.darker(), 0.6f).getRGB());
-        RenderUtil.drawRect(x, y, x + width * animationProcess.getValue(1), y + height, color.getRGB());
-        font.drawString(content, x + 5, y + (height - font.getHeight()) / 2f, type == null ? 0 : -1);
+        // RenderUtil.drawBloomShadow(x, y, width, height, 6, ColorUtil.reAlpha(color, 0.6f), true);
+
+        RenderManager.drawRect(x, y, width, height, ColorUtil.reAlpha(color.darker(), 0.6f).getRGB());
+        RenderManager.drawRect(x, y, (float) (width * animationProcess.getValue(1)), height, color.getRGB());
+        RenderManager.drawText(content, font, x + 5, y + (height - font.getMetrics().getHeight()) / 2f, type == null ? 0 : -1);
     }
 }

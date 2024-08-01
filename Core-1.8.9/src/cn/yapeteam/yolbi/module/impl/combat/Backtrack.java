@@ -4,13 +4,14 @@ import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.network.EventPacket;
 import cn.yapeteam.yolbi.event.impl.render.EventRender3D;
-import cn.yapeteam.yolbi.managers.PacketManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.misc.TimerUtil;
+import cn.yapeteam.yolbi.managers.PacketManager;
+
 import lombok.var;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;

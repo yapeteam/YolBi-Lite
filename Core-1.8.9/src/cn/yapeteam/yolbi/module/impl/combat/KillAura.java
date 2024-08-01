@@ -61,7 +61,7 @@ public class KillAura extends Module {
                 blocking = false;
 
             val targetList = TargetManager.getTargets(searchRange.getValue());
-            targetList.removeIf(entity -> invisibility.getValue() && entity.isInvisible() || death.getValue() && entity.isDead);
+            targetList.removeIf(entity -> !invisibility.getValue() && entity.isInvisible() || !death.getValue() && entity.isDead);
             if (!targetList.isEmpty()) target = (EntityLivingBase) targetList.get(0);
 
             double rotationSpeed = MathUtils.getRandom(maxRotationSpeed.getValue(), minRotationSpeed.getValue());
@@ -189,8 +189,7 @@ public class KillAura extends Module {
     }
 
     private boolean shouldAttack(int cps) {
-        int aps = 20 / cps;
-        return timer.hasTimePassed(50 * aps);
+        return timer.hasTimePassed(1000 / cps);
     }
 
     private void reset() {
