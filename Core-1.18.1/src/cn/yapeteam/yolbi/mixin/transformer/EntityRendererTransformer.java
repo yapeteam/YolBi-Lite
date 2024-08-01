@@ -38,7 +38,7 @@ public class EntityRendererTransformer extends ASMTransformer {
         InsnList list = new InsnList();
 
         list.add(new VarInsnNode(FLOAD, 1));
-        list.add(new VarInsnNode(ALOAD, 2));
+        list.add(new VarInsnNode(ALOAD, 3));
         list.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(EntityRendererTransformer.class),"onRender3D","(FLjava/lang/Object;)V"));
 
         methodNode.instructions.insert(ldcNode, list);

@@ -32,7 +32,7 @@ public class EntityTransformer extends ASMTransformer {
             }
         }
         methodNode.instructions.insert(new VarInsnNode(Opcodes.ALOAD,0));
-        list.add(new MethodInsnNode(Opcodes.INVOKESTATIC,Type.getInternalName(EntityTransformer.class),"onStrafe","(Ljava/lang/Object;Ljava/lang/Object;FF)Lcom/fun/inject/injection/asm/transformers/EntityTransformer$EventStructure;",false));
+        list.add(new MethodInsnNode(Opcodes.INVOKESTATIC,Type.getInternalName(EntityTransformer.class),"onStrafe","(Ljava/lang/Object;Ljava/lang/Object;FF)Lcn/yapeteam/yolbi/mixin/transformer/EntityTransformer$EventStructure;",false));
         int event= methodNode.maxLocals;
         list.add(new VarInsnNode(Opcodes.ASTORE,event));
 

@@ -73,17 +73,17 @@ public class EntityPlayerSPTransformer extends ASMTransformer {
         int j = 0;
         list.add(new VarInsnNode(Opcodes.ALOAD, 0));//net.minecraft.world.entity.Entity
         list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
-                Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("getX", "net/minecraft/world/entity/Entity", "()D", Mapper.Type.Method), "()D"));//"field_70165_t" Mapper.getObfClass("net/minecraft/world/entity/Entity")
+                Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("net/minecraft/world/entity/Entity", "getX", "()D", Mapper.Type.Method), "()D"));//"field_70165_t" Mapper.getObfClass("net/minecraft/world/entity/Entity")
         list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("getY", "net/minecraft/world/entity/Entity", "()D",Mapper.Type.Method), "()D"));
+        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("net/minecraft/world/entity/Entity","getY", "()D",Mapper.Type.Method), "()D"));
         //field_70163_u,posY,2,Entity position Y
         //FD: pk/t net/minecraft/world/entity/Entity/field_70163_u
         list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("getZ", "net/minecraft/world/entity/Entity", "()D",Mapper.Type.Method), "()D"));
+        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("net/minecraft/world/entity/Entity","getZ",  "()D",Mapper.Type.Method), "()D"));
         list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("getYRot", "net/minecraft/world/entity/Entity", "()F",Mapper.Type.Method), "()F"));//yaw
+        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("net/minecraft/world/entity/Entity", "getYRot", "()F",Mapper.Type.Method), "()F"));//yaw
         list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("getXRot", "net/minecraft/world/entity/Entity", "()F",Mapper.Type.Method), "()F"));//pitch
+        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("net/minecraft/world/entity/Entity", "getXRot", "()F",Mapper.Type.Method), "()F"));//pitch
         list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(EntityPlayerSPTransformer.class), "onMotion", "(DDDFF)Lcom/fun/eventapi/event/events/EventMotion;"));
         list.add(new VarInsnNode(Opcodes.ASTORE, 1));
         j++;
