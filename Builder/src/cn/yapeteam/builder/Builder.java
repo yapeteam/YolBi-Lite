@@ -290,6 +290,23 @@ public class Builder {
                     target, "-c", "../src/inject/Inject.c", "-o", "Inject.o"});
             terminal.execute(new String[]{"clang",
                     target, "-shared", "GetProcAddressR.o", "LoadLibraryR.o", "Inject.o", "-o", "libapi.dll"});
+
+            terminal.execute(new String[]{"clang-cl",
+                    "-mllvm", "-bcf",
+                    "-mllvm", "-bcf_loop=1", "-mllvm", "-sobf",
+                    "-mllvm", "-sub", "-mllvm", "-split",
+                    "-mllvm", "-split_num=2",
+                    target, "-c", "../src/auth/verifyNative.cpp", "-I" + new File("Builder/include").getAbsolutePath(),
+                    "-o", "libauth.o"
+            });
+            terminal.execute(new String[]{"clang++",
+                    target, "-shared",
+                    "-L" + new File("Builder/lib").getAbsolutePath(),
+                    new File("Builder/libcrypto-3-x64.dll").getAbsolutePath(),
+                    new File("Builder/libcurl.dll").getAbsolutePath(),
+                    new File("Builder/libjsoncpp.dll").getAbsolutePath(),
+                    "C:\\Windows\\System32\\IPHLPAPI.DLL", "libauth.o", "-o", "libauth" + suffix
+            });
         } else {
             terminal.execute(new String[]{"gcc", "-c", "../src/dll/Main.c", "-o", "Main.o"});
             terminal.execute(new String[]{"gcc", "-c", "../src/dll/ReflectiveLoader.c", "-o", "ReflectiveLoader.o"});
@@ -300,6 +317,15 @@ public class Builder {
             terminal.execute(new String[]{"gcc", "-c", "../src/inject/LoadLibraryR.c", "-o", "LoadLibraryR.o"});
             terminal.execute(new String[]{"gcc", "-c", "../src/inject/Inject.c", "-o", "Inject.o"});
             terminal.execute(new String[]{"gcc", "-shared", "GetProcAddressR.o", "LoadLibraryR.o", "Inject.o", "-o", "libapi.dll"});
+
+            terminal.execute(new String[]{"g++", "-shared", "../src/auth/verifyNative.cpp",
+                    "-I" + new File("Builder/include").getAbsolutePath(),
+                    "-L" + new File("Builder/lib").getAbsolutePath(),
+                    new File("Builder/libcrypto-3-x64.dll").getAbsolutePath(),
+                    new File("Builder/libcurl.dll").getAbsolutePath(),
+                    new File("Builder/libjsoncpp.dll").getAbsolutePath(),
+                    "C:\\Windows\\System32\\IPHLPAPI.DLL", "-o", "libauth" + suffix
+            });
         }
     }
 
@@ -508,7 +534,12 @@ public class Builder {
             String target = "--target=x86_64-w64-mingw";
             ArrayList<String> binaries = new ArrayList<>();
             terminal.execute(new String[]{"clang-cl", target, "-c", "../native_jvm.cpp", "-o", "native_jvm.o"});
-            terminal.execute(new String[]{"clang-cl", target, "-c", "../native_jvm_output.cpp", "-o", "native_jvm_output.o"});
+            terminal.execute(new String[]{"clang-cl",
+                    "-mllvm", "-bcf",
+                    "-mllvm", "-bcf_loop=1", "-mllvm", "-sobf",
+                    "-mllvm", "-sub", "-mllvm", "-split",
+                    "-mllvm", "-split_num=2", target,
+                    "-c", "../native_jvm_output.cpp", "-o", "native_jvm_output.o", "-I" + new File("Builder/include").getAbsolutePath()});
             terminal.execute(new String[]{"clang-cl", target, "-c", "../string_pool.cpp", "-o", "string_pool.o"});
             binaries.add("native_jvm.o");
             binaries.add("native_jvm_output.o");
@@ -517,14 +548,14 @@ public class Builder {
                 if (file.endsWith(".cpp")) {
                     terminal.execute(new String[]{"clang-cl",
                             "-mllvm", "-bcf",
-                            "-mllvm", "-bcf_loop=1", "-mllvm", "-sobf", "-mllvm", "-icall",
+                            "-mllvm", "-bcf_loop=1", "-mllvm", "-sobf",
                             "-mllvm", "-sub", "-mllvm", "-split",
                             "-mllvm", "-split_num=2",
                             target, "-c", "../output/" + file, "-o", file.substring(0, file.lastIndexOf(".")) + ".o"});
                     binaries.add(file.replace(".cpp", ".o"));
                 }
             }
-            String[] linkArgs = new String[1 + 1 + 1 + binaries.size() + 4 + 1 + 1];
+            String[] linkArgs = new String[1 + 1 + 1 + binaries.size() + 4 + 1 + 1 + 5];
             linkArgs[0] = "clang++";
             linkArgs[1] = target;
             linkArgs[2] = "-shared";
@@ -536,13 +567,18 @@ public class Builder {
             linkArgs[6 + binaries.size()] = "-Wl,-Bdynamic";
             linkArgs[7 + binaries.size()] = "-o";
             linkArgs[8 + binaries.size()] = "native" + suffix;
+            linkArgs[9 + binaries.size()] = "-L" + new File("Builder/lib").getAbsolutePath();
+            linkArgs[10 + binaries.size()] = new File("Builder/libcrypto-3-x64.dll").getAbsolutePath();
+            linkArgs[11 + binaries.size()] = new File("Builder/libcurl.dll").getAbsolutePath();
+            linkArgs[12 + binaries.size()] = new File("Builder/libjsoncpp.dll").getAbsolutePath();
+            linkArgs[13 + binaries.size()] = "C:\\Windows\\System32\\IPHLPAPI.DLL";
             terminal.execute(linkArgs);
         } else {
             Terminal terminal = new Terminal(output, null);
             String compiler = "g++";
             ArrayList<String> binaries = new ArrayList<>();
             terminal.execute(new String[]{compiler, "-c", "../native_jvm.cpp", "-o", "native_jvm.o"});
-            terminal.execute(new String[]{compiler, "-c", "../native_jvm_output.cpp", "-o", "native_jvm_output.o"});
+            terminal.execute(new String[]{compiler, "-c", "../native_jvm_output.cpp", "-o", "native_jvm_output.o", "-I" + new File("Builder/include").getAbsolutePath()});
             terminal.execute(new String[]{compiler, "-c", "../string_pool.cpp", "-o", "string_pool.o"});
 
             binaries.add("native_jvm.o");
@@ -555,7 +591,7 @@ public class Builder {
                     binaries.add(out);
                 }
             }
-            String[] linkArgs = new String[1 + 1 + binaries.size() + 4 + 1 + 1];
+            String[] linkArgs = new String[1 + 1 + binaries.size() + 4 + 1 + 1 + 5];
             linkArgs[0] = compiler;
             linkArgs[1] = OS.isFamilyMac() ? "-dynamiclib" : "-shared";
             for (int i = 0; i < binaries.size(); i++)
@@ -566,6 +602,11 @@ public class Builder {
             linkArgs[5 + binaries.size()] = "-Wl,-Bdynamic";
             linkArgs[6 + binaries.size()] = "-o";
             linkArgs[7 + binaries.size()] = "native" + suffix;
+            linkArgs[8 + binaries.size()] = "-L" + new File("Builder/lib").getAbsolutePath();
+            linkArgs[9 + binaries.size()] = new File("Builder/libcrypto-3-x64.dll").getAbsolutePath();
+            linkArgs[10 + binaries.size()] = new File("Builder/libcurl.dll").getAbsolutePath();
+            linkArgs[11 + binaries.size()] = new File("Builder/libjsoncpp.dll").getAbsolutePath();
+            linkArgs[12 + binaries.size()] = "C:\\Windows\\System32\\IPHLPAPI.DLL";
             terminal.execute(linkArgs);
         }
         return new File(output, "native" + suffix);
