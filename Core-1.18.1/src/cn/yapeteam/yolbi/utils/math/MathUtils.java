@@ -17,4 +17,21 @@ public class MathUtils {
     public static double clamp(double num, double min, double max) {
         return num < min ? min : Math.min(num, max);
     }
+    public static double wrapAngleTo180_double(double value)
+    {
+        value = value % 360.0D;
+
+        if (value >= 180.0D)
+        {
+            value -= 360.0D;
+        }
+
+        if (value < -180.0D)
+        {
+            value += 360.0D;
+        }
+
+        return value;
+    }
+
 }
