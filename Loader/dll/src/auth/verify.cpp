@@ -213,14 +213,14 @@ std::string decryptString(const std::vector<unsigned char> &encrypted, const std
     BIO *keybio = BIO_new_mem_buf((void *)privateKey.c_str(), -1);
     if (keybio == nullptr)
     {
-        throw std::runtime_error("Failed to create key BIO");
+        return nullptr;
     }
 
     rsa = PEM_read_bio_RSAPrivateKey(keybio, &rsa, nullptr, nullptr);
     if (rsa == nullptr)
     {
         BIO_free_all(keybio);
-        throw std::runtime_error("Failed to create RSA");
+        return nullptr;
     }
 
     std::vector<unsigned char> decrypted(RSA_size(rsa));
@@ -229,7 +229,7 @@ std::string decryptString(const std::vector<unsigned char> &encrypted, const std
     {
         RSA_free(rsa);
         BIO_free_all(keybio);
-        throw std::runtime_error("Failed to decrypt: " + std::string(ERR_error_string(ERR_get_error(), nullptr)));
+        return nullptr;
     }
 
     RSA_free(rsa);
@@ -391,44 +391,82 @@ void setMsg(JNIEnv *env, jclass cls, std::string msg)
     env->SetStaticObjectField(cls, msgFieldID, jMsg);
 }
 
-bool activateUser(const std::string &username, const std::string &cdk, JNIEnv *env, jclass cls)
+std::string sha256(const std::string &str)
+{
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+    SHA256_CTX sha256;
+    SHA256_Init(&sha256);
+    SHA256_Update(&sha256, str.c_str(), str.size());
+    SHA256_Final(hash, &sha256);
+
+    std::stringstream ss;
+    for (int i = 0; i < SHA256_DIGEST_LENGTH; ++i)
+    {
+        ss << std::hex << std::setw(2) << std::setfill('0') << (int)hash[i];
+    }
+    return ss.str();
+}
+
+void activateUser(const std::string &username, const std::string &cdk, JNIEnv *env, jclass cls)
 {
     std::string server_url = "http://111.173.106.116:5000";
-    Json::Value payload;
-    payload["username"] = username;
-    payload["cdk"] = cdk;
-
     CURL *curl;
     CURLcode res;
     std::string readBuffer;
 
+    curl_global_init(CURL_GLOBAL_DEFAULT);
     curl = curl_easy_init();
+
     if (curl)
     {
-        curl_easy_setopt(curl, CURLOPT_URL, (server_url + "/activate").c_str());
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, payload.toStyledString().c_str());
+        std::string url = server_url + "/activate";
+        Json::Value jsonData;
+        jsonData["username"] = username;
+        jsonData["cdk"] = cdk;
+
+        Json::StreamWriterBuilder writer;
+        std::string jsonStr = Json::writeString(writer, jsonData);
+
+        struct curl_slist *headers = NULL;
+        headers = curl_slist_append(headers, "Content-Type: application/json");
+
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonStr.c_str());
+
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-        res = curl_easy_perform(curl);
-        curl_easy_cleanup(curl);
 
+        res = curl_easy_perform(curl);
         if (res != CURLE_OK)
         {
             setMsg(env, cls, curl_easy_strerror(res));
-            return false;
+            fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
         }
-    }
+        else
+        {
+            // read json
 
-    Json::Reader reader;
-    Json::Value obj;
-    reader.parse(readBuffer, obj);
-    if (obj.isMember("error"))
-    {
-        setMsg(env, cls, obj["error"].asString());
-        return false;
-    }
+            Json::Value root;
+            Json::CharReaderBuilder reader;
+            std::string errs;
+            std::istringstream s(readBuffer);
+            if (Json::parseFromStream(reader, s, &root, &errs))
+            {
+                if (root.isMember("error"))
+                    setMsg(env, cls, root["error"].asString());
 
-    return true;
+                if (root.isMember("message"))
+                    setMsg(env, cls, root["message"].asString());
+                else
+                    setMsg(env, cls, readBuffer);
+            }
+            curl_easy_cleanup(curl);
+        }
+
+        curl_global_cleanup();
+        return;
+    }
 }
 
 bool verifyUser(const std::string &username, const std::string &password, JNIEnv *env, jclass cls)

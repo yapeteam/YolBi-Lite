@@ -72,7 +72,7 @@ JNIEXPORT jboolean JNICALL Java_cn_yapeteam_injector_Main_login(JNIEnv *env, jcl
     return verifyUser(string(u), string(p), env, cls);
 }
 
-JNIEXPORT jboolean JNICALL Java_cn_yapeteam_injector_Main_active(JNIEnv *env, jclass cls, jstring username, jstring cdk)
+JNIEXPORT void JNICALL Java_cn_yapeteam_injector_Main_active(JNIEnv *env, jclass cls, jstring username, jstring cdk)
 {
-    return activateUser(string(env->GetStringUTFChars(username, 0)), string(env->GetStringUTFChars(cdk, 0)), env, cls);
+    activateUser(string(env->GetStringUTFChars(username, 0)), string(env->GetStringUTFChars(cdk, 0)), env, cls);
 }

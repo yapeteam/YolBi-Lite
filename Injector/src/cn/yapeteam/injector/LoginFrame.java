@@ -36,9 +36,12 @@ public class LoginFrame extends JFrame {
             }
         });
         activateButton.addActionListener(e -> {
-            if (!Main.active(JOptionPane.showInputDialog("Username:"), JOptionPane.showInputDialog("CDK:")))
-                JOptionPane.showMessageDialog(this, Main.msg);
-            else JOptionPane.showMessageDialog(this, "Activated");
+            String username = JOptionPane.showInputDialog("Username:");
+            if (username == null) return;
+            String cdk = JOptionPane.showInputDialog("CDK:");
+            if (cdk == null) return;
+            Main.active(username, cdk);
+            JOptionPane.showMessageDialog(this, Main.msg);
         });
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {

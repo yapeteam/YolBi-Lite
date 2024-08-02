@@ -11,7 +11,7 @@ extern "C" {
 JNIEXPORT jboolean JNICALL Java_cn_yapeteam_injector_Main_login
   (JNIEnv *, jclass, jstring, jstring);
 
-JNIEXPORT jboolean JNICALL Java_cn_yapeteam_injector_Main_active
+JNIEXPORT void JNICALL Java_cn_yapeteam_injector_Main_active
   (JNIEnv *, jclass, jstring, jstring);
 
 #ifdef __cplusplus

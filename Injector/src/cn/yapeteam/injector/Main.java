@@ -17,7 +17,7 @@ public class Main {
 
     public static native boolean login(String username, String password);
 
-    public static native boolean active(String username, String cdk);
+    public static native void active(String username, String cdk);
 
     public static void main(String[] args) throws Exception {
         SplashScreen splashScreen = new SplashScreen();

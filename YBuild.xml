@@ -70,5 +70,10 @@
                 <file platform="mac">Loader/dll/build/libagent.dylib</file>
             </archive>
         </artifact>
+        <artifact name="build.zip">
+            <file>build/injector.jar</file>
+            <file platform="windows">Loader/dll/build/libauth.dll</file>
+            <extract>resources/deps.zip</extract>
+        </artifact>
     </build>
 </root>
