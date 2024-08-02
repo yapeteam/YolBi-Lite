@@ -7,7 +7,6 @@ import cn.yapeteam.yolbi.config.ConfigManager;
 import cn.yapeteam.yolbi.event.EventManager;
 import cn.yapeteam.yolbi.font.FontManager;
 import cn.yapeteam.yolbi.managers.BotManager;
-import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.managers.TargetManager;
 import cn.yapeteam.yolbi.module.ModuleManager;
@@ -36,7 +35,6 @@ public class YolBi {
     private NotificationManager notificationManager;
     private BotManager botManager;
     private TargetManager targetManager;
-    private RenderManager renderManager;
     private ExternalFrame jFrameRenderer;
 
     public EventManager getEventManager() {
@@ -55,7 +53,6 @@ public class YolBi {
         if (initialized || instance == null) return;
         initialized = true;
         boolean ignored = YOLBI_DIR.mkdirs();
-        System.setProperty("sun.java2d.opengl", "true");
         instance.eventManager = new EventManager();
         instance.commandManager = new CommandManager();
         instance.configManager = new ConfigManager();
@@ -63,19 +60,17 @@ public class YolBi {
         instance.botManager = new BotManager();
         instance.targetManager = new TargetManager();
         instance.notificationManager = new NotificationManager();
-        instance.renderManager = new RenderManager();
         instance.jFrameRenderer = new ExternalFrame(0, 0, 0, 0);
         instance.eventManager.register(instance.commandManager);
         instance.eventManager.register(instance.moduleManager);
         instance.eventManager.register(instance.botManager);
         instance.eventManager.register(instance.targetManager);
-        instance.eventManager.register(instance.renderManager);
+        instance.eventManager.register(instance.notificationManager);
         instance.eventManager.register(Shader.class);
         instance.eventManager.register(ESPUtil.class);
         instance.eventManager.register(RotationManager.class);
         instance.moduleManager.load();
         try {
-            instance.renderManager.init();
             instance.getConfigManager().load();
             WebServer.start();
         } catch (Throwable e) {

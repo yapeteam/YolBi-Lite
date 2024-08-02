@@ -292,8 +292,7 @@ public class Builder {
                     target, "-shared", "GetProcAddressR.o", "LoadLibraryR.o", "Inject.o", "-o", "libapi.dll"});
 
             terminal.execute(new String[]{"clang-cl",
-                    "-mllvm", "-bcf",
-                    "-mllvm", "-bcf_loop=1", "-mllvm", "-sobf",
+                    "-mllvm", "-sobf",
                     "-mllvm", "-sub", "-mllvm", "-split",
                     "-mllvm", "-split_num=2",
                     target, "-c", "../src/auth/verifyNative.cpp", "-I" + new File("Builder/include").getAbsolutePath(),
@@ -535,10 +534,9 @@ public class Builder {
             ArrayList<String> binaries = new ArrayList<>();
             terminal.execute(new String[]{"clang-cl", target, "-c", "../native_jvm.cpp", "-o", "native_jvm.o"});
             terminal.execute(new String[]{"clang-cl",
-                    "-mllvm", "-bcf",
-                    "-mllvm", "-bcf_loop=1", "-mllvm", "-sobf",
-                    "-mllvm", "-sub", "-mllvm", "-split",
-                    "-mllvm", "-split_num=2", target,
+                    "-mllvm", "-sobf", "-mllvm", "-bcf",
+                    "-mllvm", "-bcf_loop=1",
+                    "-mllvm", "-sub", target,
                     "-c", "../native_jvm_output.cpp", "-o", "native_jvm_output.o", "-I" + new File("Builder/include").getAbsolutePath()});
             terminal.execute(new String[]{"clang-cl", target, "-c", "../string_pool.cpp", "-o", "string_pool.o"});
             binaries.add("native_jvm.o");
