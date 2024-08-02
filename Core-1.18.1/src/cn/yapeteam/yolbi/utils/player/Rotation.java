@@ -1,6 +1,7 @@
 package cn.yapeteam.yolbi.utils.player;
 
 import cn.yapeteam.yolbi.utils.IMinecraft;
+import cn.yapeteam.yolbi.utils.math.MathUtils;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import lombok.Getter;
 
@@ -51,5 +52,17 @@ public class Rotation implements IMinecraft {
     public static Rotation player() {
         assert mc.player != null;
         return new Rotation(mc.player.getYHeadRot(), mc.player.getXRot());
+    }
+    public static Rotation limitAngleChange(final Rotation currentRotation, final Rotation targetRotation,final float turnSpeed) {
+        float yawDifference = getAngleDifference(targetRotation.getYaw(), currentRotation.getYaw());
+        float pitchDifference = getAngleDifference(targetRotation.getPitch(), currentRotation.getPitch());
+
+        return new Rotation(
+                currentRotation.getYaw() +((yawDifference > turnSpeed ? turnSpeed : Math.max(yawDifference, -turnSpeed))),
+                currentRotation.getPitch() + (pitchDifference > turnSpeed ? turnSpeed : Math.max(pitchDifference, -turnSpeed))
+        );
+    }
+    public static float getAngleDifference(final float a, final float b) {
+        return Float.parseFloat(Double.valueOf(MathUtils.wrapAngleTo180_double((a) - b)).toString());
     }
 }

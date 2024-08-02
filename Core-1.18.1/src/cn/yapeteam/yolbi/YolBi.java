@@ -4,6 +4,7 @@ import cn.yapeteam.loader.VersionInfo;
 import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.config.ConfigManager;
 import cn.yapeteam.yolbi.event.EventManager;
+import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.module.ModuleManager;
 import cn.yapeteam.yolbi.server.WebServer;
 import cn.yapeteam.yolbi.utils.font.FontManager;
@@ -22,6 +23,7 @@ public class YolBi {
     private EventManager eventManager;
     private ConfigManager configManager;
     private ModuleManager moduleManager;
+    private RotationManager rotationManager;
 
     public EventManager getEventManager() {
         if (eventManager == null)
@@ -37,6 +39,7 @@ public class YolBi {
         instance.eventManager = new EventManager();
         instance.configManager = new ConfigManager();
         instance.moduleManager = new ModuleManager();
+        instance.rotationManager=new RotationManager();
         instance.eventManager.register(instance.moduleManager);
         instance.moduleManager.load();
         FontManager.init();
