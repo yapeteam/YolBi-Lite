@@ -13,28 +13,39 @@ public class Main {
     public static final String agentName = "agent.jar";
     public static final int port = 20181;
 
+    public static String msg;
+
+    public static native boolean login(String username, String password);
+
+    public static native boolean active(String username, String cdk);
+
     public static void main(String[] args) throws Exception {
         SplashScreen splashScreen = new SplashScreen();
         splashScreen.display();
         Utils.unzip(Main.class.getResourceAsStream("/injection.zip"), YolBi_Dir);
-        if (OS.isFamilyWindows())
+        if (OS.isFamilyWindows()) {
             System.load(new File(Main.YolBi_Dir, "libapi.dll").getAbsolutePath());
+            System.loadLibrary("libauth");
+        }
         UIManager.setLookAndFeel(new FlatXcodeDarkIJTheme());
-        LoginFrame frame = new LoginFrame((a, b) -> {
-            MainFrame mainFrame = new MainFrame();
-            new Thread(() -> mainFrame.setVisible(true)).start();
-            if (args.length == 2) {
-                switch (args[0]) {
-                    case "dll":
-                        mainFrame.inject_dll(Integer.parseInt(args[1]));
-                        mainFrame.inject_ui();
-                        break;
-                    case "agent":
-                        mainFrame.inject_agent(args[1]);
-                        mainFrame.inject_ui();
+        LoginFrame frame = new LoginFrame((username, password) -> {
+            if (login(username, password)) {
+                MainFrame mainFrame = new MainFrame();
+                new Thread(() -> mainFrame.setVisible(true)).start();
+                if (args.length == 2) {
+                    switch (args[0]) {
+                        case "dll":
+                            mainFrame.inject_dll(Integer.parseInt(args[1]));
+                            mainFrame.inject_ui();
+                            break;
+                        case "agent":
+                            mainFrame.inject_agent(args[1]);
+                            mainFrame.inject_ui();
+                    }
                 }
+                return true;
             }
-            return true;
+            return false;
         });
         splashScreen.close();
         frame.setVisible(true);
