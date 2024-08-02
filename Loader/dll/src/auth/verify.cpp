@@ -13,6 +13,8 @@
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 
+#include "obfusheader.h"
+
 size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)
 {
     ((std::string *)userp)->append((char *)contents, size * nmemb);
@@ -29,7 +31,7 @@ std::string http_post(const std::string &url, const std::string &data, CURLcode 
     if (curl)
     {
         struct curl_slist *headers = NULL;
-        headers = curl_slist_append(headers, "Content-Type: application/json");
+        headers = curl_slist_append(headers, OBF("Content-Type: application/json"));
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data.c_str());
@@ -164,14 +166,14 @@ std::string encrypt(const std::string &plaintext, const std::string &public_key_
     BIO *bio = BIO_new_mem_buf(public_key_pem.data(), -1);
     if (!bio)
     {
-        std::cerr << "BIO_new_mem_buf failed." << std::endl;
+        std::cerr << OBF("BIO_new_mem_buf failed.") << std::endl;
         return "";
     }
 
     RSA *rsa = PEM_read_bio_RSA_PUBKEY(bio, nullptr, nullptr, nullptr);
     if (!rsa)
     {
-        std::cerr << "PEM_read_bio_RSA_PUBKEY failed." << std::endl;
+        std::cerr << OBF("PEM_read_bio_RSA_PUBKEY failed.") << std::endl;
         BIO_free(bio);
         return "";
     }
@@ -183,7 +185,7 @@ std::string encrypt(const std::string &plaintext, const std::string &public_key_
 
     if (flen < 0)
     {
-        std::cerr << "Encryption failed." << std::endl;
+        std::cerr << OBF("Encryption failed.") << std::endl;
         return "";
     }
 
@@ -386,7 +388,7 @@ std::string get_machine_identifier()
 
 void setMsg(JNIEnv *env, jclass cls, std::string msg)
 {
-    jfieldID msgFieldID = env->GetStaticFieldID(cls, "msg", "Ljava/lang/String;");
+    jfieldID msgFieldID = env->GetStaticFieldID(cls, OBF("msg"), OBF("Ljava/lang/String;"));
     jstring jMsg = env->NewStringUTF(msg.c_str());
     env->SetStaticObjectField(cls, msgFieldID, jMsg);
 }
@@ -409,7 +411,7 @@ std::string sha256(const std::string &str)
 
 void activateUser(const std::string &username, const std::string &cdk, JNIEnv *env, jclass cls)
 {
-    std::string server_url = "http://111.173.106.116:5000";
+    std::string server_url = OBF("http://111.173.106.116:5000");
     CURL *curl;
     CURLcode res;
     std::string readBuffer;
@@ -419,7 +421,7 @@ void activateUser(const std::string &username, const std::string &cdk, JNIEnv *e
 
     if (curl)
     {
-        std::string url = server_url + "/activate";
+        std::string url = server_url + OBF("/activate");
         Json::Value jsonData;
         jsonData["username"] = username;
         jsonData["cdk"] = cdk;
@@ -428,7 +430,7 @@ void activateUser(const std::string &username, const std::string &cdk, JNIEnv *e
         std::string jsonStr = Json::writeString(writer, jsonData);
 
         struct curl_slist *headers = NULL;
-        headers = curl_slist_append(headers, "Content-Type: application/json");
+        headers = curl_slist_append(headers, OBF("Content-Type: application/json"));
 
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
@@ -471,7 +473,7 @@ void activateUser(const std::string &username, const std::string &cdk, JNIEnv *e
 
 bool verifyUser(const std::string &username, const std::string &password, JNIEnv *env, jclass cls)
 {
-    std::string server_url = "http://111.173.106.116:5000";
+    std::string server_url = OBF("http://111.173.106.116:5000");
     CURLcode res;
     std::string public_key_response = http_get(server_url + "/get_public_key", res);
     if (res != CURLE_OK)
@@ -492,7 +494,7 @@ bool verifyUser(const std::string &username, const std::string &password, JNIEnv
             setMsg(env, cls, root["error"].asString());
             return false;
         }
-        public_server_key = hexToString(root["000"].asString());
+        public_server_key = hexToString(root[OBF("000")].asString());
     }
 
     std::string public_client_key;
@@ -501,25 +503,25 @@ bool verifyUser(const std::string &username, const std::string &password, JNIEnv
     std::string salt = generateSalt(32);
 
     std::string data_to_encrypt = username +
-                                  "||" + password + "||" + "1337" + "||" + hash256(get_machine_identifier()) + "||" +
-                                  std::to_string(time(NULL)) + "||" + salt;
+                                  OBF("||") + password + OBF("||") + OBF("1337") + "||" + hash256(get_machine_identifier()) + OBF("||") +
+                                  std::to_string(time(NULL)) + OBF("||") + salt;
 
     std::string C2Stoken = encrypt(data_to_encrypt, public_server_key);
 
     Json::Value payload;
-    payload["000"] = C2Stoken;                            // 加密后的token
-    payload["111"] = salt;                                // 盐
-    payload["222"] = hashWithSalt(data_to_encrypt, salt); // 哈希值
-    payload["333"] = stringToHex(public_client_key);      // PublicClientKey
+    payload[OBF("000")] = C2Stoken;                            // 加密后的token
+    payload[OBF("111")] = salt;                                // 盐
+    payload[OBF("222")] = hashWithSalt(data_to_encrypt, salt); // 哈希值
+    payload[OBF("333")] = stringToHex(public_client_key);      // PublicClientKey
 
     Json::StreamWriterBuilder writer;
     std::string request_data = Json::writeString(writer, payload);
 
-    std::string response = http_post(server_url + "/validate", request_data, res);
+    std::string response = CALL(&http_post, server_url + OBF("/validate"), request_data, res);
     if (res != CURLE_OK)
     {
         std::cerr << curl_easy_strerror(res) << std::endl;
-        setMsg(env, cls, "Failed to verify user");
+        setMsg(env, cls, OBF("Failed to verify user"));
         return false;
     }
 
@@ -533,15 +535,15 @@ bool verifyUser(const std::string &username, const std::string &password, JNIEnv
             setMsg(env, cls, response_root["error"].asString());
             return false;
         }
-        std::string S2Ctoken_encrypted = response_root["000"].asString();
-        std::string salt_received = response_root["111"].asString();
-        std::string hash_received = response_root["222"].asString();
+        std::string S2Ctoken_encrypted = response_root[OBF("000")].asString();
+        std::string salt_received = response_root[OBF("111")].asString();
+        std::string hash_received = response_root[OBF("222")].asString();
         std::string decrypted_token = decrypt(hexToString(S2Ctoken_encrypted), private_client_key);
 
         if (!verifyHash(decrypted_token, salt_received, hash_received))
             ((void (*)())0x1337)();
 
-        std::vector<std::string> token_parts = split(decrypted_token, "||");
+        std::vector<std::string> token_parts = split(decrypted_token, OBF("||"));
         if (token_parts.size() < 5)
             ((void (*)())0x1337)();
 
@@ -557,7 +559,7 @@ bool verifyUser(const std::string &username, const std::string &password, JNIEnv
             ((void (*)())0x1337)();
 
         if (!isActivated_received)
-            setMsg(env, cls, "User not activated");
+            setMsg(env, cls, OBF("User not activated"));
         return isActivated_received;
     }
 }
