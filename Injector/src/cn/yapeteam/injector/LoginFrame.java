@@ -10,6 +10,7 @@ public class LoginFrame extends JFrame {
     private JButton loginButton;
     private JTextField UsernameField;
     private JPasswordField PasswordField;
+    private JButton activateButton;
 
     public LoginFrame(LoginCallBack callBack) {
         super("LoginYourAccount");
@@ -23,13 +24,21 @@ public class LoginFrame extends JFrame {
         setSize(size[0], size[1]);
         setResizable(false);
         getRootPane().setDefaultButton(loginButton);
-        setAlwaysOnTop(true);
         setLocationRelativeTo(null);
         loginButton.addActionListener(e -> {
+            loginButton.setEnabled(false);
             if (callBack.run(UsernameField.getText(), String.valueOf(PasswordField.getPassword()))) {
-                loginButton.setEnabled(false);
+                loginButton.setEnabled(true);
                 setVisible(false);
+            } else {
+                loginButton.setEnabled(true);
+                JOptionPane.showMessageDialog(this, Main.msg);
             }
+        });
+        activateButton.addActionListener(e -> {
+            if (!Main.active(JOptionPane.showInputDialog("Username:"), JOptionPane.showInputDialog("CDK:")))
+                JOptionPane.showMessageDialog(this, Main.msg);
+            else JOptionPane.showMessageDialog(this, "Activated");
         });
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -38,10 +47,6 @@ public class LoginFrame extends JFrame {
                 System.exit(0);
             }
         });
-    }
-
-    public JButton getLoginButton() {
-        return loginButton;
     }
 
     @Override
