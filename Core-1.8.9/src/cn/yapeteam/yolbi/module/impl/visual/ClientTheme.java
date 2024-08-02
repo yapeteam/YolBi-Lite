@@ -11,7 +11,9 @@ import cn.yapeteam.yolbi.utils.render.ColorUtil;
 import java.awt.*;
 
 public class ClientTheme extends Module {
-    public static BooleanValue notifi = new BooleanValue("Notification", false);
+   // public static BooleanValue notiff = new Boolean(false);
+    public static BooleanValue notifi = new BooleanValue("Notification" , false);
+    //private final ModeValue<Boolean> notif = new ModeValue<>()
     public final ModeValue<String> color = new ModeValue<>("Color", "Custom fade", "White", "Red", "Blue", "Vape", "Custom static", "Custom fade", "Custom 3 colors", "Rainbow");
     private final ColorValue color1 = new ColorValue("Color1", () -> color.getValue().startsWith("Custom"), new Color(210, 80, 105).getRGB());
     private final ColorValue color2 = new ColorValue("Color2", () -> color.is("Custom fade") || color.is("Custom 3 colors"), new Color(135, 190, 255).getRGB());
@@ -22,6 +24,7 @@ public class ClientTheme extends Module {
     public ClientTheme() {
         super("ClientTheme", ModuleCategory.VISUAL);
         this.addValues(notifi, color, color1, color2, color3, saturation, brightness);
+        //notiff = notifi.getValue();
     }
 
     @Override
