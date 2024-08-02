@@ -29,5 +29,6 @@
     <orderEntry type="library" name="darwin" level="project" />
     <orderEntry type="library" name="linux" level="project" />
     <orderEntry type="module" module-name="VersionInfo" />
+    <orderEntry type="library" name="1.8.9" level="project" />
   </component>
 </module>
