@@ -84,7 +84,7 @@ public class EntityPlayerSPTransformer extends ASMTransformer {
         list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("net/minecraft/world/entity/Entity", "getYRot", "()F",Mapper.Type.Method), "()F"));//yaw
         list.add(new VarInsnNode(Opcodes.ALOAD, 0));
         list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("net/minecraft/world/entity/Entity", "getXRot", "()F",Mapper.Type.Method), "()F"));//pitch
-        list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(EntityPlayerSPTransformer.class), "onMotion", "(DDDFF)Lcom/fun/eventapi/event/events/EventMotion;"));
+        list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(EntityPlayerSPTransformer.class), "onMotion", "(DDDFF)Lcn/yapeteam/yolbi/event/impl/player/EventMotion;"));
         list.add(new VarInsnNode(Opcodes.ASTORE, 1));
         j++;
         //ArrayList<AbstractInsnNode> rl=new ArrayList<>();
@@ -103,7 +103,7 @@ public class EntityPlayerSPTransformer extends ASMTransformer {
                 AbstractInsnNode aload_0 = methodNode.instructions.get(i - 1);
                 if (aload_0 instanceof VarInsnNode) {
                     ((VarInsnNode) aload_0).var = 1;
-                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, "com/fun/eventapi/event/events/EventMotion", "yaw", "F"));
+                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, "cn/yapeteam/yolbi/event/impl/player/EventMotion", "yaw", "F"));
                     methodNode.instructions.remove(node);
                     //rl.add(node);
                 }
@@ -113,7 +113,7 @@ public class EntityPlayerSPTransformer extends ASMTransformer {
                 AbstractInsnNode aload_0 = methodNode.instructions.get(i - 1);
                 if (aload_0 instanceof VarInsnNode) {
                     ((VarInsnNode) aload_0).var = 1;
-                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, "com/fun/eventapi/event/events/EventMotion", "pitch", "F"));
+                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, "cn/yapeteam/yolbi/event/impl/player/EventMotion", "pitch", "F"));
                     methodNode.instructions.remove(node);
                     //rl.add(node);
                 }
@@ -123,7 +123,7 @@ public class EntityPlayerSPTransformer extends ASMTransformer {
                 AbstractInsnNode aload_0 = methodNode.instructions.get(i - 1);
                 if (aload_0 instanceof VarInsnNode) {
                     ((VarInsnNode) aload_0).var = 1;
-                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, "com/fun/eventapi/event/events/EventMotion", "x", "D"));
+                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, "cn/yapeteam/yolbi/event/impl/player/EventMotion", "x", "D"));
                     methodNode.instructions.remove(node);
                     //rl.add(node);
                 }
@@ -133,7 +133,7 @@ public class EntityPlayerSPTransformer extends ASMTransformer {
                 AbstractInsnNode aload_0 = methodNode.instructions.get(i - 1);
                 if (aload_0 instanceof VarInsnNode) {
                     ((VarInsnNode) aload_0).var = 1;
-                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, "com/fun/eventapi/event/events/EventMotion", "y", "D"));
+                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, "cn/yapeteam/yolbi/event/impl/player/EventMotion", "y", "D"));
                     methodNode.instructions.remove(node);
                     //rl.add(node);
                 }
@@ -143,7 +143,7 @@ public class EntityPlayerSPTransformer extends ASMTransformer {
                 AbstractInsnNode aload_0 = methodNode.instructions.get(i - 1);
                 if (aload_0 instanceof VarInsnNode) {
                     ((VarInsnNode) aload_0).var = 1;
-                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, "com/fun/eventapi/event/events/EventMotion", "z", "D"));
+                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, "cn/yapeteam/yolbi/event/impl/player/EventMotion", "z", "D"));
                     methodNode.instructions.remove(node);
                     //rl.add(node);
                 }
