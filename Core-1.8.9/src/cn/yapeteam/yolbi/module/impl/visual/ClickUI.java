@@ -1,5 +1,6 @@
 package cn.yapeteam.yolbi.module.impl.visual;
 
+import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
@@ -18,7 +19,7 @@ public class ClickUI extends Module {
     //public  final BooleanValue notiff = notification;
     public ClickUI() {
         super("ClickGUI", ModuleCategory.VISUAL, Keyboard.KEY_RCONTROL);
-        if (ReflectUtil.hasOptifine)
+        if (ReflectionManager.hasOptifine)
             blur.setCallback((oldV, newV) -> !mc.gameSettings.ofFastRender && newV);
         else blur.setVisibility(() -> true);
         //public final BooleanValue notif = notification.getValue();
@@ -33,7 +34,7 @@ public class ClickUI extends Module {
     @Override
     protected void onEnable() {
         setEnabled(false);
-        if (ReflectUtil.hasOptifine && mc.gameSettings.ofFastRender)
+        if (ReflectionManager.hasOptifine && mc.gameSettings.ofFastRender)
             blur.setValue(false);
         if (screen == null) screen = new ImplScreen();
         mc.displayGuiScreen(screen);
