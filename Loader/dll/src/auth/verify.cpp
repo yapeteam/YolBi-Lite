@@ -489,7 +489,6 @@ bool verifyUser(const std::string &username, const std::string &password, JNIEnv
     {
         if (root.isMember("error"))
         {
-            std::cerr << "Error: " << root["error"].asString() << std::endl;
             setMsg(env, cls, root["error"].asString());
             return false;
         }
@@ -523,7 +522,6 @@ bool verifyUser(const std::string &username, const std::string &password, JNIEnv
         setMsg(env, cls, "Failed to verify user");
         return false;
     }
-    std::cout << "Server Response: " << response << std::endl;
 
     Json::Value response_root;
     std::istringstream response_s(response);
@@ -552,12 +550,6 @@ bool verifyUser(const std::string &username, const std::string &password, JNIEnv
         std::string HWID_received = token_parts[2];
         std::string CurrentTime_received = token_parts[3];
         bool isActivated_received = string_to_bool(token_parts[4]);
-
-        std::cout << "Player ID Received: " << playerID_received << std::endl;
-        std::cout << "Version Received: " << Version_received << std::endl;
-        std::cout << "HWID Received: " << HWID_received << std::endl;
-        std::cout << "Current Time Received: " << CurrentTime_received << std::endl;
-        std::cout << "Is Activated Received: " << isActivated_received << std::endl;
 
         int current_time = time(NULL);
         int time_diff = current_time - std::stoi(CurrentTime_received);
