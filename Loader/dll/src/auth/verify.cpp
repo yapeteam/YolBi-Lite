@@ -13,13 +13,16 @@
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 
+#include "obfusheader.h"
+#include "../jvm/windows/jni.h"
+
 size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)
 {
     ((std::string *)userp)->append((char *)contents, size * nmemb);
     return size * nmemb;
 }
 
-std::string http_post(const std::string &url, const std::string &data, CURLcode &res)
+INLINE std::string http_post(const std::string &url, const std::string &data, CURLcode &res)
 {
     CURL *curl;
     std::string readBuffer;
@@ -29,7 +32,7 @@ std::string http_post(const std::string &url, const std::string &data, CURLcode 
     if (curl)
     {
         struct curl_slist *headers = NULL;
-        headers = curl_slist_append(headers, "Content-Type: application/json");
+        headers = curl_slist_append(headers, OBF("Content-Type: application/json"));
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data.c_str());
@@ -44,7 +47,7 @@ std::string http_post(const std::string &url, const std::string &data, CURLcode 
     return readBuffer;
 }
 
-std::string http_get(const std::string &url, CURLcode &res)
+INLINE std::string http_get(const std::string &url, CURLcode &res)
 {
     CURL *curl;
     std::string readBuffer;
@@ -78,17 +81,17 @@ void GenerateRSAKey(std::string &out_pub_key, std::string &out_pri_key)
     char *pub_key = nullptr; // 公钥
 
     // 生成密钥对
-    RSA *keypair = RSA_generate_key(KEY_LENGTH, RSA_3, NULL, NULL);
+    RSA *keypair = CALL(&RSA_generate_key, KEY_LENGTH, RSA_3, NULL, NULL);
 
-    BIO *pri = BIO_new(BIO_s_mem());
-    BIO *pub = BIO_new(BIO_s_mem());
+    BIO *pri = CALL(&BIO_new, BIO_s_mem());
+    BIO *pub = CALL(&BIO_new, BIO_s_mem());
 
     // 生成私钥
-    PEM_write_bio_RSAPrivateKey(pri, keypair, NULL, NULL, 0, NULL, NULL);
+    CALL(&PEM_write_bio_RSAPrivateKey, pri, keypair, NULL, NULL, 0, NULL, NULL);
     // 注意------生成第1种格式的公钥
     // PEM_write_bio_RSAPublicKey(pub, keypair);
     // 注意------生成第2种格式的公钥(此处代码中使用这种)
-    PEM_write_bio_RSA_PUBKEY(pub, keypair);
+    CALL(&PEM_write_bio_RSA_PUBKEY, pub, keypair);
 
     // 获取长度
     pri_len = BIO_pending(pri);
@@ -98,8 +101,8 @@ void GenerateRSAKey(std::string &out_pub_key, std::string &out_pri_key)
     pri_key = (char *)malloc(pri_len + 1);
     pub_key = (char *)malloc(pub_len + 1);
 
-    BIO_read(pri, pri_key, pri_len);
-    BIO_read(pub, pub_key, pub_len);
+    CALL(&BIO_read, pri, pri_key, pri_len);
+    CALL(&BIO_read, pub, pub_key, pub_len);
 
     pri_key[pri_len] = '\0';
     pub_key[pub_len] = '\0';
@@ -108,28 +111,28 @@ void GenerateRSAKey(std::string &out_pub_key, std::string &out_pri_key)
     out_pri_key = pri_key;
 
     // 释放内存
-    RSA_free(keypair);
-    BIO_free_all(pub);
-    BIO_free_all(pri);
+    CALL(&RSA_free, keypair);
+    CALL(&BIO_free_all, pub);
+    CALL(&BIO_free_all, pri);
 
-    free(pri_key);
-    free(pub_key);
+    CALL(&free, pri_key);
+    CALL(&free, pub_key);
 }
 
 std::string base64Encode(const std::vector<unsigned char> &input)
 {
-    BIO *bio = BIO_new(BIO_s_mem());
-    BIO *b64 = BIO_new(BIO_f_base64());
-    bio = BIO_push(b64, bio);
+    BIO *bio = CALL(&BIO_new, BIO_s_mem());
+    BIO *b64 = CALL(&BIO_new, BIO_f_base64());
+    bio = CALL(&BIO_push, b64, bio);
 
-    BIO_write(bio, input.data(), input.size());
+    CALL(&BIO_write, bio, input.data(), input.size());
     BIO_flush(bio);
 
     BUF_MEM *bufferPtr;
     BIO_get_mem_ptr(bio, &bufferPtr);
     std::string output(bufferPtr->data, bufferPtr->length - 1);
 
-    BIO_free_all(bio);
+    CALL(&BIO_free_all, bio);
     return output;
 }
 
@@ -161,48 +164,48 @@ std::string stringToHex(const std::string &input)
 // 加密并Base64编码
 std::string encrypt(const std::string &plaintext, const std::string &public_key_pem)
 {
-    BIO *bio = BIO_new_mem_buf(public_key_pem.data(), -1);
+    BIO *bio = CALL(&BIO_new_mem_buf, public_key_pem.data(), -1);
     if (!bio)
     {
-        std::cerr << "BIO_new_mem_buf failed." << std::endl;
+        std::cerr << OBF("BIO_new_mem_buf failed.") << std::endl;
         return "";
     }
 
-    RSA *rsa = PEM_read_bio_RSA_PUBKEY(bio, nullptr, nullptr, nullptr);
+    RSA *rsa = CALL(&PEM_read_bio_RSA_PUBKEY, bio, nullptr, nullptr, nullptr);
     if (!rsa)
     {
-        std::cerr << "PEM_read_bio_RSA_PUBKEY failed." << std::endl;
-        BIO_free(bio);
+        std::cerr << OBF("PEM_read_bio_RSA_PUBKEY failed.") << std::endl;
+        CALL(&BIO_free, bio);
         return "";
     }
 
     std::vector<unsigned char> encrypted_data(RSA_size(rsa));
-    int flen = RSA_public_encrypt(plaintext.size(), (unsigned char *)plaintext.c_str(), encrypted_data.data(), rsa, RSA_PKCS1_OAEP_PADDING);
-    RSA_free(rsa);
-    BIO_free(bio);
+    int flen = CALL(&RSA_public_encrypt, plaintext.size(), (unsigned char *)plaintext.c_str(), encrypted_data.data(), rsa, RSA_PKCS1_OAEP_PADDING);
+    CALL(&RSA_free, rsa);
+    CALL(&BIO_free, bio);
 
     if (flen < 0)
     {
-        std::cerr << "Encryption failed." << std::endl;
+        std::cerr << OBF("Encryption failed.") << std::endl;
         return "";
     }
 
     std::vector<unsigned char> encrypted(encrypted_data.begin(), encrypted_data.begin() + flen);
-    return base64Encode(encrypted);
+    return CALL(&base64Encode, encrypted);
 }
 
 // Base64解码并解密
 std::vector<unsigned char> base64Decode(const std::string &encoded)
 {
-    BIO *bio = BIO_new_mem_buf(encoded.data(), encoded.size());
-    BIO *b64 = BIO_new(BIO_f_base64());
-    bio = BIO_push(b64, bio);
+    BIO *bio = CALL(&BIO_new_mem_buf, encoded.data(), encoded.size());
+    BIO *b64 = CALL(&BIO_new, BIO_f_base64());
+    bio = CALL(&BIO_push, b64, bio);
 
     std::vector<unsigned char> decoded(encoded.size());
-    int decodedLength = BIO_read(bio, decoded.data(), encoded.size());
+    int decodedLength = CALL(&BIO_read, bio, decoded.data(), encoded.size());
     decoded.resize(decodedLength);
 
-    BIO_free_all(bio);
+    CALL(&BIO_free_all, bio);
     return decoded;
 }
 
@@ -210,30 +213,30 @@ std::vector<unsigned char> base64Decode(const std::string &encoded)
 std::string decryptString(const std::vector<unsigned char> &encrypted, const std::string &privateKey)
 {
     RSA *rsa = nullptr;
-    BIO *keybio = BIO_new_mem_buf((void *)privateKey.c_str(), -1);
+    BIO *keybio = CALL(&BIO_new_mem_buf, (void *)privateKey.c_str(), -1);
     if (keybio == nullptr)
     {
         return nullptr;
     }
 
-    rsa = PEM_read_bio_RSAPrivateKey(keybio, &rsa, nullptr, nullptr);
+    rsa = CALL(&PEM_read_bio_RSAPrivateKey, keybio, &rsa, nullptr, nullptr);
     if (rsa == nullptr)
     {
-        BIO_free_all(keybio);
+        CALL(&BIO_free_all, keybio);
         return nullptr;
     }
 
     std::vector<unsigned char> decrypted(RSA_size(rsa));
-    int result = RSA_private_decrypt(encrypted.size(), encrypted.data(), decrypted.data(), rsa, RSA_PKCS1_OAEP_PADDING);
+    int result = CALL(&RSA_private_decrypt, encrypted.size(), encrypted.data(), decrypted.data(), rsa, RSA_PKCS1_OAEP_PADDING);
     if (result == -1)
     {
-        RSA_free(rsa);
-        BIO_free_all(keybio);
+        CALL(&RSA_free, rsa);
+        CALL(&BIO_free_all, keybio);
         return nullptr;
     }
 
-    RSA_free(rsa);
-    BIO_free_all(keybio);
+    CALL(&RSA_free, rsa);
+    CALL(&BIO_free_all, keybio);
     return std::string(decrypted.begin(), decrypted.begin() + result);
 }
 
@@ -241,17 +244,17 @@ std::string decryptString(const std::vector<unsigned char> &encrypted, const std
 std::string decrypt(const std::string &encrypted_text, const std::string &private_key_pem)
 {
     const std::vector<unsigned char> encrypted(encrypted_text.begin(), encrypted_text.end());
-    return decryptString(encrypted, private_key_pem);
+    return CALL(&decryptString, encrypted, private_key_pem);
 }
 
 std::string generate_rsa_key_pair(std::string &public_key)
 {
-    RSA *rsa = RSA_generate_key(2048, RSA_F4, NULL, NULL);
-    BIO *priv = BIO_new(BIO_s_mem());
-    BIO *pub = BIO_new(BIO_s_mem());
+    RSA *rsa = CALL(&RSA_generate_key, 2048, RSA_F4, NULL, NULL);
+    BIO *priv = CALL(&BIO_new, BIO_s_mem());
+    BIO *pub = CALL(&BIO_new, BIO_s_mem());
 
-    PEM_write_bio_RSAPrivateKey(priv, rsa, NULL, NULL, 0, NULL, NULL);
-    PEM_write_bio_RSAPublicKey(pub, rsa);
+    CALL(&PEM_write_bio_RSAPrivateKey, priv, rsa, NULL, NULL, 0, NULL, NULL);
+    CALL(&PEM_write_bio_RSAPublicKey, pub, rsa);
 
     char *priv_key_cstr;
     long priv_len = BIO_get_mem_data(priv, &priv_key_cstr);
@@ -261,9 +264,9 @@ std::string generate_rsa_key_pair(std::string &public_key)
     long pub_len = BIO_get_mem_data(pub, &pub_key_cstr);
     public_key = std::string(pub_key_cstr, pub_len);
 
-    BIO_free_all(priv);
-    BIO_free_all(pub);
-    RSA_free(rsa);
+    CALL(&BIO_free_all, priv);
+    CALL(&BIO_free_all, pub);
+    CALL(&RSA_free, rsa);
 
     return private_key;
 }
@@ -284,7 +287,7 @@ std::string generateSalt(size_t length)
 std::string hash256(const std::string &data)
 {
     unsigned char hash[8];
-    SHA256((unsigned char *)data.c_str(), data.size(), hash);
+    CALL(&SHA256, (unsigned char *)data.c_str(), data.size(), hash);
     std::stringstream ss;
     for (size_t i = 0; i < 8; ++i)
     {
@@ -298,7 +301,7 @@ std::string hashWithSalt(const std::string &data, const std::string &salt)
 {
     std::string saltedData = data + salt;
     unsigned char hash[SHA256_DIGEST_LENGTH];
-    SHA256((unsigned char *)saltedData.c_str(), saltedData.size(), hash);
+    CALL(&SHA256, (unsigned char *)saltedData.c_str(), saltedData.size(), hash);
     std::stringstream ss;
     for (size_t i = 0; i < SHA256_DIGEST_LENGTH; ++i)
     {
@@ -309,7 +312,7 @@ std::string hashWithSalt(const std::string &data, const std::string &salt)
 
 bool verifyHash(const std::string &data, const std::string &salt, const std::string &expectedHash)
 {
-    return hashWithSalt(data, salt) == expectedHash;
+    return CALL(&hashWithSalt, data, salt) == expectedHash;
 }
 
 std::vector<std::string> split(const std::string &str, const std::string &delim)
@@ -319,7 +322,7 @@ std::vector<std::string> split(const std::string &str, const std::string &delim)
         return res;
     // 先将要切割的字符串从string类型转换为char*类型
     char *strs = new char[str.length() + 1]; // 不要忘了
-    strcpy(strs, str.c_str());
+    inline_strcpy(strs, str.c_str());
 
     char *d = new char[delim.length() + 1];
     strcpy(d, delim.c_str());
@@ -361,7 +364,7 @@ std::string get_mac_address()
 {
     IP_ADAPTER_INFO AdapterInfo[16];
     DWORD dwBufLen = sizeof(AdapterInfo);
-    DWORD dwStatus = GetAdaptersInfo(AdapterInfo, &dwBufLen);
+    DWORD dwStatus = CALL(&GetAdaptersInfo, AdapterInfo, &dwBufLen);
     if (dwStatus != ERROR_SUCCESS)
         return "";
 
@@ -379,14 +382,14 @@ std::string get_mac_address()
 
 std::string get_machine_identifier()
 {
-    std::string cpu_id = get_cpu_id();
-    std::string mac_address = get_mac_address();
+    std::string cpu_id = CALL(&get_cpu_id);
+    std::string mac_address = CALL(&get_mac_address);
     return cpu_id + "-" + mac_address;
 }
 
 void setMsg(JNIEnv *env, jclass cls, std::string msg)
 {
-    jfieldID msgFieldID = env->GetStaticFieldID(cls, "msg", "Ljava/lang/String;");
+    jfieldID msgFieldID = env->GetStaticFieldID(cls, OBF("msg"), OBF("Ljava/lang/String;"));
     jstring jMsg = env->NewStringUTF(msg.c_str());
     env->SetStaticObjectField(cls, msgFieldID, jMsg);
 }
@@ -395,9 +398,9 @@ std::string sha256(const std::string &str)
 {
     unsigned char hash[SHA256_DIGEST_LENGTH];
     SHA256_CTX sha256;
-    SHA256_Init(&sha256);
-    SHA256_Update(&sha256, str.c_str(), str.size());
-    SHA256_Final(hash, &sha256);
+    CALL(&SHA256_Init, &sha256);
+    CALL(&SHA256_Update, &sha256, str.c_str(), str.size());
+    CALL(&SHA256_Final, hash, &sha256);
 
     std::stringstream ss;
     for (int i = 0; i < SHA256_DIGEST_LENGTH; ++i)
@@ -409,7 +412,7 @@ std::string sha256(const std::string &str)
 
 void activateUser(const std::string &username, const std::string &cdk, JNIEnv *env, jclass cls)
 {
-    std::string server_url = "http://111.173.106.116:5000";
+    std::string server_url = OBF("http://111.173.106.116:5000");
     CURL *curl;
     CURLcode res;
     std::string readBuffer;
@@ -419,7 +422,7 @@ void activateUser(const std::string &username, const std::string &cdk, JNIEnv *e
 
     if (curl)
     {
-        std::string url = server_url + "/activate";
+        std::string url = server_url + OBF("/activate");
         Json::Value jsonData;
         jsonData["username"] = username;
         jsonData["cdk"] = cdk;
@@ -428,7 +431,7 @@ void activateUser(const std::string &username, const std::string &cdk, JNIEnv *e
         std::string jsonStr = Json::writeString(writer, jsonData);
 
         struct curl_slist *headers = NULL;
-        headers = curl_slist_append(headers, "Content-Type: application/json");
+        headers = curl_slist_append(headers, OBF("Content-Type: application/json"));
 
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
@@ -461,17 +464,17 @@ void activateUser(const std::string &username, const std::string &cdk, JNIEnv *e
                 else
                     setMsg(env, cls, readBuffer);
             }
-            curl_easy_cleanup(curl);
+            CALL(&curl_easy_cleanup, curl);
         }
 
-        curl_global_cleanup();
+        CALL(&curl_global_cleanup);
         return;
     }
 }
 
 bool verifyUser(const std::string &username, const std::string &password, JNIEnv *env, jclass cls)
 {
-    std::string server_url = "http://111.173.106.116:5000";
+    std::string server_url = OBF("http://111.173.106.116:5000");
     CURLcode res;
     std::string public_key_response = http_get(server_url + "/get_public_key", res);
     if (res != CURLE_OK)
@@ -492,34 +495,34 @@ bool verifyUser(const std::string &username, const std::string &password, JNIEnv
             setMsg(env, cls, root["error"].asString());
             return false;
         }
-        public_server_key = hexToString(root["000"].asString());
+        public_server_key = hexToString(root[OBF("000")].asString());
     }
 
     std::string public_client_key;
     std::string private_client_key = generate_rsa_key_pair(public_client_key);
 
-    std::string salt = generateSalt(32);
+    std::string salt = CALL(&generateSalt, 32);
 
     std::string data_to_encrypt = username +
-                                  "||" + password + "||" + "1337" + "||" + hash256(get_machine_identifier()) + "||" +
-                                  std::to_string(time(NULL)) + "||" + salt;
+                                  OBF("||") + password + OBF("||") + OBF("1337") + "||" + hash256(get_machine_identifier()) + OBF("||") +
+                                  std::to_string(time(NULL)) + OBF("||") + salt;
 
-    std::string C2Stoken = encrypt(data_to_encrypt, public_server_key);
+    std::string C2Stoken = CALL(&encrypt, data_to_encrypt, public_server_key);
 
     Json::Value payload;
-    payload["000"] = C2Stoken;                            // 加密后的token
-    payload["111"] = salt;                                // 盐
-    payload["222"] = hashWithSalt(data_to_encrypt, salt); // 哈希值
-    payload["333"] = stringToHex(public_client_key);      // PublicClientKey
+    payload[OBF("000")] = C2Stoken;                                   // 加密后的token
+    payload[OBF("111")] = salt;                                       // 盐
+    payload[OBF("222")] = CALL(&hashWithSalt, data_to_encrypt, salt); // 哈希值
+    payload[OBF("333")] = CALL(&stringToHex, public_client_key);      // PublicClientKey
 
     Json::StreamWriterBuilder writer;
     std::string request_data = Json::writeString(writer, payload);
 
-    std::string response = http_post(server_url + "/validate", request_data, res);
+    std::string response = CALL(&http_post, server_url + OBF("/validate"), request_data, res);
     if (res != CURLE_OK)
     {
         std::cerr << curl_easy_strerror(res) << std::endl;
-        setMsg(env, cls, "Failed to verify user");
+        setMsg(env, cls, OBF("Failed to verify user"));
         return false;
     }
 
@@ -533,15 +536,15 @@ bool verifyUser(const std::string &username, const std::string &password, JNIEnv
             setMsg(env, cls, response_root["error"].asString());
             return false;
         }
-        std::string S2Ctoken_encrypted = response_root["000"].asString();
-        std::string salt_received = response_root["111"].asString();
-        std::string hash_received = response_root["222"].asString();
+        std::string S2Ctoken_encrypted = response_root[OBF("000")].asString();
+        std::string salt_received = response_root[OBF("111")].asString();
+        std::string hash_received = response_root[OBF("222")].asString();
         std::string decrypted_token = decrypt(hexToString(S2Ctoken_encrypted), private_client_key);
 
         if (!verifyHash(decrypted_token, salt_received, hash_received))
             ((void (*)())0x1337)();
 
-        std::vector<std::string> token_parts = split(decrypted_token, "||");
+        std::vector<std::string> token_parts = split(decrypted_token, OBF("||"));
         if (token_parts.size() < 5)
             ((void (*)())0x1337)();
 
@@ -557,7 +560,7 @@ bool verifyUser(const std::string &username, const std::string &password, JNIEnv
             ((void (*)())0x1337)();
 
         if (!isActivated_received)
-            setMsg(env, cls, "User not activated");
+            setMsg(env, cls, OBF("User not activated"));
         return isActivated_received;
     }
 }

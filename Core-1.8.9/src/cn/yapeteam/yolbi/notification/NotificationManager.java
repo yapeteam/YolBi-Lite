@@ -1,7 +1,8 @@
 package cn.yapeteam.yolbi.notification;
 
+import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
-import cn.yapeteam.yolbi.event.impl.render.EventSkijaRender;
+import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import lombok.val;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -15,7 +16,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 @SuppressWarnings("unused")
 public class NotificationManager {
-    private final CopyOnWriteArrayList<Notification> notificationArrayList = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<Notification> notificationArrayList;
+
+    public NotificationManager() {
+        notificationArrayList = new CopyOnWriteArrayList<>();
+        YolBi.instance.getEventManager().register(this);
+    }
 
     public void clearAll() {
         notificationArrayList.clear();
@@ -26,7 +32,7 @@ public class NotificationManager {
     }
 
     @Listener
-    public void onRender(EventSkijaRender event) {
+    public void onRender(final EventRender2D event) {
         val sr = new ScaledResolution(Minecraft.getMinecraft());
         int pre_size = notificationArrayList.size();
         for (int j = 0; j < pre_size; j++)

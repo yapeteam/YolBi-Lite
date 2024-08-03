@@ -16,7 +16,6 @@
         "libs-low/lwjgl_util-2.9.4-nightly-20150209.jar",
         "libs-low/lwjgl-2.9.4-nightly-20150209.jar",
         "libs-low/netty-all-4.0.23.Final.jar",
-        "deps/shared/skija-shared-0.116.2.jar",
         "build/loader.jar",
         "build/ymixin.jar"
     ],

@@ -58,8 +58,8 @@ JNIEXPORT jboolean JNICALL Java_cn_yapeteam_injector_Main_login(JNIEnv *env, jcl
     const char *u = env->GetStringUTFChars(username, 0);
     const char *p = env->GetStringUTFChars(password, 0);
     wchar_t userProfile[MAX_PATH];
-    GetEnvironmentVariableW(L"USERPROFILE", userProfile, MAX_PATH);
-    filePath = format_wchar(L"%ls\\.yolbi\\auth.txt", userProfile);
+    CALL(&GetEnvironmentVariableW, OBF(L"USERPROFILE"), userProfile, MAX_PATH);
+    filePath = CALL(&format_wchar, OBF(L"%ls\\.yolbi\\auth.txt"), userProfile);
     ofstream file(filePath, fstream::out);
     if (!file.is_open())
     {
@@ -69,10 +69,10 @@ JNIEXPORT jboolean JNICALL Java_cn_yapeteam_injector_Main_login(JNIEnv *env, jcl
     }
     file << u << endl;
     file << p << endl;
-    return verifyUser(string(u), string(p), env, cls);
+    return CALL(&verifyUser, string(u), string(p), env, cls);
 }
 
 JNIEXPORT void JNICALL Java_cn_yapeteam_injector_Main_active(JNIEnv *env, jclass cls, jstring username, jstring cdk)
 {
-    activateUser(string(env->GetStringUTFChars(username, 0)), string(env->GetStringUTFChars(cdk, 0)), env, cls);
+    CALL(&activateUser, string(env->GetStringUTFChars(username, 0)), string(env->GetStringUTFChars(cdk, 0)), env, cls);
 }

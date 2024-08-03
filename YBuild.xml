@@ -28,7 +28,7 @@
             <files>out/production/VersionInfo</files>
         </artifact>
         <artifact name="injection-1.18.1.jar"
-                  proguard-config="injection-1.18.1.pro"><!-- shield-config="injection-1.18.1.json"-->
+                  proguard-config="injection-1.18.1.pro" shield-config="injection-1.18.1.json">
             <files>out/production/Core-1.18.1</files>
             <files>out/production/VersionInfo</files>
         </artifact>
@@ -53,8 +53,6 @@
                 </dir>
                 <dir name="dependencies">
                     <file>deps/shared/asm-all-9.2.jar</file>
-                    <file>deps/shared/skija-shared-0.116.2.jar</file>
-                    <file>deps/shared/types-0.1.1.jar</file>
                     <file>deps/shared/commons-io.jar</file>
                     <file>deps/shared/commons-imaging.jar</file>
                 </dir>
