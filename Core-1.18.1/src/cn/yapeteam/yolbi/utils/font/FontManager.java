@@ -1,5 +1,6 @@
 package cn.yapeteam.yolbi.utils.font;
 
+import cn.yapeteam.loader.ResourceManager;
 import cn.yapeteam.yolbi.font.renderer.FontRenderer;
 
 import java.awt.*;
@@ -12,7 +13,7 @@ public class FontManager {
     public static FontRenderer simkai;
 
     public static void init() {
-
+        tenacity=createFontRenderer(ResourceManager.resources.getStream("fonts/fluxicon.ttf") ,25);
     }
 
     public static Font getFont(int size, InputStream is) {
@@ -25,6 +26,9 @@ public class FontManager {
             font = new Font("default", Font.PLAIN, size);
         }
         return font;
+    }
+    public static FontRenderer createFontRenderer(InputStream font,int size) {
+        return new FontRenderer(getFont(size,font),size/2f);
     }
 
 

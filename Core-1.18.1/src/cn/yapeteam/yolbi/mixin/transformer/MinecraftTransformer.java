@@ -8,10 +8,11 @@ import cn.yapeteam.yolbi.event.impl.game.EventTick;
 import net.minecraft.client.Minecraft;
 import org.objectweb.asm_9_2.Opcodes;
 import org.objectweb.asm_9_2.Type;
-import org.objectweb.asm_9_2.tree.FieldInsnNode;
-import org.objectweb.asm_9_2.tree.InsnNode;
-import org.objectweb.asm_9_2.tree.MethodInsnNode;
-import org.objectweb.asm_9_2.tree.MethodNode;
+import org.objectweb.asm_9_2.tree.*;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 public class MinecraftTransformer extends ASMTransformer {
@@ -24,9 +25,14 @@ public class MinecraftTransformer extends ASMTransformer {
     }
     @Inject(method = "getInstance",desc = "()Lnet/minecraft/client/Minecraft;")
     public void getInstance(MethodNode methodNode){
-        methodNode.instructions.clear();
-        methodNode.instructions.add(new FieldInsnNode(Opcodes.GETFIELD, Mapper.getObfClass("net/minecraft/client/Minecraft"), Mapper.map("instance","net/minecraft/client/Minecraft","Lnet/minecraft/client/Minecraft;", Mapper.Type.Field),DescParser.mapDesc("Lnet/minecraft/client/Minecraft;")));
-        methodNode.instructions.add(new InsnNode(Opcodes.ARETURN));
+        List<AbstractInsnNode> removeList = new ArrayList<>();
+        Iterator<AbstractInsnNode> iterator = methodNode.instructions.iterator();
+
+        int i=0;
+        while(iterator.hasNext()){
+            AbstractInsnNode a=iterator.next();
+            if(a instanceof MethodInsnNode||a instanceof VarInsnNode){iterator.remove();}
+        }
     }
     public static void onRunTick(){
         YolBi.instance.getEventManager().post(new EventTick());

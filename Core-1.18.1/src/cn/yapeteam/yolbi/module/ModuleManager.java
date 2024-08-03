@@ -5,6 +5,7 @@ import cn.yapeteam.yolbi.event.impl.game.EventKey;
 import cn.yapeteam.yolbi.module.impl.combat.KillAura;
 import cn.yapeteam.yolbi.module.impl.combat.Target;
 import cn.yapeteam.yolbi.module.impl.misc.SelfDestruct;
+import cn.yapeteam.yolbi.module.impl.render.HUD;
 import cn.yapeteam.yolbi.module.impl.visual.ClientTheme;
 import cn.yapeteam.yolbi.module.impl.world.Scaffold;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class ModuleManager {
         modules.add(new KillAura());
         modules.add(new Target());
         modules.add(new Scaffold());
+        modules.add(new HUD());
         modules.sort((m1, m2) -> -Integer.compare(m2.getName().charAt(0), m1.getName().charAt(0)));
     }
 

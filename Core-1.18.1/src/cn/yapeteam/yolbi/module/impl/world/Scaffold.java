@@ -12,6 +12,7 @@ import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.math.MathUtils;
 import cn.yapeteam.yolbi.utils.player.Rotation;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 
 public class Scaffold extends Module {
     public Scaffold() {
-        super("Scaffold", ModuleCategory.WORLD);
+        super("Scaffold", ModuleCategory.WORLD, InputConstants.KEY_G);
     }
 
     public BooleanValue sameY = new BooleanValue("SameY",  false);

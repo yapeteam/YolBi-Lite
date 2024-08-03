@@ -13,6 +13,7 @@ import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.player.Rotation;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.EntityHitResult;
@@ -24,7 +25,8 @@ import static cn.yapeteam.yolbi.utils.IMinecraft.mc;
 public class KillAura extends Module
 {
     public KillAura() {
-        super("KillAura", ModuleCategory.COMBAT);
+        super("KillAura", ModuleCategory.COMBAT,InputConstants.KEY_R);
+        addValues(rotationSpeed,rotationSpeed2,slientMove,keepSprint,CPS);
     }
     public Vector2f targetRotation=new Vector2f(0,0);
     public Vector2f currentRotation=new Vector2f(0,0);
