@@ -33,6 +33,11 @@
     <methods>;
 }
 
+-keep,allowshrinking class cn.yapeteam.yolbi.mixin.transformer.** {
+    <fields>;
+    <methods>;
+}
+
 # Keep - Applications. Keep all application classes, along with their 'main' methods.
 -keepclasseswithmembers public class * {
     public static void main(java.lang.String[]);
