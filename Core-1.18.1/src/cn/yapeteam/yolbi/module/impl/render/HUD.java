@@ -20,7 +20,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class HUD extends Module {
     public HUD() {
-        super("HUD", ModuleCategory.RENDER, InputConstants.KEY_H);
+        super("HUD", ModuleCategory.VISUAL, InputConstants.KEY_H);
+        addValues(mixColor1,mixColor2);
     }
     public NumberValue<Integer> mixColor1=new NumberValue<>("MixColor1",0xffffff,0x000000,0xffffff,1);
     public NumberValue<Integer> mixColor2=new NumberValue<>("MixColor2",0xffffff,0x000000,0xffffff,1);

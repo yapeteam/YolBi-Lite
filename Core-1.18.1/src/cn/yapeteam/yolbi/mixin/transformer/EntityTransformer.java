@@ -68,4 +68,38 @@ public class EntityTransformer extends ASMTransformer {
             this.friction=friction;
         }
     }
+    @Inject(method = "getViewVector",desc = "(F)Lnet/minecraft/world/phys/Vec3;")
+    public void getLookAngle(MethodNode methodNode){
+        for (int i = 0; i < methodNode.instructions.size(); ++i) {
+            AbstractInsnNode node = methodNode.instructions.get(i);
+            if(node instanceof MethodInsnNode){
+                if(((MethodInsnNode) node).name.equals(Mapper.map("net/minecraft/world/entity/Entity","getViewYRot","(F)F", Mapper.Type.Method))
+                        &&((MethodInsnNode) node).desc.equals("(F)F")){
+
+                    methodNode.instructions.insertBefore(node,new MethodInsnNode(Opcodes.INVOKESTATIC,Type.getInternalName(EntityTransformer.class),"yaw","(Ljava/lang/Object;F)F"));
+
+                    methodNode.instructions.remove(node);
+                }
+                if(((MethodInsnNode) node).name.equals(Mapper.map("net/minecraft/world/entity/Entity","getViewXRot","(F)F", Mapper.Type.Method))
+                        &&((MethodInsnNode) node).desc.equals("(F)F")){
+
+                    methodNode.instructions.insertBefore(node,new MethodInsnNode(Opcodes.INVOKESTATIC,Type.getInternalName(EntityTransformer.class),"pitch","(Ljava/lang/Object;F)F"));
+                    methodNode.instructions.remove(node);
+                }
+            }
+        }
+    }
+    public static float yaw(Object entity,float f){
+        if(entity instanceof LocalPlayer)
+            return YolBi.instance.getRotationManager().getRation().y;
+        else if(entity instanceof Entity) return ((Entity) entity).getViewYRot(f);
+        throw new RuntimeException("arg0 isn't Entity");
+    }
+    public static float pitch(Object entity,float f){//getViewVector
+
+        if(entity instanceof LocalPlayer)
+            return YolBi.instance.getRotationManager().getRation().x;
+        else if(entity instanceof Entity) return ((Entity) entity).getViewXRot(f);
+        throw new RuntimeException("arg0 isn't Entity");
+    }
 }

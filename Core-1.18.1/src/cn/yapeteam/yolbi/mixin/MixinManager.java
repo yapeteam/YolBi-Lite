@@ -36,6 +36,7 @@ public class MixinManager {
         addTransformer(new MinecraftTransformer());
         addTransformer(new NetworkHandlerTransformer());
         addTransformer(new NetworkManagerTransFormer());
+        addTransformer(new PlayerModelTransformer());
     }
 
     public static void destroyClient() throws IOException {

@@ -5,6 +5,7 @@ import cn.yapeteam.ymixin.utils.DescParser;
 import cn.yapeteam.ymixin.utils.Mapper;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.impl.game.EventTick;
+import cn.yapeteam.yolbi.event.impl.render.EventView;
 import net.minecraft.client.Minecraft;
 import org.objectweb.asm_9_2.Opcodes;
 import org.objectweb.asm_9_2.Type;
@@ -34,7 +35,14 @@ public class MinecraftTransformer extends ASMTransformer {
             if(a instanceof MethodInsnNode||a instanceof VarInsnNode){iterator.remove();}
         }
     }
+    @Inject(method = "getCameraEntity",desc = "()Lnet/minecraft/world/entity/Entity;")
+    public void getRenderViewEntity(MethodNode methodNode){
+        methodNode.instructions.insert(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(MinecraftTransformer.class),"onGetRenderViewEntity","()V"));
+    }
     public static void onRunTick(){
         YolBi.instance.getEventManager().post(new EventTick());
+    }
+    public static void onGetRenderViewEntity(){
+        YolBi.instance.getEventManager().post(new EventView());
     }
 }

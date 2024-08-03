@@ -79,6 +79,7 @@ public class Target extends Module {
 
     public Target() {
         super("Target", ModuleCategory.COMBAT);
+        addValues(onlyPlayer, antiBot, range, invisible);
     }
 
 
