@@ -26,7 +26,7 @@ Visit https://github.com/ac3ss0r/obfusheader.h for configuration tips & more inf
     #define CFLOW_BRANCHING             1
     #define INDIRECT_BRANCHING          1
     #define FAKE_SIGNATURES             1
-    #define INLINE_STD                  0
+    #define INLINE_STD                  1
     #define KERNEL_MODE                 1
 #pragma endregion CONFIG
 
