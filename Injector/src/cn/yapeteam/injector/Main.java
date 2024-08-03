@@ -12,7 +12,7 @@ public class Main {
     public static final String dllName = "libinjection.dll";
     public static final String agentName = "agent.jar";
     public static final int port = 20181;
-    public static boolean devswitch = true;
+    public static boolean devSwitch = true;
 
     public static String msg;
 
@@ -21,7 +21,7 @@ public class Main {
     public static native void active(String username, String cdk);
 
     public static void main(String[] args) throws Exception {
-        if(devswitch){
+        if (devSwitch) {
             Utils.unzip(Main.class.getResourceAsStream("/injection.zip"), YolBi_Dir);
             if (OS.isFamilyWindows())
                 System.load(new File(Main.YolBi_Dir, "libapi.dll").getAbsolutePath());
@@ -37,7 +37,7 @@ public class Main {
                 }
                 frame.inject_ui();
             }
-        }else{
+        } else {
             SplashScreen splashScreen = new SplashScreen();
             splashScreen.display();
             Utils.unzip(Main.class.getResourceAsStream("/injection.zip"), YolBi_Dir);

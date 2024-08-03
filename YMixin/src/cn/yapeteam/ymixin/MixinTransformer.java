@@ -76,17 +76,20 @@ public class MixinTransformer {
             }
             String name = transformer.getTarget().getName().replace('/', '.');
             byte[] bytes = classMap.get(name);
+            ClassNode targetNode;
             if (bytes == null) {
-                while (bytes == null) {
+                ClassNode node = null;
+                while (node == null) {
                     try {
                         bytes = provider.getClassBytes(transformer.getTarget());
+                        node = ASMUtils.node(bytes);
                         Thread.sleep(500);
                     } catch (Throwable ignored) {
                     }
                 }
+                targetNode = node;
                 oldBytes.put(name, bytes);
-            }
-            ClassNode targetNode = ASMUtils.node(bytes);
+            } else targetNode = ASMUtils.node(bytes);
             for (Method method : transformer.getClass().getDeclaredMethods()) {
                 method.setAccessible(true);
                 if (method.getParameterCount() != 1) continue;

@@ -7,7 +7,6 @@ import lombok.val;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -153,6 +152,14 @@ public class Mapper {
         return map.name;
     }
 
+    private static void traverseSupers(Class<?> clz, List<Class<?>> result) {
+        if (clz == null || clz == Object.class) return;
+        result.add(clz);
+        for (Class<?> anInterface : clz.getInterfaces())
+            traverseSupers(anInterface, result);
+        traverseSupers(clz.getSuperclass(), result);
+    }
+
     public static String mapWithSuper(String owner, String name, String desc, Type type) {
         owner = owner.replace('.', '/');
         String identifier = owner + "." + name + " " + desc;
@@ -165,14 +172,7 @@ public class Mapper {
         String mappedOwner = map(null, owner, null, Type.Class);
         Class<?> theClass = YMixin.classProvider.get(mappedOwner);
         List<Class<?>> classes = new ArrayList<>();
-        Class<?> superClz = theClass;
-        while (superClz != Object.class) {
-            if (superClz != null) {
-                classes.add(superClz);
-                classes.addAll(Arrays.asList(superClz.getInterfaces()));
-                superClz = superClz.getSuperclass();
-            } else break;
-        }
+        traverseSupers(theClass, classes);
         for (Class<?> clz : classes) {
             java.util.Map.Entry<String, Map> entry = owners.entrySet().stream()
                     .filter(m -> map(null, m.getKey(), null, Type.Class).equals(clz.getName().replace('.', '/')))
