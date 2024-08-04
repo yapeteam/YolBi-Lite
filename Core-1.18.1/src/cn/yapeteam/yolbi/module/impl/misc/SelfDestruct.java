@@ -1,5 +1,6 @@
 package cn.yapeteam.yolbi.module.impl.misc;
 
+import cn.yapeteam.loader.Natives;
 import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.mixin.MixinManager;
@@ -14,8 +15,8 @@ public class SelfDestruct extends Module {
     public void onEnable() {
         try {
             setEnabled(false);
-            new Exception().printStackTrace();
             if (mc.screen != null) mc.setScreen(null);
+            Natives.DeleteInjectorJarHistory();
             MixinManager.destroyClient();
             YolBi.instance.shutdown();
         } catch (Throwable e) {

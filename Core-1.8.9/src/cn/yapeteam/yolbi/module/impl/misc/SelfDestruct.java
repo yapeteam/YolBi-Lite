@@ -19,14 +19,14 @@ public class SelfDestruct extends Module {
         try {
             setEnabled(false);
             if (mc.currentScreen != null) mc.displayGuiScreen(null);
-            if(!Natives.DeleteInjectorJarHistory()){
+            if (!Natives.DeleteInjectorJarHistory()) {
                 new Notification(
                         "Deleting from recent files failed",
                         Easing.EASE_IN_OUT_QUAD,
                         Easing.EASE_IN_OUT_QUAD,
                         2500, NotificationType.FAILED
                 );
-            }else{
+            } else {
                 new Notification(
                         "Deleting from recent files succeeded",
                         Easing.EASE_IN_OUT_QUAD,
