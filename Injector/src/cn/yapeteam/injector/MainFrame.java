@@ -120,16 +120,10 @@ public class MainFrame extends JFrame {
                                         progressBar2.setVisible(false);
                                         break;
                                     case "CLOSE":
-                                        try {
-                                            Class.forName("Start");
-                                            socket.close();
-                                            setVisible(false);
-                                        } catch (ClassNotFoundException e) {
-                                            progressThread1.interrupt();
-                                            progressThread2.interrupt();
-                                            serverThread.interrupt();
-                                            System.exit(0);
-                                        }
+                                        progressThread1.interrupt();
+                                        progressThread2.interrupt();
+                                        serverThread.interrupt();
+                                        System.exit(0);
                                 }
                             }
                         } catch (IOException ignored) {
