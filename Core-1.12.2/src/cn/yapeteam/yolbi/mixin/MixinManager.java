@@ -11,7 +11,6 @@ import org.objectweb.asm_9_2.tree.ClassNode;
 
 import javax.swing.*;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Map;
@@ -38,13 +37,12 @@ public class MixinManager {
         add("MixinAbstractClientPlayerForEventLook");
     }
 
-    public static void destroyClient() throws IOException {
+    public static void destroyClient() {
         Map<String, byte[]> map = mixinTransformer.getOldBytes();
         for (ClassNode mixin : mixins) {
             Class<?> targetClass = Objects.requireNonNull(Mixin.Helper.getAnnotation(mixin)).value();
             if (targetClass != null) {
                 byte[] bytes = map.get(targetClass.getName());
-                Files.write(new File(dir, targetClass.getName()).toPath(), bytes);
                 int code = JVMTIWrapper.instance.redefineClass(targetClass, bytes);
                 Logger.success("Redefined {}, Return Code {}.", targetClass, code);
             }

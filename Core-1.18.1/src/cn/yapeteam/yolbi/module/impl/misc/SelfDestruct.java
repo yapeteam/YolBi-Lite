@@ -1,11 +1,10 @@
 package cn.yapeteam.yolbi.module.impl.misc;
 
+import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.mixin.MixinManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
-
-import java.io.IOException;
 
 public class SelfDestruct extends Module {
     public SelfDestruct() {
@@ -14,11 +13,13 @@ public class SelfDestruct extends Module {
 
     public void onEnable() {
         try {
-            enabled = false;
+            setEnabled(false);
+            new Exception().printStackTrace();
             if (mc.screen != null) mc.setScreen(null);
             MixinManager.destroyClient();
             YolBi.instance.shutdown();
-        } catch (IOException ignored) {
+        } catch (Throwable e) {
+            Logger.exception(e);
         }
     }
 }

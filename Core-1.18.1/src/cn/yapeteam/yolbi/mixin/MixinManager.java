@@ -45,7 +45,14 @@ public class MixinManager {
             Class<?> targetClass = Objects.requireNonNull(Mixin.Helper.getAnnotation(mixin)).value();
             if (targetClass != null) {
                 byte[] bytes = map.get(targetClass.getName());
-                Files.write(new File(dir, targetClass.getName()).toPath(), bytes);
+                int code = JVMTIWrapper.instance.redefineClass(targetClass, bytes);
+                Logger.success("Redefined {}, Return Code {}.", targetClass, code);
+            }
+        }
+        for (ASMTransformer transformer : transformers) {
+            Class<?> targetClass = transformer.getTarget();
+            if (targetClass != null) {
+                byte[] bytes = map.get(targetClass.getName());
                 int code = JVMTIWrapper.instance.redefineClass(targetClass, bytes);
                 Logger.success("Redefined {}, Return Code {}.", targetClass, code);
             }
@@ -95,6 +102,8 @@ public class MixinManager {
             Logger.success("Redefined {}, Return Code {}.", targetClass, code);
             Thread.sleep(200);
         }
+        for (String s : failed)
+            Logger.error("Failed to apply patch: {}", s);
         SocketSender.send("E2");
     }
 

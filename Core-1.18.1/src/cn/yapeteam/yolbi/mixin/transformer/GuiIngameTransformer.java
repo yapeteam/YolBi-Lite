@@ -3,11 +3,11 @@ package cn.yapeteam.yolbi.mixin.transformer;
 
 import cn.yapeteam.ymixin.ASMTransformer;
 import cn.yapeteam.ymixin.utils.Mapper;
-
+import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import cn.yapeteam.yolbi.utils.render.RenderManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Gui;
-
 import org.objectweb.asm_9_2.Opcodes;
 import org.objectweb.asm_9_2.Type;
 import org.objectweb.asm_9_2.tree.*;
@@ -55,5 +55,6 @@ public class GuiIngameTransformer extends ASMTransformer {
     public static void onRender2D(Object poseStack) {
         if (!(poseStack instanceof PoseStack)) throw new RuntimeException("invalid poseStack");
         RenderManager.currentPoseStack = (PoseStack) poseStack;
+        YolBi.instance.getEventManager().post(new EventRender2D());
     }
 }

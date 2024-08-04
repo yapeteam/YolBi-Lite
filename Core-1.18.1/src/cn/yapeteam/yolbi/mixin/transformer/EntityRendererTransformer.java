@@ -28,7 +28,7 @@ public class EntityRendererTransformer extends ASMTransformer {
             AbstractInsnNode a = methodNode.instructions.get(i);
             if (a instanceof MethodInsnNode m) {
                 if (m.owner.equals(Mapper.getObfClass("net/minecraft/util/profiling/ProfilerFiller"))
-                        && m.name.equals(Mapper.map("net/minecraft/util/profiling/ProfilerFiller","popPush","(Ljava/lang/String;)V", Mapper.Type.Method))) {
+                        && m.name.equals(Mapper.map("net/minecraft/util/profiling/ProfilerFiller", "popPush", "(Ljava/lang/String;)V", Mapper.Type.Method))) {
                     //MD: net/minecraft/util/profiling/ProfilerFiller/m_6182_ (Ljava/lang/String;)V net/minecraft/util/profiling/ProfilerFiller/popPush (Ljava/lang/String;)V
                     ldcNode = a;
                 }
@@ -39,12 +39,13 @@ public class EntityRendererTransformer extends ASMTransformer {
 
         list.add(new VarInsnNode(FLOAD, 1));
         list.add(new VarInsnNode(ALOAD, 3));
-        list.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(EntityRendererTransformer.class),"onRender3D","(FLjava/lang/Object;)V"));
+        list.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(EntityRendererTransformer.class), "onRender3D", "(FLjava/lang/Object;)V"));
 
         methodNode.instructions.insert(ldcNode, list);
     }
-    public static void onRender3D(float f,Object pose){
-        RenderManager.currentPoseStack= (PoseStack) pose;
+
+    public static void onRender3D(float f, Object pose) {
+        RenderManager.currentPoseStack = (PoseStack) pose;
         YolBi.instance.getEventManager().post(new EventRender3D(f));
 
     }
@@ -57,11 +58,11 @@ public class EntityRendererTransformer extends ASMTransformer {
         MethodInsnNode min = null;
         for (int i = 0; i < methodNode.instructions.size(); ++i) {
             AbstractInsnNode x = methodNode.instructions.get(i);
-            if(x instanceof MethodInsnNode){
+            if (x instanceof MethodInsnNode) {
                 //MD: net/minecraft/client/multiplayer/MultiPlayerGameMode/m_105286_ ()F net/minecraft/client/multiplayer/MultiPlayerGameMode/getPickRange ()F
-                if(Mapper.map("net/minecraft/client/multiplayer/MultiPlayerGameMode","getPickRange","()F", Mapper.Type.Method).equals(((MethodInsnNode) x).name)&&
-                ((MethodInsnNode) x).owner.equals(Mapper.getObfClass("net/minecraft/client/multiplayer/MultiPlayerGameMode")))
-                    min= (MethodInsnNode) x;
+                if (Mapper.map("net/minecraft/client/multiplayer/MultiPlayerGameMode", "getPickRange", "()F", Mapper.Type.Method).equals(((MethodInsnNode) x).name) &&
+                        ((MethodInsnNode) x).owner.equals(Mapper.getObfClass("net/minecraft/client/multiplayer/MultiPlayerGameMode")))
+                    min = (MethodInsnNode) x;
             }
             if (x instanceof LdcInsnNode) {
                 LdcInsnNode t = (LdcInsnNode) x;
@@ -74,20 +75,21 @@ public class EntityRendererTransformer extends ASMTransformer {
         }
 
         if (ldc == null) return;
-        methodNode.instructions.insert(min,new MethodInsnNode(INVOKESTATIC, Type.getInternalName(EntityRendererTransformer.class), "onBlockReach", "(F)F"));
+        methodNode.instructions.insert(min, new MethodInsnNode(INVOKESTATIC, Type.getInternalName(EntityRendererTransformer.class), "onBlockReach", "(F)F"));
         methodNode.instructions.insert(ldc, new MethodInsnNode(INVOKESTATIC, Type.getInternalName(EntityRendererTransformer.class), "onAttackReach", "()D"));
         methodNode.instructions.remove(ldc);
 
 
     }
 
-    public static double onAttackReach(){
-        EventAttackReach e=new EventAttackReach(3.0d);
+    public static double onAttackReach() {
+        EventAttackReach e = new EventAttackReach(3.0d);
         YolBi.instance.getEventManager().post(e);
         return e.getReach();
     }
-    public static float onBlockReach(float f){
-        EventBlockReach e=new EventBlockReach(f);
+
+    public static float onBlockReach(float f) {
+        EventBlockReach e = new EventBlockReach(f);
         YolBi.instance.getEventManager().post(e);
         return e.getReach();
     }
