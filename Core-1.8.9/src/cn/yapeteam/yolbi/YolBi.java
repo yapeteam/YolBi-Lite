@@ -53,7 +53,8 @@ public class YolBi {
         if (initialized || instance == null) return;
         initialized = true;
         boolean ignored = YOLBI_DIR.mkdirs();
-        instance.eventManager = new EventManager();
+        if (instance.eventManager == null)
+            instance.eventManager = new EventManager();
         instance.commandManager = new CommandManager();
         instance.configManager = new ConfigManager();
         instance.moduleManager = new ModuleManager();
