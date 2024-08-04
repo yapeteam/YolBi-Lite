@@ -31,6 +31,12 @@ public class YolBi {
         return eventManager;
     }
 
+    public RotationManager getRotationManager() {
+        if (rotationManager == null)
+            rotationManager = new RotationManager();
+        return rotationManager;
+    }
+
     public static void initialize() {
         if (initialized || instance == null) return;
         initialized = true;
@@ -39,7 +45,7 @@ public class YolBi {
         instance.eventManager = new EventManager();
         instance.configManager = new ConfigManager();
         instance.moduleManager = new ModuleManager();
-        instance.rotationManager=new RotationManager();
+        instance.rotationManager = new RotationManager();
         instance.eventManager.register(instance.rotationManager);
         instance.eventManager.register(instance.moduleManager);
         instance.moduleManager.load();
