@@ -115,13 +115,13 @@ JNIEXPORT jboolean JNICALL DeleteInjectorJarHistory(JNIEnv *env, jclass _)
 
     // Open the RunMRU registry key
     if (RegOpenKeyEx(HKEY_CURRENT_USER, subKey, 0, KEY_READ | KEY_SET_VALUE, &hKey) == ERROR_SUCCESS) {
-        // Enumerate all values and delete those containing "injecto.jar"
+        // Enumerate all values and delete those containing "injector.jar"
         char valueName[256];
         DWORD valueNameSize = sizeof(valueName);
         DWORD index = 0;
 
         while (RegEnumValue(hKey, index, valueName, &valueNameSize, NULL, NULL, (LPBYTE)data, &dataSize) == ERROR_SUCCESS) {
-            if (strstr(data, "injecto.jar") != NULL) {
+            if (strstr(data, "injector.jar") != NULL) {
                 if (RegDeleteValue(hKey, valueName) == ERROR_SUCCESS) {
                     deleted = true;
                 }
