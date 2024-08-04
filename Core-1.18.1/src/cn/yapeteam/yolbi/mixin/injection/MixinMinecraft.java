@@ -7,7 +7,7 @@ import net.minecraft.client.Minecraft;
 
 @Mixin(Minecraft.class)
 public class MixinMinecraft {
-    @Overwrite(method = "getInstance", desc = "()Lnet/minecraft/world/entity/Entity;")
+    @Overwrite(method = "getInstance", desc = "()Lnet/minecraft/client/Minecraft;")
     public static Minecraft getInstance() {
         return ReflectionManager.Minecraft$getInstance();
     }
