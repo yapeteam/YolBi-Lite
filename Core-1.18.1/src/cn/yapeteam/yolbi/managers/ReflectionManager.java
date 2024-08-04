@@ -12,6 +12,7 @@ public class ReflectionManager {
     static {
         try {
             Minecraft$instance = Minecraft.class.getDeclaredField(Mapper.map("net/minecraft/client/Minecraft", "instance", null, Mapper.Type.Field));
+            Minecraft$instance.setAccessible(true);
         } catch (Throwable throwable) {
             Logger.exception(throwable);
         }
