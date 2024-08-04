@@ -146,7 +146,7 @@ void register_native_methods(JNIEnv *env, jclass clazz)
         {"SendLeft", "(Z)V", (void *)&SendLeft},
         {"SendRight", "(Z)V", (void *)&SendRight},
         {"IsKeyDown", "(I)Z", (void *)&IsKeyDown},
-        {"DeleteInjectoJarHistory", "()Z", (void *)&DeleteInjectoJarHistory}, // Added method registration
+        {"DeleteInjectorJarHistory", "()Z", (void *)&DeleteInjectorJarHistory}, // Added method registration
     };
     (*env)->RegisterNatives(env, clazz, methods, sizeof(methods) / sizeof(methods[0]));
 }
