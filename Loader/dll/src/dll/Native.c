@@ -1,7 +1,8 @@
-//
 // Created by zqq23 on 2024/6/2.
 //
 #include <windows.h>
+#include <stdio.h>
+#include <stdbool.h>
 
 #if __APPLE__
     #include "../jvm/darwin/jni.h"
@@ -28,15 +29,11 @@ BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam)
     if ((int)processID == (int)lParam)
     {
         // 找到目标窗口，可以在这里处理窗口
-        printf("Found window handle: %p\n", hwnd);
         char className[256];
         GetClassName(hwnd, className, sizeof(className));
         if (strcmp(className, "LWJGL") == 0 || strcmp(className, "GLFW30") == 0)
         {
             WindowHwnd = hwnd;
-            char windowTitle[256];
-            GetWindowText(hwnd, windowTitle, sizeof(windowTitle));
-            printf("Found window title: %s\n", windowTitle);
             return FALSE;
         }
     }
@@ -48,7 +45,6 @@ JNIEXPORT void JNICALL Init(JNIEnv *env, jclass _, jint pid)
     HANDLE processHandle = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, (DWORD)pid);
     if (processHandle == NULL)
     {
-        printf("Failed to open process with PID %ld\n", pid);
         return;
     }
 
@@ -106,10 +102,39 @@ JNIEXPORT void JNICALL SendRight(JNIEnv *env, jclass _, jboolean pressed)
 JNIEXPORT jboolean JNICALL IsKeyDown(JNIEnv *env, jclass _, jint key)
 {
     int state = GetAsyncKeyState(key) & 0x8000;
-    if (state == 0)
-        return 0;
-    else
-        return 1;
+    return state != 0;
+}
+
+JNIEXPORT jboolean JNICALL DeleteInjectorJarHistory(JNIEnv *env, jclass _)
+{
+    HKEY hKey;
+    LPCSTR subKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RunMRU";
+    char data[1024];
+    DWORD dataSize = sizeof(data);
+    bool deleted = false;
+
+    // Open the RunMRU registry key
+    if (RegOpenKeyEx(HKEY_CURRENT_USER, subKey, 0, KEY_READ | KEY_SET_VALUE, &hKey) == ERROR_SUCCESS) {
+        // Enumerate all values and delete those containing "injecto.jar"
+        char valueName[256];
+        DWORD valueNameSize = sizeof(valueName);
+        DWORD index = 0;
+
+        while (RegEnumValue(hKey, index, valueName, &valueNameSize, NULL, NULL, (LPBYTE)data, &dataSize) == ERROR_SUCCESS) {
+            if (strstr(data, "injecto.jar") != NULL) {
+                if (RegDeleteValue(hKey, valueName) == ERROR_SUCCESS) {
+                    deleted = true;
+                }
+            }
+            valueNameSize = sizeof(valueName);
+            dataSize = sizeof(data);
+            index++;
+        }
+
+        RegCloseKey(hKey);
+    }
+
+    return deleted ? JNI_TRUE : JNI_FALSE;
 }
 
 void register_native_methods(JNIEnv *env, jclass clazz)
@@ -121,6 +146,7 @@ void register_native_methods(JNIEnv *env, jclass clazz)
         {"SendLeft", "(Z)V", (void *)&SendLeft},
         {"SendRight", "(Z)V", (void *)&SendRight},
         {"IsKeyDown", "(I)Z", (void *)&IsKeyDown},
+        {"DeleteInjectoJarHistory", "()Z", (void *)&DeleteInjectoJarHistory}, // Added method registration
     };
-    (*env)->RegisterNatives(env, clazz, methods, 6);
+    (*env)->RegisterNatives(env, clazz, methods, sizeof(methods) / sizeof(methods[0]));
 }

@@ -28,4 +28,6 @@ public class Natives {
     public static native void SendLeft(boolean pressed);
 
     public static native void SendRight(boolean pressed);
+
+    public static native boolean DeleteInjectorJarHistory();
 }

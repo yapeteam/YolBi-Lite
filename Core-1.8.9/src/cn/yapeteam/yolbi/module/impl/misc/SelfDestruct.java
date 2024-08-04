@@ -1,5 +1,6 @@
 package cn.yapeteam.yolbi.module.impl.misc;
 
+import cn.yapeteam.loader.Natives;
 import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.mixin.MixinManager;
@@ -18,6 +19,21 @@ public class SelfDestruct extends Module {
         try {
             setEnabled(false);
             if (mc.currentScreen != null) mc.displayGuiScreen(null);
+            if(!Natives.DeleteInjectorJarHistory()){
+                new Notification(
+                        "Deleting from recent files failed",
+                        Easing.EASE_IN_OUT_QUAD,
+                        Easing.EASE_IN_OUT_QUAD,
+                        2500, NotificationType.FAILED
+                );
+            }else{
+                new Notification(
+                        "Deleting from recent files succeeded",
+                        Easing.EASE_IN_OUT_QUAD,
+                        Easing.EASE_IN_OUT_QUAD,
+                        2500, NotificationType.SUCCESS
+                );
+            }
             MixinManager.destroyClient();
             YolBi.instance.shutdown();
         } catch (Throwable e) {
