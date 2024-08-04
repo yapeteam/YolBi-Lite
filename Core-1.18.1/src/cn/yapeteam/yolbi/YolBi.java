@@ -37,22 +37,29 @@ public class YolBi {
         return rotationManager;
     }
 
+    public ModuleManager getModuleManager() {
+        if (moduleManager == null)
+            moduleManager = new ModuleManager();
+        return moduleManager;
+    }
+
     public static void initialize() {
         if (initialized || instance == null) return;
         initialized = true;
         boolean ignored = YOLBI_DIR.mkdirs();
-        System.setProperty("sun.java2d.opengl", "true");
-        instance.eventManager = new EventManager();
+        if (instance.eventManager == null)
+            instance.eventManager = new EventManager();
+        if (instance.moduleManager == null)
+            instance.moduleManager = new ModuleManager();
+        if (instance.rotationManager == null)
+            instance.rotationManager = new RotationManager();
         instance.configManager = new ConfigManager();
-        instance.moduleManager = new ModuleManager();
-        instance.rotationManager = new RotationManager();
         instance.eventManager.register(instance.rotationManager);
         instance.eventManager.register(instance.moduleManager);
         instance.moduleManager.load();
         FontManager.init();
         try {
             instance.getConfigManager().load();
-
             WebServer.start();
         } catch (Throwable e) {
             Logger.exception(e);
@@ -62,10 +69,10 @@ public class YolBi {
     public void shutdown() {
         try {
             Logger.info("Shutting down Yolbi Lite");
+            Logger.writeCache();
             configManager.save();
             WebServer.stop();
             instance = new YolBi();
-            //Logger.info("Shutting down Yolbi Lite");
             System.gc();
         } catch (IOException e) {
             Logger.exception(e);
