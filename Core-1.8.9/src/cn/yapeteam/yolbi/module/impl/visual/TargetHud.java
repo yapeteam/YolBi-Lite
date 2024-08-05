@@ -140,7 +140,7 @@ public class TargetHud extends Module {
         if (info != null) {
             mc.getTextureManager().bindTexture(info.getLocationSkin());
             drawPlayerHead(x + 2, y + 2, 36, 36);
-        }f
+        }
 
         // 绘制目标玩家名字
         String name = target.getName();
