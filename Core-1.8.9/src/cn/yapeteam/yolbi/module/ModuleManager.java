@@ -64,7 +64,8 @@ public class ModuleManager {
         modules.add(new MurdererFinder());
         modules.add(new NameTags());
         modules.add(new FastPlace());
-
+        modules.add(new ClickAssist());
+        modules.add(new HitSelect());
         modules.sort((m1, m2) -> -Integer.compare(m2.getName().charAt(0), m1.getName().charAt(0)));
     }
 

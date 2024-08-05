@@ -23,7 +23,7 @@ public class ClickAssist extends Module {
     public static NumberValue<Integer> MaxClickHold = new NumberValue("Max Click Hold", 12, 0, 20, 1);
     public static NumberValue<Integer> MinClickHold = new NumberValue("Min Click Hold", 8, 0, 20, 1);
 
-    protected ClickAssist() {
+    public ClickAssist() {
         super("ClickAssist", ModuleCategory.COMBAT);
         addValues(ExtraLeft, ExtraRight, MaxClickDelay, MinClickDelay, MaxClickHold, MinClickHold);
     }
