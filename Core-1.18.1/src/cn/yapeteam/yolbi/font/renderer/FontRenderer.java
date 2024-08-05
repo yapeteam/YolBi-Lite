@@ -135,7 +135,7 @@ public class FontRenderer implements Closeable, AbstractFontRenderer {
 
     @Override
     public void drawStringWithShadow(PoseStack stack, String text, double x, double y, int color) {
-        this.drawString(stack, text, x + 0.5, y + 0.5, 0xff000000);
+        this.drawString(stack, text, x + 0.5F, y + 0.5F, 0xff000000);
         this.drawString(stack, text, x, y, color);
     }
 
@@ -181,7 +181,7 @@ public class FontRenderer implements Closeable, AbstractFontRenderer {
     }
 
     public void drawString(PoseStack stack, String s, float x, float y, float r, float g, float b, float a) {
-        drawString(stack, s, x, y, r, g, b, a, false, 0);
+        drawString(stack, s, x, y, r, g, b, a, false);
     }
 
     public static double roundToDecimal(double n, int point) {
@@ -192,7 +192,7 @@ public class FontRenderer implements Closeable, AbstractFontRenderer {
         return Math.round(n * factor) / factor;
     }
 
-    public void drawString(PoseStack stack, String s, float x, float y, float r, float g, float b, float a, boolean gradient, int offset) {
+    public void drawString(PoseStack stack, String s, float x, float y, float r, float g, float b, float a, boolean gradient) {
         if (prebakeGlyphsFuture != null && !prebakeGlyphsFuture.isDone()) {
             try {
                 prebakeGlyphsFuture.get();
@@ -214,6 +214,7 @@ public class FontRenderer implements Closeable, AbstractFontRenderer {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 
+        RenderSystem.setShaderColor(r, g, b, a);
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);//getPositionTexColorProgram
 
         Tesselator tesselator = Tesselator.getInstance();
@@ -248,7 +249,7 @@ public class FontRenderer implements Closeable, AbstractFontRenderer {
                 }
 
                 if (gradient) {
-                    Color color = Color.green;//HudEditor.getColor(i * offset);
+                    Color color = Color.green;//getColor(i * offset);
                     r2 = color.getRed() / 255f;
                     g2 = color.getGreen() / 255f;
                     b2 = color.getBlue() / 255f;
@@ -292,14 +293,13 @@ public class FontRenderer implements Closeable, AbstractFontRenderer {
                     float v1 = (float) glyph.v() / owner.height;
                     float u2 = (float) (glyph.u() + glyph.width()) / owner.width;
                     float v2 = (float) (glyph.v() + glyph.height()) / owner.height;
-
                     bufferBuilder.vertex(mat, xo + 0, yo + h, 0).uv(u1, v2).color(cr, cg, cb, a).endVertex();
                     bufferBuilder.vertex(mat, xo + w, yo + h, 0).uv(u2, v2).color(cr, cg, cb, a).endVertex();
                     bufferBuilder.vertex(mat, xo + w, yo + 0, 0).uv(u2, v1).color(cr, cg, cb, a).endVertex();
                     bufferBuilder.vertex(mat, xo + 0, yo + 0, 0).uv(u1, v1).color(cr, cg, cb, a).endVertex();
                 }
+                tesselator.end();
                 //bb.end();
-                tesselator.end();//bufferBuilder.end();
                 //BufferedReader.(bb.end());//drawWithGlobalProgram
             }
             GLYPH_PAGE_CACHE.clear();
@@ -440,12 +440,12 @@ public class FontRenderer implements Closeable, AbstractFontRenderer {
         return getStringHeight(str);
     }
 
-    public void drawGradientString(PoseStack stack, String s, float x, float y, int offset) {
-        drawString(stack, s, x, y, 255, 255, 255, 255, true, offset);
+    public void drawGradientString(PoseStack stack, String s, float x, float y) {
+        drawString(stack, s, x, y, 255, 255, 255, 255, true);
     }
 
-    public void drawGradientCenteredString(PoseStack matrices, String s, float x, float y, int i) {
-        drawGradientString(matrices, s, (float) (x - getStringWidth(s) / 2f), y, i);
+    public void drawGradientCenteredString(PoseStack matrices, String s, float x, float y) {
+        drawGradientString(matrices, s, (float) (x - getStringWidth(s) / 2f), y);
     }
 
     @AllArgsConstructor

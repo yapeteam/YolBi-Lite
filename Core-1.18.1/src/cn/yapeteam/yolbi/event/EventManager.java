@@ -77,9 +77,14 @@ public class EventManager {
         return (E) e;
     }
 
-    private record ListeningMethod(Method method, Object instance) {
-        private ListeningMethod {
+    private static class ListeningMethod {
+        private final Method method;
+        private final Object instance;
+
+        private ListeningMethod(Method method, Object instance) {
             method.setAccessible(true);
+            this.method = method;
+            this.instance = instance;
         }
     }
 }

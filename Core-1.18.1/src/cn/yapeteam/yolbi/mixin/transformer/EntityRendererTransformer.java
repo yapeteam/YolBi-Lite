@@ -26,9 +26,10 @@ public class EntityRendererTransformer extends ASMTransformer {
         AbstractInsnNode ldcNode = null;
         for (int i = 0; i < methodNode.instructions.size(); ++i) {
             AbstractInsnNode a = methodNode.instructions.get(i);
-            if (a instanceof MethodInsnNode m) {
-                if (m.owner.equals(Mapper.getObfClass("net/minecraft/util/profiling/ProfilerFiller"))
-                        && m.name.equals(Mapper.map("net/minecraft/util/profiling/ProfilerFiller", "popPush", "(Ljava/lang/String;)V", Mapper.Type.Method))) {
+            if (a instanceof MethodInsnNode) {
+                MethodInsnNode ma = (MethodInsnNode) a;
+                if (ma.owner.equals(Mapper.getObfClass("net/minecraft/util/profiling/ProfilerFiller"))
+                        && ma.name.equals(Mapper.map("net/minecraft/util/profiling/ProfilerFiller", "popPush", "(Ljava/lang/String;)V", Mapper.Type.Method))) {
                     //MD: net/minecraft/util/profiling/ProfilerFiller/m_6182_ (Ljava/lang/String;)V net/minecraft/util/profiling/ProfilerFiller/popPush (Ljava/lang/String;)V
                     ldcNode = a;
                 }

@@ -14,6 +14,7 @@ import static com.mojang.blaze3d.vertex.DefaultVertexFormat.POSITION_COLOR;
 
 public class RenderManager {
     public static PoseStack currentPoseStack;
+
     public static void drawRoundedRect(int left, int top, int right, int bottom, int radius, int color) {
         left += radius;
         top += radius;
@@ -61,6 +62,7 @@ public class RenderManager {
         endRender();
 
     }
+
     public static double roundToDecimal(double n, int point) {
         if (point == 0) {
             return Math.floor(n);
@@ -68,6 +70,7 @@ public class RenderManager {
         double factor = Math.pow(10, point);
         return Math.round(n * factor) / factor;
     }
+
     public static void renderRoundedQuadInternal2(Matrix4f matrix, float cr, float cg, float cb, float ca, float cr1, float cg1, float cb1, float ca1, float cr2, float cg2, float cb2, float ca2, float cr3, float cg3, float cb3, float ca3, double fromX, double fromY, double toX, double toY, double radC1) {
         BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.TRIANGLE_FAN, POSITION_COLOR);
@@ -82,20 +85,25 @@ public class RenderManager {
                 float sin = (float) (Math.sin(rad1) * rad);
                 float cos = (float) (Math.cos(rad1) * rad);
                 switch (i) {
-                    case 0 ->
-                            bufferBuilder.vertex(matrix, (float) current[0] + sin, (float) current[1] + cos, 0.0F).color(cr1, cg1, cb1, ca1);
-                    case 1 ->
-                            bufferBuilder.vertex(matrix, (float) current[0] + sin, (float) current[1] + cos, 0.0F).color(cr, cg, cb, ca);
-                    case 2 ->
-                            bufferBuilder.vertex(matrix, (float) current[0] + sin, (float) current[1] + cos, 0.0F).color(cr2, cg2, cb2, ca2);
-                    default ->
-                            bufferBuilder.vertex(matrix, (float) current[0] + sin, (float) current[1] + cos, 0.0F).color(cr3, cg3, cb3, ca3);
+                    case 0:
+                        bufferBuilder.vertex(matrix, (float) current[0] + sin, (float) current[1] + cos, 0.0F).color(cr1, cg1, cb1, ca1);
+                        break;
+                    case 1:
+                        bufferBuilder.vertex(matrix, (float) current[0] + sin, (float) current[1] + cos, 0.0F).color(cr, cg, cb, ca);
+                        break;
+                    case 2:
+                        bufferBuilder.vertex(matrix, (float) current[0] + sin, (float) current[1] + cos, 0.0F).color(cr2, cg2, cb2, ca2);
+                        break;
+                    default:
+                        bufferBuilder.vertex(matrix, (float) current[0] + sin, (float) current[1] + cos, 0.0F).color(cr3, cg3, cb3, ca3);
+                        break;
                 }
             }
         }
         Tesselator.getInstance().end();
         //BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
     }
+
     public static void drawRound(PoseStack matrices, float x, float y, float width, float height, float radius, Color color) {
         renderRoundedQuad(matrices, color, x, y, width + x, height + y, radius, 4);
     }
@@ -106,8 +114,9 @@ public class RenderManager {
         renderRoundedQuadInternal(matrices.last().pose(), c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f, fromX, fromY, toX, toY, radius, samples);
         endRender();
     }
+
     public static void renderRoundedQuadInternal(Matrix4f matrix, float cr, float cg, float cb, float ca, double fromX, double fromY, double toX, double toY, double radius, double samples) {
-        Tesselator tl=Tesselator.getInstance();
+        Tesselator tl = Tesselator.getInstance();
         BufferBuilder bufferBuilder = tl.getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.TRIANGLE_FAN, POSITION_COLOR);
         double[][] map = new double[][]{new double[]{toX - radius, toY - radius, radius}, new double[]{toX - radius, fromY + radius, radius}, new double[]{fromX + radius, fromY + radius, radius}, new double[]{fromX + radius, toY - radius, radius}};
@@ -127,10 +136,12 @@ public class RenderManager {
         }
         tl.end();
     }
+
     private static void endRender() {
         RenderSystem.disableBlend();
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
     }
+
     private static void setupRender() {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
