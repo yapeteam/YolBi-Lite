@@ -7,6 +7,7 @@ import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.utils.player.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import org.lwjgl.input.Keyboard;
 
@@ -33,12 +34,12 @@ public class MurdererFinder extends Module {
     }
 
     public int findSword(EntityPlayer target) {
-
         for (int i = 36; i < 45; i++) {
-            Item item = target.inventoryContainer.getSlot(i).getStack().getItem();
-            if (target.inventoryContainer.getSlot(i).getStack() != null && item instanceof ItemSword) {
+            ItemStack stack = target.inventoryContainer.getSlot(i).getStack();
+            if (stack == null) continue;
+            Item item = stack.getItem();
+            if (target.inventoryContainer.getSlot(i).getStack() != null && item instanceof ItemSword)
                 return i;
-            }
         }
         return -1;
     }

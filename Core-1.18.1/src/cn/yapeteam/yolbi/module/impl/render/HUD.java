@@ -35,7 +35,7 @@ public class HUD extends Module {
         AbstractFontRenderer font = YolBi.instance.getFontManager().getPingFang18();
         int yCount = 0;
         List<Module> mods = YolBi.instance.getModuleManager().getModules();
-        ArrayList<Module> running = new ArrayList<Module>();
+        ArrayList<Module> running = new ArrayList<>();
 
         for (Module m : mods) {
             if (m.isEnabled())
@@ -59,7 +59,7 @@ public class HUD extends Module {
                 RenderManager.drawRoundedRect(sr.getScaledWidth(), (int) (6 + offset), sr.getScaledWidth() + 2, (int) (2 + offset + font.getFontHeight("F")), 3, new Color(color).getRGB());
                 RenderManager.drawRoundedRect((int) (sr.getScaledWidth() - font.getStringWidth(m.getName()) - 6), (int) offset + 6, sr.getScaledWidth(), (int) (font.getFontHeight("F") + offset + 4), 5, new Color(225, 242, 255, 105).getRGB());
                 font.drawStringWithShadow(RenderManager.currentPoseStack, m.getName(),
-                        (float) (sr.getScaledWidth() - font.getStringWidth(m.getName()) - 4), (int) (offset + 8), color);
+                        sr.getScaledWidth() - font.getStringWidth(m.getName()) - 4, offset + 8, color);
                 yCount++;
             }
         }

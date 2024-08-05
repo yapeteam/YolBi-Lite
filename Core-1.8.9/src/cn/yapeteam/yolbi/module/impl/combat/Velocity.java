@@ -65,7 +65,7 @@ public class Velocity extends Module {
 //                            Easing.EASE_IN_OUT_QUAD,
 //                            2500, NotificationType.WARNING
 //                    )
-//            );
+//            );//等下
 
             if ((new Random((long) (Math.random() * 114514)).nextInt(101) <= probability.getValue())) {
                 jumpreset();
