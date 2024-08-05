@@ -17,6 +17,7 @@ import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.MathHelper;
 
 import java.util.Comparator;
 import java.util.List;
@@ -62,7 +63,11 @@ public class AimAssist extends Module {
         if (target == null) return;
         if (ClickAim.getValue() && !Natives.IsKeyDown(VirtualKeyBoard.VK_LBUTTON))
             return;
-        RotationManager.setRotations(new Vector2f((float) RotationManager.getRotationsNeeded(target)[0], (float) RotationManager.getRotationsNeeded(target)[1]), rotSpeed.getValue() * 0.1);
+        Vector2f movementcalc = RotationManager.calcsmooth(new Vector2f(mc.thePlayer.rotationYaw,mc.thePlayer.rotationPitch), new Vector2f((float) RotationManager.getRotationsNeeded(target)[0], (float) RotationManager.getRotationsNeeded(target)[1]), rotSpeed.getValue() * 0.1);
+        double deltayaw = MathHelper.wrapAngleTo180_float(movementcalc.getX() - mc.thePlayer.rotationYaw); // we need to wrap this to -180 to 180 and multiply base on the speed
+        double deltapitch = MathHelper.wrapAngleTo180_float(movementcalc.getY() - mc.thePlayer.rotationPitch);
+        mc.thePlayer.rotationYaw += deltayaw * rotSpeed.getValue() * 0.1;
+        mc.thePlayer.rotationPitch += deltapitch* rotSpeed.getValue() * 0.1;
     }
 
     @Override

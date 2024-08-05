@@ -59,8 +59,6 @@ public class ModuleManager {
         modules.add(new ClientTheme());
         modules.add(new ESP());
         modules.add(new HeadUpDisplay());
-        modules.add(new JFrameESP2D());
-        modules.add(new JFrameRenderer());
         modules.add(new PacketDebug());
         modules.add(new TargetHud());
         modules.add(new MurdererFinder());

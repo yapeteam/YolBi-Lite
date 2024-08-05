@@ -11,7 +11,6 @@ import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.managers.TargetManager;
 import cn.yapeteam.yolbi.module.ModuleManager;
 import cn.yapeteam.yolbi.notification.NotificationManager;
-import cn.yapeteam.yolbi.render.ExternalFrame;
 import cn.yapeteam.yolbi.server.WebServer;
 import cn.yapeteam.yolbi.shader.Shader;
 import cn.yapeteam.yolbi.utils.render.ESPUtil;
@@ -35,7 +34,6 @@ public class YolBi {
     private NotificationManager notificationManager;
     private BotManager botManager;
     private TargetManager targetManager;
-    private ExternalFrame jFrameRenderer;
 
     public EventManager getEventManager() {
         if (eventManager == null)
@@ -61,7 +59,6 @@ public class YolBi {
         instance.botManager = new BotManager();
         instance.targetManager = new TargetManager();
         instance.notificationManager = new NotificationManager();
-        instance.jFrameRenderer = new ExternalFrame(0, 0, 0, 0);
         instance.eventManager.register(instance.commandManager);
         instance.eventManager.register(instance.moduleManager);
         instance.eventManager.register(instance.botManager);
@@ -82,7 +79,6 @@ public class YolBi {
     public void shutdown() {
         try {
             Logger.info("Shutting down Yolbi Lite");
-            instance.jFrameRenderer.close();
             configManager.save();
             WebServer.stop();
             instance = new YolBi();
