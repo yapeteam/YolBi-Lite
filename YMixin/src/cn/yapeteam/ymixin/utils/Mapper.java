@@ -62,7 +62,7 @@ public class Mapper {
                         obf = StringUtil.split(values[0], "/");
                         friendly = StringUtil.split(values[2], "/");
                         dest.add(new Map(
-                                values[2].replace("/" + friendly[friendly.length - 1], ""),
+                                values[2].substring(0, values[2].length() - friendly[friendly.length - 1].length() - 1),
                                 friendly[friendly.length - 1],
                                 values[3],
                                 obf[obf.length - 1],
@@ -72,7 +72,7 @@ public class Mapper {
                         obf = StringUtil.split(values[0], "/");
                         friendly = StringUtil.split(values[1], "/");
                         dest.add(new Map(
-                                values[1].replace("/" + friendly[friendly.length - 1], ""),
+                                values[1].substring(0, values[1].length() - friendly[friendly.length - 1].length() - 1),
                                 friendly[friendly.length - 1],
                                 null,
                                 obf[obf.length - 1],
@@ -85,7 +85,7 @@ public class Mapper {
                     friendly = ASMUtils.split(values[2], "/");
                     dest.add(
                             new Map(
-                                    values[2].replace("/" + friendly[friendly.length - 1], ""),
+                                    values[2].substring(0, values[2].length() - friendly[friendly.length - 1].length() - 1),
                                     friendly[friendly.length - 1],
                                     values[3],
                                     obf[obf.length - 1],
@@ -153,11 +153,11 @@ public class Mapper {
     }
 
     private static void traverseSupers(Class<?> clz, List<Class<?>> result) {
-        if (clz == null || clz == Object.class) return;
+        if (clz == null || clz == Object.class || result.contains(clz)) return;
         result.add(clz);
+        traverseSupers(clz.getSuperclass(), result);
         for (Class<?> anInterface : clz.getInterfaces())
             traverseSupers(anInterface, result);
-        traverseSupers(clz.getSuperclass(), result);
     }
 
     public static String mapWithSuper(String owner, String name, String desc, Type type) {
@@ -169,6 +169,7 @@ public class Mapper {
         mappings.stream().filter(m ->
                 m.type == type && m.name.equals(name) && (desc == null || m.desc == null || desc.equals(m.desc))
         ).forEach(m -> owners.put(m.owner, m));
+        owners.values().forEach(map -> System.out.println(map.owner));
         String mappedOwner = map(null, owner, null, Type.Class);
         Class<?> theClass = YMixin.classProvider.get(mappedOwner);
         List<Class<?>> classes = new ArrayList<>();

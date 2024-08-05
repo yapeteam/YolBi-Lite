@@ -132,9 +132,11 @@ public class FontRenderer implements Closeable, AbstractFontRenderer {
         maps.add(gm);
         return gm;
     }
-    public void drawStringWithShadow(PoseStack stack,String text, float x, float y, int color) {
-        this.drawString(stack,text, x + 0.5F, y + 0.5F, 0xff000000);
-        this.drawString(stack,text, x, y, color);
+
+    @Override
+    public void drawStringWithShadow(PoseStack stack, String text, double x, double y, int color) {
+        this.drawString(stack, text, x + 0.5, y + 0.5, 0xff000000);
+        this.drawString(stack, text, x, y, color);
     }
 
     private Glyph locateGlyph0(char glyph) {

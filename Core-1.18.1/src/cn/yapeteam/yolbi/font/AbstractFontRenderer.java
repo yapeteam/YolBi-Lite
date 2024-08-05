@@ -13,11 +13,15 @@ public interface AbstractFontRenderer {
 
     void drawCenteredString(PoseStack stack, String text, double x, double y, Color color);
 
+    void drawStringWithShadow(PoseStack stack, String text, double x, double y, int color);
+
     void drawString(PoseStack stack, String text, double x, double y, int color);
 
     void drawString(PoseStack stack, String text, double x, double y, Color color);
 
     double getHeight();
+
+    double getFontHeight(String s);
 
     Font getFont();
 }

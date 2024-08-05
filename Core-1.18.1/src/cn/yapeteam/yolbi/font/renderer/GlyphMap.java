@@ -1,6 +1,6 @@
 package cn.yapeteam.yolbi.font.renderer;
 
-import cn.yapeteam.yolbi.utils.reflect.ReflectUtils;
+import cn.yapeteam.yolbi.managers.ReflectionManager;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.chars.Char2ObjectArrayMap;
@@ -135,7 +135,7 @@ class GlyphMap {
             int ow = bi.getWidth();
             int oh = bi.getHeight();
             NativeImage image = new NativeImage(RGBA, ow, oh, false);
-            long ptr = ReflectUtils.NativeImage$pixels(image);
+            long ptr = ReflectionManager.NativeImage$pixels(image);
             IntBuffer backingBuffer = MemoryUtil.memIntBuffer(ptr, image.getWidth() * image.getHeight());
             int off = 0;
             Object _d;

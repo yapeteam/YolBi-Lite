@@ -2,12 +2,13 @@ package cn.yapeteam.yolbi;
 
 import cn.yapeteam.loader.VersionInfo;
 import cn.yapeteam.loader.logger.Logger;
+import cn.yapeteam.yolbi.command.CommandManager;
 import cn.yapeteam.yolbi.config.ConfigManager;
 import cn.yapeteam.yolbi.event.EventManager;
+import cn.yapeteam.yolbi.font.FontManager;
 import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.module.ModuleManager;
 import cn.yapeteam.yolbi.server.WebServer;
-import cn.yapeteam.yolbi.utils.font.FontManager;
 import lombok.Getter;
 
 import java.io.File;
@@ -24,6 +25,8 @@ public class YolBi {
     private ConfigManager configManager;
     private ModuleManager moduleManager;
     private RotationManager rotationManager;
+    private CommandManager commandManager;
+    private FontManager fontManager;
 
     public EventManager getEventManager() {
         if (eventManager == null)
@@ -43,21 +46,30 @@ public class YolBi {
         return moduleManager;
     }
 
+    public FontManager getFontManager() {
+        if (fontManager == null)
+            fontManager = new FontManager();
+        return fontManager;
+    }
+
     public static void initialize() {
         if (initialized || instance == null) return;
         initialized = true;
         boolean ignored = YOLBI_DIR.mkdirs();
         if (instance.eventManager == null)
             instance.eventManager = new EventManager();
+        if (instance.fontManager == null)
+            instance.fontManager = new FontManager();
         if (instance.moduleManager == null)
             instance.moduleManager = new ModuleManager();
         if (instance.rotationManager == null)
             instance.rotationManager = new RotationManager();
+        instance.commandManager = new CommandManager();
         instance.configManager = new ConfigManager();
         instance.eventManager.register(instance.rotationManager);
         instance.eventManager.register(instance.moduleManager);
+        instance.eventManager.register(instance.commandManager);
         instance.moduleManager.load();
-        FontManager.init();
         try {
             instance.getConfigManager().load();
             WebServer.start();

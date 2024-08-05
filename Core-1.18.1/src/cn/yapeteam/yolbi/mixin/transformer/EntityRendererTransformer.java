@@ -52,7 +52,6 @@ public class EntityRendererTransformer extends ASMTransformer {
 
     @Inject(method = "pick", desc = "(F)V")
     public void getMouseOver(MethodNode methodNode) {
-
         InsnList list = new InsnList();
         LdcInsnNode ldc = null;
         MethodInsnNode min = null;
