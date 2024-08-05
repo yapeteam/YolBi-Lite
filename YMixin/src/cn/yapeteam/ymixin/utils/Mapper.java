@@ -169,7 +169,6 @@ public class Mapper {
         mappings.stream().filter(m ->
                 m.type == type && m.name.equals(name) && (desc == null || m.desc == null || desc.equals(m.desc))
         ).forEach(m -> owners.put(m.owner, m));
-        owners.values().forEach(map -> System.out.println(map.owner));
         String mappedOwner = map(null, owner, null, Type.Class);
         Class<?> theClass = YMixin.classProvider.get(mappedOwner);
         List<Class<?>> classes = new ArrayList<>();
