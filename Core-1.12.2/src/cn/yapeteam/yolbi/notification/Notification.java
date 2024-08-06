@@ -4,6 +4,7 @@ import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.animation.EasingAnimation;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
+import cn.yapeteam.yolbi.utils.render.GradientBlur;
 import cn.yapeteam.yolbi.utils.render.RenderUtil;
 import lombok.Getter;
 import lombok.val;
@@ -12,8 +13,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import java.awt.*;
 
 /**
- * @author yuxiangll & wzhy233
- * IntelliJ IDEA
+ * @author yuxiangll & TIMER_err
  */
 @Getter
 public class Notification {
@@ -28,21 +28,21 @@ public class Notification {
     public Notification(String content, Easing easingX, Easing easingY, long duration, NotificationType type) {
         this.content = content;
         this.animationX = new EasingAnimation(easingX, (long) (duration * 0.2), 0);
-        this.animationY = new EasingAnimation(easingY, (long) (duration * 0.2), 0);
+        this.animationY = new EasingAnimation(easingY, 400, 0);
         this.animationProcess = new EasingAnimation(Easing.EASE_OUT_QUART, (long) (duration * 0.8), 0);
         this.type = type;
         switch (type) {
             case INIT:
-                color = new Color(121, 114, 255);
+                color = new Color(0, 119, 255);
                 break;
             case SUCCESS:
-                color = new Color(121, 222, 134);
+                color = new Color(44, 253, 37);
                 break;
             case FAILED:
                 color = new Color(255, 0, 0);
                 break;
             case WARNING:
-                color = new Color(255, 114, 0);
+                color = new Color(255, 196, 0);
                 break;
             default:
                 color = new Color(-1);
@@ -55,7 +55,9 @@ public class Notification {
         return System.currentTimeMillis() >= begin_time + duration;
     }
 
-    public void render(ScaledResolution sr, int index) {
+    private final GradientBlur blur = new GradientBlur(GradientBlur.Type.LR);
+
+    public void render(ScaledResolution sr, int index, float partialTicks) {
         val font = YolBi.instance.getFontManager().getJelloRegular18();
 
         float width = (float) (font.getStringWidth(content) + 5 * 2);
@@ -72,9 +74,10 @@ public class Notification {
         }
 
         float x = (float) animationX.getValue(targetX), y = (float) animationY.getValue(targetY);
-        RenderUtil.drawBloomShadow(x, y, width, height, 6, ColorUtil.reAlpha(color, 0.6f), true);
-        RenderUtil.drawRect(x, y, x + width, y + height, ColorUtil.reAlpha(color.darker(), 0.6f).getRGB());
-        RenderUtil.drawRect(x, y, x + width * animationProcess.getValue(1), y + height, color.getRGB());
-        font.drawString(content, x + 5, y + (height - font.getHeight()) / 2f, type == null ? 0 : -1);
+        blur.updatePixels(x, y, width, height);
+        RenderUtil.drawBloomShadow(x, y, width, height, 6, 5, new Color(0, 0, 0).getRGB(), false);
+        blur.render(x, y, width, height, partialTicks, 1);
+        RenderUtil.drawRect(x, y, x + width * animationProcess.getValue(1), y + height, ColorUtil.reAlpha(color, 0.6f).getRGB());
+        font.drawString(content, x + 5, y + (height - font.getHeight()) / 2f, type == NotificationType.WARNING ? 0 : -1);
     }
 }

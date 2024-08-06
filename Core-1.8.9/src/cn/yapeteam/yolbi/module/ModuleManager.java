@@ -66,13 +66,11 @@ public class ModuleManager {
     private void onKey(EventKey e) {
         modules.stream().filter(m -> m.getKey() == e.getKey()).collect(Collectors.toList()).forEach(module -> {
             module.toggle();
-            if (getModule(NotificationModule.class).isEnabled()) {
-                YolBi.instance.getNotificationManager().post(new Notification(
-                        module.getName() + (module.isEnabled() ? " Enabled" : " Disabled"),
-                        Easing.EASE_OUT_BACK, Easing.EASE_IN_OUT_CUBIC,
-                        3000, module.isEnabled() ? NotificationType.SUCCESS : NotificationType.FAILED
-                ));
-            }
+            YolBi.instance.getNotificationManager().post(new Notification(
+                    module.getName() + (module.isEnabled() ? " Enabled" : " Disabled"),
+                    Easing.EASE_OUT_BACK, Easing.EASE_IN_OUT_CUBIC,
+                    3000, module.isEnabled() ? NotificationType.SUCCESS : NotificationType.FAILED
+            ));
         });
     }
 

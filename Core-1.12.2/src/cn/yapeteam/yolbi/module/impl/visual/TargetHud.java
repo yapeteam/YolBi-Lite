@@ -1,184 +1,75 @@
-//package cn.yapeteam.yolbi.module.impl.visual;
-//
-//import cn.yapeteam.loader.api.module.ModuleCategory;
-//import cn.yapeteam.loader.api.module.ModuleInfo;
-//import cn.yapeteam.yolbi.event.Listener;
-//import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
-//import cn.yapeteam.yolbi.event.impl.render.EntityDamageEvent;
-//import cn.yapeteam.yolbi.module.Module;
-//import net.minecraft.client.Minecraft;
-//import net.minecraft.client.gui.FontRenderer;
-//import net.minecraft.client.gui.Gui;
-//import net.minecraft.client.network.NetworkPlayerInfo;
-//import net.minecraft.client.renderer.GlStateManager;
-//import net.minecraft.entity.EntityLivingBase;
-//import net.minecraft.entity.player.EntityPlayer;
-//import org.lwjgl.opengl.GL11;
-//
-//import java.awt.*;
-//
-//@ModuleInfo(name = "TargetHUD", category = ModuleCategory.VISUAL)
-//public class TargetHud extends Module {
-//    private final Minecraft mc = Minecraft.getMinecraft();
-//    private boolean showOnPlayerHit = true; // 击中玩家时显示
-//    private boolean showOnMobHit = true; // 击中生物时显示
-//    private EntityLivingBase currentTarget = null;
-//
-//    @Listener
-//    public void onRender2D(EventRender2D event) {
-//        if (currentTarget == null) {
-//            return;
-//        }
-//
-//        int x = 200; // HUD 的 X 位置
-//        int y = 200; // HUD 的 Y 位置
-//        int width = 120; // HUD 的宽度
-//        int height = 40; // HUD 的高度
-//
-//        FontRenderer fr = mc.fontRendererObj;
-//
-//        // 绘制背景
-//        drawRect(x, y, x + width, y + height, new Color(0, 0, 0, 120).getRGB());
-//
-//        // 绘制目标玩家头像
-//        NetworkPlayerInfo info = mc.getNetHandler().getPlayerInfo(currentTarget.getUniqueID());
-//        if (info != null) {
-//            mc.getTextureManager().bindTexture(info.getLocationSkin());
-//            drawPlayerHead(x + 2, y + 2, 36, 36);
-//        }
-//
-//        // 绘制目标玩家名字
-//        String name = currentTarget.getName();
-//        fr.drawStringWithShadow(name, x + 40, y + 2, -1);
-//
-//        // 绘制目标玩家生命值
-//        float health = currentTarget.getHealth();
-//        float maxHealth = currentTarget.getMaxHealth();
-//        int healthColor = Color.HSBtoRGB(Math.max(0.0F, Math.min(health / maxHealth, 1.0F)) / 3.0F, 1.0F, 1.0F);
-//        String healthStr = String.format("%.1f", health / 2.0F);
-//        fr.drawStringWithShadow("❤ " + healthStr, x + 40, y + 14, healthColor);
-//
-//        // 绘制与目标玩家的距离
-//        double distance = mc.thePlayer.getDistanceToEntity(currentTarget);
-//        String distanceStr = String.format("%.1f", distance);
-//        fr.drawStringWithShadow("距离: " + distanceStr, x + 40, y + 26, -1);
-//
-//        // 绘制目标玩家护甲值
-//        int armor = currentTarget.getTotalArmorValue();
-//        fr.drawStringWithShadow("护甲: " + armor, x + 80, y + 26, -1);
-//    }
-//
-//    @Listener
-//    public void onEntityDamage(EntityDamageEvent event) {
-//        if (event.getAttacker() == mc.thePlayer) {
-//            if (event.getTarget() instanceof EntityPlayer && showOnPlayerHit) {
-//                currentTarget = (EntityLivingBase) event.getTarget();
-//            } else if (event.getTarget() instanceof EntityLivingBase && showOnMobHit) {
-//                currentTarget = (EntityLivingBase) event.getTarget();
-//            }
-//        }
-//    }
-//
-//    private void drawPlayerHead(int x, int y, int width, int height) {
-//        GL11.glPushMatrix();
-//        GlStateManager.enableBlend();
-//        GL11.glTranslatef(x, y, 0);
-//        GL11.glScalef(width / 32.0F, height / 32.0F, 1);
-//        Gui.drawModalRectWithCustomSizedTexture(0, 0, 8, 8, 8, 8, 64, 64);
-//        GL11.glPopMatrix();
-//    }
-//
-//    private void drawRect(int left, int top, int right, int bottom, int color) {
-//        Gui.drawRect(left, top, right, bottom, color);
-//    }
-//}
-
-
 package cn.yapeteam.yolbi.module.impl.visual;
 
+import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
+import cn.yapeteam.yolbi.font.AbstractFontRenderer;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.network.NetworkPlayerInfo;
+import cn.yapeteam.yolbi.module.impl.combat.KillAura;
+import cn.yapeteam.yolbi.utils.animation.Easing;
+import cn.yapeteam.yolbi.utils.animation.EasingAnimation;
+import cn.yapeteam.yolbi.utils.render.GradientBlur;
+import cn.yapeteam.yolbi.utils.render.RenderUtil;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
-import java.util.Objects;
 
-// code by wzhy233
 public class TargetHud extends Module {
     public TargetHud() {
         super("TargetHUD", ModuleCategory.VISUAL);
     }
 
-    private final Minecraft mc = Minecraft.getMinecraft();
-
     @Listener
     public void onRender2D(EventRender2D event) {
-        EntityLivingBase target = getTarget();
-        if (!(target instanceof EntityPlayer))
-            return;
-
-        int x = 200; // HUD 的 X 位置
-        int y = 200; // HUD 的 Y 位置
-        int width = 120; // HUD 的宽度
-        int height = 40; // HUD 的高度
-
-        FontRenderer fr = mc.fontRendererObj;
-
-        // 绘制背景
-        drawRect(x, y, x + width, y + height, new Color(0, 0, 0, 120).getRGB());
-
-        // 绘制目标玩家头像
-        NetworkPlayerInfo info = Objects.requireNonNull(mc.getConnection()).getPlayerInfo(target.getUniqueID());
-        mc.getTextureManager().bindTexture(info.getLocationSkin());
-        drawPlayerHead(x + 2, y + 2, 36, 36);
-
-        // 绘制目标玩家名字
-        String name = target.getName();
-        fr.drawStringWithShadow(name, x + 40, y + 2, -1);
-
-        // 绘制目标玩家生命值
-        float health = target.getHealth();
-        float maxHealth = target.getMaxHealth();
-        int healthColor = Color.HSBtoRGB(Math.max(0.0F, Math.min(health / maxHealth, 1.0F)) / 3.0F, 1.0F, 1.0F);
-        String healthStr = String.format("%.1f", health / 2.0F);
-        fr.drawStringWithShadow("❤ " + healthStr, x + 40, y + 14, healthColor);
-
-        // 绘制与目标玩家的距离
-        double distance = mc.player.getDistanceToEntity(target);
-        String distanceStr = String.format("%.1f", distance);
-        fr.drawStringWithShadow("Distant: " + distanceStr, x + 40, y + 26, -1);
-
-        // 绘制目标玩家护甲值
-        int armor = target.getTotalArmorValue();
-        fr.drawStringWithShadow("Armor: " + armor, x + 120, y + 26, -1);
+        float x = event.getScaledresolution().getScaledWidth() / 2f;
+        float y = event.getScaledresolution().getScaledHeight() / 2f;
+        KillAura ka = YolBi.instance.getModuleManager().getModule(KillAura.class);
+        EntityLivingBase entityLiving = ka.getTarget();
+        if (entityLiving == null && mc.objectMouseOver.entityHit instanceof EntityLivingBase)
+            entityLiving = (EntityLivingBase) mc.objectMouseOver.entityHit;
+        this.render(x, y, entityLiving, event.getPartialTicks());
     }
 
-    private EntityLivingBase getTarget() {
-        if (mc.pointedEntity instanceof EntityLivingBase) {
-            return (EntityLivingBase) mc.pointedEntity;
+    private final EasingAnimation animate = new EasingAnimation(Easing.EASE_OUT_QUINT, 500, 0);
+    private final EasingAnimation animateAlpha = new EasingAnimation(Easing.EASE_OUT_QUINT, 600, 0);
+    private final GradientBlur blur = new GradientBlur(GradientBlur.Type.LR);
+
+    private EntityLivingBase lastTarget = null;
+
+    public void render(float x, float y, EntityLivingBase target, float partialTicks) {
+        AbstractFontRenderer font = YolBi.instance.getFontManager().getPingFang18();
+        float alpha = (float) animateAlpha.getValue(target == null ? 0 : 1);
+        if (target != null) lastTarget = target;
+        if (lastTarget == null || alpha == 0) return;
+        String text = lastTarget.getDisplayName().getFormattedText();
+        float height = 40;
+        float width = (float) ((lastTarget instanceof AbstractClientPlayer ? height + 5 : 0) + 5 + font.getStringWidth(text) + 5);
+        width = Math.max(120, width);
+        blur.updatePixels(x, y, width, height);
+        float animatedHealthBar = (float) animate.getValue(lastTarget.getHealth());
+        RenderUtil.drawBloomShadow(x, y, width, height, 8, 6, new Color(0, 0, 0, alpha).darker().getRGB(), false);
+        blur.render(x, y, width, height, partialTicks, alpha);
+        RenderUtil.drawRect2(x, y, Math.min(width * animatedHealthBar / lastTarget.getMaxHealth(), width), height, new Color(0, 0, 0, 80 / 255f * alpha).getRGB());
+        if (lastTarget instanceof AbstractClientPlayer) {
+            float headSize = height - 5 * 2;
+            drawBigHead(x + (height - headSize) / 2f, y + (height - headSize) / 2f, headSize, headSize, alpha, (AbstractClientPlayer) lastTarget);
+            font.drawString(text, x + height + 5, y + (height - font.getStringHeight("A")) / 2f, new Color(1, 1, 1, alpha));
+        } else {
+            font.drawString(text, x + 5, y + (height - font.getStringHeight("A")) / 2f, new Color(1, 1, 1, alpha));
         }
-        return null;
     }
 
-    private void drawPlayerHead(int x, int y, int width, int height) {
-        GL11.glPushMatrix();
+    protected void drawBigHead(float x, float y, float width, float height, float alpha, AbstractClientPlayer player) {
+        double offset = -(player.hurtTime * 23);
+        RenderUtil.glColor(new Color(255, (int) (255 + offset), (int) (255 + offset), (int) (alpha * 255)).getRGB());
         GlStateManager.enableBlend();
-        GL11.glTranslatef(x, y, 0);
-        GL11.glScalef(width / 32.0F, height / 32.0F, 1);
-        Gui.drawModalRectWithCustomSizedTexture(0, 0, 8, 8, 8, 8, 64, 64);
-        GL11.glPopMatrix();
-    }
-
-    private void drawRect(int left, int top, int right, int bottom, int color) {
-        Gui.drawRect(left, top, right, bottom, color);
+        GlStateManager.blendFunc(770, 771);
+        mc.getTextureManager().bindTexture(player.getLocationSkin());
+        RenderUtil.drawScaledCustomSizeModalRect(x, y, 8.0f, 8.0f, 8, 8, width, height, 64.0f, 64.0f);
+        GlStateManager.disableBlend();
+        GlStateManager.resetColor();
     }
 }

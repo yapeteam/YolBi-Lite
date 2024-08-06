@@ -22,6 +22,11 @@ public class ColorUtil {
         return ColorUtil.blend(color1, color2, 0.5);
     }
 
+    public static Color blend(int color1, int color2) {
+        return ColorUtil.blend(ColorUtil.colorFromInt(color1), ColorUtil.colorFromInt(color2), 0.5);
+    }
+
+
     public static int reAlpha(int color, float alpha) {
         return reAlpha(new Color(color), alpha).getRGB();
     }

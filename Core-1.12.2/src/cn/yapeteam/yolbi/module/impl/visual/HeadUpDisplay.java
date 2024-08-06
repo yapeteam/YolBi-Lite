@@ -11,6 +11,7 @@ import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.utils.render.GradientBlur;
 import cn.yapeteam.yolbi.utils.render.RenderUtil;
 import lombok.val;
+import net.minecraft.client.gui.ScaledResolution;
 
 import java.awt.*;
 import java.util.Comparator;
@@ -32,21 +33,20 @@ public class HeadUpDisplay extends Module {
         addValues(waterMark, moduleList, font);
     }
 
-    static class ModuleNode {
-        private final GradientBlur gradientBlur = new GradientBlur();
+    private static class ModuleNode {
+        // private final GradientBlur gradientBlur = new GradientBlur();
+        GradientBlur blur = new GradientBlur(GradientBlur.Type.TB);
 
-        public void render(AbstractFontRenderer font, String text, ClientTheme theme, float x, float y, float width, float height, int index) {
-            gradientBlur.set(x, y, (int) width, (int) height, 50);
+        public void render(AbstractFontRenderer font, String text, ClientTheme theme, float x, float y, float width, float height, int index, float partialTicks) {
             RenderUtil.drawBloomShadow(x, y, width, height, 12, 15, theme.getColor(index * 200), true, true, true, false, false);
-            RenderUtil.drawGradientRectTB(x, y, x + width, y + height, gradientBlur.getBColor().getRGB(), gradientBlur.getTColor().getRGB());
+            blur.render(x, y, width, height, partialTicks, 1);
             RenderUtil.drawRect(x, y, x + width, y + height, new Color(0, 0, 0, 66).getRGB());
             font.drawString(text, x + 2.5, y + (height - font.getHeight()) / 2f + 0.5f, new Color(0, 0, 0).getRGB());
             font.drawString(text, x + 2, y + (height - font.getHeight()) / 2f, theme.getColor(index * 200), false);
         }
 
-        public void update() {
-            gradientBlur.getPixels();
-            gradientBlur.update(GradientBlur.ColorMode.TOP_RIGHT);
+        public void update(float x, float y, float width, float height) {
+            blur.updatePixels(x, y, width, height);
         }
     }
 
@@ -62,22 +62,37 @@ public class HeadUpDisplay extends Module {
                     .filter(Module::isEnabled)
                     .sorted(Comparator.comparingInt(m -> (int) -font.getStringWidth(m.getName() + (m.getSuffix() != null ? " " + m.getSuffix() : ""))))
                     .collect(Collectors.toList());
-            moduleNodes.values().forEach(ModuleNode::update);
             for (int i = 0; i < activeModules.size(); i++) {
                 Module module = activeModules.get(i);
-                String text = module.getName() + (module.getSuffix() != null ? " " + module.getSuffix() : "");
-                double width = font.getStringWidth(text) + 4;
-                float height = 12;
-                double x = e.getScaledresolution().getScaledWidth() - width;
-                double y = i * height;
+                double[] rect = getRect(getText(module), i, e.getScaledresolution());
                 ModuleNode node = moduleNodes.get(module);
                 if (node == null) {
                     node = new ModuleNode();
                     moduleNodes.put(module, node);
                 }
-                node.render(font, text, theme, (float) x, (float) y, (float) width, height, i);
+                node.update((float) rect[0], (float) rect[1], (float) rect[2], (float) rect[3]);
+            }
+            for (int i = 0; i < activeModules.size(); i++) {
+                Module module = activeModules.get(i);
+                String text = module.getName() + (module.getSuffix() != null ? " " + module.getSuffix() : "");
+                double[] rect = getRect(getText(module), i, e.getScaledresolution());
+                ModuleNode node = moduleNodes.get(module);
+                node.render(font, text, theme, (float) rect[0], (float) rect[1], (float) rect[2], (float) rect[3], i, e.getPartialTicks());
             }
         }
+    }
+
+    private double[] getRect(String text, int index, ScaledResolution sr) {
+        val font = getFontRenderer();
+        double width = font.getStringWidth(text) + 4;
+        float height = 12;
+        double x = sr.getScaledWidth() - width;
+        double y = index * height;
+        return new double[]{x, y, width, height};
+    }
+
+    private String getText(Module module) {
+        return module.getName() + (module.getSuffix() != null ? " " + module.getSuffix() : "");
     }
 
     private AbstractFontRenderer getFontRenderer() {

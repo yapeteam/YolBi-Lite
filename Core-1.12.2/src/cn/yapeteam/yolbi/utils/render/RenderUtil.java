@@ -29,7 +29,6 @@ public class RenderUtil {
     private static final Minecraft mc = Minecraft.getMinecraft();
     private static final Map<Integer, Integer> shadowCache = new HashMap<>();
 
-
     public static void enableGL2D() {
         GL11.glDisable(2929);
         GL11.glEnable(3042);
@@ -147,6 +146,21 @@ public class RenderUtil {
         GL11.glDisable(2848);
         GL11.glShadeModel(7424);
     }
+
+
+    public static void drawScaledCustomSizeModalRect(float x, float y, float u, float v, float uWidth, float vHeight, float width, float height, float tileWidth, float tileHeight) {
+        float f = 1.0F / tileWidth;
+        float f1 = 1.0F / tileHeight;
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder worldrenderer = tessellator.getBuffer();
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        worldrenderer.pos(x, y + height, 0.0).tex(u * f, (v + vHeight) * f1).endVertex();
+        worldrenderer.pos(x + width, y + height, 0.0).tex((u + uWidth) * f, (v + vHeight) * f1).endVertex();
+        worldrenderer.pos(x + width, y, 0.0).tex((u + uWidth) * f, v * f1).endVertex();
+        worldrenderer.pos(x, y, 0.0).tex(u * f, v * f1).endVertex();
+        tessellator.draw();
+    }
+
 
     public static double interpolate(double current, double old, double scale) {
         return (old + (current - old) * scale);
@@ -535,11 +549,11 @@ public class RenderUtil {
         GL11.glShadeModel(7425);
         GL11.glBegin(7);
         color(topColor);
-        GL11.glVertex2f(x, y1);
-        GL11.glVertex2f(x1, y1);
-        color(bottomColor);
         GL11.glVertex2f(x1, y);
         GL11.glVertex2f(x, y);
+        color(bottomColor);
+        GL11.glVertex2f(x, y1);
+        GL11.glVertex2f(x1, y1);
         GL11.glEnd();
         GL11.glShadeModel(7424);
         disableGL2D();
@@ -822,8 +836,8 @@ public class RenderUtil {
     public static void drawBloomShadow(float x, float y, float width, float height, int blurRadius, int roundRadius, int color, boolean scissor, boolean cut_top, boolean cut_bottom, boolean cut_left, boolean cut_right) {
         width = width + blurRadius * 2;
         height = height + blurRadius * 2;
-        x -= blurRadius + 0.75f;
-        y -= blurRadius + 0.75f;
+        x -= blurRadius - 0.5f;
+        y -= blurRadius - 0.5f;
 
         int identifier = Arrays.deepHashCode(new Object[]{width, height, blurRadius, roundRadius});
         if (!shadowCache.containsKey(identifier)) {
@@ -831,7 +845,7 @@ public class RenderUtil {
             if (height <= 0) height = 1;
             BufferedImage original = new BufferedImage((int) width, (int) height, BufferedImage.TYPE_INT_ARGB_PRE);
             Graphics g = original.getGraphics();
-            g.setColor(new Color(-1));
+            g.setColor(ColorUtil.colorFromInt(-1));
             g.fillRoundRect(blurRadius, blurRadius, (int) (width - blurRadius * 2), (int) (height - blurRadius * 2), roundRadius, roundRadius);
             g.dispose();
             GaussianFilter op = new GaussianFilter(blurRadius);
