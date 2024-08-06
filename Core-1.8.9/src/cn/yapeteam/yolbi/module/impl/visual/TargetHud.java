@@ -9,7 +9,7 @@ import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.module.impl.combat.KillAura;
 import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.animation.EasingAnimation;
-import cn.yapeteam.yolbi.utils.render.JelloBlur;
+import cn.yapeteam.yolbi.utils.render.GradientBlur;
 import cn.yapeteam.yolbi.utils.render.RenderUtil;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -35,7 +35,7 @@ public class TargetHud extends Module {
 
     private final EasingAnimation animate = new EasingAnimation(Easing.EASE_OUT_QUINT, 500, 0);
     private final EasingAnimation animateAlpha = new EasingAnimation(Easing.EASE_OUT_QUINT, 600, 0);
-    private final JelloBlur blur = new JelloBlur(JelloBlur.Type.LR);
+    private final GradientBlur blur = new GradientBlur(GradientBlur.Type.LR);
 
     private EntityLivingBase lastTarget = null;
 

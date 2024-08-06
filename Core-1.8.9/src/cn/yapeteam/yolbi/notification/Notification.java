@@ -4,7 +4,7 @@ import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.animation.EasingAnimation;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
-import cn.yapeteam.yolbi.utils.render.JelloBlur;
+import cn.yapeteam.yolbi.utils.render.GradientBlur;
 import cn.yapeteam.yolbi.utils.render.RenderUtil;
 import lombok.Getter;
 import lombok.val;
@@ -56,7 +56,7 @@ public class Notification {
         return System.currentTimeMillis() >= begin_time + duration;
     }
 
-    private final JelloBlur blur = new JelloBlur(JelloBlur.Type.LR);
+    private final GradientBlur blur = new GradientBlur(GradientBlur.Type.LR);
 
     public void render(ScaledResolution sr, int index, float partialTicks) {
         val font = YolBi.instance.getFontManager().getJelloRegular18();

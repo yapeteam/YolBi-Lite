@@ -8,7 +8,7 @@ import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
-import cn.yapeteam.yolbi.utils.render.JelloBlur;
+import cn.yapeteam.yolbi.utils.render.GradientBlur;
 import cn.yapeteam.yolbi.utils.render.RenderUtil;
 import lombok.val;
 import net.minecraft.client.gui.ScaledResolution;
@@ -35,7 +35,7 @@ public class HeadUpDisplay extends Module {
 
     private static class ModuleNode {
         // private final GradientBlur gradientBlur = new GradientBlur();
-        JelloBlur blur = new JelloBlur(JelloBlur.Type.TB);
+        GradientBlur blur = new GradientBlur(GradientBlur.Type.TB);
 
         public void render(AbstractFontRenderer font, String text, ClientTheme theme, float x, float y, float width, float height, int index, float partialTicks) {
             RenderUtil.drawBloomShadow(x, y, width, height, 12, 15, theme.getColor(index * 200), true, true, true, false, false);
