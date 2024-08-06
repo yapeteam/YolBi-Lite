@@ -8,6 +8,8 @@ import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
+import cn.yapeteam.yolbi.utils.animation.Easing;
+import cn.yapeteam.yolbi.utils.animation.EasingAnimation;
 import cn.yapeteam.yolbi.utils.render.GradientBlur;
 import cn.yapeteam.yolbi.utils.render.RenderUtil;
 import lombok.val;
@@ -33,20 +35,38 @@ public class HeadUpDisplay extends Module {
         addValues(waterMark, moduleList, font);
     }
 
-    private static class ModuleNode {
-        // private final GradientBlur gradientBlur = new GradientBlur();
-        GradientBlur blur = new GradientBlur(GradientBlur.Type.TB);
+    private class ModuleNode {
+        private final Module module;
 
-        public void render(AbstractFontRenderer font, String text, ClientTheme theme, float x, float y, float width, float height, int index, float partialTicks) {
-            RenderUtil.drawBloomShadow(x, y, width, height, 12, 15, theme.getColor(index * 200), true, true, true, false, false);
-            blur.render(x, y, width, height, partialTicks, 1);
-            RenderUtil.drawRect(x, y, x + width, y + height, new Color(0, 0, 0, 66).getRGB());
-            font.drawString(text, x + 2.5, y + (height - font.getHeight()) / 2f + 0.5f, new Color(0, 0, 0).getRGB());
-            font.drawString(text, x + 2, y + (height - font.getHeight()) / 2f, theme.getColor(index * 200), false);
+        private ModuleNode(Module module) {
+            this.module = module;
         }
 
-        public void update(float x, float y, float width, float height) {
-            blur.updatePixels(x, y, width, height);
+        private final GradientBlur blur = new GradientBlur(GradientBlur.Type.TB);
+        private final EasingAnimation animationY = new EasingAnimation(Easing.EASE_OUT_EXPO, 1000, 0);
+        private final EasingAnimation animationX = new EasingAnimation(Easing.EASE_IN_OUT_QUAD, 1000, 0);
+        private float x, y, width, height;
+        private int color;
+
+        public float update(ClientTheme theme, float y, int index, ScaledResolution sr) {
+            double[] rect = getRect(getText(module), index, sr);
+            x = (float) animationX.getValue(module.isEnabled() ? rect[0] : sr.getScaledWidth());
+            this.y = (float) animationY.getValue(y);
+            width = (float) rect[2];
+            height = (float) rect[3];
+            blur.updatePixels(x, this.y, width, height);
+            color = theme.getColor((int) (this.y * 5));
+            return module.isEnabled() || !animationX.isFinished() ? this.y + height : this.y;
+        }
+
+        public void render(float partialTicks) {
+            AbstractFontRenderer font = getFontRenderer();
+            RenderUtil.drawBloomShadow(x, y, width, height, 12, 15, color, false);
+            blur.render(x, y, width, height, partialTicks, 1);
+            RenderUtil.drawRect(x, y, x + width, y + height, new Color(0, 0, 0, 66).getRGB());
+            String text = getText(module);
+            font.drawString(text, x + 2.5, y + (height - font.getHeight()) / 2f + 0.5f, new Color(0, 0, 0).getRGB());
+            font.drawString(text, x + 2, y + (height - font.getHeight()) / 2f, color, false);
         }
     }
 
@@ -59,25 +79,21 @@ public class HeadUpDisplay extends Module {
             font.drawString(YolBi.name + " " + YolBi.version, 2, 2, -1);
         if (moduleList.getValue()) {
             List<Module> activeModules = YolBi.instance.getModuleManager().getModules().stream()
-                    .filter(Module::isEnabled)
-                    .sorted(Comparator.comparingInt(m -> (int) -font.getStringWidth(m.getName() + (m.getSuffix() != null ? " " + m.getSuffix() : ""))))
+                    .sorted(Comparator.comparingInt(m -> (int) -font.getStringWidth(getText(m))))
                     .collect(Collectors.toList());
+            float y = 0;
             for (int i = 0; i < activeModules.size(); i++) {
                 Module module = activeModules.get(i);
-                double[] rect = getRect(getText(module), i, e.getScaledresolution());
                 ModuleNode node = moduleNodes.get(module);
                 if (node == null) {
-                    node = new ModuleNode();
+                    node = new ModuleNode(module);
                     moduleNodes.put(module, node);
                 }
-                node.update((float) rect[0], (float) rect[1], (float) rect[2], (float) rect[3]);
+                y = node.update(theme, y, i, e.getScaledresolution());
             }
-            for (int i = 0; i < activeModules.size(); i++) {
-                Module module = activeModules.get(i);
-                String text = module.getName() + (module.getSuffix() != null ? " " + module.getSuffix() : "");
-                double[] rect = getRect(getText(module), i, e.getScaledresolution());
+            for (Module module : activeModules) {
                 ModuleNode node = moduleNodes.get(module);
-                node.render(font, text, theme, (float) rect[0], (float) rect[1], (float) rect[2], (float) rect[3], i, e.getPartialTicks());
+                node.render(e.getPartialTicks());
             }
         }
     }
