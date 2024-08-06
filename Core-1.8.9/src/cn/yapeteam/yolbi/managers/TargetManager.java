@@ -12,6 +12,7 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +26,7 @@ public class TargetManager implements IMinecraft {
             combatSettingsModule = YolBi.instance.getModuleManager().getModule(CombatSettings.class);
         if (antiBotModule == null)
             antiBotModule = YolBi.instance.getModuleManager().getModule(AntiBot.class);
+        if (mc.theWorld == null) return new ArrayList<>();
         return mc.theWorld.loadedEntityList.stream()
                 .filter(entity -> entity instanceof EntityLivingBase)
                 .filter(

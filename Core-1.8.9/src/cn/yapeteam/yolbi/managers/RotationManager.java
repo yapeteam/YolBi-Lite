@@ -2,7 +2,10 @@ package cn.yapeteam.yolbi.managers;
 
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.Priority;
-import cn.yapeteam.yolbi.event.impl.player.*;
+import cn.yapeteam.yolbi.event.impl.player.EventJump;
+import cn.yapeteam.yolbi.event.impl.player.EventLook;
+import cn.yapeteam.yolbi.event.impl.player.EventMotion;
+import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
 import cn.yapeteam.yolbi.event.impl.render.EventRotationsRender;
 import cn.yapeteam.yolbi.utils.IMinecraft;
 import cn.yapeteam.yolbi.utils.player.PlayerUtil;
@@ -137,15 +140,6 @@ public class RotationManager implements IMinecraft {
             yaw = lastYaw + moveYaw;
             pitch = lastPitch + movePitch;
 
-            // Apply gravity and wind
-            yaw += winpos(moveYaw);
-            pitch += winpos(movePitch);
-
-            // Calculate Bezier curve points
-            Vector2f bezierPoint = calculateBezierPoint(new Vector2f(lastYaw, lastPitch), new Vector2f(yaw, pitch), 0.5f);
-            yaw = bezierPoint.x;
-            pitch = bezierPoint.y;
-
             final Vector2f fixedRotations = applySensitivityPatch(new Vector2f(yaw, pitch));
 
             /*
@@ -158,7 +152,7 @@ public class RotationManager implements IMinecraft {
         rotations = new Vector2f(yaw, pitch);
     }
 
-    public static Vector2f calcsmooth(final Vector2f lastRotation, final Vector2f targetRotation, final double speed) {
+    public static Vector2f calcSmooth(final Vector2f lastRotation, final Vector2f targetRotation, final double speed) {
         float yaw = targetRotation.x;
         float pitch = targetRotation.y;
         final float lastYaw = lastRotation.x;

@@ -42,6 +42,6 @@ public class NotificationManager {
                     i--;
                 }
         for (int i = 0; i < notificationArrayList.size(); i++)
-            notificationArrayList.get(i).render(sr, i);
+            notificationArrayList.get(i).render(sr, i, event.getPartialTicks());
     }
 }

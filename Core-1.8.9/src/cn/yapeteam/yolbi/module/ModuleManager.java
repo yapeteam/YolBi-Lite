@@ -32,13 +32,7 @@ public class ModuleManager {
         modules.add(new AimAssist());
         modules.add(new AntiBot());
         modules.add(new AutoClicker());
-        modules.add(new Backtrack());
-        //modules.add(new IRC()); // To be tested
-        // modules.add(new BlatantVelocity());
-        // modules.add(new Criticals());
-        // modules.add(new FakeLag());
         modules.add(new KillAura());
-        // modules.add(new Reach());
         modules.add(new CombatSettings());
         modules.add(new Velocity());
         modules.add(new WTap());
@@ -51,7 +45,6 @@ public class ModuleManager {
         modules.add(new Eagle());
         modules.add(new NoSlow());
         modules.add(new MoveFix());
-        //modules.add(new Scaffold());
         modules.add(new Sprint());
         modules.add(new StrafeFix());
         modules.add(new NotificationModule());
@@ -76,7 +69,7 @@ public class ModuleManager {
                 YolBi.instance.getNotificationManager().post(new Notification(
                         module.getName() + (module.isEnabled() ? " Enabled" : " Disabled"),
                         Easing.EASE_OUT_BACK, Easing.EASE_IN_OUT_CUBIC,
-                        1500, module.isEnabled() ? NotificationType.SUCCESS : NotificationType.FAILED
+                        3000, module.isEnabled() ? NotificationType.SUCCESS : NotificationType.FAILED
                 ));
             }
         });

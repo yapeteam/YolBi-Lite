@@ -181,6 +181,7 @@ public class KillAura extends Module {
         stopBlock();
         if (RotationManager.active)
             RotationManager.stop();
+        target = null;
     }
 
     @Listener

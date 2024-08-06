@@ -95,15 +95,13 @@ public class GradientBlur {
                 bottom = ColorUtil.colorFromInt(colorTopRight);
                 break;
         }
+        bRed += (int) (((bottom.getRed() - bRed) / 5) + 0.1);
+        bGreen += (int) (((bottom.getGreen() - bGreen) / 5) + 0.1);
+        bBlue += (int) (((bottom.getBlue() - bBlue) / 5) + 0.1);
 
-
-        bRed += (int) (((bottom.getRed() - bRed) / (5)) + 0.1);
-        bGreen += (int) (((bottom.getGreen() - bGreen) / (5)) + 0.1);
-        bBlue += (int) (((bottom.getBlue() - bBlue) / (5)) + 0.1);
-
-        tRed += (int) (((top.getRed() - tRed) / (5)) + 0.1);
-        tGreen += (int) (((top.getGreen() - tGreen) / (5)) + 0.1);
-        tBlue += (int) (((top.getBlue() - tBlue) / (5)) + 0.1);
+        tRed += (int) (((top.getRed() - tRed) / 5) + 0.1);
+        tGreen += (int) (((top.getGreen() - tGreen) / 5) + 0.1);
+        tBlue += (int) (((top.getBlue() - tBlue) / 5) + 0.1);
 
         tRed = Math.min(tRed, 255);
         tGreen = Math.min(tGreen, 255);

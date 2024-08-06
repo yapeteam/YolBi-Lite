@@ -4,6 +4,7 @@ import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.animation.EasingAnimation;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
+import cn.yapeteam.yolbi.utils.render.JelloBlur;
 import cn.yapeteam.yolbi.utils.render.RenderUtil;
 import lombok.Getter;
 import lombok.val;
@@ -33,16 +34,16 @@ public class Notification {
         this.type = type;
         switch (type) {
             case INIT:
-                color = new Color(121, 114, 255);
+                color = new Color(0, 119, 255);
                 break;
             case SUCCESS:
-                color = new Color(121, 222, 134);
+                color = new Color(44, 253, 37);
                 break;
             case FAILED:
                 color = new Color(255, 0, 0);
                 break;
             case WARNING:
-                color = new Color(255, 114, 0);
+                color = new Color(255, 196, 0);
                 break;
             default:
                 color = new Color(-1);
@@ -55,7 +56,9 @@ public class Notification {
         return System.currentTimeMillis() >= begin_time + duration;
     }
 
-    public void render(ScaledResolution sr, int index) {
+    private final JelloBlur blur = new JelloBlur(JelloBlur.Type.LR);
+
+    public void render(ScaledResolution sr, int index, float partialTicks) {
         val font = YolBi.instance.getFontManager().getJelloRegular18();
 
         float width = (float) (font.getStringWidth(content) + 5 * 2);
@@ -72,9 +75,10 @@ public class Notification {
         }
 
         float x = (float) animationX.getValue(targetX), y = (float) animationY.getValue(targetY);
-        RenderUtil.drawBloomShadow(x, y, width, height, 6, ColorUtil.reAlpha(color, 0.6f), true);
-        RenderUtil.drawRect(x, y, x + width, y + height, ColorUtil.reAlpha(color.darker(), 0.6f).getRGB());
-        RenderUtil.drawRect(x, y, x + width * animationProcess.getValue(1), y + height, color.getRGB());
-        font.drawString(content, x + 5, y + (height - font.getHeight()) / 2f, type == null ? 0 : -1);
+        blur.updatePixels(x, y, width, height);
+        RenderUtil.drawBloomShadow(x, y, width, height, 6, color, false);
+        blur.render(x, y, width, height, partialTicks, 1);
+        RenderUtil.drawRect(x, y, x + width * animationProcess.getValue(1), y + height, ColorUtil.reAlpha(color, 0.6f).getRGB());
+        font.drawString(content, x + 5, y + (height - font.getHeight()) / 2f, type == NotificationType.WARNING ? 0 : -1);
     }
 }
