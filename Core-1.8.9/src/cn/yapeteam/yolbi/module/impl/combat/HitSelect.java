@@ -12,7 +12,7 @@ import net.minecraft.entity.Entity;
 
 public class HitSelect extends Module {
 
-    public static final ModeValue<String> preference = new ModeValue<>("Move Speed", "Closest", "Move speed", "KB reduction", "Critical hits");
+    public static final ModeValue<String> preference = new ModeValue<>("Move Speed", "Closest", "Closest", "Move speed", "KB reduction", "Critical hits");
     public static final ModeValue<String> mode = new ModeValue<>("Mode", "Pause", "Pause", "Active");
     public static final NumberValue<Integer> delay = new NumberValue<>("Delay", 420, 300, 500, 1);
     public static final NumberValue<Integer> chance = new NumberValue<>("Chance", 80, 0, 100, 1);

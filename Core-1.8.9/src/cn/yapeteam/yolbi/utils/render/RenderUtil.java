@@ -979,8 +979,8 @@ public class RenderUtil {
     public static void drawBloomShadow(float x, float y, float width, float height, int blurRadius, int roundRadius, int color, boolean scissor, boolean cut_top, boolean cut_bottom, boolean cut_left, boolean cut_right) {
         width = width + blurRadius * 2;
         height = height + blurRadius * 2;
-        x -= blurRadius;
-        y -= blurRadius;
+        x -= blurRadius - 0.5f;
+        y -= blurRadius - 0.5f;
 
         int identifier = Arrays.deepHashCode(new Object[]{width, height, blurRadius, roundRadius});
         if (!shadowCache.containsKey(identifier)) {
@@ -1015,6 +1015,6 @@ public class RenderUtil {
                 blurred = new ShaderScissor(cut_x, cut_y, cut_w, cut_h, blurred, 1, false, false).generate();
             shadowCache.put(identifier, TextureUtil.uploadTextureImageAllocate(TextureUtil.glGenTextures(), blurred, true, false));
         }
-        drawImage(shadowCache.get(identifier), x, y, width - 1, height - 1, color);
+        drawImage(shadowCache.get(identifier), x, y, width, height, color);
     }
 }

@@ -50,7 +50,7 @@ public class TargetHud extends Module {
         width = Math.max(120, width);
         blur.updatePixels(x, y, width, height);
         float animatedHealthBar = (float) animate.getValue(lastTarget.getHealth());
-        RenderUtil.drawBloomShadow(x, y, width, height, 8, new Color(0, 0, 0, alpha).darker().getRGB(), true);
+        RenderUtil.drawBloomShadow(x, y, width, height, 8, 6, new Color(0, 0, 0, alpha).darker().getRGB(), false);
         blur.render(x, y, width, height, partialTicks, alpha);
         RenderUtil.drawRect2(x, y, Math.min(width * animatedHealthBar / lastTarget.getMaxHealth(), width), height, new Color(0, 0, 0, 80 / 255f * alpha).getRGB());
         if (lastTarget instanceof AbstractClientPlayer) {

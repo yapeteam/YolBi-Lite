@@ -13,8 +13,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import java.awt.*;
 
 /**
- * @author yuxiangll & wzhy233
- * IntelliJ IDEA
+ * @author yuxiangll & TIMER_err
  */
 @Getter
 public class Notification {
@@ -29,7 +28,7 @@ public class Notification {
     public Notification(String content, Easing easingX, Easing easingY, long duration, NotificationType type) {
         this.content = content;
         this.animationX = new EasingAnimation(easingX, (long) (duration * 0.2), 0);
-        this.animationY = new EasingAnimation(easingY, (long) (duration * 0.2), 0);
+        this.animationY = new EasingAnimation(easingY, 400, 0);
         this.animationProcess = new EasingAnimation(Easing.EASE_OUT_QUART, (long) (duration * 0.8), 0);
         this.type = type;
         switch (type) {
@@ -76,7 +75,7 @@ public class Notification {
 
         float x = (float) animationX.getValue(targetX), y = (float) animationY.getValue(targetY);
         blur.updatePixels(x, y, width, height);
-        RenderUtil.drawBloomShadow(x, y, width, height, 6, color, false);
+        RenderUtil.drawBloomShadow(x, y, width, height, 6, 5, new Color(0, 0, 0).getRGB(), false);
         blur.render(x, y, width, height, partialTicks, 1);
         RenderUtil.drawRect(x, y, x + width * animationProcess.getValue(1), y + height, ColorUtil.reAlpha(color, 0.6f).getRGB());
         font.drawString(content, x + 5, y + (height - font.getHeight()) / 2f, type == NotificationType.WARNING ? 0 : -1);

@@ -10,8 +10,8 @@ import org.lwjgl.opengl.GL12;
 import java.awt.*;
 import java.nio.IntBuffer;
 
-
 /**
+ * @author TIMER_err
  * 好的视觉，灵感来自果冻
  */
 @Getter
