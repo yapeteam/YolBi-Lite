@@ -23,6 +23,8 @@ public class WTap extends Module {
     private final NumberValue<Integer> tapMaxHold = new NumberValue<>("Tap Max Hold(ms)", 200, 0, 1000, 1);
     private final NumberValue<Double> tapAccuracy = new NumberValue<>("Tap Accuracy(ms)", 85.0, 0.0, 100.0, 1.0);
 
+    private boolean isTapping = false;
+
     public WTap() {
         super("WTap", ModuleCategory.COMBAT);
         addValues(tapMinDelay, tapMaxDelay, tapMinHold, tapMaxHold, tapAccuracy);
@@ -30,7 +32,6 @@ public class WTap extends Module {
 
     @Listener
     private void onAttack(EventAttack event) {
-
         if (mc.thePlayer.isSprinting() || Natives.IsKeyDown(VirtualKeyBoard.VK_LCONTROL)) {
             int delay;
             if(!(Math.random() * 100 < tapAccuracy.getValue())){
@@ -41,15 +42,18 @@ public class WTap extends Module {
             }
             // hold based on the min and max hold
             int hold = (int) (Math.random() * (tapMaxHold.getValue() - tapMinHold.getValue()) + tapMinHold.getValue());
-            handleWTap(delay, hold);
+            // set tapping to true
+            scheduler.schedule(() -> {
+                isTapping = true;
+                scheduler.schedule(() -> isTapping = false, hold, TimeUnit.MILLISECONDS); // Press 'W' again after hold
+            }, delay, TimeUnit.MILLISECONDS);
         }
     }
 
-    private void handleWTap(int delay, int hold) {
-        int virtualKey = KeyCodeMapper.mapLWJGLKeyCode(mc.gameSettings.keyBindForward.getKeyCode());
-        scheduler.schedule(() -> {
-            Natives.SetKeyBoard(virtualKey, false); // Unpress 'W'
-            scheduler.schedule(() -> Natives.SetKeyBoard(virtualKey, true), hold, TimeUnit.MILLISECONDS); // Press 'W' again after hold
-        }, delay, TimeUnit.MILLISECONDS);
+    @Listener
+    private void onPreMotion(EventMotion event) {
+        if(isTapping){
+            Natives.SetKeyBoard(KeyCodeMapper.mapLWJGLKeyCode(mc.gameSettings.keyBindForward.getKeyCode()), false);
+        }
     }
 }
