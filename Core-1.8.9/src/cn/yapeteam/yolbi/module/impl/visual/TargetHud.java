@@ -195,7 +195,7 @@ public class TargetHud extends Module {
 
         RenderUtil.drawRoundOutline(x2, y2, (float)this.getWidth(), (float)this.getHeight(), 5.0f, 0.1f, new Color(255, 255, 255, 10), RenderUtil.reAlpha(HUD.color(1), 200));
         float hurt_time1 = Math.max(7, target.hurtTime);
-        target.animatedHealthBar = AnimationUtil.animate(target.animatedHealthBar, target.getHealth(), 0.2f);
+        //target.animatedHealthBar = AnimationUtil.animate(target.animatedHealthBar, target.getHealth(), 0.2f);
         FontManager.arial18.drawString(target.getName(), x2 + 37.0f, y2 + 9.0f, HUD.color(2).getRGB());
         FontManager.arial18.drawString(DF1.format(target.animatedHealthBar), (float)((double)x2 + this.getWidth() - 19.0), y2 + 9.0f, HUD.color(8).getRGB());
         RenderUtil.drawRound(x2 + 38.0f, y2 + 21.0f, (float)(this.getWidth() - 46.0), 4.0f, 2.0f, new Color(32, 32, 32, 100));
