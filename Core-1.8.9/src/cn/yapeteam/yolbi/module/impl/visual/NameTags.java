@@ -54,6 +54,7 @@ import java.util.Objects;
  */
 public class NameTags extends Module {
     public ModeValue<Modes> mode = new ModeValue<>("Mode", Modes.Distance, Modes.values());
+    public NumberValue<Integer> headSize = new NumberValue<>("Texture size", () -> mode.is(Modes.Texture), 60, 0, 200, 1);
     public static Map<EntityLivingBase, double[]> entityPositions = new HashMap<>();
     public BooleanValue invis = new BooleanValue("ShowInvisible", true);
     public static NumberValue<Double> alpha = new NumberValue<>("Alpha", 80d, 10d, 255d, 1d);
@@ -71,7 +72,7 @@ public class NameTags extends Module {
 
     public NameTags() {
         super("NameTags", ModuleCategory.VISUAL);
-        this.addValues(mode, invis, armor, alpha);
+        this.addValues(mode, headSize, invis, armor, alpha);
     }
 
     @Listener
@@ -95,7 +96,7 @@ public class NameTags extends Module {
                     DistanceShortNameTag.renderNameTag(entity, invis.getValue(), entityPositions, armor.getValue(), alpha.getValue().intValue(), e.getScaledresolution());
                     break;
                 case Texture:
-                    TextureTag.renderNameTag(entity, invis.getValue(), entityPositions, alpha.getValue().intValue(), e.getScaledresolution());
+                    TextureTag.renderNameTag(entity, invis.getValue(), entityPositions, alpha.getValue().intValue(), headSize.getValue(), e.getScaledresolution());
             }
         }
         GlStateManager.popMatrix();

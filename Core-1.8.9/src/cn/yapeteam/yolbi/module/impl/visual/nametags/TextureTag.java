@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.Map;
 
 public class TextureTag implements IMinecraft {
-    public static void renderNameTag(EntityLivingBase entity, boolean invis, Map<EntityLivingBase, double[]> entityPositions, int alpha, ScaledResolution sr) {
+    public static void renderNameTag(EntityLivingBase entity, boolean invis, Map<EntityLivingBase, double[]> entityPositions, int alpha, int size, ScaledResolution sr) {
         if (entity != mc.thePlayer && (invis || !entity.isInvisible())) {
             GlStateManager.pushMatrix();
             if (entity instanceof EntityPlayer) {
@@ -24,8 +24,7 @@ public class TextureTag implements IMinecraft {
                 GlStateManager.translate(array[0] / sr.getScaleFactor(), array[1] / sr.getScaleFactor(), 0.0D);
                 scale();
                 GlStateManager.translate(0.0D, -2.5D, 0.0D);
-                float headSize = 60;
-                RenderUtil.drawImage(NameTags.texture, -headSize / 2, 0, headSize, headSize, new Color(255, 255, 255, alpha).getRGB());
+                RenderUtil.drawImage(NameTags.texture, -size / 2f, 0, size, size, new Color(255, 255, 255, alpha).getRGB());
             }
             GlStateManager.popMatrix();
         }

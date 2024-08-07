@@ -48,7 +48,7 @@ public class KillAura extends Module {
     private final NumberValue<Double> maxRotationSpeed = new NumberValue<>("MaxRotationSpeed", 60.0, 1.0, 180.0, 5.0);
     private final NumberValue<Double> minRotationSpeed = new NumberValue<>("MinRotationSpeed", 40.0, 1.0, 180.0, 5.0);
     private final BooleanValue autoBlock = new BooleanValue("AutoBlock", false);
-    private final ModeValue<String> mode = new ModeValue<>("Autoblock methods.", "Balant", "Balant", "Anticheat");
+    private final ModeValue<String> mode = new ModeValue<>("Autoblock modes.", "Legit", "Balant", "Legit");
     private final NumberValue<Double> blockDelay = new NumberValue<>("BlockDelay", autoBlock::getValue, 2.0, 1.0, 10.0, 1.0);
     private final BooleanValue autoRod = new BooleanValue("AutoRod", false);
     private final BooleanValue invisibility = new BooleanValue("Invisibility", false);
@@ -137,11 +137,11 @@ public class KillAura extends Module {
 
     private void startBlock() {
         if (autoBlock.getValue()) {
-            if (this.mode.is("Balant")) {
+            if (this.mode.is("Legit")) {
                 if (mc.player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemSword) {
                     Natives.SendRight(true);
                 }
-            } else if (this.mode.is("Anticheat")) {
+            } else if (this.mode.is("Balant")) {
                 if (!blocking) {
                     ItemStack shield = new ItemStack(Items.SHIELD);
                     if (mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) {
