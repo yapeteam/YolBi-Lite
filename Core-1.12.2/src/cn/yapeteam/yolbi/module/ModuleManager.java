@@ -53,7 +53,7 @@ public class ModuleManager {
         modules.add(new ClientTheme());
         modules.add(new ESP());
         modules.add(new HeadUpDisplay());
-        modules.add(new NotificationModule());
+        modules.add(new NameTags());
         modules.add(new JFrameESP2D());
         modules.add(new JFrameRenderer());
         modules.add(new PacketDebug());

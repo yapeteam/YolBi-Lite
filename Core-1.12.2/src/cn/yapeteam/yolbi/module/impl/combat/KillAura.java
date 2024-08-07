@@ -2,15 +2,19 @@ package cn.yapeteam.yolbi.module.impl.combat;
 
 import cn.yapeteam.loader.Natives;
 import cn.yapeteam.loader.logger.Logger;
+import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventLoadWorld;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import cn.yapeteam.yolbi.managers.TargetManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.impl.movement.StrafeFix;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
+import cn.yapeteam.yolbi.notification.Notification;
+import cn.yapeteam.yolbi.notification.NotificationType;
 import cn.yapeteam.yolbi.utils.math.MathUtils;
 import cn.yapeteam.yolbi.utils.misc.TimerUtil;
 import cn.yapeteam.yolbi.utils.player.RotationManager;
@@ -174,7 +178,10 @@ public class KillAura extends Module {
     protected void onEnable() {
         if (mc.world == null || mc.player == null) {
             setEnabled(false);
+            return;
         }
+        if (!YolBi.instance.getModuleManager().getModule(StrafeFix.class).isEnabled())
+            YolBi.instance.getNotificationManager().post(new Notification("StrafeFix is Disabled", 5000, NotificationType.WARNING));
     }
 
     @Override
@@ -183,6 +190,7 @@ public class KillAura extends Module {
         stopBlock();
         if (RotationManager.active)
             RotationManager.stop();
+        target = null;
     }
 
     @Listener

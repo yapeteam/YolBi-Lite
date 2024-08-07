@@ -12,6 +12,7 @@ import cn.yapeteam.yolbi.utils.animation.Animation;
 import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.render.GradientBlur;
 import cn.yapeteam.yolbi.utils.render.RenderUtil;
+import lombok.Getter;
 import lombok.val;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -23,14 +24,19 @@ import java.util.List;
 
 public class HeadUpDisplay extends Module {
     private ClientTheme theme = null;
-    private final BooleanValue waterMark = new BooleanValue("Water Mark", true);
+    private final BooleanValue waterMark = new BooleanValue("Watermark", true);
     private final BooleanValue moduleList = new BooleanValue("Module List", true);
+    @Getter
+    private final BooleanValue notification = new BooleanValue("Notification", true);
     private final ModeValue<String> font = new ModeValue<>("Font", "PingFang", "Jello", "PingFang", "default");
+
     private final List<ModuleNode> moduleNodes = new ArrayList<>();
+    public static HeadUpDisplay instance;
 
     public HeadUpDisplay() {
         super("HUD", ModuleCategory.VISUAL);
-        addValues(waterMark, moduleList, font);
+        addValues(waterMark, moduleList, notification, font);
+        instance = this;
     }
 
     private class ModuleNode {

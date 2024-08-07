@@ -51,6 +51,32 @@ public class Notification {
         this.duration = duration;
     }
 
+    public Notification(String content, long duration, NotificationType type) {
+        this.content = content;
+        this.animationX = new Animation(Easing.EASE_OUT_BACK, (long) (duration * 0.2));
+        this.animationY = new Animation(Easing.EASE_IN_OUT_CUBIC, 400);
+        this.animationProcess = new Animation(Easing.EASE_OUT_QUART, (long) (duration * 0.8));
+        this.type = type;
+        switch (type) {
+            case INIT:
+                color = new Color(0, 119, 255);
+                break;
+            case SUCCESS:
+                color = new Color(44, 253, 37);
+                break;
+            case FAILED:
+                color = new Color(255, 0, 0);
+                break;
+            case WARNING:
+                color = new Color(255, 196, 0);
+                break;
+            default:
+                color = new Color(-1);
+        }
+        begin_time = System.currentTimeMillis();
+        this.duration = duration;
+    }
+
     public boolean isDone() {
         return System.currentTimeMillis() >= begin_time + duration;
     }

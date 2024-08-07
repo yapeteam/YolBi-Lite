@@ -64,11 +64,11 @@ public class RenderUtil {
 
     public static void drawGoodCircle(double x2, double y2, float radius, int color) {//徐锦良的奇妙命名
         RenderUtil.color(color);
-        GLUtil.setup2DRendering(() -> {
+        GLUtils.setup2DRendering(() -> {
             GL11.glEnable(2832);
             GL11.glHint(3153, 4354);
             GL11.glPointSize(radius * (float) (2 * Minecraft.getMinecraft().gameSettings.guiScale));
-            GLUtil.render(0, () -> GL11.glVertex2d(x2, y2));
+            GLUtils.render(0, () -> GL11.glVertex2d(x2, y2));
         });
     }
 
@@ -106,7 +106,7 @@ public class RenderUtil {
     public static void drawRect3(double x2, double y2, double width, double height, int color) {
         RenderUtil.resetColor();
         RenderUtil.setAlphaLimit(0.0f);
-        GLUtil.setup2DRendering(true);
+        GLUtils.setup2DRendering(true);
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
@@ -115,7 +115,7 @@ public class RenderUtil {
         color(worldrenderer.pos(x2 + width, y2 + height, 0.0), color).endVertex();
         color(worldrenderer.pos(x2 + width, y2, 0.0), color).endVertex();
         tessellator.draw();
-        GLUtil.end2DRendering();
+        GLUtils.end2DRendering();
     }
 
     public static WorldRenderer color(WorldRenderer wr, final int colorHex) {

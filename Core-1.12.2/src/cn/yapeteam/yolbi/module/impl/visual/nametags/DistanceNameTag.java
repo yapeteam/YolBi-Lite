@@ -18,8 +18,8 @@ import java.util.Map;
 public class DistanceNameTag implements IMinecraft {
     public static DecimalFormat format = new DecimalFormat("0.0");
 
-    public static void renderNameTag(EntityLivingBase entity, boolean invis, Map<EntityLivingBase, double[]> entityPositions, boolean armor, int alpha, ScaledResolution sr) {
-        if (entity != mc.thePlayer && (invis || !entity.isInvisible())) {
+    public static void renderNameTag(EntityLivingBase entity, boolean invis, Map<EntityLivingBase, double[]> entityPositions, int alpha, ScaledResolution sr) {
+        if (entity != mc.player && (invis || !entity.isInvisible())) {
             GlStateManager.pushMatrix();
             if (entity instanceof EntityPlayer) {
                 double[] array = entityPositions.get(entity);
@@ -43,7 +43,6 @@ public class DistanceNameTag implements IMinecraft {
                 float n11 = (float) Math.ceil(entity.getHealth() + entity.getAbsorptionAmount()) / (entity.getMaxHealth() + entity.getAbsorptionAmount());
                 int color = NameTags.getColor(entity.getDisplayName().getFormattedText());
                 RenderUtil.drawRect(-n4 / 2.0f, -2.0f, Math.min(n4, n4 / 2.0f - n4 / 2.0f * (1.0f - n11) * 2.0f), 0.0f, ColorUtil.reAlpha(color, 0.8f));
-                if (armor) NameTags.renderArmor(entity);
             }
             GlStateManager.popMatrix();
         }
