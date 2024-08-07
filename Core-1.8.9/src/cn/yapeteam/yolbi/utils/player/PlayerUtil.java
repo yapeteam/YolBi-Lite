@@ -49,6 +49,12 @@ public class PlayerUtil implements IMinecraft {
         return uniqueID != null ? uniqueID.getResponseTime() : 0;
     }
 
+    public static void sendMessage(String msg) {
+        if (mc.thePlayer != null) {
+            mc.thePlayer.addChatMessage(new ChatComponentText("\247b[Cloudy]\247r " + msg));
+        }
+    }
+
     public static double fovFromEntity(Entity en) {
         return ((((double) (mc.thePlayer.rotationYaw - fovToEntity(en)) % 360.0D) + 540.0D) % 360.0D) - 180.0D;
     }
