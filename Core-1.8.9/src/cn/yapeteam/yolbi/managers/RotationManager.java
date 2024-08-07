@@ -1,12 +1,10 @@
 package cn.yapeteam.yolbi.managers;
 
 import cn.yapeteam.yolbi.event.Listener;
-import cn.yapeteam.yolbi.event.Priority;
 import cn.yapeteam.yolbi.event.impl.player.EventJump;
 import cn.yapeteam.yolbi.event.impl.player.EventLook;
 import cn.yapeteam.yolbi.event.impl.player.EventMotion;
 import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
-import cn.yapeteam.yolbi.event.impl.render.EventRotationsRender;
 import cn.yapeteam.yolbi.utils.IMinecraft;
 import cn.yapeteam.yolbi.utils.player.PlayerUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
@@ -56,13 +54,13 @@ public class RotationManager implements IMinecraft {
         }
     }
 
-    @Listener(Priority.LOWER)
-    public void onRender(EventRotationsRender event) {
-        if (active && rotations != null) {
-            event.setYaw(rotations.x);
-            event.setPitch(rotations.y);
-        }
-    }
+    //  @Listener(Priority.LOWER)
+    //  public void onRender(EventRotationsRender event) {
+    //      if (active && rotations != null) {
+    //          event.setYaw(rotations.x);
+    //          event.setPitch(rotations.y);
+    //      }
+    //  }
 
     @Listener
     private void onJump(EventJump event) {

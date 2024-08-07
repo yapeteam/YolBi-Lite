@@ -1,5 +1,6 @@
 package cn.yapeteam.yolbi.utils.player;
 
+import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.utils.IMinecraft;
 import cn.yapeteam.yolbi.utils.reflect.ReflectUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
