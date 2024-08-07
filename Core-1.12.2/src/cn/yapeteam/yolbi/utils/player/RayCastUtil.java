@@ -42,7 +42,7 @@ public final class RayCastUtil implements IMinecraft {
     }
 
     public static RayTraceResult rayCast(final Vector2f rotation, final double range, final float expand, Entity entity) {
-        final float partialTicks = Objects.requireNonNull(ReflectUtil.Minecraft$getTimer(mc)).field_194148_c;
+        final float partialTicks = Objects.requireNonNull(ReflectUtil.Minecraft$getTimer(mc)).field_194147_b;
         RayTraceResult objectMouseOver;
 
         if (entity != null && mc.world != null) {

@@ -1,5 +1,6 @@
 package cn.yapeteam.yolbi.utils.player;
 
+import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.utils.IMinecraft;
 import cn.yapeteam.yolbi.utils.reflect.ReflectUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
@@ -26,7 +27,7 @@ public class RotationsUtil implements IMinecraft {
 
     public static float[] getRotationsToEntity(EntityLivingBase entity, boolean usePartialTicks) {
         if (timer == null) return new float[]{0, 0};
-        float partialTicks = timer.field_194148_c;
+        float partialTicks = timer.field_194147_b;
 
         double entityX = usePartialTicks ? entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * partialTicks : entity.posX;
         double entityY = usePartialTicks ? entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * partialTicks : entity.posY;

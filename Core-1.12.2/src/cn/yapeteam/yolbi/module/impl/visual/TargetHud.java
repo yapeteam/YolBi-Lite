@@ -7,8 +7,8 @@ import cn.yapeteam.yolbi.font.AbstractFontRenderer;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.module.impl.combat.KillAura;
+import cn.yapeteam.yolbi.utils.animation.Animation;
 import cn.yapeteam.yolbi.utils.animation.Easing;
-import cn.yapeteam.yolbi.utils.animation.EasingAnimation;
 import cn.yapeteam.yolbi.utils.render.GradientBlur;
 import cn.yapeteam.yolbi.utils.render.RenderUtil;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -33,23 +33,23 @@ public class TargetHud extends Module {
         this.render(x, y, entityLiving, event.getPartialTicks());
     }
 
-    private final EasingAnimation animate = new EasingAnimation(Easing.EASE_OUT_QUINT, 500, 0);
-    private final EasingAnimation animateAlpha = new EasingAnimation(Easing.EASE_OUT_QUINT, 600, 0);
+    private final Animation animate = new Animation(Easing.EASE_OUT_QUINT, 500);
+    private final Animation animateAlpha = new Animation(Easing.EASE_OUT_QUINT, 600);
     private final GradientBlur blur = new GradientBlur(GradientBlur.Type.LR);
 
     private EntityLivingBase lastTarget = null;
 
     public void render(float x, float y, EntityLivingBase target, float partialTicks) {
         AbstractFontRenderer font = YolBi.instance.getFontManager().getPingFang18();
-        float alpha = (float) animateAlpha.getValue(target == null ? 0 : 1);
+        float alpha = (float) animateAlpha.animate(target == null ? 0 : 1);
         if (target != null) lastTarget = target;
         if (lastTarget == null || alpha == 0) return;
         String text = lastTarget.getDisplayName().getFormattedText();
         float height = 40;
         float width = (float) ((lastTarget instanceof AbstractClientPlayer ? height + 5 : 0) + 5 + font.getStringWidth(text) + 5);
         width = Math.max(120, width);
-        blur.updatePixels(x, y, width, height);
-        float animatedHealthBar = (float) animate.getValue(lastTarget.getHealth());
+        blur.update(x, y, width, height);
+        float animatedHealthBar = (float) animate.animate(lastTarget.getHealth());
         RenderUtil.drawBloomShadow(x, y, width, height, 8, 6, new Color(0, 0, 0, alpha).darker().getRGB(), false);
         blur.render(x, y, width, height, partialTicks, alpha);
         RenderUtil.drawRect2(x, y, Math.min(width * animatedHealthBar / lastTarget.getMaxHealth(), width), height, new Color(0, 0, 0, 80 / 255f * alpha).getRGB());

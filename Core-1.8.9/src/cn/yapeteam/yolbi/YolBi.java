@@ -10,9 +10,12 @@ import cn.yapeteam.yolbi.managers.BotManager;
 import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.managers.TargetManager;
 import cn.yapeteam.yolbi.module.ModuleManager;
+import cn.yapeteam.yolbi.notification.Notification;
 import cn.yapeteam.yolbi.notification.NotificationManager;
+import cn.yapeteam.yolbi.notification.NotificationType;
 import cn.yapeteam.yolbi.server.WebServer;
 import cn.yapeteam.yolbi.shader.Shader;
+import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.render.ESPUtil;
 import lombok.Getter;
 
@@ -74,6 +77,14 @@ public class YolBi {
         } catch (Throwable e) {
             Logger.exception(e);
         }
+        instance.getNotificationManager().post(
+                new Notification(
+                        "Injected Yolbi successfully",
+                        Easing.EASE_IN_OUT_QUAD,
+                        Easing.EASE_IN_OUT_QUAD,
+                        15000, NotificationType.INIT
+                )
+        );
     }
 
     public void shutdown() {

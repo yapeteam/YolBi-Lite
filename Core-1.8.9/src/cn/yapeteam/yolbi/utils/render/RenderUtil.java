@@ -34,17 +34,6 @@ public class RenderUtil {
     private static final Map<Integer, Integer> shadowCache = new HashMap<>();
 
 
-    public static void enableGL2D() {
-        GL11.glDisable(2929);
-        GL11.glEnable(3042);
-        GL11.glDisable(3553);
-        GL11.glBlendFunc(770, 771);
-        GL11.glDepthMask(true);
-        GL11.glEnable(2848);
-        GL11.glHint(3154, 4354);
-        GL11.glHint(3155, 4354);
-    }
-
     public static int colorSwitch(Color firstColor, Color secondColor, float time, int index, long timePerIndex, double speed) {
         return RenderUtil.colorSwitch(firstColor, secondColor, time, index, timePerIndex, speed, 255.0);
     }
@@ -75,11 +64,11 @@ public class RenderUtil {
 
     public static void drawGoodCircle(double x2, double y2, float radius, int color) {//徐锦良的奇妙命名
         RenderUtil.color(color);
-        GLUtil.setup2DRendering(() -> {
+        GLUtils.setup2DRendering(() -> {
             GL11.glEnable(2832);
             GL11.glHint(3153, 4354);
             GL11.glPointSize(radius * (float) (2 * Minecraft.getMinecraft().gameSettings.guiScale));
-            GLUtil.render(0, () -> GL11.glVertex2d(x2, y2));
+            GLUtils.render(0, () -> GL11.glVertex2d(x2, y2));
         });
     }
 
@@ -117,7 +106,7 @@ public class RenderUtil {
     public static void drawRect3(double x2, double y2, double width, double height, int color) {
         RenderUtil.resetColor();
         RenderUtil.setAlphaLimit(0.0f);
-        GLUtil.setup2DRendering(true);
+        GLUtils.setup2DRendering(true);
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
@@ -126,7 +115,7 @@ public class RenderUtil {
         color(worldrenderer.pos(x2 + width, y2 + height, 0.0), color).endVertex();
         color(worldrenderer.pos(x2 + width, y2, 0.0), color).endVertex();
         tessellator.draw();
-        GLUtil.end2DRendering();
+        GLUtils.end2DRendering();
     }
 
     public static WorldRenderer color(WorldRenderer wr, final int colorHex) {
@@ -182,30 +171,41 @@ public class RenderUtil {
     }
 
     public static void startDrawing() {
-        GL11.glEnable(3042);
-        GL11.glEnable(3042);
-        GL11.glBlendFunc(770, 771);
-        GL11.glEnable(2848);
-        GL11.glDisable(3553);
-        GL11.glDisable(2929);
+        GL11.glEnable(GL_BLEND);
+        GL11.glEnable(GL_BLEND);
+        GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL_LINE_SMOOTH);
+        GL11.glDisable(GL_TEXTURE_2D);
+        GL11.glDisable(GL_DEPTH_TEST);
         mc.entityRenderer.setupCameraTransform(Objects.requireNonNull(ReflectionManager.Minecraft$getTimer(mc)).renderPartialTicks, 0);
     }
 
     public static void stopDrawing() {
-        GL11.glDisable(3042);
-        GL11.glEnable(3553);
-        GL11.glDisable(2848);
-        GL11.glDisable(3042);
-        GL11.glEnable(2929);
+        GL11.glDisable(GL_BLEND);
+        GL11.glEnable(GL_TEXTURE_2D);
+        GL11.glDisable(GL_LINE_SMOOTH);
+        GL11.glDisable(GL_BLEND);
+        GL11.glEnable(GL_DEPTH_TEST);
+    }
+
+    public static void enableGL2D() {
+        GL11.glDisable(GL_DEPTH_TEST);
+        GL11.glEnable(GL_BLEND);
+        GL11.glDisable(GL_TEXTURE_2D);
+        GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glDepthMask(true);
+        GL11.glEnable(GL_LINE_SMOOTH);
+        GL11.glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+        GL11.glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
     }
 
     public static void disableGL2D() {
-        GL11.glEnable(3553);
-        GL11.glDisable(3042);
-        GL11.glEnable(2929);
-        GL11.glDisable(2848);
-        GL11.glHint(3154, 4352);
-        GL11.glHint(3155, 4352);
+        GL11.glEnable(GL_TEXTURE_2D);
+        GL11.glDisable(GL_BLEND);
+        GL11.glEnable(GL_DEPTH_TEST);
+        GL11.glDisable(GL_LINE_SMOOTH);
+        GL11.glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
+        GL11.glHint(GL_POLYGON_SMOOTH_HINT, GL_DONT_CARE);
     }
 
 

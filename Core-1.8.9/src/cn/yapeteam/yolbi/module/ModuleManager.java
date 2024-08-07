@@ -47,7 +47,6 @@ public class ModuleManager {
         modules.add(new MoveFix());
         modules.add(new Sprint());
         modules.add(new StrafeFix());
-        modules.add(new NotificationModule());
         modules.add(new ClickUI());
         modules.add(new ClientTheme());
         modules.add(new ESP());

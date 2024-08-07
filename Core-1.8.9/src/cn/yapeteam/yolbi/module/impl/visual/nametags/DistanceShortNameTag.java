@@ -17,9 +17,8 @@ import java.util.Map;
 
 public class DistanceShortNameTag implements IMinecraft {
     public static DecimalFormat format = new DecimalFormat("0.0");
-    private static final ScaledResolution scaledResolution = new ScaledResolution(mc);
 
-    public static void renderNameTag(EntityLivingBase entity, boolean invis, Map<EntityLivingBase, double[]> entityPositions, boolean armor, int alpha) {
+    public static void renderNameTag(EntityLivingBase entity, boolean invis, Map<EntityLivingBase, double[]> entityPositions, boolean armor, int alpha, ScaledResolution sr) {
         if (entity != mc.thePlayer && (invis || !entity.isInvisible())) {
             GlStateManager.pushMatrix();
             if (entity instanceof EntityPlayer) {
@@ -29,7 +28,7 @@ public class DistanceShortNameTag implements IMinecraft {
                     return;
                 }
                 AbstractFontRenderer wqy16 = YolBi.instance.getFontManager().getPingFang16();
-                GlStateManager.translate(array[0] / scaledResolution.getScaleFactor(), array[1] / scaledResolution.getScaleFactor(), 0.0D);
+                GlStateManager.translate(array[0] / sr.getScaleFactor(), array[1] / sr.getScaleFactor(), 0.0D);
                 scale();
                 GlStateManager.translate(0.0D, 5D, 0.0D);
                 String string2 = NameTags.getTag(entity);
