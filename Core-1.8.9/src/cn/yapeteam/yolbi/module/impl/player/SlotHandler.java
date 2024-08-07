@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public class SlotHandler extends Module {
-
     private final ModeValue<String> mode = new ModeValue<>("Mode", "Default", "Default", "Silent");
 
     private final NumberValue<Integer> maxdelay = new NumberValue<>("Max Delay", 100, 0, 1000, 1);
@@ -26,6 +25,8 @@ public class SlotHandler extends Module {
 
     public SlotHandler() {
         super("SlotHandler", ModuleCategory.PLAYER);
+        NumberValue.setBound(mindelay, maxdelay);
+        NumberValue.setBound(minswitchbackdelay, maxswitchbackdelay);
         addValues(mode, maxdelay, mindelay, maxswitchbackdelay, minswitchbackdelay);
     }
 

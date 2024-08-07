@@ -12,6 +12,7 @@ import cn.yapeteam.yolbi.module.impl.movement.*;
 import cn.yapeteam.yolbi.module.impl.player.AutoArmor;
 import cn.yapeteam.yolbi.module.impl.player.ChestStealer;
 import cn.yapeteam.yolbi.module.impl.player.MurdererFinder;
+import cn.yapeteam.yolbi.module.impl.player.SlotHandler;
 import cn.yapeteam.yolbi.module.impl.visual.*;
 import cn.yapeteam.yolbi.module.impl.world.FastPlace;
 import cn.yapeteam.yolbi.notification.Notification;
@@ -38,6 +39,7 @@ public class ModuleManager {
         modules.add(new WTap());
         modules.add(new AntiInvisible());
         modules.add(new AutoArmor());
+        modules.add(new SlotHandler());
         modules.add(new ChestStealer());
         modules.add(new ClientSpoof());
         modules.add(new NoteBot());
