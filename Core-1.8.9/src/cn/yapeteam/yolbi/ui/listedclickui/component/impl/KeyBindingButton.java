@@ -6,9 +6,12 @@ import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.ui.listedclickui.ImplScreen;
 import cn.yapeteam.yolbi.ui.listedclickui.component.AbstractComponent;
 import cn.yapeteam.yolbi.ui.listedclickui.component.Limitation;
-import cn.yapeteam.yolbi.utils.render.RenderUtil;
+import cn.yapeteam.yolbi.utils.render.GradientBlur;
 import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+
+import static org.lwjgl.opengl.GL11.*;
 
 /**
  * @author TIMER_err
@@ -22,11 +25,27 @@ public class KeyBindingButton extends AbstractComponent {
         this.module = module;
     }
 
+    private final GradientBlur blur = new GradientBlur(GradientBlur.Type.TB);
+
+    @Override
+    public void update() {
+        blur.update(getX(), getY(), getWidth(), getHeight());
+    }
+
     @SuppressWarnings("DuplicatedCode")
     @Override
     public void drawComponent(int mouseX, int mouseY, float partialTicks, Limitation limitation) {
         AbstractFontRenderer font = YolBi.instance.getFontManager().getPingFang14();
-        RenderUtil.drawRect(getX(), getY(), getX() + getWidth(), getY() + getHeight(), ImplScreen.MainTheme[1].darker().getRGB());
+        blur.render(getX(), getY(), getWidth(), getHeight(), partialTicks, 1);
+        GL11.glDisable(GL_DEPTH_TEST);
+        GL11.glEnable(GL_BLEND);
+        GL11.glEnable(GL_TEXTURE_2D);
+        GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glDepthMask(true);
+        GL11.glEnable(GL_LINE_SMOOTH);
+        GL11.glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+        GL11.glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+        // RenderUtil.drawRect(getX(), getY(), getX() + getWidth(), getY() + getHeight(), ImplScreen.MainTheme[1].darker().getRGB());
         int index = 0, all = 0;
         for (AbstractComponent component : getParent().getParent().getChildComponents()) {
             if (component instanceof ModuleButton) {

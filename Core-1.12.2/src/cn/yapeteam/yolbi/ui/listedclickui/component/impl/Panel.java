@@ -8,6 +8,8 @@ import cn.yapeteam.yolbi.shader.impl.ShaderRoundedRect;
 import cn.yapeteam.yolbi.ui.listedclickui.ImplScreen;
 import cn.yapeteam.yolbi.ui.listedclickui.component.AbstractComponent;
 import cn.yapeteam.yolbi.ui.listedclickui.component.Limitation;
+import cn.yapeteam.yolbi.utils.animation.Animation;
+import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.render.RenderUtil;
 import lombok.Getter;
 
@@ -44,18 +46,10 @@ public class Panel extends AbstractComponent {
         super.init();
     }
 
+    private final Animation extendAnimation = new Animation(Easing.EASE_OUT_BACK, 400);
+
     @Override
     public void update() {
-        float y = getY() + ImplScreen.panelTopHeight + scrollCache, ry = getY() + ImplScreen.panelTopHeight + scroll;
-        for (AbstractComponent component : getChildComponents())
-            if (component instanceof ModuleButton) {
-                ModuleButton moduleButton = (ModuleButton) component;
-                moduleButton.setX(getX());
-                moduleButton.setY(y);
-                moduleButton.setRealY(ry);
-                y += ImplScreen.moduleHeight + ImplScreen.moduleSpacing + moduleButton.getExtend();
-                ry += ImplScreen.moduleHeight + ImplScreen.moduleSpacing + moduleButton.getExtend();
-            }
         scrollCache += (scroll - scrollCache) / 5f;
 
         float height = 0;
@@ -65,7 +59,6 @@ public class Panel extends AbstractComponent {
                 for (AbstractComponent component : childComponent.getChildComponents()) {
                     if (!(component instanceof ValueButton && !((ValueButton) component).getValue().getVisibility().get()))
                         height += component.getHeight() + ImplScreen.valueSpacing;
-
                 }
                 height -= ImplScreen.valueSpacing;
             }
@@ -74,6 +67,11 @@ public class Panel extends AbstractComponent {
         setHeight(ImplScreen.panelTopHeight + Math.min(height, ImplScreen.panelMaxHeight));
 
         getChildComponents().forEach(AbstractComponent::update);
+    }
+
+    @Override
+    public float getHeight() {
+        return (float) extendAnimation.animate(super.getHeight());
     }
 
     @Getter
@@ -87,6 +85,16 @@ public class Panel extends AbstractComponent {
             setX(mouseX - dragX);
             setY(mouseY - dragY);
         }
+        float y = getY() + ImplScreen.panelTopHeight + scrollCache, ry = getY() + ImplScreen.panelTopHeight + scroll;
+        for (AbstractComponent component : getChildComponents())
+            if (component instanceof ModuleButton) {
+                ModuleButton moduleButton = (ModuleButton) component;
+                moduleButton.setX(getX());
+                moduleButton.setY(y);
+                moduleButton.setRealY(ry);
+                y += ImplScreen.moduleHeight + ImplScreen.moduleSpacing + moduleButton.getExtend();
+                ry += ImplScreen.moduleHeight + ImplScreen.moduleSpacing + moduleButton.getExtend();
+            }
         if (!getChildComponents().isEmpty()) {
             float allExpand = 0;
             for (AbstractComponent component : getChildComponents())
@@ -101,12 +109,13 @@ public class Panel extends AbstractComponent {
             }
             getChildComponents().forEach(AbstractComponent::update);
         }
-        RenderUtil.drawBloomShadow(getX(), getY(), getWidth(), getHeight(), 5, new Color(0), false);
+
         roundedRect.setWidth(getWidth());
-        roundedRect.setHeight(getHeight());
+        roundedRect.setHeight(ImplScreen.panelTopHeight + 5);
         roundedRect.setColor(ImplScreen.MainTheme[0].getRGB());
         roundedRect.setRadius(3);
         roundedRect.render(getX(), getY(), -1);
+        // RenderUtil.drawBloomShadow(getX(), getY(), getWidth(), getHeight(), 5, new Color(0), false);
         if (!getChildComponents().isEmpty())
             RenderUtil.drawRect(getX(), getY() + ImplScreen.panelTopHeight - 0.5f, getX() + getWidth(), getY() + ImplScreen.panelTopHeight, new Color(210, 210, 210, 84).getRGB());
         AbstractFontRenderer font = YolBi.instance.getFontManager().getPingFangBold18();
@@ -121,6 +130,7 @@ public class Panel extends AbstractComponent {
             RenderUtil.drawFastRoundedRect(getX(), getY() + ImplScreen.panelTopHeight, getX() + getWidth(), getY() + getHeight(), 3, -1);
             RenderUtil.drawRect2(getX(), getY() + ImplScreen.panelTopHeight, getWidth(), 3, -1);
         });
+        RenderUtil.drawRect2(getX(), getY() + ImplScreen.panelTopHeight, getWidth(), getHeight(), ImplScreen.MainTheme[0].getRGB());
         super.drawComponent(mouseX, mouseY, partialTicks, limitation);
         limitation.end();
     }

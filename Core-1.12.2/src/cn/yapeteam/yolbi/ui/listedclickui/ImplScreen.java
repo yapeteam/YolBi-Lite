@@ -156,6 +156,7 @@ public class ImplScreen extends GuiScreen {
         } catch (IOException e) {
             Logger.exception(e);
         }
+        guiModuleInstance.setEnabled(false);
     }
 
     public static int getComponentColor(int index) {
