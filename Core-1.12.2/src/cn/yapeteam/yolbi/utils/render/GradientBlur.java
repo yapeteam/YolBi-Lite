@@ -33,13 +33,12 @@ public class GradientBlur implements IMinecraft {
         this.type = type;
     }
 
-    public void updatePixels(float x, float y, float width, float height) {
-        pixels = getPixels((int) x, (int) y, (int) width, (int) height);
+    public void update(float x, float y, float width, float height) {
+        update((int) x, (int) y, (int) width, (int) height);
     }
 
-    private void update(int x, int y, int width, int height) {
-        if (pixels == null)
-            pixels = getPixels(x, y, width, height);
+    public void update(int x, int y, int width, int height) {
+        pixels = getPixels(x, y, width, height);
         int leftTop = pixels[0];
         int rightTop = pixels[width - 1];
         int leftBottom = pixels[(height - 1) * width - 1];
@@ -100,7 +99,6 @@ public class GradientBlur implements IMinecraft {
     }
 
     public void render(float x, float y, float width, float height, float partialTicks, float alpha) {
-        update((int) x, (int) y, (int) width, (int) height);
         Color color1 = new Color(smoothAnimation(r1, lastR1, partialTicks), smoothAnimation(g1, lastG1, partialTicks), smoothAnimation(b1, lastB1, partialTicks));
         Color color2 = new Color(smoothAnimation(r2, lastR2, partialTicks), smoothAnimation(g2, lastG2, partialTicks), smoothAnimation(b2, lastB2, partialTicks));
         color1 = ColorUtil.reAlpha(color1, alpha);

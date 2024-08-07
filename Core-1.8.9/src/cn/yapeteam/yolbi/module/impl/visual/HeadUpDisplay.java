@@ -8,27 +8,25 @@ import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
+import cn.yapeteam.yolbi.utils.animation.Animation;
 import cn.yapeteam.yolbi.utils.animation.Easing;
-import cn.yapeteam.yolbi.utils.animation.EasingAnimation;
 import cn.yapeteam.yolbi.utils.render.GradientBlur;
 import cn.yapeteam.yolbi.utils.render.RenderUtil;
 import lombok.val;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class HeadUpDisplay extends Module {
     private ClientTheme theme = null;
     private final BooleanValue waterMark = new BooleanValue("Water Mark", true);
     private final BooleanValue moduleList = new BooleanValue("Module List", true);
     private final ModeValue<String> font = new ModeValue<>("Font", "PingFang", "Jello", "PingFang", "default");
-
-    private final Map<Module, ModuleNode> moduleNodes = new HashMap<>();
+    private final List<ModuleNode> moduleNodes = new ArrayList<>();
 
     public HeadUpDisplay() {
         super("HUD", ModuleCategory.VISUAL);
@@ -43,25 +41,32 @@ public class HeadUpDisplay extends Module {
         }
 
         private final GradientBlur blur = new GradientBlur(GradientBlur.Type.TB);
-        private final EasingAnimation animationY = new EasingAnimation(Easing.EASE_OUT_EXPO, 1000, 0);
-        private final EasingAnimation animationX = new EasingAnimation(Easing.EASE_IN_OUT_QUAD, 1000, 0);
-        private float x, y, width, height;
+        private final Animation animationY = new Animation(Easing.EASE_OUT_EXPO, 500);
+        private final Animation animationX = new Animation(Easing.EASE_IN_OUT_QUAD, 500);
+        private float deltaX, y, width, height;
         private int color;
 
-        public float update(ClientTheme theme, float y, int index, ScaledResolution sr) {
-            double[] rect = getRect(getText(module), index, sr);
-            x = (float) animationX.getValue(module.isEnabled() ? rect[0] : sr.getScaledWidth());
-            this.y = (float) animationY.getValue(y);
+        public void update(ScaledResolution sr, ClientTheme theme, float y, int index) {
+            double[] rect = getRect(getText(module), index);
+            deltaX = -(float) animationX.animate(module.isEnabled() ? rect[0] : 0);
+            this.y = (float) animationY.animate(y);
             width = (float) rect[2];
             height = (float) rect[3];
-            blur.updatePixels(x, this.y, width, height);
-            color = theme.getColor((int) (this.y * 5));
-            return module.isEnabled() || !animationX.isFinished() ? this.y + height : this.y;
+            float x = sr.getScaledWidth() + deltaX;
+            if (module.isEnabled())
+                blur.update(x, this.y, width, height);
+            color = theme.getColor((int) (this.y * 10));
         }
 
-        public void render(float partialTicks) {
+        public void renderShadow(ScaledResolution sr) {
+            float x = sr.getScaledWidth() + deltaX;
+            RenderUtil.drawBloomShadow(x, y, width, height, 12, 6, color, false);
+        }
+
+        public void render(ScaledResolution sr, float partialTicks) {
             AbstractFontRenderer font = getFontRenderer();
-            RenderUtil.drawBloomShadow(x, y, width, height, 12, 15, color, false);
+            float x = sr.getScaledWidth() + deltaX;
+            GlStateManager.disableBlend();
             blur.render(x, y, width, height, partialTicks, 1);
             RenderUtil.drawRect(x, y, x + width, y + height, new Color(0, 0, 0, 66).getRGB());
             String text = getText(module);
@@ -70,41 +75,43 @@ public class HeadUpDisplay extends Module {
         }
     }
 
+    @Override
+    protected void onEnable() {
+        moduleNodes.clear();
+        for (Module module : YolBi.instance.getModuleManager().getModules()) {
+            ModuleNode node = new ModuleNode(module);
+            moduleNodes.add(node);
+        }
+    }
+
     @Listener
     private void onRender(EventRender2D e) {
+        ScaledResolution sr = e.getScaledresolution();
         if (theme == null)
             theme = YolBi.instance.getModuleManager().getModule(ClientTheme.class);
         val font = getFontRenderer();
         if (waterMark.getValue())
             font.drawString(YolBi.name + " " + YolBi.version, 2, 2, -1);
         if (moduleList.getValue()) {
-            List<Module> activeModules = YolBi.instance.getModuleManager().getModules().stream()
-                    .sorted(Comparator.comparingInt(m -> (int) -font.getStringWidth(getText(m))))
-                    .collect(Collectors.toList());
+            moduleNodes.sort(Comparator.comparingInt(n -> (int) -font.getStringWidth(getText(n.module))));
             float y = 0;
-            for (int i = 0; i < activeModules.size(); i++) {
-                Module module = activeModules.get(i);
-                ModuleNode node = moduleNodes.get(module);
-                if (node == null) {
-                    node = new ModuleNode(module);
-                    moduleNodes.put(module, node);
-                }
-                y = node.update(theme, y, i, e.getScaledresolution());
+            for (int i = 0; i < moduleNodes.size(); i++) {
+                ModuleNode node = moduleNodes.get(i);
+                node.update(sr, theme, y, i);
+                if (node.module.isEnabled() || !node.animationX.isFinished())
+                    y += node.height;
             }
-            for (Module module : activeModules) {
-                ModuleNode node = moduleNodes.get(module);
-                node.render(e.getPartialTicks());
-            }
+            moduleNodes.stream().filter(node -> node.module.isEnabled()).forEach(node -> node.renderShadow(sr));
+            moduleNodes.forEach(node -> node.render(sr, e.getPartialTicks()));
         }
     }
 
-    private double[] getRect(String text, int index, ScaledResolution sr) {
+    private double[] getRect(String text, int index) {
         val font = getFontRenderer();
         double width = font.getStringWidth(text) + 4;
         float height = 12;
-        double x = sr.getScaledWidth() - width;
         double y = index * height;
-        return new double[]{x, y, width, height};
+        return new double[]{width, y, width, height};
     }
 
     private String getText(Module module) {

@@ -72,6 +72,7 @@ public class AimAssist extends Module {
 
     @Override
     public String getSuffix() {
+        if (mc.thePlayer == null) return "";
         return "Yaw: " + mc.thePlayer.rotationYaw + " Pitch: " + mc.thePlayer.rotationPitch;
     }
 
