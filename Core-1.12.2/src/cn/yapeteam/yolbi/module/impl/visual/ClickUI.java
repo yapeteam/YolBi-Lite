@@ -1,6 +1,8 @@
 package cn.yapeteam.yolbi.module.impl.visual;
 
 import cn.yapeteam.loader.logger.Logger;
+import cn.yapeteam.yolbi.event.Listener;
+import cn.yapeteam.yolbi.event.impl.client.EventClientShutdown;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
@@ -54,5 +56,10 @@ public class ClickUI extends Module {
         if (ReflectUtil.hasOptifine && getOfFastRender())
             blur.setValue(false);
         mc.displayGuiScreen(screen);
+    }
+
+    @Listener
+    private void onShutdown(EventClientShutdown e) {
+        setEnabled(false);
     }
 }

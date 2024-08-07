@@ -214,6 +214,18 @@ public class PlayerUtil implements IMinecraft {
         return getItem instanceof ItemSword || (settings.getAxe().getValue() && getItem instanceof ItemAxe) || (settings.getRod().getValue() && getItem instanceof ItemFishingRod) || (settings.getStick().getValue() && getItem == Items.stick);
     }
 
+    public static boolean overAir() {
+        return mc.theWorld.isAirBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1.0, mc.thePlayer.posZ));
+    }
+
+    public static boolean onEdge() {
+        return onEdge(mc.thePlayer);
+    }
+
+    public static boolean onEdge(Entity entity) {
+        return mc.theWorld.getCollidingBoundingBoxes(entity, entity.getEntityBoundingBox().offset(entity.motionX / 3.0D, -1.0D, entity.motionZ / 3.0D)).isEmpty();
+    }
+
     /**
      * Finds what block or object the mouse is over at the specified partial tick time. Args: partialTickTime
      */
@@ -223,10 +235,8 @@ public class PlayerUtil implements IMinecraft {
 
         if (entity != null && mc.theWorld != null) {
             mc.mcProfiler.startSection("pick");
-            pointedEntity = null;
-            double blockReachDistance = Reach;
-            mc.objectMouseOver = entity.rayTrace(blockReachDistance, partialTicks);
-            double distance = blockReachDistance;
+            mc.objectMouseOver = entity.rayTrace(Reach, partialTicks);
+            double distance = Reach;
             final Vec3 vec3 = entity.getPositionEyes(partialTicks);
 
             if (mc.objectMouseOver != null) {
@@ -234,11 +244,10 @@ public class PlayerUtil implements IMinecraft {
             }
 
             final Vec3 vec31 = entity.getLook(partialTicks);
-            final Vec3 vec32 = vec3.addVector(vec31.xCoord * blockReachDistance, vec31.yCoord * blockReachDistance, vec31.zCoord * blockReachDistance);
-            pointedEntity = null;
+            final Vec3 vec32 = vec3.addVector(vec31.xCoord * Reach, vec31.yCoord * Reach, vec31.zCoord * Reach);
             Vec3 vec33 = null;
             final float f = 1.0F;
-            final List<Entity> list = mc.theWorld.getEntitiesInAABBexcluding(entity, entity.getEntityBoundingBox().addCoord(vec31.xCoord * blockReachDistance, vec31.yCoord * blockReachDistance, vec31.zCoord * blockReachDistance), Predicates.and(EntitySelectors.NOT_SPECTATING, Entity::canBeCollidedWith));
+            final List<Entity> list = mc.theWorld.getEntitiesInAABBexcluding(entity, entity.getEntityBoundingBox().addCoord(vec31.xCoord * Reach, vec31.yCoord * Reach, vec31.zCoord * Reach), Predicates.and(EntitySelectors.NOT_SPECTATING, Entity::canBeCollidedWith));
             double d2 = distance;
 
             for (final Entity entity1 : list) {
