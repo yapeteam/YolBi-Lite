@@ -64,7 +64,7 @@ public class AimAssist extends Module {
         if (ClickAim.getValue() && !Natives.IsKeyDown(VirtualKeyBoard.VK_LBUTTON))
             return;
         Vector2f movementcalc = RotationManager.calcSmooth(new Vector2f(mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch), new Vector2f((float) RotationManager.getRotationsNeeded(target)[0], (float) RotationManager.getRotationsNeeded(target)[1]), rotSpeed.getValue() * 0.1);
-        double deltayaw = MathHelper.wrapAngleTo180_float(movementcalc.getX() - mc.thePlayer.rotationYaw); // we need to wrap this to -180 to 180 and multiply base on the speed
+        double deltayaw = movementcalc.getX() - mc.thePlayer.rotationYaw; // we need to wrap this to -180 to 180 and multiply base on the speed
         double deltapitch = MathHelper.wrapAngleTo180_float(movementcalc.getY() - mc.thePlayer.rotationPitch);
         mc.thePlayer.rotationYaw += (float) (deltayaw * rotSpeed.getValue() * 0.1);
         mc.thePlayer.rotationPitch += (float) (deltapitch * rotSpeed.getValue() * 0.1);
