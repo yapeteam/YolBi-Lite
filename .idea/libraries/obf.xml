@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="1.8.9">
+  <library name="obf">
     <CLASSES>
       <root url="file://$PROJECT_DIR$/Builder/libs" />
     </CLASSES>

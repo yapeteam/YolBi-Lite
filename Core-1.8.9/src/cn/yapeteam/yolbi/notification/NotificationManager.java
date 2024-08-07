@@ -3,6 +3,7 @@ package cn.yapeteam.yolbi.notification;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
+import cn.yapeteam.yolbi.module.impl.visual.HeadUpDisplay;
 import lombok.val;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -28,7 +29,8 @@ public class NotificationManager {
     }
 
     public void post(Notification notification) {
-        notificationArrayList.add(notification);
+        if (HeadUpDisplay.instance.getNotification().getValue())
+            notificationArrayList.add(notification);
     }
 
     @Listener
@@ -42,6 +44,6 @@ public class NotificationManager {
                     i--;
                 }
         for (int i = 0; i < notificationArrayList.size(); i++)
-            notificationArrayList.get(i).render(sr, i);
+            notificationArrayList.get(i).render(sr, i, event.getPartialTicks());
     }
 }

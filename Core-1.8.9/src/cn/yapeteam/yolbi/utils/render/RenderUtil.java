@@ -6,7 +6,6 @@ import cn.yapeteam.yolbi.shader.GaussianFilter;
 import cn.yapeteam.yolbi.shader.impl.ShaderScissor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -35,52 +34,44 @@ public class RenderUtil {
     private static final Map<Integer, Integer> shadowCache = new HashMap<>();
 
 
-    public static void enableGL2D() {
-        GL11.glDisable(2929);
-        GL11.glEnable(3042);
-        GL11.glDisable(3553);
-        GL11.glBlendFunc(770, 771);
-        GL11.glDepthMask(true);
-        GL11.glEnable(2848);
-        GL11.glHint(3154, 4354);
-        GL11.glHint(3155, 4354);
-    }
     public static int colorSwitch(Color firstColor, Color secondColor, float time, int index, long timePerIndex, double speed) {
         return RenderUtil.colorSwitch(firstColor, secondColor, time, index, timePerIndex, speed, 255.0);
     }
 
     public static int colorSwitch(Color firstColor, Color secondColor, float time, int index, long timePerIndex, double speed, double alpha) {
-        long now = (long)(speed * (double)System.currentTimeMillis() + (double)((long)index * timePerIndex));
-        float redDiff = (float)(firstColor.getRed() - secondColor.getRed()) / time;
-        float greenDiff = (float)(firstColor.getGreen() - secondColor.getGreen()) / time;
-        float blueDiff = (float)(firstColor.getBlue() - secondColor.getBlue()) / time;
-        int red = Math.round((float)secondColor.getRed() + redDiff * (float)(now % (long)time));
-        int green = Math.round((float)secondColor.getGreen() + greenDiff * (float)(now % (long)time));
-        int blue = Math.round((float)secondColor.getBlue() + blueDiff * (float)(now % (long)time));
-        float redInverseDiff = (float)(secondColor.getRed() - firstColor.getRed()) / time;
-        float greenInverseDiff = (float)(secondColor.getGreen() - firstColor.getGreen()) / time;
-        float blueInverseDiff = (float)(secondColor.getBlue() - firstColor.getBlue()) / time;
-        int inverseRed = Math.round((float)firstColor.getRed() + redInverseDiff * (float)(now % (long)time));
-        int inverseGreen = Math.round((float)firstColor.getGreen() + greenInverseDiff * (float)(now % (long)time));
-        int inverseBlue = Math.round((float)firstColor.getBlue() + blueInverseDiff * (float)(now % (long)time));
-        if (now % ((long)time * 2L) < (long)time) {
-            return getColor(inverseRed, inverseGreen, inverseBlue, (int)alpha);
+        long now = (long) (speed * (double) System.currentTimeMillis() + (double) ((long) index * timePerIndex));
+        float redDiff = (float) (firstColor.getRed() - secondColor.getRed()) / time;
+        float greenDiff = (float) (firstColor.getGreen() - secondColor.getGreen()) / time;
+        float blueDiff = (float) (firstColor.getBlue() - secondColor.getBlue()) / time;
+        int red = Math.round((float) secondColor.getRed() + redDiff * (float) (now % (long) time));
+        int green = Math.round((float) secondColor.getGreen() + greenDiff * (float) (now % (long) time));
+        int blue = Math.round((float) secondColor.getBlue() + blueDiff * (float) (now % (long) time));
+        float redInverseDiff = (float) (secondColor.getRed() - firstColor.getRed()) / time;
+        float greenInverseDiff = (float) (secondColor.getGreen() - firstColor.getGreen()) / time;
+        float blueInverseDiff = (float) (secondColor.getBlue() - firstColor.getBlue()) / time;
+        int inverseRed = Math.round((float) firstColor.getRed() + redInverseDiff * (float) (now % (long) time));
+        int inverseGreen = Math.round((float) firstColor.getGreen() + greenInverseDiff * (float) (now % (long) time));
+        int inverseBlue = Math.round((float) firstColor.getBlue() + blueInverseDiff * (float) (now % (long) time));
+        if (now % ((long) time * 2L) < (long) time) {
+            return getColor(inverseRed, inverseGreen, inverseBlue, (int) alpha);
         }
-        return getColor(red, green, blue, (int)alpha);
+        return getColor(red, green, blue, (int) alpha);
     }
 
     public static int getColor(final int red, final int green, final int blue) {
         return getColor(red, green, blue, 255);
     }
+
     public static void drawGoodCircle(double x2, double y2, float radius, int color) {//徐锦良的奇妙命名
         RenderUtil.color(color);
-        GLUtil.setup2DRendering(() -> {
-            GL11.glEnable((int)2832);
-            GL11.glHint((int)3153, (int)4354);
-            GL11.glPointSize((float)(radius * (float)(2 * Minecraft.getMinecraft().gameSettings.guiScale)));
-            GLUtil.render(0, () -> GL11.glVertex2d((double)x2, (double)y2));
+        GLUtils.setup2DRendering(() -> {
+            GL11.glEnable(2832);
+            GL11.glHint(3153, 4354);
+            GL11.glPointSize(radius * (float) (2 * Minecraft.getMinecraft().gameSettings.guiScale));
+            GLUtils.render(0, () -> GL11.glVertex2d(x2, y2));
         });
     }
+
     public static void renderRoundedRect(float x2, float y2, float width, float height, float radius, int color) {
         RenderUtil.drawGoodCircle(x2 + radius, y2 + radius, radius, color);
         RenderUtil.drawGoodCircle(x2 + width - radius, y2 + radius, radius, color);
@@ -89,42 +80,45 @@ public class RenderUtil {
         drawRect3(x2 + radius, y2, width - radius * 2.0f, height, color);
         drawRect3(x2, y2 + radius, width, height - radius * 2.0f, color);
     }
-    public static void drawRoundOutline(float x2, float y2, float width, float height, float radius, float outlineThickness, Color color, Color outlineColor) {
-        RenderUtil.resetColor();
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(770, 771);
-        roundedOutlineShader.init();
-        ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
-        RoundedUtils.setupRoundedRectUniforms(x2, y2, width, height, radius, roundedOutlineShader);
-        roundedOutlineShader.setUniformf("outlineThickness", outlineThickness * (float)sr.getScaleFactor());
-        roundedOutlineShader.setUniformf("color", (float)color.getRed() / 255.0f, (float)color.getGreen() / 255.0f, (float)color.getBlue() / 255.0f, (float)color.getAlpha() / 255.0f);
-        roundedOutlineShader.setUniformf("outlineColor", (float)outlineColor.getRed() / 255.0f, (float)outlineColor.getGreen() / 255.0f, (float)outlineColor.getBlue() / 255.0f, (float)outlineColor.getAlpha() / 255.0f);
-        ShaderUtil.drawQuads(x2 - (2.0f + outlineThickness), y2 - (2.0f + outlineThickness), width + (4.0f + outlineThickness * 2.0f), height + (4.0f + outlineThickness * 2.0f));
-        roundedOutlineShader.unload();
-        GlStateManager.disableBlend();
+
+    public static void drawScaledCustomSizeModalRect(float x, float y, float u, float v, float uWidth, float vHeight, float width, float height, float tileWidth, float tileHeight) {
+        float f = 1.0F / tileWidth;
+        float f1 = 1.0F / tileHeight;
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        worldrenderer.pos(x, y + height, 0.0).tex(u * f, (v + vHeight) * f1).endVertex();
+        worldrenderer.pos(x + width, y + height, 0.0).tex((u + uWidth) * f, (v + vHeight) * f1).endVertex();
+        worldrenderer.pos(x + width, y, 0.0).tex((u + uWidth) * f, v * f1).endVertex();
+        worldrenderer.pos(x, y, 0.0).tex(u * f, v * f1).endVertex();
+        tessellator.draw();
     }
+
     public static void resetColor() {
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
     }
+
     public static void setAlphaLimit(float limit) {
         GlStateManager.enableAlpha();
-        GlStateManager.alphaFunc(516, (float)((double)limit * 0.01));
+        GlStateManager.alphaFunc(516, (float) ((double) limit * 0.01));
     }
+
     public static void drawRect3(double x2, double y2, double width, double height, int color) {
         RenderUtil.resetColor();
         RenderUtil.setAlphaLimit(0.0f);
-        GLUtil.setup2DRendering(true);
+        GLUtils.setup2DRendering(true);
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        color(worldrenderer.pos(x2, y2, 0.0),color).endVertex();
-        color(worldrenderer.pos(x2, y2 + height, 0.0),color).endVertex();
-        color(worldrenderer.pos(x2 + width, y2 + height, 0.0),color).endVertex();
-        color(worldrenderer.pos(x2 + width, y2, 0.0),color).endVertex();
+        color(worldrenderer.pos(x2, y2, 0.0), color).endVertex();
+        color(worldrenderer.pos(x2, y2 + height, 0.0), color).endVertex();
+        color(worldrenderer.pos(x2 + width, y2 + height, 0.0), color).endVertex();
+        color(worldrenderer.pos(x2 + width, y2, 0.0), color).endVertex();
         tessellator.draw();
-        GLUtil.end2DRendering();
+        GLUtils.end2DRendering();
     }
-    public static WorldRenderer color(WorldRenderer wr,final int colorHex) {
+
+    public static WorldRenderer color(WorldRenderer wr, final int colorHex) {
         return wr.color(colorHex >> 16 & 0xFF, colorHex >> 8 & 0xFF, colorHex & 0xFF, colorHex >> 24 & 0xFF);
     }
 
@@ -135,6 +129,7 @@ public class RenderUtil {
         color |= MathHelper.clamp_int(blue, 0, 255);
         return color;
     }
+
     public static void drawBorderedRect(int x, int y, int x2, int y2, float lineWidth, int color1, final int color2) {
         Gui.drawRect(x, y, x2, y2, color2);
         final float f = (color1 >> 24 & 0xFF) / 255.0f;
@@ -163,6 +158,7 @@ public class RenderUtil {
         GL11.glDisable(3042);
         GL11.glDisable(2848);
     }
+
     public static void scaleStart(float x2, float y2, float scale) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x2, y2, 0.0f);
@@ -175,30 +171,41 @@ public class RenderUtil {
     }
 
     public static void startDrawing() {
-        GL11.glEnable(3042);
-        GL11.glEnable(3042);
-        GL11.glBlendFunc(770, 771);
-        GL11.glEnable(2848);
-        GL11.glDisable(3553);
-        GL11.glDisable(2929);
+        GL11.glEnable(GL_BLEND);
+        GL11.glEnable(GL_BLEND);
+        GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL_LINE_SMOOTH);
+        GL11.glDisable(GL_TEXTURE_2D);
+        GL11.glDisable(GL_DEPTH_TEST);
         mc.entityRenderer.setupCameraTransform(Objects.requireNonNull(ReflectionManager.Minecraft$getTimer(mc)).renderPartialTicks, 0);
     }
 
     public static void stopDrawing() {
-        GL11.glDisable(3042);
-        GL11.glEnable(3553);
-        GL11.glDisable(2848);
-        GL11.glDisable(3042);
-        GL11.glEnable(2929);
+        GL11.glDisable(GL_BLEND);
+        GL11.glEnable(GL_TEXTURE_2D);
+        GL11.glDisable(GL_LINE_SMOOTH);
+        GL11.glDisable(GL_BLEND);
+        GL11.glEnable(GL_DEPTH_TEST);
+    }
+
+    public static void enableGL2D() {
+        GL11.glDisable(GL_DEPTH_TEST);
+        GL11.glEnable(GL_BLEND);
+        GL11.glDisable(GL_TEXTURE_2D);
+        GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glDepthMask(true);
+        GL11.glEnable(GL_LINE_SMOOTH);
+        GL11.glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+        GL11.glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
     }
 
     public static void disableGL2D() {
-        GL11.glEnable(3553);
-        GL11.glDisable(3042);
-        GL11.glEnable(2929);
-        GL11.glDisable(2848);
-        GL11.glHint(3154, 4352);
-        GL11.glHint(3155, 4352);
+        GL11.glEnable(GL_TEXTURE_2D);
+        GL11.glDisable(GL_BLEND);
+        GL11.glEnable(GL_DEPTH_TEST);
+        GL11.glDisable(GL_LINE_SMOOTH);
+        GL11.glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
+        GL11.glHint(GL_POLYGON_SMOOTH_HINT, GL_DONT_CARE);
     }
 
 
@@ -686,11 +693,11 @@ public class RenderUtil {
         GL11.glShadeModel(7425);
         GL11.glBegin(7);
         color(topColor);
-        GL11.glVertex2f(x, y1);
-        GL11.glVertex2f(x1, y1);
-        color(bottomColor);
         GL11.glVertex2f(x1, y);
         GL11.glVertex2f(x, y);
+        color(bottomColor);
+        GL11.glVertex2f(x, y1);
+        GL11.glVertex2f(x1, y1);
         GL11.glEnd();
         GL11.glShadeModel(7424);
         disableGL2D();
@@ -972,8 +979,8 @@ public class RenderUtil {
     public static void drawBloomShadow(float x, float y, float width, float height, int blurRadius, int roundRadius, int color, boolean scissor, boolean cut_top, boolean cut_bottom, boolean cut_left, boolean cut_right) {
         width = width + blurRadius * 2;
         height = height + blurRadius * 2;
-        x -= blurRadius + 0.75f;
-        y -= blurRadius + 0.75f;
+        x -= blurRadius - 0.5f;
+        y -= blurRadius - 0.5f;
 
         int identifier = Arrays.deepHashCode(new Object[]{width, height, blurRadius, roundRadius});
         if (!shadowCache.containsKey(identifier)) {
@@ -981,7 +988,7 @@ public class RenderUtil {
             if (height <= 0) height = 1;
             BufferedImage original = new BufferedImage((int) width, (int) height, BufferedImage.TYPE_INT_ARGB_PRE);
             Graphics g = original.getGraphics();
-            g.setColor(new Color(-1));
+            g.setColor(ColorUtil.colorFromInt(-1));
             g.fillRoundRect(blurRadius, blurRadius, (int) (width - blurRadius * 2), (int) (height - blurRadius * 2), roundRadius, roundRadius);
             g.dispose();
             GaussianFilter op = new GaussianFilter(blurRadius);

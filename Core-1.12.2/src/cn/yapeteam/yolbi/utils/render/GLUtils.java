@@ -3,7 +3,7 @@ package cn.yapeteam.yolbi.utils.render;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -16,8 +16,8 @@ import java.nio.IntBuffer;
 
 public final class GLUtils {
     private static FloatBuffer colorBuffer;
-    private static final Vec3 LIGHT0_POS;
-    private static final Vec3 LIGHT1_POS;
+    private static final Vec3d LIGHT0_POS;
+    private static final Vec3d LIGHT1_POS;
     public static int[] enabledCaps = new int[32];
 
     public static void startBlend() {
@@ -91,7 +91,7 @@ public final class GLUtils {
     }
 
     public static void setup2DRendering() {
-        GLUtils.setup2DRendering(true);
+        setup2DRendering(true);
     }
 
     public static void setup2DRendering(boolean blend) {
@@ -164,8 +164,8 @@ public final class GLUtils {
 
     static {
         GLUtils.colorBuffer = GLAllocation.createDirectFloatBuffer(16);
-        LIGHT0_POS = new Vec3(0.20000000298023224, 1.0, -0.699999988079071).normalize();
-        LIGHT1_POS = new Vec3(-0.20000000298023224, 1.0, 0.699999988079071).normalize();
+        LIGHT0_POS = new Vec3d(0.20000000298023224, 1.0, -0.699999988079071).normalize();
+        LIGHT1_POS = new Vec3d(-0.20000000298023224, 1.0, 0.699999988079071).normalize();
     }
 
     public static final FloatBuffer MODELVIEW = BufferUtils.createFloatBuffer(16);

@@ -5,12 +5,12 @@
 #include <windows.h>
 
 #if __APPLE__
-    #include "../jvm/darwin/jni.h"
-    #include "../jvm/darwin/jvmti.h"
-    #include <unistd.h>
+#include "../jvm/darwin/jni.h"
+#include "../jvm/darwin/jvmti.h"
+#include <unistd.h>
 #elif _WIN64
-    #include "../jvm/windows/jni.h"
-    #include "../jvm/windows/jvmti.h"
+#include "../jvm/windows/jni.h"
+#include "../jvm/windows/jvmti.h"
 #endif
 
 #include "../shared/main.c"
@@ -25,6 +25,8 @@ PVOID UnLoad(PVOID arg)
 
 BOOL hooked = FALSE;
 
+jvmtiEnv *jvmti;
+
 void HookMain(JNIEnv *env)
 {
     if (hooked)
@@ -36,7 +38,6 @@ void HookMain(JNIEnv *env)
     HMODULE jvmHandle = GetModuleHandle(("jvm.dll"));
     if (!jvmHandle)
         return;
-    jvmtiEnv *jvmti;
     typedef jint(JNICALL * fnJNI_GetCreatedJavaVMs)(JavaVM **, jsize, jsize *);
     fnJNI_GetCreatedJavaVMs JNI_GetCreatedJavaVMs = (fnJNI_GetCreatedJavaVMs)GetProcAddress(jvmHandle, "JNI_GetCreatedJavaVMs");
     jint num = JNI_GetCreatedJavaVMs(&jvm, 1, NULL);
@@ -45,6 +46,7 @@ void HookMain(JNIEnv *env)
     GetEnvironmentVariableW(L"USERPROFILE", userProfile, MAX_PATH);
     yolbiPath = format_wchar(L"%ls\\.yolbi", userProfile);
     wprintf(L"yolbiPath: %ls\n", yolbiPath);
+
     Inject_fla_bcf_(env, jvmti);
     if ((*env)->ExceptionCheck(env))
     {
@@ -57,6 +59,29 @@ void HookMain(JNIEnv *env)
 
 BYTE OldCode[12] = {0x00};
 BYTE HookCode[12] = {0x48, 0xB8, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0xFF, 0xE0};
+
+void HookFuncAddress64(DWORD_PTR FuncAddress, LPVOID lpFunction)
+{
+    DWORD OldProtect = 0;
+
+    if (VirtualProtect((LPVOID)FuncAddress, 12, PAGE_EXECUTE_READWRITE, &OldProtect))
+    {
+        memcpy(OldCode, (LPVOID)FuncAddress, 12);     // 拷贝原始机器码指令
+        *(PINT64)(HookCode + 2) = (UINT64)lpFunction; // 填充90为指定跳转地址
+    }
+    memcpy((LPVOID)FuncAddress, &HookCode, sizeof(HookCode)); // 拷贝Hook机器指令
+    VirtualProtect((LPVOID)FuncAddress, 12, OldProtect, &OldProtect);
+}
+
+void UnHookFuncAddress64(UINT64 FuncAddress)
+{
+    DWORD OldProtect = 0;
+    if (VirtualProtect((LPVOID)FuncAddress, 12, PAGE_EXECUTE_READWRITE, &OldProtect))
+    {
+        memcpy((LPVOID)FuncAddress, OldCode, sizeof(OldCode));
+    }
+    VirtualProtect((LPVOID)FuncAddress, 12, OldProtect, &OldProtect);
+}
 
 void HookFunction64(char *lpModule, LPCSTR lpFuncName, LPVOID lpFunction)
 {
@@ -97,13 +122,21 @@ typedef jlong (*JVM_NanoTime)(JNIEnv *env, jclass ignored);
 
 JVM_NanoTime NanoTime = NULL;
 
+jvmtiError HookGetLoadedClasses(jvmtiEnv *jvmti_env, jint *class_count_ptr, jclass **classes_ptr)
+{
+    MessageBoxW(NULL, L"Hooked", L"以打死GetLoadedClasses", MB_OK);
+    // UnHookFuncAddress64((*jvmti)->GetLoadedClasses);
+    // jvmtiError err = (*jvmti_env)->GetLoadedClasses(jvmti_env, class_count_ptr, classes_ptr);
+    *class_count_ptr = 0;
+    return 0;
+}
+
 jlong NanoTime_Hook(JNIEnv *env, jclass ignored)
 {
     UnHookFunction64("jvm.dll", "JVM_NanoTime");
-    printf("hook\n");
     jlong time = NanoTime(env, ignored);
-    printf("hook2\n");
     HookMain(env);
+    HookFuncAddress64((*jvmti)->GetLoadedClasses, (LPVOID)HookGetLoadedClasses);
     return time;
 }
 
@@ -113,7 +146,6 @@ PVOID WINAPI remote()
     HMODULE jvm = GetModuleHandleW(L"jvm.dll");
     MonitorNotify = (JVM_MonitorNotify)GetProcAddressPeb(jvm, "JVM_MonitorNotify");
     NanoTime = (JVM_NanoTime)GetProcAddressPeb(jvm, "JVM_NanoTime");
-
     return NULL;
 }
 

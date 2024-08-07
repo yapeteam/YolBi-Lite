@@ -16,15 +16,11 @@ public class ClickUI extends Module {
     private final BooleanValue blur = new BooleanValue("Blur background", () -> !mc.gameSettings.ofFastRender, true);
     private final BooleanValue rainbow = new BooleanValue("RainBow", false);
     private final NumberValue<Integer> blurRadius = new NumberValue<>("blurRadius", blur::getValue, 3, 0, 50, 1);
-    //public  final BooleanValue notiff = notification;
     public ClickUI() {
         super("ClickGUI", ModuleCategory.VISUAL, Keyboard.KEY_RCONTROL);
         if (ReflectionManager.hasOptifine)
             blur.setCallback((oldV, newV) -> !mc.gameSettings.ofFastRender && newV);
         else blur.setVisibility(() -> true);
-        //public final BooleanValue notif = notification.getValue();
-        //notification.setValue(false);
-        //addValues(blur,rainbow,blurRadius);
         addValues(blur, rainbow, blurRadius);
     }
 

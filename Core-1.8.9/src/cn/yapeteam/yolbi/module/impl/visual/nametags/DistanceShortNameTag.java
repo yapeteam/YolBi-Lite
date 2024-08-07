@@ -10,7 +10,6 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MathHelper;
 
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -18,9 +17,8 @@ import java.util.Map;
 
 public class DistanceShortNameTag implements IMinecraft {
     public static DecimalFormat format = new DecimalFormat("0.0");
-    private static final ScaledResolution scaledResolution = new ScaledResolution(mc);
 
-    public static void renderNameTag(EntityLivingBase entity, boolean invis, Map<EntityLivingBase, double[]> entityPositions, boolean armor, int alpha) {
+    public static void renderNameTag(EntityLivingBase entity, boolean invis, Map<EntityLivingBase, double[]> entityPositions, boolean armor, int alpha, ScaledResolution sr) {
         if (entity != mc.thePlayer && (invis || !entity.isInvisible())) {
             GlStateManager.pushMatrix();
             if (entity instanceof EntityPlayer) {
@@ -30,7 +28,7 @@ public class DistanceShortNameTag implements IMinecraft {
                     return;
                 }
                 AbstractFontRenderer wqy16 = YolBi.instance.getFontManager().getPingFang16();
-                GlStateManager.translate(array[0] / scaledResolution.getScaleFactor(), array[1] / scaledResolution.getScaleFactor(), 0.0D);
+                GlStateManager.translate(array[0] / sr.getScaleFactor(), array[1] / sr.getScaleFactor(), 0.0D);
                 scale();
                 GlStateManager.translate(0.0D, 5D, 0.0D);
                 String string2 = NameTags.getTag(entity);
@@ -52,9 +50,5 @@ public class DistanceShortNameTag implements IMinecraft {
     private static void scale() {
         final float n = 1.0f;
         GlStateManager.scale(n, n, n);
-    }
-
-    public static int getColor(int p_clamp_int_0_, int p_clamp_int_0_2, int p_clamp_int_0_3, int p_clamp_int_0_4) {
-        return MathHelper.clamp_int(p_clamp_int_0_4, 0, 255) << 24 | MathHelper.clamp_int(p_clamp_int_0_, 0, 255) << 16 | MathHelper.clamp_int(p_clamp_int_0_2, 0, 255) << 8 | MathHelper.clamp_int(p_clamp_int_0_3, 0, 255);
     }
 }

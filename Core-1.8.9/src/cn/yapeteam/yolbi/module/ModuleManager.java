@@ -32,13 +32,7 @@ public class ModuleManager {
         modules.add(new AimAssist());
         modules.add(new AntiBot());
         modules.add(new AutoClicker());
-        modules.add(new Backtrack());
-        //modules.add(new IRC()); // To be tested
-        // modules.add(new BlatantVelocity());
-        // modules.add(new Criticals());
-        // modules.add(new FakeLag());
         modules.add(new KillAura());
-        // modules.add(new Reach());
         modules.add(new CombatSettings());
         modules.add(new Velocity());
         modules.add(new WTap());
@@ -51,22 +45,19 @@ public class ModuleManager {
         modules.add(new Eagle());
         modules.add(new NoSlow());
         modules.add(new MoveFix());
-        //modules.add(new Scaffold());
         modules.add(new Sprint());
         modules.add(new StrafeFix());
-        modules.add(new NotificationModule());
         modules.add(new ClickUI());
         modules.add(new ClientTheme());
         modules.add(new ESP());
         modules.add(new HeadUpDisplay());
-        modules.add(new JFrameESP2D());
-        modules.add(new JFrameRenderer());
         modules.add(new PacketDebug());
         modules.add(new TargetHud());
         modules.add(new MurdererFinder());
         modules.add(new NameTags());
         modules.add(new FastPlace());
-
+        modules.add(new ClickAssist());
+        modules.add(new HitSelect());
         modules.sort((m1, m2) -> -Integer.compare(m2.getName().charAt(0), m1.getName().charAt(0)));
     }
 
@@ -74,13 +65,11 @@ public class ModuleManager {
     private void onKey(EventKey e) {
         modules.stream().filter(m -> m.getKey() == e.getKey()).collect(Collectors.toList()).forEach(module -> {
             module.toggle();
-            if (getModule(NotificationModule.class).isEnabled()) {
-                YolBi.instance.getNotificationManager().post(new Notification(
-                        module.getName() + (module.isEnabled() ? " Enabled" : " Disabled"),
-                        Easing.EASE_OUT_BACK, Easing.EASE_IN_OUT_CUBIC,
-                        1500, module.isEnabled() ? NotificationType.SUCCESS : NotificationType.FAILED
-                ));
-            }
+            YolBi.instance.getNotificationManager().post(new Notification(
+                    module.getName() + (module.isEnabled() ? " Enabled" : " Disabled"),
+                    Easing.EASE_OUT_BACK, Easing.EASE_IN_OUT_CUBIC,
+                    3000, module.isEnabled() ? NotificationType.SUCCESS : NotificationType.FAILED
+            ));
         });
     }
 

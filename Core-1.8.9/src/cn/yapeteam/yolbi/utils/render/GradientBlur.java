@@ -1,8 +1,7 @@
 package cn.yapeteam.yolbi.utils.render;
 
-import cn.yapeteam.yolbi.managers.ReflectionManager;
-import lombok.Setter;
-import net.minecraft.client.Minecraft;
+import cn.yapeteam.yolbi.utils.IMinecraft;
+import lombok.Getter;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -10,171 +9,138 @@ import org.lwjgl.opengl.GL12;
 
 import java.awt.*;
 import java.nio.IntBuffer;
-import java.util.Objects;
 
-@SuppressWarnings("SpellCheckingInspection")
-public class GradientBlur {
-    @SuppressWarnings("InnerClassMayBeStatic")
-    public class Timer {
-        private long lastCheck = getSystemTime();
+/**
+ * @author TIMER_err
+ * 好的视觉，灵感来自果冻
+ */
+@Getter
+public class GradientBlur implements IMinecraft {
+    private final Type type;
 
-        public boolean hasReach(float mil) {
-            return getTimePassed() >= (mil);
-        }
+    private int targetR1, targetG1, targetB1;
+    private int targetR2, targetG2, targetB2;
 
-        public void reset() {
-            lastCheck = getSystemTime();
-        }
+    private int r1, g1, b1;
+    private int lastR1, lastG1, lastB1;
+    private int r2, g2, b2;
+    private int lastR2, lastG2, lastB2;
 
-        private long getTimePassed() {
-            return getSystemTime() - lastCheck;
-        }
+    private boolean inited = false;
+    private int[] pixels;
 
-        private long getSystemTime() {
-            return System.nanoTime() / (long) (1E6);
-        }
+    public GradientBlur(Type type) {
+        this.type = type;
     }
 
-    @Setter
-    private float x, y;
-    @Setter
-    private int width, height, delay;
-    private final Timer timer = new Timer();
-    private int tRed, tGreen, tBlue;
-    private int lasttRed, lasttGreen, lasttBlue;
-    private int bRed, bGreen, bBlue;
-    private int lastbRed, lastbGreen, lastbBlue;
-    private int colorTop, colorTopRight, colorBottom, colorBottomRight;
-
-    public void set(float x, float y, int width, int height, int delay) {
-        setX(x);
-        setY(y);
-        setWidth(width);
-        setHeight(height);
-        setDelay(delay);
+    public void update(float x, float y, float width, float height) {
+        update((int) x, (int) y, (int) width, (int) height);
     }
 
-    public enum ColorMode {
-        TOP,
-        TOP_RIGHT,
-        BOTTOM,
-        BOTTOM_RIGHT,
-        MIXED
-    }
-
-    public void update(ColorMode mode) {
-        lasttRed = tRed;
-        lasttGreen = tGreen;
-        lasttBlue = tBlue;
-
-        lastbRed = bRed;
-        lastbGreen = bGreen;
-        lastbBlue = bBlue;
-
-        Color top, bottom;
-        switch (mode) {
+    public void update(int x, int y, int width, int height) {
+        pixels = getPixels(x, y, width, height);
+        int leftTop = pixels[0];
+        int rightTop = pixels[width - 1];
+        int leftBottom = pixels[(height - 1) * width - 1];
+        int rightBottom = pixels[height * width - 1];
+        Color color1, color2;
+        switch (type) {
+            case LR:
+                color1 = ColorUtil.blend(leftTop, leftBottom);
+                color2 = ColorUtil.blend(rightTop, rightBottom);
+                break;
             default:
-            case MIXED:
-                top = ColorUtil.blend(ColorUtil.colorFromInt(colorTop), ColorUtil.colorFromInt(colorTopRight));
-                bottom = ColorUtil.blend(ColorUtil.colorFromInt(colorBottom), ColorUtil.colorFromInt(colorBottomRight));
-                break;
-            case TOP:
-                top = ColorUtil.colorFromInt(colorTop);
-                bottom = ColorUtil.colorFromInt(colorBottom);
-                break;
-            case TOP_RIGHT:
-                top = ColorUtil.colorFromInt(colorTopRight);
-                bottom = ColorUtil.colorFromInt(colorBottomRight);
-                break;
-            case BOTTOM:
-                top = ColorUtil.colorFromInt(colorBottom);
-                bottom = ColorUtil.colorFromInt(colorTop);
-                break;
-            case BOTTOM_RIGHT:
-                top = ColorUtil.colorFromInt(colorBottomRight);
-                bottom = ColorUtil.colorFromInt(colorTopRight);
+            case TB:
+                color1 = ColorUtil.blend(leftTop, rightTop);
+                color2 = ColorUtil.blend(leftBottom, rightBottom);
                 break;
         }
+        targetR1 = color1.getRed();
+        targetG1 = color1.getGreen();
+        targetB1 = color1.getBlue();
+        targetR2 = color2.getRed();
+        targetG2 = color2.getGreen();
+        targetB2 = color2.getBlue();
+        if (!inited) {
+            r1 = targetR1;
+            g1 = targetB1;
+            b1 = targetG1;
+            r2 = targetR2;
+            g2 = targetB2;
+            b2 = targetG2;
+            inited = true;
+        }
+        lastR1 = r1;
+        lastG1 = g1;
+        lastB1 = b1;
+        lastR2 = r2;
+        lastG2 = g2;
+        lastB2 = b2;
 
+        r1 = animate(r1, targetR1);
+        g1 = animate(g1, targetG1);
+        b1 = animate(b1, targetB1);
+        r2 = animate(r2, targetR2);
+        g2 = animate(g2, targetG2);
+        b2 = animate(b2, targetB2);
 
-        bRed += (int) (((bottom.getRed() - bRed) / (5)) + 0.1);
-        bGreen += (int) (((bottom.getGreen() - bGreen) / (5)) + 0.1);
-        bBlue += (int) (((bottom.getBlue() - bBlue) / (5)) + 0.1);
-
-        tRed += (int) (((top.getRed() - tRed) / (5)) + 0.1);
-        tGreen += (int) (((top.getGreen() - tGreen) / (5)) + 0.1);
-        tBlue += (int) (((top.getBlue() - tBlue) / (5)) + 0.1);
-
-        tRed = Math.min(tRed, 255);
-        tGreen = Math.min(tGreen, 255);
-        tBlue = Math.min(tBlue, 255);
-        tRed = Math.max(tRed, 0);
-        tGreen = Math.max(tGreen, 0);
-        tBlue = Math.max(tBlue, 0);
-
-        bRed = Math.min(bRed, 255);
-        bGreen = Math.min(bGreen, 255);
-        bBlue = Math.min(bBlue, 255);
-        bRed = Math.max(bRed, 0);
-        bGreen = Math.max(bGreen, 0);
-        bBlue = Math.max(bBlue, 0);
+        r1 = Math.min(r1, 255);
+        g1 = Math.min(g1, 255);
+        b1 = Math.min(b1, 255);
+        r1 = Math.max(r1, 0);
+        g1 = Math.max(g1, 0);
+        b1 = Math.max(b1, 0);
+        r2 = Math.min(r2, 255);
+        g2 = Math.min(g2, 255);
+        b2 = Math.min(b2, 255);
+        r2 = Math.max(r2, 0);
+        g2 = Math.max(g2, 0);
+        b2 = Math.max(b2, 0);
     }
 
-    public void getPixels() {
-        if (timer.hasReach(delay)) {
-            IntBuffer pixelBuffer;
-            int[] pixelValues;
-            int size = width * height;
-            pixelBuffer = BufferUtils.createIntBuffer(size);
-            pixelValues = new int[size];
-            GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, 1);
-            GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
-            pixelBuffer.clear();
-            Minecraft mc = Minecraft.getMinecraft();
-            int scaleFactor = 1;
-            int k = mc.gameSettings.guiScale;
-            if (k == 0) {
-                k = 1000;
-            }
-            while (scaleFactor < k && mc.displayWidth / (scaleFactor + 1) >= 320
-                    && mc.displayHeight / (scaleFactor + 1) >= 240) {
-                ++scaleFactor;
-            }
-            GL11.glReadPixels((int) (x * scaleFactor), (int) ((mc.displayHeight - (y + 6) * scaleFactor)), width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, pixelBuffer);
-            pixelBuffer.get(pixelValues);
-            TextureUtil.processPixelValues(pixelValues, width, height);
-            colorTop = pixelValues[0];
-            colorTopRight = pixelValues[width - 1];
-            colorBottom = pixelValues[(height - 1) * width - 1];
-            colorBottomRight = pixelValues[height * width - 1];
-            timer.reset();
+    public void render(float x, float y, float width, float height, float partialTicks, float alpha) {
+        Color color1 = new Color(smoothAnimation(r1, lastR1, partialTicks), smoothAnimation(g1, lastG1, partialTicks), smoothAnimation(b1, lastB1, partialTicks));
+        Color color2 = new Color(smoothAnimation(r2, lastR2, partialTicks), smoothAnimation(g2, lastG2, partialTicks), smoothAnimation(b2, lastB2, partialTicks));
+        color1 = ColorUtil.reAlpha(color1, alpha);
+        color2 = ColorUtil.reAlpha(color2, alpha);
+        switch (type) {
+            case LR:
+                RenderUtil.drawGradientRectLR(x, y, x + width, y + height, color1.getRGB(), color2.getRGB());
+                break;
+            case TB:
+                RenderUtil.drawGradientRectTB(x, y, x + width, y + height, color1.getRGB(), color2.getRGB());
         }
     }
 
-    public int smoothAnimation(double current, double last) {
-        float partialTicks = Objects.requireNonNull(ReflectionManager.Minecraft$getTimer(Minecraft.getMinecraft())).renderPartialTicks;
-        return (int) (current * partialTicks + (last * (1.0f - partialTicks)));
+    private int animate(double current, double target) {
+        return (int) (current + (target - current) / 10);
     }
 
-    public Color getTColor() {
-        int tR = smoothAnimation(tRed, lasttRed);
-        int tG = smoothAnimation(tGreen, lasttGreen);
-        int tB = smoothAnimation(tBlue, lasttBlue);
-        try {
-            return new Color(tR, tG, tB);
-        } catch (Exception e) {
-            return new Color(0, 0, 0);
-        }
+    private int smoothAnimation(double current, double last, float partialTicks) {
+        return (int) (current * partialTicks + last * (1.0f - partialTicks));
     }
 
-    public Color getBColor() {
-        int bR = smoothAnimation(bRed, lastbRed);
-        int bG = smoothAnimation(bGreen, lastbGreen);
-        int bB = smoothAnimation(bBlue, lastbBlue);
-        try {
-            return new Color(bR, bG, bB);
-        } catch (Exception e) {
-            return new Color(0, 0, 0);
+    public enum Type {
+        TB, LR
+    }
+
+    private int[] getPixels(int x, int y, int width, int height) {
+        int[] pixelValues;
+        int size = width * height;
+        IntBuffer pixelBuffer = (IntBuffer) BufferUtils.createIntBuffer(size).clear();
+        pixelValues = new int[size];
+        GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, 1);
+        GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
+        int scaleFactor = 1;
+        int k = mc.gameSettings.guiScale;
+        if (k == 0) k = 1000;
+        while (scaleFactor < k && mc.displayWidth / (scaleFactor + 1) >= 320
+                && mc.displayHeight / (scaleFactor + 1) >= 240) {
+            ++scaleFactor;
         }
+        GL11.glReadPixels(x * scaleFactor, (mc.displayHeight - (y + 6) * scaleFactor), width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, pixelBuffer);
+        pixelBuffer.get(pixelValues);
+        TextureUtil.processPixelValues(pixelValues, width, height);
+        return pixelValues;
     }
 }
