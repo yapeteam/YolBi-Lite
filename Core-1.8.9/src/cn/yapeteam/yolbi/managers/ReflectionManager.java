@@ -4,6 +4,7 @@ import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.ymixin.utils.Mapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -54,6 +55,7 @@ public class ReflectionManager {
     private static Field C07PacketPlayerDigging$position;
     private static Field C07PacketPlayerDigging$facing;
     private static Field C03PacketPlayer$pitch;
+    private static Field PlayerControllerMP$isHittingBlock;
 
 
     private static Method
@@ -247,6 +249,21 @@ public class ReflectionManager {
         } catch (NoSuchFieldException e) {
             Logger.exception(e);
         }
+        try {
+            PlayerControllerMP$isHittingBlock = PlayerControllerMP.class.getDeclaredField(Mapper.map("net/minecraft/client/multiplayer/PlayerControllerMP", "isHittingBlock", null, Mapper.Type.Field));
+            PlayerControllerMP$isHittingBlock.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+            Logger.exception(e);
+        }
+    }
+
+    public static boolean PlayerControllerMP$isHittingBlock(PlayerControllerMP obj) {
+        try {
+            return (boolean) PlayerControllerMP$isHittingBlock.get(obj);
+        } catch (Exception e) {
+            Logger.exception(e);
+        }
+        return false;
     }
 
     public static void C07PacketPlayerDigging$setPosition(C07PacketPlayerDigging obj, BlockPos position) {

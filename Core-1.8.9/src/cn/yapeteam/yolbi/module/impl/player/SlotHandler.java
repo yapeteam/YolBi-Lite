@@ -2,6 +2,7 @@ package cn.yapeteam.yolbi.module.impl.player;
 
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
+import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class SlotHandler extends Module {
 
-    private final ModeValue mode = new ModeValue("Mode", "Default", "Default", "Silent");
+    private final ModeValue<String> mode = new ModeValue<>("Mode", "Default", "Default", "Silent");
 
     private final NumberValue<Integer> maxdelay = new NumberValue<>("Max Delay", 100, 0, 1000, 1);
     private final NumberValue<Integer> mindelay = new NumberValue<>("Min Delay", 50, 0, 1000, 1);
@@ -55,14 +56,14 @@ public class SlotHandler extends Module {
 
     @Listener
     public void onPreUpdate(EventUpdate eventUpdate) {
-        switch ((int) mode.getValue()) {
+        switch (mode.getValue()) {
             case "Default":
                 mc.thePlayer.inventory.currentItem = getCurrentSlot();
                 currentSlot = null;
                 break;
             case "Silent":
                 if (currentSlot != null
-                        && !(mc.playerController.isHittingBlock())
+                        && !(ReflectionManager.PlayerControllerMP$isHittingBlock(mc.playerController))
                         && System.currentTimeMillis() - lastSetCurrentSlotTime > maxswitchbackdelay.getValue()) {
                     currentSlot = null;
                 }
