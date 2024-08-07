@@ -76,9 +76,9 @@ public class LegitScaffold extends Module {
         float width = (float) (fontRenderer.getStringWidth(text) + 10f);
         float height = 15f;
         float x = sr.getScaledWidth() / 2f - width / 2f;
-        float y = sr.getScaledHeight() / 2f;
-        RenderUtil.drawBloomShadow(x, y, width, height, 5, 5, new Color(0, 0, 0).getRGB(), false);
+        float y = sr.getScaledHeight() / 2f + 10;
         blur.update(x, y, width, height);
+        RenderUtil.drawBloomShadow(x, y, width, height, 5, 5, new Color(0, 0, 0).getRGB(), false);
         blur.render(x, y, width, height, partialTicks, 1);
         fontRenderer.drawString(text, x + 5, y + (height - fontRenderer.getStringHeight("A")) / 2f, -1);
     }
