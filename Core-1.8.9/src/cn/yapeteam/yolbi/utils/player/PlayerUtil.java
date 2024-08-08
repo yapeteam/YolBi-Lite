@@ -8,6 +8,7 @@ import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.settings.KeyBinding;
@@ -19,6 +20,8 @@ import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -430,7 +433,7 @@ public class PlayerUtil implements IMinecraft {
 
 
     // This methods purpose is to get block placement possibilities, blocks are 1 unit thick so please don't change it to 0.5 it causes bugs.
-    public Vec3 getPlacePossibility(double offsetX, double offsetY, double offsetZ) {
+    public static @Nullable Vec3 getPlacePossibility(double offsetX, double offsetY, double offsetZ) {
         final List<Vec3> possibilities = new ArrayList<>();
         final int range = (int) (5 + (Math.abs(offsetX) + Math.abs(offsetZ)));
 
@@ -469,8 +472,19 @@ public class PlayerUtil implements IMinecraft {
         return possibilities.get(0);
     }
 
-    public Vec3 getPlacePossibility() {
+    public static Vec3 getPlacePossibility() {
         return getPlacePossibility(0, 0, 0);
+    }
+
+    public static boolean replaceable(BlockPos blockPos) {
+        if (mc.thePlayer == null || mc.theWorld == null) {
+            return false;
+        }
+        return block(blockPos).isReplaceable(mc.theWorld, blockPos);
+    }
+
+    public static boolean isFluid(@NotNull Block block) {
+        return block.getMaterial() == Material.lava || block.getMaterial() == Material.water;
     }
 
 }
