@@ -430,39 +430,107 @@ public class RenderUtil {
         GlStateManager.disableBlend();
     }
 
+    protected static float zLevel;
+
+    public static void drawGradientRectTB(double left, double top, double right, double bottom, int startColor, int endColor) {
+        float f = (float) (startColor >> 24 & 255) / 255.0F;
+        float f1 = (float) (startColor >> 16 & 255) / 255.0F;
+        float f2 = (float) (startColor >> 8 & 255) / 255.0F;
+        float f3 = (float) (startColor & 255) / 255.0F;
+        float f4 = (float) (endColor >> 24 & 255) / 255.0F;
+        float f5 = (float) (endColor >> 16 & 255) / 255.0F;
+        float f6 = (float) (endColor >> 8 & 255) / 255.0F;
+        float f7 = (float) (endColor & 255) / 255.0F;
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.disableAlpha();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.shadeModel(7425);
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+        worldrenderer.pos(right, top, zLevel).color(f1, f2, f3, f).endVertex();
+        worldrenderer.pos(left, top, zLevel).color(f1, f2, f3, f).endVertex();
+        worldrenderer.pos(left, bottom, zLevel).color(f5, f6, f7, f4).endVertex();
+        worldrenderer.pos(right, bottom, zLevel).color(f5, f6, f7, f4).endVertex();
+        tessellator.draw();
+        GlStateManager.shadeModel(7424);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableTexture2D();
+    }
+
+    public static void drawGradientRectLR(double left, double top, double right, double bottom, int startColor, int endColor) {
+        float f = (float) (startColor >> 24 & 255) / 255.0F;
+        float f1 = (float) (startColor >> 16 & 255) / 255.0F;
+        float f2 = (float) (startColor >> 8 & 255) / 255.0F;
+        float f3 = (float) (startColor & 255) / 255.0F;
+        float f4 = (float) (endColor >> 24 & 255) / 255.0F;
+        float f5 = (float) (endColor >> 16 & 255) / 255.0F;
+        float f6 = (float) (endColor >> 8 & 255) / 255.0F;
+        float f7 = (float) (endColor & 255) / 255.0F;
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.disableAlpha();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.shadeModel(7425);
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+        worldrenderer.pos(left, top, zLevel).color(f1, f2, f3, f).endVertex();
+        worldrenderer.pos(left, bottom, zLevel).color(f1, f2, f3, f).endVertex();
+        worldrenderer.pos(right, bottom, zLevel).color(f5, f6, f7, f4).endVertex();
+        worldrenderer.pos(right, top, zLevel).color(f5, f6, f7, f4).endVertex();
+        tessellator.draw();
+        GlStateManager.shadeModel(7424);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableTexture2D();
+    }
+
     public static void drawImage(int image, float x, float y, float width, float height, int color) {
-        enableGL2D();
+        //enableGL2D();
         glPushMatrix();
+        GlStateManager.enableTexture2D();
+        GlStateManager.enableAlpha();
         GlStateManager.alphaFunc(GL11.GL_GREATER, 0.01f);
-        glEnable(GL11.GL_TEXTURE_2D);
-        glDisable(GL_CULL_FACE);
-        glEnable(GL11.GL_ALPHA_TEST);
         GlStateManager.enableBlend();
         GlStateManager.bindTexture(image);
-
-        color(color);
-
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glTexCoord2f(0, 0); // top left
-        GL11.glVertex2f(x, y);
-
-        GL11.glTexCoord2f(0, 1); // bottom left
-        GL11.glVertex2f(x, y + height);
-
-        GL11.glTexCoord2f(1, 1); // bottom right
-        GL11.glVertex2f(x + width, y + height);
-
-        GL11.glTexCoord2f(1, 0); // top right
-        GL11.glVertex2f(x + width, y);
-        GL11.glEnd();
-
-        GlStateManager.enableTexture2D();
-        GlStateManager.disableBlend();
+        Color c = new Color(color, true);
         GlStateManager.resetColor();
-
-        glEnable(GL_CULL_FACE);
+        GlStateManager.color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
+        drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
         glPopMatrix();
-        disableGL2D();
+        //GlStateManager.alphaFunc(GL11.GL_GREATER, 0.01f);
+        //glEnable(GL11.GL_TEXTURE_2D);
+        //glDisable(GL_CULL_FACE);
+        //glEnable(GL11.GL_ALPHA_TEST);
+        //GlStateManager.enableBlend();
+        //GlStateManager.bindTexture(image);
+//
+        //color(color);
+//
+        //GL11.glBegin(GL11.GL_QUADS);
+        //GL11.glTexCoord2f(0, 0); // top left
+        //GL11.glVertex2f(x, y);
+//
+        //GL11.glTexCoord2f(0, 1); // bottom left
+        //GL11.glVertex2f(x, y + height);
+//
+        //GL11.glTexCoord2f(1, 1); // bottom right
+        //GL11.glVertex2f(x + width, y + height);
+//
+        //GL11.glTexCoord2f(1, 0); // top right
+        //GL11.glVertex2f(x + width, y);
+        //GL11.glEnd();
+//
+        //GlStateManager.enableTexture2D();
+        //GlStateManager.disableBlend();
+        //GlStateManager.resetColor();
+//
+        //glEnable(GL_CULL_FACE);
+        //glPopMatrix();
+        //disableGL2D();
     }
 
     public static void drawModalRectWithCustomSizedTexture(float x, float y, float u, float v, float width, float height, float textureWidth, float textureHeight) {
@@ -692,35 +760,35 @@ public class RenderUtil {
         resetCaps();
     }
 
-    public static void drawGradientRectTB(float x, float y, float x1, float y1, int topColor, int bottomColor) {
-        enableGL2D();
-        GL11.glShadeModel(7425);
-        GL11.glBegin(7);
-        color(topColor);
-        GL11.glVertex2f(x1, y);
-        GL11.glVertex2f(x, y);
-        color(bottomColor);
-        GL11.glVertex2f(x, y1);
-        GL11.glVertex2f(x1, y1);
-        GL11.glEnd();
-        GL11.glShadeModel(7424);
-        disableGL2D();
-    }
+    // public static void drawGradientRectTB(float x, float y, float x1, float y1, int topColor, int bottomColor) {
+    //     enableGL2D();
+    //     GL11.glShadeModel(7425);
+    //     GL11.glBegin(7);
+    //     color(topColor);
+    //     GL11.glVertex2f(x1, y);
+    //     GL11.glVertex2f(x, y);
+    //     color(bottomColor);
+    //     GL11.glVertex2f(x, y1);
+    //     GL11.glVertex2f(x1, y1);
+    //     GL11.glEnd();
+    //     GL11.glShadeModel(7424);
+    //     disableGL2D();
+    // }
 
-    public static void drawGradientRectLR(float x, float y, float x1, float y1, int leftColor, int rightColor) {
-        enableGL2D();
-        GL11.glShadeModel(7425);
-        GL11.glBegin(7);
-        color(leftColor);
-        GL11.glVertex2f(x, y);
-        GL11.glVertex2f(x, y1);
-        color(rightColor);
-        GL11.glVertex2f(x1, y1);
-        GL11.glVertex2f(x1, y);
-        GL11.glEnd();
-        GL11.glShadeModel(7424);
-        disableGL2D();
-    }
+    // public static void drawGradientRectLR(float x, float y, float x1, float y1, int leftColor, int rightColor) {
+    //     enableGL2D();
+    //     GL11.glShadeModel(7425);
+    //     GL11.glBegin(7);
+    //     color(leftColor);
+    //     GL11.glVertex2f(x, y);
+    //     GL11.glVertex2f(x, y1);
+    //     color(rightColor);
+    //     GL11.glVertex2f(x1, y1);
+    //     GL11.glVertex2f(x1, y);
+    //     GL11.glEnd();
+    //     GL11.glShadeModel(7424);
+    //     disableGL2D();
+    // }
 
     public static void drawEntityBox(AxisAlignedBB entityBox, double lastTickPosX, double lastTickPosY, double lastTickPosZ, double posX, double posY, double posZ, final Color color, final boolean outline, final boolean box, final float outlineWidth, float partialTicks) {
         final RenderManager renderManager = mc.getRenderManager();

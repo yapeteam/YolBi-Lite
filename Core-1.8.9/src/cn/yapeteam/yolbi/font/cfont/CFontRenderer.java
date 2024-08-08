@@ -18,9 +18,9 @@ import java.util.Objects;
 
 @SuppressWarnings({"UnusedReturnValue", "unused", "SameParameterValue"})
 public class CFontRenderer extends CFont implements AbstractFontRenderer {
-    protected CFont.CharData[] boldChars = new CFont.CharData[256];
-    protected CFont.CharData[] italicChars = new CFont.CharData[256];
-    protected CFont.CharData[] boldItalicChars = new CFont.CharData[256];
+    protected CharData[] boldChars = new CharData[256];
+    protected CharData[] italicChars = new CharData[256];
+    protected CharData[] boldItalicChars = new CharData[256];
 
     private final int[] colorCode = new int[32];
 
@@ -37,68 +37,40 @@ public class CFontRenderer extends CFont implements AbstractFontRenderer {
     }
 
     @Override
-    public double drawString(String text, double x, double y, int color) {
+    public float drawString(String text, float x, float y, int color) {
         return drawString(text, x, y, color, false);
     }
 
     @Override
-    public void drawStringWithShadow(String text, double x, double y, int color) {
-        double shadowWidth = drawString(text, x + 1, y + .5, color, true);
-        drawString(text, x, y, color, false);
+    public float drawStringWithShadow(String text, float x, float y, int color) {
+        double shadowWidth = drawString(text, x + 1, y + .5f, color, true);
+        return drawString(text, x, y, color, false);
     }
 
     @Override
-    public void drawStringWithShadow(String text, double x, double y, Color color) {
+    public void drawStringWithShadow(String text, float x, float y, Color color) {
         drawStringWithShadow(text, x, y, color.getRGB());
     }
 
-    @Override
-    public void drawCenteredString(String text, double x, double y, int color) {
-        drawString(text, x - getStringWidth(text) / 2f, y, color);
-    }
+    public void drawStringWithOutline(String text, float x, float y, int color) {
+        drawString(text, x - .5f, y, 0x000000);
 
-    public void drawStringWithOutline(String text, double x, double y, int color) {
-        drawString(text, x - .5, y, 0x000000);
+        drawString(text, x + .5f, y, 0x000000);
 
-        drawString(text, x + .5, y, 0x000000);
+        drawString(text, x, y - .5f, 0x000000);
 
-        drawString(text, x, y - .5, 0x000000);
-
-        drawString(text, x, y + .5, 0x000000);
+        drawString(text, x, y + .5f, 0x000000);
 
         drawString(text, x, y, color);
     }
 
-    public void drawCenteredStringWithOutline(String text, double x, double y, int color) {
-        drawCenteredString(text, x - .5, y, 0x000000);
-
-        drawCenteredString(text, x + .5, y, 0x000000);
-
-        drawCenteredString(text, x, y - .5, 0x000000);
-
-        drawCenteredString(text, x, y + .5, 0x000000);
-
-        drawCenteredString(text, x, y, color);
+    @Override
+    public float drawString(String text, float x, float y, Color color) {
+       return drawString(text, x, y, color.getRGB());
     }
 
     @Override
-    public double drawCenteredStringWithShadow(String text, double x, double y, int color) {
-        double shadowWidth = drawString(text, x - getStringWidth(text) / 2f + 0.45D, y + 0.5D, color, true);
-        return drawString(text, x - getStringWidth(text) / 2f, y, color);
-    }
-
-    @Override
-    public void drawCenteredString(String text, double x, double y, Color color) {
-        drawString(text, x - getStringWidth(text) / 2f, y, color);
-    }
-
-    @Override
-    public void drawString(String text, double x, double y, Color color) {
-        drawString(text, x, y, color.getRGB());
-    }
-
-    @Override
-    public double drawString(String text, double x, double y, int color, boolean shadow) {
+    public float drawString(String text, float x, float y, int color, boolean shadow) {
         Minecraft mc = Minecraft.getMinecraft();
         x -= 1;
 
@@ -118,14 +90,14 @@ public class CFontRenderer extends CFont implements AbstractFontRenderer {
             color = (color & 0xFCFCFC) >> 2 | color & new Color(20, 20, 20, 200).getRGB();
         }
 
-        CFont.CharData[] currentData = this.charData;
+        CharData[] currentData = this.charData;
         float alpha = (color >> 24 & 0xFF) / 255.0F;
         boolean bold = false;
         boolean italic = false;
         boolean strikethrough = false;
         boolean underline = false;
-        x *= 2.0D;
-        y = (y - 3.0D) * 2.0D;
+        x *= 2.0f;
+        y = (y - 3.0f) * 2.0f;
 
         GL11.glPushMatrix();
         GlStateManager.scale(0.5D, 0.5D, 0.5D);
@@ -224,12 +196,13 @@ public class CFontRenderer extends CFont implements AbstractFontRenderer {
         return (float) x / 2.0F;
     }
 
-    public double getStringWidth(String text) {
+    @Override
+    public float getStringWidth(String text) {
         if (text == null) {
             return 0;
         }
         int width = 0;
-        CFont.CharData[] currentData = this.charData;
+        CharData[] currentData = this.charData;
         boolean bold = false;
         boolean italic = false;
         int size = text.length();
@@ -275,7 +248,7 @@ public class CFontRenderer extends CFont implements AbstractFontRenderer {
     }
 
     @Override
-    public double getStringHeight(String s) {
+    public float getStringHeight(String s) {
         return getStringHeight();
     }
 
@@ -285,7 +258,7 @@ public class CFontRenderer extends CFont implements AbstractFontRenderer {
         }
 
         int width = 0;
-        CFont.CharData[] currentData = this.charData;
+        CharData[] currentData = this.charData;
         boolean bold = false;
         boolean italic = false;
         int size = text.length();

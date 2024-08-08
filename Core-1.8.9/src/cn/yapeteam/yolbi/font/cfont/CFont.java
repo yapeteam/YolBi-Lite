@@ -112,15 +112,15 @@ public class CFont {
         GL11.glVertex2d(x + width, y);
     }
 
-    public double getStringHeight() {
+    public float getStringHeight() {
         return this.getHeight();
     }
 
-    public double getHeight() {
+    public float getHeight() {
         return (this.fontHeight - 8) / 2f;
     }
 
-    public double getStringWidth(final String text) {
+    public float getStringWidth(final String text) {
         int width = 0;
         for (final char c : text.toCharArray()) {
             if (c < this.charData.length) {

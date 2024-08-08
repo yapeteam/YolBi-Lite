@@ -2,6 +2,7 @@ package cn.yapeteam.yolbi.module.impl.visual;
 
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
+import cn.yapeteam.yolbi.event.Priority;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import cn.yapeteam.yolbi.font.AbstractFontRenderer;
 import cn.yapeteam.yolbi.module.Module;
@@ -22,7 +23,7 @@ public class TargetHud extends Module {
         super("TargetHUD", ModuleCategory.VISUAL);
     }
 
-    @Listener
+    @Listener(Priority.HIGH)
     public void onRender2D(EventRender2D event) {
         float x = event.getScaledresolution().getScaledWidth() / 2f;
         float y = event.getScaledresolution().getScaledHeight() / 2f;
@@ -40,13 +41,13 @@ public class TargetHud extends Module {
     private EntityLivingBase lastTarget = null;
 
     public void render(float x, float y, EntityLivingBase target, float partialTicks) {
-        AbstractFontRenderer font = YolBi.instance.getFontManager().getPingFang18();
+        AbstractFontRenderer font = YolBi.instance.getFontManager().getCPingFang18();
         float alpha = (float) animateAlpha.animate(target == null ? 0 : 1);
         if (target != null) lastTarget = target;
         if (lastTarget == null || alpha == 0) return;
         String text = lastTarget.getDisplayName().getFormattedText();
         float height = 40;
-        float width = (float) ((lastTarget instanceof AbstractClientPlayer ? height + 5 : 0) + 5 + font.getStringWidth(text) + 5);
+        float width = (lastTarget instanceof AbstractClientPlayer ? height + 5 : 0) + 5 + font.getStringWidth(text) + 5;
         width = Math.max(120, width);
         blur.update(x, y, width, height);
         float animatedHealthBar = (float) animate.animate(lastTarget.getHealth());
