@@ -1,8 +1,8 @@
 package cn.yapeteam.yolbi.utils.player;
 
 
-import cn.yapeteam.yolbi.utils.IMinecraft;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
+import cn.yapeteam.yolbi.utils.IMinecraft;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import com.google.common.base.Predicates;
 import kotlin.Triple;
@@ -19,7 +19,7 @@ import java.util.*;
  */
 public final class RayCastUtil implements IMinecraft {
 
-    private static final Frustum FRUSTUM = new Frustum();
+    private static Frustum FRUSTUM;
 
     public static MovingObjectPosition rayCast(final Vector2f rotation, final double range) {
         return rayCast(rotation, range, 0);
@@ -125,6 +125,7 @@ public final class RayCastUtil implements IMinecraft {
     }
 
     private static boolean isInViewFrustrum(final AxisAlignedBB bb) {
+        if (FRUSTUM == null) FRUSTUM = new Frustum();//由于客户端初始化在非主线程进行，所以clinit中无法调用GL方法
         final Entity current = mc.getRenderViewEntity();
         FRUSTUM.setPosition(current.posX, current.posY, current.posZ);
         return FRUSTUM.isBoundingBoxInFrustum(bb);
