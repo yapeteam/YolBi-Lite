@@ -1,6 +1,8 @@
 package cn.yapeteam.yolbi.utils.player;
 
 
+import cn.yapeteam.loader.logger.Logger;
+import cn.yapeteam.ymixin.utils.Mapper;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.utils.IMinecraft;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
@@ -11,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -131,7 +134,26 @@ public final class RayCastUtil implements IMinecraft {
         return FRUSTUM.isBoundingBoxInFrustum(bb);
     }
 
-    private static final Set<EnumFacing> FACINGS = new HashSet<>(Arrays.asList(EnumFacing.VALUES));
+    private static Field EnumFacing$VALUES;
+
+    static {
+        try {
+            EnumFacing$VALUES = EnumFacing.class.getDeclaredField(Mapper.map("net/minecraft/util/EnumFacing", "VALUES", null, Mapper.Type.Field));
+            EnumFacing$VALUES.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+            Logger.exception(e);
+        }
+    }
+
+    private static EnumFacing[] EnumFacing$VALUES() {
+        try {
+            return (EnumFacing[]) EnumFacing$VALUES.get(null);
+        } catch (IllegalAccessException e) {
+            return new EnumFacing[0];
+        }
+    }
+
+    private static final Set<EnumFacing> FACINGS = new HashSet<>(Arrays.asList(EnumFacing$VALUES()));
 
     public static @NotNull Optional<Triple<BlockPos, EnumFacing, Vec3>> getPlaceSide(@NotNull BlockPos blockPos) {
         return getPlaceSide(blockPos, FACINGS);
