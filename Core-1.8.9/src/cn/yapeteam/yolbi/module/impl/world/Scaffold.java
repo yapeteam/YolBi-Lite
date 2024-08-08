@@ -1,6 +1,7 @@
 package cn.yapeteam.yolbi.module.impl.world;
 
 import cn.yapeteam.yolbi.event.Listener;
+import cn.yapeteam.yolbi.event.impl.game.EventLoadWorld;
 import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
 import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.module.Module;
@@ -50,10 +51,19 @@ public class Scaffold extends Module {
 
     @Override
     protected void onEnable() {
+        if (mc.thePlayer == null || mc.theWorld == null) {
+            setEnabled(false);
+            return;
+        }
         rayCasted = null;
         forceStrict = false;
         placeYaw = mc.thePlayer.rotationYaw + 180;
         sneak$bridged = 0;
+    }
+
+    @Listener
+    private void onWorldLoad(EventLoadWorld e) {
+        setEnabled(false);
     }
 
     @Listener
