@@ -5,6 +5,7 @@ import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.command.CommandManager;
 import cn.yapeteam.yolbi.config.ConfigManager;
 import cn.yapeteam.yolbi.event.EventManager;
+import cn.yapeteam.yolbi.event.impl.client.EventClientShutdown;
 import cn.yapeteam.yolbi.font.FontManager;
 import cn.yapeteam.yolbi.managers.BotManager;
 import cn.yapeteam.yolbi.managers.RotationManager;
@@ -90,6 +91,7 @@ public class YolBi {
     public void shutdown() {
         try {
             Logger.info("Shutting down Yolbi Lite");
+            eventManager.post(new EventClientShutdown());
             configManager.save();
             WebServer.stop();
             instance = new YolBi();
