@@ -40,6 +40,7 @@ public class YolBi {
     private BotManager botManager;
     private ExternalFrame jFrameRenderer;
     private TargetManager targetManager;
+    private RotationManager rotationManager;
 
     public EventManager getEventManager() {
         if (eventManager == null)
@@ -67,6 +68,7 @@ public class YolBi {
         instance.botManager = new BotManager();
         instance.targetManager = new TargetManager();
         instance.notificationManager = new NotificationManager();
+        instance.rotationManager = new RotationManager();
         instance.eventManager.register(instance.commandManager);
         instance.eventManager.register(instance.moduleManager);
         instance.eventManager.register(instance.botManager);
