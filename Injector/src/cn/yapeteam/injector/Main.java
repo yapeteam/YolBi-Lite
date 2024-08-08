@@ -12,7 +12,7 @@ public class Main {
     public static final String dllName = "libinjection.dll";
     public static final String agentName = "agent.jar";
     public static final int port = 20181;
-    public static boolean devSwitch = true;
+    public static boolean devSwitch = false;
 
     public static String msg;
 

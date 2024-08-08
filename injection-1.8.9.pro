@@ -18,8 +18,6 @@
 -dontwarn
 -ignorewarnings
 
-
-
 -keep class cn.yapeteam.yolbi.mixin.injection.** {
     <fields>;
     <methods>;
@@ -32,6 +30,9 @@
 -keep class cn.yapeteam.yolbi.mixin.injection.** {
     <fields>;
     <methods>;
+}
+
+-keep class cn.yapeteam.yolbi.font.slick.** {
 }
 
 # Keep - Applications. Keep all application classes, along with their 'main' methods.

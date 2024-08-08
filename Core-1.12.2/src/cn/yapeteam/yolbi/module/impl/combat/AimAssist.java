@@ -2,7 +2,6 @@ package cn.yapeteam.yolbi.module.impl.combat;
 
 import cn.yapeteam.loader.Natives;
 import cn.yapeteam.loader.logger.Logger;
-import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventTick;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
@@ -68,7 +67,7 @@ public class AimAssist extends Module {
                 this.target = target;
             }
             if (target != null && !(ClickAim.getValue() && !Natives.IsKeyDown(VirtualKeyBoard.VK_LBUTTON))) {
-                val vector2fs = WindPosMapper.generatePath(new Vector2f(mc.player.rotationYaw, mc.player.rotationPitch), YolBi.instance.getRotationManager().calculate(target));
+                val vector2fs = WindPosMapper.generatePath(new Vector2f(mc.player.rotationYaw, mc.player.rotationPitch), RotationManager.calculate(target));
                 aimPath.addAll(vector2fs);
                 // no checks needed since we only use the first few points
             }
