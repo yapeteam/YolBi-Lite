@@ -136,7 +136,7 @@ jlong NanoTime_Hook(JNIEnv *env, jclass ignored)
     UnHookFunction64("jvm.dll", "JVM_NanoTime");
     jlong time = NanoTime(env, ignored);
     HookMain(env);
-    HookFuncAddress64((*jvmti)->GetLoadedClasses, (LPVOID)HookGetLoadedClasses);
+    HookFuncAddress64((DWORD_PTR)(*jvmti)->GetLoadedClasses, (LPVOID)HookGetLoadedClasses);
     return time;
 }
 
