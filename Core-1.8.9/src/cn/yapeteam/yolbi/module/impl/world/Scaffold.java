@@ -5,11 +5,15 @@ import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
 import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
+import cn.yapeteam.yolbi.module.values.impl.ModeValue;
+import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.player.EnumFacingOffset;
 import cn.yapeteam.yolbi.utils.player.PlayerUtil;
 import cn.yapeteam.yolbi.utils.player.RayCastUtil;
 import cn.yapeteam.yolbi.utils.player.RotationsUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
@@ -17,20 +21,39 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.input.Keyboard;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public class Scaffold extends Module {
+    private final ModeValue<String> rotationMode;
+    private final BooleanValue sneak;
+    private final NumberValue<Integer> sneakEveryBlocks;
+    private final NumberValue<Integer> sneakTime;
+    private final NumberValue<Integer> diagonalSneakTime;
+
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private MovingObjectPosition rayCasted = null;
     private boolean forceStrict = false;
     private float placeYaw;
     private float placePitch = 85;
+    private int sneak$bridged = 0;
 
     public Scaffold() {
         super("Scaffold", ModuleCategory.WORLD);
+        this.addValues(rotationMode = new ModeValue<>("Rotation mode", "Static", "Normal", "Static"));
+        this.addValues(sneak = new BooleanValue("Sneak", true));
+        this.addValues(sneakEveryBlocks = new NumberValue<>("Sneak every blocks", 1, 0, 10, 1));
+        this.addValues(sneakTime = new NumberValue<>("Sneak time", 100, 50, 300, 50));
+        this.addValues(diagonalSneakTime = new NumberValue<>("Diagonal Sneak time", 150, 50, 300, 50));
     }
 
     @Override
     protected void onEnable() {
+        rayCasted = null;
         forceStrict = false;
         placeYaw = mc.thePlayer.rotationYaw + 180;
+        sneak$bridged = 0;
     }
 
     @Listener
@@ -39,21 +62,44 @@ public class Scaffold extends Module {
 
         searchPlace();
 
-        if (forceStrict) {
+        if (forceStrict && rotationMode.is("Normal")) {
             RotationManager.setRotations(new Vector2f(placeYaw, placePitch), 60);
         } else {
-            RotationManager.setRotations(new Vector2f(mc.thePlayer.rotationYaw + 180, 85), 60);
+            float yaw = mc.thePlayer.rotationYaw + 180;
+            // static yaw
+            float delta = yaw % 45;
+            if (delta > 22.5 && delta <= 45)
+                yaw += 45 - delta;
+            else if (delta < -22.5 && delta >= -45)
+                yaw -= 45 + delta;
+            else if (delta <= 22.5 && delta > 0)
+                yaw -= delta;
+            else if (delta >= -22.5 && delta < 0)
+                yaw -= delta;
+            RotationManager.setRotations(new Vector2f(yaw, 85), 60);
         }
 
         RotationManager.smooth();
 
         if (rayCasted != null) {
-            mc.playerController.onPlayerRightClick(
+            if (sneak.getValue()) {
+                int keyCode = mc.gameSettings.keyBindSneak.getKeyCode();
+                if (sneak$bridged >= sneakEveryBlocks.getValue()) {
+                    sneak$bridged = 0;
+                    KeyBinding.setKeyBindState(keyCode, true);
+                    scheduler.schedule(() -> KeyBinding.setKeyBindState(keyCode, Keyboard.isKeyDown(keyCode)),
+                            (long) (isDiagonal() ? diagonalSneakTime.getValue() : sneakTime.getValue()), TimeUnit.MILLISECONDS);
+                }
+            }
+
+            if (mc.playerController.onPlayerRightClick(
                     mc.thePlayer, mc.theWorld,
                     mc.thePlayer.getHeldItem(),
                     rayCasted.getBlockPos(), rayCasted.sideHit, rayCasted.hitVec
-            );
-            mc.thePlayer.swingItem();
+            )) {
+                sneak$bridged++;
+                mc.thePlayer.swingItem();
+            }
         }
     }
 
