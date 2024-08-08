@@ -16,6 +16,7 @@ import cn.yapeteam.yolbi.module.impl.player.SlotHandler;
 import cn.yapeteam.yolbi.module.impl.visual.*;
 import cn.yapeteam.yolbi.module.impl.world.FastPlace;
 import cn.yapeteam.yolbi.module.impl.world.LegitScaffold;
+import cn.yapeteam.yolbi.module.impl.world.Scaffold;
 import cn.yapeteam.yolbi.notification.Notification;
 import cn.yapeteam.yolbi.notification.NotificationType;
 import cn.yapeteam.yolbi.utils.animation.Easing;
@@ -41,6 +42,7 @@ public class ModuleManager {
         modules.add(new AntiInvisible());
         modules.add(new AutoArmor());
         modules.add(new LegitScaffold());
+        modules.add(new Scaffold());
         modules.add(new SlotHandler());
         modules.add(new ChestStealer());
         modules.add(new ClientSpoof());
