@@ -8,6 +8,7 @@ import cn.yapeteam.yolbi.event.EventManager;
 import cn.yapeteam.yolbi.event.impl.client.EventClientShutdown;
 import cn.yapeteam.yolbi.font.FontManager;
 import cn.yapeteam.yolbi.managers.BotManager;
+import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.managers.TargetManager;
 import cn.yapeteam.yolbi.module.ModuleManager;
 import cn.yapeteam.yolbi.notification.Notification;
@@ -39,6 +40,7 @@ public class YolBi {
     private BotManager botManager;
     private ExternalFrame jFrameRenderer;
     private TargetManager targetManager;
+    private RotationManager rotationManager;
 
     public EventManager getEventManager() {
         if (eventManager == null)
@@ -65,10 +67,12 @@ public class YolBi {
         instance.botManager = new BotManager();
         instance.targetManager = new TargetManager();
         instance.notificationManager = new NotificationManager();
+        instance.rotationManager = new RotationManager();
         instance.eventManager.register(instance.commandManager);
         instance.eventManager.register(instance.moduleManager);
         instance.eventManager.register(instance.botManager);
         instance.eventManager.register(instance.targetManager);
+        instance.eventManager.register(instance.rotationManager);
         instance.eventManager.register(Shader.class);
         instance.eventManager.register(ESPUtil.class);
         instance.moduleManager.load();

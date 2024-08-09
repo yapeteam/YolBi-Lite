@@ -57,6 +57,7 @@ public class EventManager {
         listeningMethods.sort(Comparator.comparingInt(m -> m.method.getAnnotation(Listener.class).value().getLevel()));
     }
 
+    @SuppressWarnings("unchecked")
     public <E extends Event> E post(Event e) {
         try {
             listeningMethods.forEach(m -> Arrays.stream(m.method.getParameters()).filter(p -> p.getType().equals(e.getClass())).forEach(p -> {
@@ -68,8 +69,6 @@ public class EventManager {
                     Logger.exception(ex);
                     Logger.exception(ex.getCause());
                     Logger.exception(ex.getTargetException());
-                } catch (IllegalAccessException ex) {
-                    Logger.exception(ex);
                 } catch (Throwable ex) {
                     Logger.error("Error while posting event: {}", e.getClass().getName());
                     Logger.exception(ex);

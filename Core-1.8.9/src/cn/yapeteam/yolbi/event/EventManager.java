@@ -4,6 +4,7 @@ import cn.yapeteam.loader.logger.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -56,17 +57,20 @@ public class EventManager {
         listeningMethods.sort(Comparator.comparingInt(m -> m.method.getAnnotation(Listener.class).value().getLevel()));
     }
 
+    @SuppressWarnings("unchecked")
     public <E extends Event> E post(Event e) {
         try {
             listeningMethods.forEach(m -> Arrays.stream(m.method.getParameters()).filter(p -> p.getType().equals(e.getClass())).forEach(p -> {
                 try {
+                    if (!Modifier.isStatic(m.method.getModifiers()) && m.instance == null) return;
                     m.method.invoke(m.instance, e);
                 } catch (InvocationTargetException ex) {
                     Logger.error("Error while posting event: {} in class: {}", e.getClass().getName(), m.method.getDeclaringClass().getName());
                     Logger.exception(ex);
                     Logger.exception(ex.getCause());
                     Logger.exception(ex.getTargetException());
-                } catch (IllegalAccessException ex) {
+                } catch (Throwable ex) {
+                    Logger.error("Error while posting event: {}", e.getClass().getName());
                     Logger.exception(ex);
                 }
             }));

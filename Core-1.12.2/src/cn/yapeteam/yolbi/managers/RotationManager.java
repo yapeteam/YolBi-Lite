@@ -190,7 +190,7 @@ public class RotationManager implements IMinecraft {
         return getDistance(diffX, diffZ, diffY);
     }
 
-    public static Vector2f calculate(final Vector3d from, final Vector3d to) {
+    public Vector2f calculate(final Vector3d from, final Vector3d to) {
         final Vector3d diff = to.subtract(from);
         final double diffX = diff.getX();
         final double diffY = diff.getY();
@@ -204,11 +204,11 @@ public class RotationManager implements IMinecraft {
         return MathHelper.clamp(n, -90.0f, 90.0f);
     }
 
-    public static Vector2f calculate(final Vec3d to, final EnumFacing enumFacing) {
+    public Vector2f calculate(final Vec3d to, final EnumFacing enumFacing) {
         return calculate(new Vector3d(to.xCoord, to.yCoord, to.zCoord), enumFacing);
     }
 
-    private static Vector3d getCustomPositionVector(Entity entity) {
+    private Vector3d getCustomPositionVector(Entity entity) {
         return new Vector3d(entity.posX, entity.posY, entity.posZ);
     }
 
@@ -216,16 +216,16 @@ public class RotationManager implements IMinecraft {
         return new Vector2f(ReflectUtil.GetLastReportedYaw(playerSP), ReflectUtil.GetLastReportedPitch(playerSP));
     }
 
-    public static Vector2f calculate(final Entity entity) {
+    public Vector2f calculate(final Entity entity) {
         return calculate(getCustomPositionVector(entity).add(0, Math.max(0, Math.min(mc.player.posY - entity.posY +
                 mc.player.getEyeHeight(), (entity.getEntityBoundingBox().maxY - entity.getEntityBoundingBox().minY) * 0.9)), 0));
     }
 
-    public static Vector2f calculate(final Vector3d to) {
+    public Vector2f calculate(final Vector3d to) {
         return calculate(getCustomPositionVector(mc.player).add(0, mc.player.getEyeHeight(), 0), to);
     }
 
-    public static Vector2f calculate(final Vector3d position, final EnumFacing enumFacing) {
+    public Vector2f calculate(final Vector3d position, final EnumFacing enumFacing) {
         double x = position.getX() + 0.5D;
         double y = position.getY() + 0.5D;
         double z = position.getZ() + 0.5D;
