@@ -90,25 +90,9 @@ public class ModuleButton extends AbstractComponent {
                         getY() + getHeight() < limitation.getY() ||
                         getY() > limitation.getY() + limitation.getHeight()
         )) {
-            int index = 0, all = 0;
-            for (AbstractComponent component : getParent().getChildComponents())
-                if (component instanceof ModuleButton) {
-                    ModuleButton moduleButton = (ModuleButton) component;
-                    if (getParent().getChildComponents().indexOf(this) > getParent().getChildComponents().indexOf(moduleButton)) {
-                        index++;
-                        if (moduleButton.isExtended()) {
-                            for (AbstractComponent childComponent : moduleButton.getChildComponents())
-                                if (!(childComponent instanceof ValueButton && !((ValueButton) childComponent).getValue().getVisibility().get()))
-                                    index++;
-                        }
-                    }
-                    if (moduleButton.isExtended())
-                        all += moduleButton.getChildComponents().size();
-                    all++;
-                }
             GlStateManager.color(1, 1, 1, 1);
             blur.render(getX(), getY(), getWidth(), getHeight(), partialTicks, 1);
-            int color = ImplScreen.getComponentColor((all - 1 - index) * 100);
+            int color = ImplScreen.getComponentColor((int) (getY() * 10));
             boolean hovering = isHovering(mouseX, mouseY) && getParent().isHovering(mouseX, mouseY);
             RenderUtil.drawRect(getX(), getY(), getX() + getWidth(), getY() + getHeight(), new Color(0, 0, 0, (float) alphaAnimation.animate(hovering ? 0.4 : 0.1)).getRGB());
             AbstractFontRenderer font = YolBi.instance.getFontManager().getPingFang14();
@@ -118,7 +102,7 @@ public class ModuleButton extends AbstractComponent {
                 float top_bottom = 6.5f;
                 float y = getY() + top_bottom;
                 for (int i = 0; i < 3; i++) {
-                    RenderUtil.circle(x, y, 0.09f, !ImplScreen.getClientThemeModuleInstance().color.is("Vape") && module.isEnabled() ? ImplScreen.MainTheme[4].getRGB() : -1);
+                    RenderUtil.circle(x, y, 0.09f, -1);
                     y += (getHeight() - top_bottom * 2) / 2f;
                 }
             }

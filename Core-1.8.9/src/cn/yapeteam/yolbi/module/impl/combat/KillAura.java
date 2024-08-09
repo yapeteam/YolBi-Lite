@@ -246,14 +246,7 @@ public class KillAura extends Module {
         if (lastTarget == null) return;
         float animate = (float) auraESPAnim.animate(target != null ? 1 : 0);
         float renderPartialTicks = Objects.requireNonNull(ReflectionManager.Minecraft$getTimer(mc)).renderPartialTicks;
-        try {
-            Vector2f pos = RenderUtil.esp(lastTarget, renderPartialTicks);
-            if (pos == null) return;
-            RenderUtil.drawCaptureESP2D(texture, pos.x, pos.y, Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW,
-                    2 - animate, 1, animate, interpolate(prevEspValue, espValue, renderPartialTicks));
-        } catch (Exception e) {
-            Logger.exception(e);
-        }
+        RenderUtil.renderESPImage(texture, lastTarget, 2 - animate, interpolate(prevEspValue, espValue, renderPartialTicks), Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, animate, renderPartialTicks);
     }
 
     public static float interpolate(float oldValue, float newValue, float interpolationValue) {

@@ -239,6 +239,7 @@ public class KillAura extends Module {
     private boolean flipSpeed;
 
     private EntityLivingBase lastTarget = null;
+    float animate;
 
     @Listener
     public void onRender3D(EventRender3D event) {
@@ -247,16 +248,9 @@ public class KillAura extends Module {
         if (target != null)
             lastTarget = target;
         if (lastTarget == null) return;
-        float animate = (float) auraESPAnim.animate(target != null ? 1 : 0);
+        animate = (float) auraESPAnim.animate(target != null ? 1 : 0);
         float renderPartialTicks = Objects.requireNonNull(ReflectUtil.Minecraft$getTimer(mc)).field_194147_b;
-        try {
-            Vector2f pos = RenderUtil.esp(lastTarget, renderPartialTicks);
-            if (pos == null) return;
-            RenderUtil.drawCaptureESP2D(texture, pos.x, pos.y, Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW,
-                    2 - animate, 1, animate, interpolate(prevEspValue, espValue, renderPartialTicks));
-        } catch (Exception e) {
-            Logger.exception(e);
-        }
+        RenderUtil.renderESPImage(texture, lastTarget, 2 - animate, interpolate(prevEspValue, espValue, renderPartialTicks), Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, animate, renderPartialTicks);
     }
 
     public static float interpolate(float oldValue, float newValue, float interpolationValue) {
@@ -274,6 +268,6 @@ public class KillAura extends Module {
 
     @Override
     public String getSuffix() {
-        return searchRange.getValue() + " | " + (cps.getValue() - cpsRange.getValue()) + " ~ " + (cps.getValue() + cpsRange.getValue());
+        return String.format("%.2f", animate) + "-" + searchRange.getValue() + " | " + (cps.getValue() - cpsRange.getValue()) + " ~ " + (cps.getValue() + cpsRange.getValue());
     }
 }

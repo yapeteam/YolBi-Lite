@@ -8,9 +8,6 @@ import cn.yapeteam.yolbi.ui.listedclickui.component.AbstractComponent;
 import cn.yapeteam.yolbi.ui.listedclickui.component.Limitation;
 import cn.yapeteam.yolbi.utils.render.GradientBlur;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-
-import static org.lwjgl.opengl.GL11.*;
 
 /**
  * @author TIMER_err
@@ -36,36 +33,9 @@ public class KeyBindingButton extends AbstractComponent {
     public void drawComponent(int mouseX, int mouseY, float partialTicks, Limitation limitation) {
         AbstractFontRenderer font = YolBi.instance.getFontManager().getPingFang14();
         blur.render(getX(), getY(), getWidth(), getHeight(), partialTicks, 1);
-        GL11.glDisable(GL_DEPTH_TEST);
-        GL11.glEnable(GL_BLEND);
-        GL11.glEnable(GL_TEXTURE_2D);
-        GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glDepthMask(true);
-        GL11.glEnable(GL_LINE_SMOOTH);
-        GL11.glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-        GL11.glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
         // RenderUtil.drawRect(getX(), getY(), getX() + getWidth(), getY() + getHeight(), ImplScreen.MainTheme[1].darker().getRGB());
-        int index = 0, all = 0;
-        for (AbstractComponent component : getParent().getParent().getChildComponents()) {
-            if (component instanceof ModuleButton) {
-                ModuleButton moduleButton = (ModuleButton) component;
-                boolean should = getParent().getParent().getChildComponents().indexOf(getParent()) > getParent().getParent().getChildComponents().indexOf(moduleButton);
-                all++;
-                if (should)
-                    index++;
-                if (moduleButton.isExtended())
-                    for (AbstractComponent childComponent : moduleButton.getChildComponents())
-                        if (childComponent instanceof ValueButton) {
-                            all++;
-                            if (should)
-                                index++;
-                            else if (moduleButton == getParent() && getParent().getChildComponents().indexOf(this) >= getParent().getChildComponents().indexOf(childComponent))
-                                index++;
-                        }
-            }
-        }
         String text = keyBinding ? "Listening..." : "Bind: " + Keyboard.getKeyName(module.getKey());
-        font.drawString(text, getX() + (getWidth() - font.getStringWidth(text)) / 2f, getY() + (getHeight() - font.getStringHeight()) / 2f + 1, ImplScreen.getComponentColor((all - 1 - index) * 100));
+        font.drawString(text, getX() + (getWidth() - font.getStringWidth(text)) / 2f, getY() + (getHeight() - font.getStringHeight()) / 2f + 1, ImplScreen.getComponentColor((int) (getY() * 10)));
     }
 
     @Override
