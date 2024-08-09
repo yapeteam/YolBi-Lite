@@ -7,7 +7,6 @@ import cn.yapeteam.yolbi.ui.listedclickui.ImplScreen;
 import cn.yapeteam.yolbi.ui.listedclickui.component.AbstractComponent;
 import cn.yapeteam.yolbi.ui.listedclickui.component.Limitation;
 import cn.yapeteam.yolbi.utils.render.GradientBlur;
-import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -65,8 +64,8 @@ public class KeyBindingButton extends AbstractComponent {
                         }
             }
         }
-        String text = keyBinding ? "Listening..." : TextFormatting.WHITE + "Bind: " + TextFormatting.RESET + Keyboard.getKeyName(module.getKey());
-        font.drawString(text, getX() + (getWidth() - font.getStringWidth(text)) / 2f, getY() + (getHeight() - font.getHeight()) / 2f + 1, ImplScreen.getComponentColor((all - 1 - index) * 100));
+        String text = keyBinding ? "Listening..." : "Bind: " + Keyboard.getKeyName(module.getKey());
+        font.drawString(text, getX() + (getWidth() - font.getStringWidth(text)) / 2f, getY() + (getHeight() - font.getStringHeight()) / 2f + 1, ImplScreen.getComponentColor((all - 1 - index) * 100));
     }
 
     @Override

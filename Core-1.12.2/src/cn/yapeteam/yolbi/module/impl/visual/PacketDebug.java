@@ -46,7 +46,7 @@ public class PacketDebug extends Module {
         AbstractFontRenderer font = YolBi.instance.getFontManager().getPingFang12();
         for (int i = 0; i < list.size(); i++) {
             Group<Class<?>, String, Long> group = list.get(i);
-            font.drawString(group.b, 10, 20 + i * font.getHeight(), -1);
+            font.drawString(group.b, 10, 20 + i * font.getStringHeight(), -1);
         }
     }
 

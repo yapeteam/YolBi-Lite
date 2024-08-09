@@ -66,14 +66,14 @@ public class HeadUpDisplay extends Module {
 
         public void renderShadow(ScaledResolution sr) {
             float x = sr.getScaledWidth() + deltaX;
-            // RenderUtil.drawBloomShadow(x, y, width, height, 12, 6, color, false);
+            RenderUtil.drawBloomShadow(x, y, width, height, 12, 6, color, false);
         }
 
         public void render(ScaledResolution sr, float partialTicks) {
             AbstractFontRenderer font = getFontRenderer();
             float x = sr.getScaledWidth() + deltaX;
             GlStateManager.disableBlend();
-            // blur.render(x, y, width, height, partialTicks, 1);
+            blur.render(x, y, width, height, partialTicks, 1);
             RenderUtil.drawRect(x, y, x + width, y + height, new Color(0, 0, 0, 66).getRGB());
             String text = getText(module);
             font.drawString(text, x + 2.5f, y + (height - font.getStringHeight()) / 2f + 0.5f, new Color(0, 0, 0).getRGB());

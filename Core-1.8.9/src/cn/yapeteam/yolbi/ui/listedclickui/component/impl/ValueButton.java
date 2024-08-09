@@ -50,15 +50,6 @@ public class ValueButton extends AbstractComponent {
                         getY() > limitation.getY() + limitation.getHeight()
         )) {
             blur.render(getX(), getY(), getWidth(), getHeight(), partialTicks, 1);
-            // GL11.glDisable(GL_DEPTH_TEST);
-            // GL11.glEnable(GL_BLEND);
-            // GL11.glEnable(GL_TEXTURE_2D);
-            // GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            // GL11.glDepthMask(true);
-            // GL11.glEnable(GL_LINE_SMOOTH);
-            // GL11.glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-            // GL11.glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
-            // RenderUtil.drawRect(getX(), getY(), getX() + getWidth(), getY() + getHeight(), ImplScreen.MainTheme[1].darker().getRGB());
             AbstractFontRenderer font = YolBi.instance.getFontManager().getPingFang12();
             AbstractFontRenderer icon = YolBi.instance.getFontManager().getFLUXICON14();
             int index = 0, all = 0;
@@ -86,7 +77,7 @@ public class ValueButton extends AbstractComponent {
                 int w = 8, h = 8;
                 RenderUtil.drawRect2(getX() + getWidth() - 5 - w, getY() + (getHeight() - h) / 2f, w, h, new Color(0, 0, 0, 0.3f).getRGB());
                 if (booleanValue.getValue())
-                    icon.drawString("j", getX() + getWidth() - 5 - w - 0.5f, getY() + (getHeight() - icon.getStringHeight()) / 2f, ImplScreen.getComponentColor((all - 1 - index) * 100));
+                    icon.drawString("j", getX() + getWidth() - 5 - w - 0.5f, getY() + (getHeight() - icon.getStringHeight()) / 2f + 1, ImplScreen.getComponentColor((all - 1 - index) * 100));
             } else if (value instanceof NumberValue<?>) {
                 NumberValue<?> numberValue = (NumberValue<?>) value;
                 font.drawString(numberValue.getName(), getX() + 5, getY() + 5, -1);
@@ -111,9 +102,9 @@ public class ValueButton extends AbstractComponent {
                 ModeValue<?> modeValue = (ModeValue<?>) value;
                 RenderUtil.drawFastRoundedRect(getX() + 2, getY() + 2, getX() + getWidth() - 2, getY() + getHeight() - 2, 2, new Color(0, 0, 0, 0.3f).getRGB());
                 String text = modeValue.getName() + " | " + modeValue.getValue();
-                font.drawString(text, getX() + (getWidth() - font.getStringWidth(text)) / 2f, getY() + (getHeight() - font.getStringHeight()) / 2f - 3, -1);
-                font.drawString("|", getX() + (getWidth() - font.getStringWidth("|")) / 2f, getY() + getHeight() / 2f, ImplScreen.getComponentColor((all - 1 - index) * 100));
-                icon.drawString("h i", getX() + (getWidth() - icon.getStringWidth("h i")) / 2f, getY() + getHeight() / 2f - .5f, ImplScreen.getComponentColor((all - 1 - index) * 100));
+                font.drawString(text, getX() + (getWidth() - font.getStringWidth(text)) / 2f, getY() + (getHeight() - font.getStringHeight()) / 2f - 2, -1);
+                font.drawString("|", getX() + (getWidth() - font.getStringWidth("|")) / 2f, getY() + getHeight() / 2f + 2.5f, ImplScreen.getComponentColor((all - 1 - index) * 100));
+                icon.drawString("h i", getX() + (getWidth() - icon.getStringWidth("h i")) / 2f, getY() + getHeight() / 2f + 1.5f, ImplScreen.getComponentColor((all - 1 - index) * 100));
             } else if (value instanceof ColorValue) {
                 ColorValue colorValue = (ColorValue) value;
                 font.drawString(colorValue.getName() + ":", getX() + (getWidth() - font.getStringWidth(colorValue.getName() + ":") - 2 - 5) / 2f, getY() + 3, ImplScreen.getComponentColor((all - 1 - index) * 100));

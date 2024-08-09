@@ -76,8 +76,8 @@ public class HeadUpDisplay extends Module {
             blur.render(x, y, width, height, partialTicks, 1);
             RenderUtil.drawRect(x, y, x + width, y + height, new Color(0, 0, 0, 66).getRGB());
             String text = getText(module);
-            font.drawString(text, x + 2.5, y + (height - font.getHeight()) / 2f + 0.5f, new Color(0, 0, 0).getRGB());
-            font.drawString(text, x + 2, y + (height - font.getHeight()) / 2f, color, false);
+            font.drawString(text, x + 2.5f, y + (height - font.getStringHeight()) / 2f + 0.5f, new Color(0, 0, 0).getRGB());
+            font.drawString(text, x + 2, y + (height - font.getStringHeight()) / 2f, color, false);
         }
     }
 

@@ -104,6 +104,6 @@ public class Notification {
         RenderUtil.drawBloomShadow(x, y, width, height, 6, 5, new Color(0, 0, 0).getRGB(), false);
         blur.render(x, y, width, height, partialTicks, 1);
         RenderUtil.drawRect(x, y, x + width * animationProcess.animate(1), y + height, ColorUtil.reAlpha(color, 0.6f).getRGB());
-        font.drawString(content, x + 5, y + (height - font.getHeight()) / 2f, type == NotificationType.WARNING ? 0 : -1);
+        font.drawString(content, x + 5, y + (height - font.getStringHeight()) / 2f, type == NotificationType.WARNING ? 0 : -1);
     }
 }

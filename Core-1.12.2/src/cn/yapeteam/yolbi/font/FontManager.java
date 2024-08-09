@@ -1,6 +1,7 @@
 package cn.yapeteam.yolbi.font;
 
-import cn.yapeteam.yolbi.font.cfont.CFontRenderer;
+import cn.yapeteam.loader.ResourceManager;
+import cn.yapeteam.yolbi.font.awt.AWTFontRenderer;
 import lombok.Getter;
 
 import java.awt.*;
@@ -8,24 +9,27 @@ import java.awt.*;
 @Getter
 public class FontManager {
     public FontManager() {
-        JelloRegular18 = new CFontRenderer("JelloRegular.ttf", 18, Font.PLAIN, true, true);
-        JelloLight18 = new CFontRenderer("JelloLight.ttf", 18, Font.PLAIN, true, true);
-        JelloMedium18 = new CFontRenderer("JelloMedium.ttf", 18, Font.PLAIN, true, true);
-        PingFang10 = new CFontRenderer("PingFang_Normal.ttf", 10, Font.PLAIN, true, true);
-        PingFang12 = new CFontRenderer("PingFang_Normal.ttf", 12, Font.PLAIN, true, true);
-        PingFang13 = new CFontRenderer("PingFang_Normal.ttf", 13, Font.PLAIN, true, true);
-        PingFang14 = new CFontRenderer("PingFang_Normal.ttf", 14, Font.PLAIN, true, true);
-        PingFang18 = new CFontRenderer("PingFang_Normal.ttf", 18, Font.PLAIN, true, true);
-        PingFang16 = new CFontRenderer("PingFang_Normal.ttf", 16, Font.PLAIN, true, true);
-        PingFangBold18 = new CFontRenderer("PingFang_Bold.ttf", 18, Font.PLAIN, true, true);
-        FLUXICON14 = new CFontRenderer("fluxicon.ttf", 18, Font.PLAIN, true, true);
-        RobotoLight = new CFontRenderer("RobotoLight.ttf", 16, Font.PLAIN, true, true);
-        default18 = new CFontRenderer(new Font(null, Font.PLAIN, 18), true, true);
+        JelloRegular18 = new AWTFontRenderer(getFont("JelloRegular.ttf", 18), false);
+        PingFang10 = new AWTFontRenderer(getFont("PingFang_Normal.ttf", 10), true);
+        PingFang12 = new AWTFontRenderer(getFont("PingFang_Normal.ttf", 12), true);
+        PingFang13 = new AWTFontRenderer(getFont("PingFang_Normal.ttf", 13), true);
+        PingFang14 = new AWTFontRenderer(getFont("PingFang_Normal.ttf", 14), true);
+        PingFang18 = new AWTFontRenderer(getFont("PingFang_Normal.ttf", 18), true);
+        PingFang16 = new AWTFontRenderer(getFont("PingFang_Normal.ttf", 16), true);
+        PingFangBold18 = new AWTFontRenderer(getFont("PingFang_Bold.ttf", 16), true);
+        FLUXICON14 = new AWTFontRenderer(getFont("fluxicon.ttf", 18), false);
+        default18 = new AWTFontRenderer(new Font(null, Font.PLAIN, 18), true);
+    }
+
+    private static Font getFont(String name, int size, int type) {
+        return FontUtil.getFontFromTTF(ResourceManager.resources.getStream("fonts/" + name), size, type);
+    }
+
+    private static Font getFont(String name, int size) {
+        return FontUtil.getFontFromTTF(ResourceManager.resources.getStream("fonts/" + name), size, Font.PLAIN);
     }
 
     private final AbstractFontRenderer JelloRegular18;
-    private final AbstractFontRenderer JelloLight18;
-    private final AbstractFontRenderer JelloMedium18;
     private final AbstractFontRenderer PingFang10;
     private final AbstractFontRenderer PingFang12;
     private final AbstractFontRenderer PingFang13;
@@ -35,5 +39,4 @@ public class FontManager {
     private final AbstractFontRenderer PingFangBold18;
     private final AbstractFontRenderer FLUXICON14;
     private final AbstractFontRenderer default18;
-    private final AbstractFontRenderer RobotoLight;
 }

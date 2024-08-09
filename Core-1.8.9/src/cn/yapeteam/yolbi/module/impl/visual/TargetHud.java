@@ -41,7 +41,7 @@ public class TargetHud extends Module {
     private EntityLivingBase lastTarget = null;
 
     public void render(float x, float y, EntityLivingBase target, float partialTicks) {
-        AbstractFontRenderer font = YolBi.instance.getFontManager().getCPingFang18();
+        AbstractFontRenderer font = YolBi.instance.getFontManager().getPingFang18();
         float alpha = (float) animateAlpha.animate(target == null ? 0 : 1);
         if (target != null) lastTarget = target;
         if (lastTarget == null || alpha == 0) return;

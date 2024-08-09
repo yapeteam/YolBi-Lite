@@ -56,7 +56,6 @@ public class YolBi {
         if (initialized || instance == null) return;
         initialized = true;
         boolean ignored = YOLBI_DIR.mkdirs();
-        System.setProperty("sun.java2d.opengl", "true");
         if (instance.eventManager == null)
             instance.eventManager = new EventManager();
         instance.commandManager = new CommandManager();
