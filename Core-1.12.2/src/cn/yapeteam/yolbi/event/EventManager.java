@@ -62,7 +62,10 @@ public class EventManager {
         try {
             listeningMethods.forEach(m -> Arrays.stream(m.method.getParameters()).filter(p -> p.getType().equals(e.getClass())).forEach(p -> {
                 try {
-                    if (!Modifier.isStatic(m.method.getModifiers()) && m.instance == null) return;
+                    if (!Modifier.isStatic(m.method.getModifiers()) && m.instance == null) {
+                        Logger.error("Instance for non-static method: {} in {} is null!", m.method.getName(), m.method.getDeclaringClass());
+                        return;
+                    }
                     m.method.invoke(m.instance, e);
                 } catch (InvocationTargetException ex) {
                     Logger.error("Error while posting event: {} in class: {}", e.getClass().getName(), m.method.getDeclaringClass().getName());
