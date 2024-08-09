@@ -10,7 +10,6 @@ import cn.yapeteam.yolbi.event.impl.game.EventTick;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import cn.yapeteam.yolbi.event.impl.render.EventRender3D;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
-import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.managers.TargetManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
@@ -89,8 +88,8 @@ public class KillAura extends Module {
                 float[] rotation = RotationsUtil.getRotationsToEntity(target, true);
                 Vector2f rotationVec = new Vector2f(rotation[0], rotation[1]);
 
-                RotationManager.setRotations(rotationVec, rotationSpeed);
-                RotationManager.smooth();
+                rotationManager.setRotations(rotationVec, rotationSpeed);
+                rotationManager.smooth();
             }
 
             // Attack & AutoRod
@@ -134,8 +133,8 @@ public class KillAura extends Module {
                     }
                 }
             } else {
-                if (RotationManager.active)
-                    RotationManager.stop();
+                if (rotationManager.active)
+                    rotationManager.stop();
                 stopBlock();
             }
         } catch (Exception e) {
@@ -201,8 +200,8 @@ public class KillAura extends Module {
     protected void onDisable() {
         if (mc.theWorld == null || mc.thePlayer == null) return;
         stopBlock();
-        if (RotationManager.active)
-            RotationManager.stop();
+        if (rotationManager.active)
+            rotationManager.stop();
         target = null;
     }
 

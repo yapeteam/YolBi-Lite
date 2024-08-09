@@ -38,6 +38,7 @@ public class YolBi {
     private NotificationManager notificationManager;
     private BotManager botManager;
     private TargetManager targetManager;
+    private RotationManager rotationManager;
 
     public EventManager getEventManager() {
         if (eventManager == null)
@@ -51,12 +52,20 @@ public class YolBi {
         return fontManager;
     }
 
+    public RotationManager getRotationManager() {
+        if (rotationManager == null)
+            rotationManager = new RotationManager();
+        return rotationManager;
+    }
+
     public static void initialize() {
         if (initialized || instance == null) return;
         initialized = true;
         boolean ignored = YOLBI_DIR.mkdirs();
         if (instance.eventManager == null)
             instance.eventManager = new EventManager();
+        if (instance.rotationManager == null)
+            instance.rotationManager = new RotationManager();
         instance.commandManager = new CommandManager();
         instance.configManager = new ConfigManager();
         instance.moduleManager = new ModuleManager();
@@ -70,7 +79,6 @@ public class YolBi {
         instance.eventManager.register(instance.notificationManager);
         instance.eventManager.register(Shader.class);
         instance.eventManager.register(ESPUtil.class);
-        instance.eventManager.register(RotationManager.class);
         instance.moduleManager.load();
         try {
             instance.getConfigManager().load();

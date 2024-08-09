@@ -1,5 +1,6 @@
 package cn.yapeteam.yolbi.utils.player;
 
+import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.utils.IMinecraft;
 import cn.yapeteam.yolbi.utils.reflect.ReflectUtil;
@@ -56,7 +57,8 @@ public class RotationsUtil implements IMinecraft {
     }
 
     public static double getRotationDifference(Vector2f rotation) {
-        return RotationManager.targetRotations == null ? 0.0 : getRotationDifference(rotation, RotationManager.targetRotations);
+        RotationManager rotationManager = YolBi.instance.getRotationManager();
+        return rotationManager.targetRotations == null ? 0.0 : getRotationDifference(rotation, rotationManager.targetRotations);
     }
 
     public static float getAngleDifference(float f1, float f2) {

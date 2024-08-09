@@ -1,10 +1,10 @@
 package cn.yapeteam.yolbi.module.impl.combat;
 
 import cn.yapeteam.loader.Natives;
+import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventTick;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
-import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.managers.TargetManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
@@ -63,7 +63,7 @@ public class AimAssist extends Module {
         if (target == null) return;
         if (ClickAim.getValue() && !Natives.IsKeyDown(VirtualKeyBoard.VK_LBUTTON))
             return;
-        Vector2f movementcalc = RotationManager.calcSmooth(new Vector2f(mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch), new Vector2f((float) RotationManager.getRotationsNeeded(target)[0], (float) RotationManager.getRotationsNeeded(target)[1]), rotSpeed.getValue() * 0.1);
+        Vector2f movementcalc = YolBi.instance.getRotationManager().calcSmooth(new Vector2f(mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch), new Vector2f((float) rotationManager.getRotationsNeeded(target)[0], (float) rotationManager.getRotationsNeeded(target)[1]), rotSpeed.getValue() * 0.1);
         double deltayaw = movementcalc.getX() - mc.thePlayer.rotationYaw; // we need to wrap this to -180 to 180 and multiply base on the speed
         double deltapitch = MathHelper.wrapAngleTo180_float(movementcalc.getY() - mc.thePlayer.rotationPitch);
         mc.thePlayer.rotationYaw += (float) (deltayaw * rotSpeed.getValue() * 0.1);
@@ -88,7 +88,7 @@ public class AimAssist extends Module {
         else if (TargetPriority.is("Health"))
             targets.sort(Comparator.comparingDouble(o -> ((EntityLivingBase) o).getHealth()));
         else if (TargetPriority.is("Angle"))
-            targets.sort(Comparator.comparingDouble(entity -> RotationManager.getRotationsNeeded(entity)[0]));
+            targets.sort(Comparator.comparingDouble(entity -> YolBi.instance.getRotationManager().getRotationsNeeded(entity)[0]));
         return targets.isEmpty() ? null : targets.get(0);
     }
 }

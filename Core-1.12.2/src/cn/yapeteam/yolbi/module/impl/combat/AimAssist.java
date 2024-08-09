@@ -6,7 +6,6 @@ import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventTick;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
-import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.managers.TargetManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
@@ -86,14 +85,14 @@ public class AimAssist extends Module {
                     length = aimPath.size();
                 for (int i = 0; i < length; i++) {
                     Vector2f rotations = aimPath.get(i);
-                    RotationManager.setRotations(rotations, rotSpeed.getValue());
-                    RotationManager.smooth();
+                    rotationManager.setRotations(rotations, rotSpeed.getValue());
+                    rotationManager.smooth();
                     mc.player.setSprinting(false);
                 }
                 aimPath.subList(0, length).clear();
             } else {
-                RotationManager.setRotations(new Vector2f(mc.player.rotationYaw, mc.player.rotationPitch), rotSpeed.getValue());
-                RotationManager.smooth();
+                rotationManager.setRotations(new Vector2f(mc.player.rotationYaw, mc.player.rotationPitch), rotSpeed.getValue());
+                rotationManager.smooth();
             }
         } catch (Throwable e) {
             Logger.exception(e);
@@ -117,7 +116,7 @@ public class AimAssist extends Module {
         else if (TargetPriority.is("Health"))
             targets.sort(Comparator.comparingDouble(o -> ((EntityLivingBase) o).getHealth()));
         else if (TargetPriority.is("Angle"))
-            targets.sort(Comparator.comparingDouble(entity -> RotationManager.getRotationsNeeded(entity)[0]));
+            targets.sort(Comparator.comparingDouble(entity -> rotationManager.getRotationsNeeded(entity)[0]));
         return targets.isEmpty() ? null : targets.get(0);
     }
 }

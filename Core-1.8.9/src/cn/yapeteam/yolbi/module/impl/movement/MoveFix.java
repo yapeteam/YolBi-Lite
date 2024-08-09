@@ -5,7 +5,6 @@ import cn.yapeteam.yolbi.event.impl.player.EventMoveInput;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.utils.player.MoveUtil;
-import cn.yapeteam.yolbi.managers.RotationManager;
 
 public class MoveFix extends Module {
     public MoveFix() {
@@ -14,8 +13,8 @@ public class MoveFix extends Module {
 
     @Listener
     private void onMoveInput(EventMoveInput event) {
-        if (RotationManager.active && RotationManager.rotations != null) {
-            final float yaw = RotationManager.rotations.x;
+        if (rotationManager.active && rotationManager.rotations != null) {
+            final float yaw = rotationManager.rotations.x;
             MoveUtil.fixMovement(event, yaw);
         }
     }

@@ -1,8 +1,8 @@
 package cn.yapeteam.yolbi.utils.player;
 
-import cn.yapeteam.yolbi.managers.RotationManager;
-import cn.yapeteam.yolbi.utils.IMinecraft;
+import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
+import cn.yapeteam.yolbi.utils.IMinecraft;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.BlockPos;
@@ -56,7 +56,7 @@ public class RotationsUtil implements IMinecraft {
     }
 
     public static double getRotationDifference(Vector2f rotation) {
-        return RotationManager.targetRotations == null ? 0.0 : getRotationDifference(rotation, RotationManager.targetRotations);
+        return YolBi.instance.getRotationManager().targetRotations == null ? 0.0 : getRotationDifference(rotation, YolBi.instance.getRotationManager().targetRotations);
     }
 
     public static float getAngleDifference(float f1, float f2) {

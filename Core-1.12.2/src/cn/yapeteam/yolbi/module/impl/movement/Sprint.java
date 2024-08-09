@@ -3,7 +3,6 @@ package cn.yapeteam.yolbi.module.impl.movement;
 import cn.yapeteam.loader.Natives;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.player.EventStrafe;
-import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.utils.misc.VirtualKeyBoard;
@@ -20,7 +19,7 @@ public class Sprint extends Module {
 
     @Listener
     private void onStrafe(EventStrafe event) {
-        if (mc.player.isSneaking() || RotationManager.targetRotations != null && RotationsUtil.getRotationDifference(new Vector2f(mc.player.rotationYaw, mc.player.rotationPitch)) > 30F) {
+        if (mc.player.isSneaking() || rotationManager.targetRotations != null && RotationsUtil.getRotationDifference(new Vector2f(mc.player.rotationYaw, mc.player.rotationPitch)) > 30F) {
             return;
         }
 

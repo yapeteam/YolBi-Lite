@@ -3,7 +3,6 @@ package cn.yapeteam.yolbi.module.impl.world;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventLoadWorld;
 import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
-import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
@@ -73,7 +72,7 @@ public class Scaffold extends Module {
         searchPlace();
 
         if (forceStrict && rotationMode.is("Normal")) {
-            RotationManager.setRotations(new Vector2f(placeYaw, placePitch), 60);
+            rotationManager.setRotations(new Vector2f(placeYaw, placePitch), 60);
         } else {
             float yaw = mc.thePlayer.rotationYaw + 180;
             // static yaw
@@ -86,10 +85,10 @@ public class Scaffold extends Module {
                 yaw -= delta;
             else if (delta >= -22.5 && delta < 0)
                 yaw -= delta;
-            RotationManager.setRotations(new Vector2f(yaw, 85), 60);
+            rotationManager.setRotations(new Vector2f(yaw, 85), 60);
         }
 
-        RotationManager.smooth();
+        rotationManager.smooth();
 
         if (rayCasted != null) {
             if (sneak.getValue()) {

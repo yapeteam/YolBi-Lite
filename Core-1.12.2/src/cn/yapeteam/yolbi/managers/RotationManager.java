@@ -19,26 +19,26 @@ import net.minecraft.util.math.Vec3d;
 
 
 public class RotationManager implements IMinecraft {
-    public static boolean active;
-    public static Vector2f rotations, lastRotations, targetRotations, lastServerRotations;
-    private static double rotationSpeed;
+    public boolean active;
+    public Vector2f rotations, lastRotations, targetRotations, lastServerRotations;
+    private double rotationSpeed;
 
-    public static float renderPitchHead;
+    public float renderPitchHead;
 
-    public static float prevRenderPitchHead;
+    public float prevRenderPitchHead;
 
     /*
      * This method must be called on Pre Update Event to work correctly
      */
-    public static void setRotations(final Vector2f rotations, final double rotationSpeed) {
-        RotationManager.targetRotations = rotations;
-        RotationManager.rotationSpeed = rotationSpeed * 18;
-        active = true;
+    public void setRotations(final Vector2f rotations, final double rotationSpeed) {
+        this.targetRotations = rotations;
+        this.rotationSpeed = rotationSpeed * 18;
+        this.active = true;
         smooth(rotations, targetRotations, rotationSpeed);
     }
 
     @Listener
-    public static void onPreUpdate(EventUpdate event) {
+    public void onPreUpdate(EventUpdate event) {
         if (!active || rotations == null || lastRotations == null || targetRotations == null || lastServerRotations == null) {
             rotations = lastRotations = targetRotations = lastServerRotations = new Vector2f(mc.player.rotationYaw, mc.player.rotationPitch);
         }
@@ -107,7 +107,7 @@ public class RotationManager implements IMinecraft {
         return value;
     }
 
-    private static void correctDisabledRotations() {
+    private void correctDisabledRotations() {
         final Vector2f rotations = new Vector2f(mc.player.rotationYaw, mc.player.rotationPitch);
         final Vector2f fixedRotations = RotationManager.resetRotation(applySensitivityPatch(rotations));
 
@@ -115,11 +115,11 @@ public class RotationManager implements IMinecraft {
         mc.player.rotationPitch = fixedRotations.y;
     }
 
-    public static void smooth() {
+    public void smooth() {
         smooth(lastRotations, targetRotations, rotationSpeed);
     }
 
-    public static void smooth(final Vector2f lastRotation, final Vector2f targetRotation, final double speed) {
+    public void smooth(final Vector2f lastRotation, final Vector2f targetRotation, final double speed) {
         float yaw = targetRotation.x;
         float pitch = targetRotation.y;
         final float lastYaw = lastRotation.x;
@@ -169,7 +169,7 @@ public class RotationManager implements IMinecraft {
     }
 
 
-    public static double[] getDistance(double x, double z, double y) {
+    public double[] getDistance(double x, double z, double y) {
         final double distance = MathHelper.sqrt(x * x + z * z), // @off
                 yaw = Math.atan2(z, x) * 180.0D / Math.PI - 90.0F,
                 pitch = -(Math.atan2(y, distance) * 180.0D / Math.PI); // @on
@@ -179,7 +179,7 @@ public class RotationManager implements IMinecraft {
                 (float) (pitch - mc.player.rotationPitch))};
     }
 
-    public static double[] getRotationsNeeded(Entity entity) {
+    public double[] getRotationsNeeded(Entity entity) {
         if (entity == null) return null;
 
         final EntityPlayerSP player = mc.player;
@@ -200,7 +200,7 @@ public class RotationManager implements IMinecraft {
         return new Vector2f(yaw, pitch);
     }
 
-    public static float clamp(final float n) {
+    public float clamp(final float n) {
         return MathHelper.clamp(n, -90.0f, 90.0f);
     }
 
@@ -212,7 +212,7 @@ public class RotationManager implements IMinecraft {
         return new Vector3d(entity.posX, entity.posY, entity.posZ);
     }
 
-    private static Vector2f getPreviousRotation(EntityPlayerSP playerSP) {
+    private Vector2f getPreviousRotation(EntityPlayerSP playerSP) {
         return new Vector2f(ReflectUtil.GetLastReportedYaw(playerSP), ReflectUtil.GetLastReportedPitch(playerSP));
     }
 
@@ -236,7 +236,7 @@ public class RotationManager implements IMinecraft {
         return calculate(new Vector3d(x, y, z));
     }
 
-    public static Vector2f applySensitivityPatch(final Vector2f rotation) {
+    public Vector2f applySensitivityPatch(final Vector2f rotation) {
         final Vector2f previousRotation = getPreviousRotation(mc.player);
         final float mouseSensitivity = (float) (mc.gameSettings.mouseSensitivity * (1 + Math.random() / 10000000) * 0.6F + 0.2F);
         final double multiplier = mouseSensitivity * mouseSensitivity * mouseSensitivity * 8.0F * 0.15D;
@@ -268,12 +268,12 @@ public class RotationManager implements IMinecraft {
         return new Vector2f(yaw, pitch);
     }
 
-    public static void reset() {
+    public void reset() {
         setRotations(new Vector2f(mc.player.rotationYaw, mc.player.rotationPitch), 100);
         smooth();
     }
 
-    public static void stop() {
+    public void stop() {
         active = false;
         correctDisabledRotations();
     }

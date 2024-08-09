@@ -42,6 +42,12 @@ public class YolBi {
     private TargetManager targetManager;
     private RotationManager rotationManager;
 
+    public RotationManager getRotationManager() {
+        if (rotationManager == null)
+            rotationManager = new RotationManager();
+        return rotationManager;
+    }
+
     public EventManager getEventManager() {
         if (eventManager == null)
             eventManager = new EventManager();
@@ -60,6 +66,8 @@ public class YolBi {
         boolean ignored = YOLBI_DIR.mkdirs();
         if (instance.eventManager == null)
             instance.eventManager = new EventManager();
+        if (instance.rotationManager == null)
+            instance.rotationManager = new RotationManager();
         instance.commandManager = new CommandManager();
         instance.configManager = new ConfigManager();
         instance.moduleManager = new ModuleManager();
@@ -67,7 +75,6 @@ public class YolBi {
         instance.botManager = new BotManager();
         instance.targetManager = new TargetManager();
         instance.notificationManager = new NotificationManager();
-        instance.rotationManager = new RotationManager();
         instance.eventManager.register(instance.commandManager);
         instance.eventManager.register(instance.moduleManager);
         instance.eventManager.register(instance.botManager);

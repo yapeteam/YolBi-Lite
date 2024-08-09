@@ -1,6 +1,7 @@
 package cn.yapeteam.yolbi.mixin.injection;
 
 import cn.yapeteam.ymixin.annotations.*;
+import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.managers.RotationManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
@@ -21,7 +22,9 @@ public class MixinModelBiped {
             )
     )
     public void setRotationAngles(@Local(source = "entityIn", index = 7) Entity entityIn) {
-        if (entityIn == Minecraft.getMinecraft().player)
-            bipedHead.rotateAngleX = (RotationManager.prevRenderPitchHead + (RotationManager.renderPitchHead - RotationManager.prevRenderPitchHead) * 1) / (180.0F / (float) Math.PI);
+        if (entityIn == Minecraft.getMinecraft().player) {
+            RotationManager rotationManager = YolBi.instance.getRotationManager();
+            bipedHead.rotateAngleX = (rotationManager.prevRenderPitchHead + (rotationManager.renderPitchHead - rotationManager.prevRenderPitchHead) * 1) / (180.0F / (float) Math.PI);
+        }
     }
 }

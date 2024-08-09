@@ -3,6 +3,7 @@ package cn.yapeteam.yolbi.module;
 import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.config.Config;
+import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.module.values.Value;
 import cn.yapeteam.yolbi.module.values.impl.*;
 import com.google.gson.JsonElement;
@@ -19,6 +20,7 @@ import java.util.Arrays;
 @Setter
 public abstract class Module {
     protected static final Minecraft mc = Minecraft.getMinecraft();
+    protected static final RotationManager rotationManager = YolBi.instance.getRotationManager();
     private final String name;
     private final ModuleCategory category;
     private int key;

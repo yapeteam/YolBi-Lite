@@ -5,7 +5,6 @@ import cn.yapeteam.yolbi.event.impl.player.EventStrafe;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
-import cn.yapeteam.yolbi.managers.RotationManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
@@ -20,7 +19,7 @@ public class StrafeFix extends Module {
 
     @Listener
     private void onStrafe(EventStrafe event) {
-        if (!RotationManager.active) return;
+        if (!rotationManager.active) return;
         if (!allowSprint.getValue())
             mc.thePlayer.setSprinting(false);
         runStrafeFixLoop(event);
@@ -30,7 +29,7 @@ public class StrafeFix extends Module {
         if (event.isCancelled())
             return;
 
-        float yaw = RotationManager.rotations.x;
+        float yaw = rotationManager.rotations.x;
         float strafe = event.getStrafe();
         float forward = event.getForward();
         float friction = event.getFriction();
@@ -57,7 +56,7 @@ public class StrafeFix extends Module {
     }
 
     public void applyStrafeToPlayer(EventStrafe event) {
-        float yaw = RotationManager.rotations.x;
+        float yaw = rotationManager.rotations.x;
 
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         int dif = (int) ((MathHelper.wrapAngleTo180_float(player.rotationYaw - yaw - 23.5f - 135) + 180) / 45);
