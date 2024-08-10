@@ -122,10 +122,10 @@ public class ClassMapper {
                     methodInsnNode.desc = replaceFirst(methodInsnNode.desc, name, Mapper.getObfClass(name));
             } else if (instruction instanceof TypeInsnNode) {
                 TypeInsnNode typeInsnNode = (TypeInsnNode) instruction;
-                typeInsnNode.desc = Mapper.map(null, typeInsnNode.desc, null, Mapper.Type.Class);
-                String toBeMap = typeInsnNode.desc.contains(";") ? splitDesc(typeInsnNode.desc) : typeInsnNode.desc;
-                if (hasType(toBeMap))
-                    typeInsnNode.desc = desc(typeInsnNode.desc);
+                if (typeInsnNode.desc.contains(";")) {
+                    if (hasType(splitDesc(typeInsnNode.desc)))
+                        typeInsnNode.desc = desc(typeInsnNode.desc);
+                } else typeInsnNode.desc = Mapper.map(null, typeInsnNode.desc, null, Mapper.Type.Class);
             } else if (instruction instanceof FieldInsnNode) {
                 FieldInsnNode fieldInsnNode = (FieldInsnNode) instruction;
                 if (hasType(fieldInsnNode.owner)) {
