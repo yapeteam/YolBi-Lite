@@ -2,7 +2,6 @@ package cn.yapeteam.yolbi.command.impl;
 
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.command.AbstractCommand;
-import cn.yapeteam.yolbi.module.Module;
 
 public class CommandToggle extends AbstractCommand {
     public CommandToggle() {
