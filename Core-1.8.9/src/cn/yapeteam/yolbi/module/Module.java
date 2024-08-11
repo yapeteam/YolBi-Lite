@@ -16,9 +16,6 @@ import org.lwjgl.input.Mouse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static net.optifine.reflect.Reflector.FMLCommonHandler;
-import static net.optifine.reflect.Reflector.MinecraftForge_EVENT_BUS;
-
 public class Module {
     @Getter
     @Setter
@@ -33,6 +30,7 @@ public class Module {
     @Getter
     @Setter
     private boolean enabled;
+    @Getter
     private int keycode;
     private final @Nullable String toolTip;
     protected static Minecraft mc;
@@ -227,10 +225,6 @@ public class Module {
     }
 
     public void guiButtonToggled(ButtonSetting b) {
-    }
-
-    public int getKeycode() {
-        return this.keycode;
     }
 
     public void setBind(int keybind) {
