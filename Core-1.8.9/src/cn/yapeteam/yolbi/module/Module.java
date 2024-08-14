@@ -1,6 +1,7 @@
 package cn.yapeteam.yolbi.module;
 
 
+import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.module.setting.Setting;
 import cn.yapeteam.yolbi.module.setting.impl.ButtonSetting;
 import cn.yapeteam.yolbi.module.setting.impl.ModeValue;
@@ -107,11 +108,7 @@ public class Module {
         }
         this.setEnabled(true);
         ModuleManager.organizedModules.add(this);
-//        if (ModuleManager.hud.isEnabled()) {
-//            ModuleManager.sort();
-//        }
-
-//        FMLCommonHandler.instance().bus().register(this);
+        YolBi.instance.getEventManager().register(this);
         this.onEnable();
     }
 
@@ -122,7 +119,7 @@ public class Module {
         this.setEnabled(false);
         ModuleManager.organizedModules.remove(this);
 
-//            FMLCommonHandler.instance().bus().unregister(this);
+        YolBi.instance.getEventManager().unregister(this);
         this.onDisable();
     }
 

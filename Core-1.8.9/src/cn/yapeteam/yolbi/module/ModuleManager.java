@@ -44,10 +44,12 @@ public class ModuleManager {
     }
 
     public static void sort() {
-//        if (HUD.alphabeticalSort.isToggled()) {
-//            organizedModules.sort(Comparator.comparing(Module::getPrettyName));
-//        } else {
-//            organizedModules.sort((o1, o2) -> Utils.mc.fontRendererObj.getStringWidth(o2.getPrettyName() + ((HUD.showInfo.isToggled() && !o2.getInfo().isEmpty()) ? " " + o2.getInfo() : "")) - Utils.mc.fontRendererObj.getStringWidth(o1.getPrettyName() + (HUD.showInfo.isToggled() && !(o1.getInfo().isEmpty()) ? " " + o1.getInfo() : "")));
-//        }
+        organizedModules.clear();
+        modules.forEach(module -> {
+            if (module.isEnabled()) {
+                organizedModules.add(module);
+            }
+        });
+        organizedModules.sort(Comparator.comparingInt(module -> module.moduleCategory().ordinal()));
     }
 }

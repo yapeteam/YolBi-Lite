@@ -96,7 +96,6 @@ public class YolBi {
         instance.eventManager.register(instance.rotationManager);
         instance.eventManager.register(instance.notificationManager);
         instance.eventManager.register(instance.renderManager);
-        instance.eventManager.register(instance.fontManager);
         instance.eventManager.register(Shader.class);
         instance.eventManager.register(ESPUtil.class);
         instance.moduleManager.register();

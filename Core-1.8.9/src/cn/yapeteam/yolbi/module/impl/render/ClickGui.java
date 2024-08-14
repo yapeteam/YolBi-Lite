@@ -1,6 +1,8 @@
 package cn.yapeteam.yolbi.module.impl.render;
 
 import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.event.Listener;
+import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import cn.yapeteam.yolbi.module.Module;
 import org.lwjgl.input.Keyboard;
 
@@ -23,6 +25,11 @@ public class ClickGui extends Module {
         if (this.mc.currentScreen == null) {
             this.mc.setIngameFocus();
         }
+    }
+
+    @Listener
+    public void onRender2D(EventRender2D eventRender2D){
+        YolBi.instance.getClickGui().render();
     }
 
 

@@ -1,6 +1,9 @@
 package cn.yapeteam.yolbi.ui;
 
+import cn.yapeteam.ymixin.annotations.Super;
 import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.event.Listener;
+import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.utils.IMinecraft;
 import cn.yapeteam.yolbi.utils.render.GuiUtil;
@@ -38,6 +41,7 @@ public class YolbiClickGui extends GuiScreen implements IMinecraft {
 
     private SideBarComponent sidebar = new SideBarComponent();
 
+    @Super
     @Override
     public void initGui() {
         round = 12;
@@ -50,6 +54,7 @@ public class YolbiClickGui extends GuiScreen implements IMinecraft {
 
     }
 
+    @Super
     @Override
     public void onGuiClosed() {
         /* removes the blur */
@@ -57,6 +62,7 @@ public class YolbiClickGui extends GuiScreen implements IMinecraft {
         dragging = false;
     }
 
+    @Super
     @Override
     public boolean doesGuiPauseGame() {
         return false;
@@ -84,6 +90,7 @@ public class YolbiClickGui extends GuiScreen implements IMinecraft {
         YolBi.instance.getRenderManager().rectangle(position.x + sidebar.sidebarWidth, position.y, round * 2, scale.y, backgroundColor);
     }
 
+    @Super
     @Override
     protected void mouseClicked(final int mouseX, final int mouseY, final int mouseButton) throws IOException {
         /* Registers click if you click within the window */
@@ -100,10 +107,13 @@ public class YolbiClickGui extends GuiScreen implements IMinecraft {
         }
     }
 
+    @Super
     @Override
     protected void mouseReleased(final int mouseX, final int mouseY, final int state) {
         /* Registers the mouse being released */
         dragging = false;
     }
+
+
 
 }
