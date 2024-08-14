@@ -1,6 +1,7 @@
 package cn.yapeteam.yolbi.managers;
 
 import cn.yapeteam.loader.logger.Logger;
+import cn.yapeteam.loader.utils.Pair;
 import cn.yapeteam.ymixin.utils.Mapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -17,14 +18,15 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.util.*;
+import net.minecraft.util.Timer;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @SuppressWarnings("unchecked")
 public class ReflectionManager {
@@ -694,5 +696,46 @@ public class ReflectionManager {
             throw new RuntimeException();
         }
         throw new RuntimeException();
+    }
+
+    private static final Map<Pair<Class<?>, String>, Field> cacheField = new HashMap<>();
+
+    public static @NotNull Field getFieldFast(Class<?> clazz, String @NotNull ... fieldNames) throws RuntimeException {
+        Exception failed = null;
+
+        for (String fieldName : fieldNames) {
+            final Pair<Class<?>, String> data = new Pair<>(clazz, fieldName);
+            if (cacheField.containsKey(data)) {
+                return cacheField.get(data);
+            }
+
+            try {
+                Field f = clazz.getDeclaredField(fieldName);
+                f.setAccessible(true);
+                cacheField.put(data, f);
+                return f;
+            } catch (Exception var8) {
+                failed = var8;
+            }
+        }
+
+        throw new RuntimeException(failed);
+    }
+
+    public static <T, E> void setValue(Class<? super T> clazz, @Nullable T instance, E value, String... fieldNames) {
+        try {
+            getFieldFast(clazz, fieldNames).set(instance, value);
+        } catch (Exception e) {
+            Logger.error("Unable to set any field %s on type %s", Arrays.toString(fieldNames), clazz.getName());
+        }
+    }
+
+    public static <T> Object getValue(Class<? super T> clazz, @Nullable T instance, String... fieldNames) {
+        try {
+            return getFieldFast(clazz, fieldNames).get(instance);
+        } catch (Exception e) {
+            Logger.error("Unable to get any field %s on type %s", Arrays.toString(fieldNames), clazz.getName());
+            return new Object();
+        }
     }
 }

@@ -29,5 +29,6 @@
     <orderEntry type="library" name="darwin" level="project" />
     <orderEntry type="module" module-name="VersionInfo" />
     <orderEntry type="library" name="obf" level="project" />
+    <orderEntry type="library" name="minecraft-1.18.1" level="project" />
   </component>
 </module>
