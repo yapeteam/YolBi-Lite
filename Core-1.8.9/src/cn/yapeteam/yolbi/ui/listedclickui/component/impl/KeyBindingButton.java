@@ -2,7 +2,6 @@ package cn.yapeteam.yolbi.ui.listedclickui.component.impl;
 
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.font.AbstractFontRenderer;
-import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.ui.listedclickui.ImplScreen;
 import cn.yapeteam.yolbi.ui.listedclickui.component.AbstractComponent;
 import cn.yapeteam.yolbi.ui.listedclickui.component.Limitation;
@@ -34,7 +33,7 @@ public class KeyBindingButton extends AbstractComponent {
         AbstractFontRenderer font = YolBi.instance.getFontManager().getPingFang14();
         blur.render(getX(), getY(), getWidth(), getHeight(), partialTicks, 1);
         // RenderUtil.drawRect(getX(), getY(), getX() + getWidth(), getY() + getHeight(), ImplScreen.MainTheme[1].darker().getRGB());
-        String text = keyBinding ? "Listening..." : "Bind: " + Keyboard.getKeyName(module.getKeycode());
+        String text = keyBinding ? "Listening..." : "Bind: " + Keyboard.getKeyName(module.getKey());
         font.drawString(text, getX() + (getWidth() - font.getStringWidth(text)) / 2f, getY() + (getHeight() - font.getStringHeight()) / 2f + 1, ImplScreen.getComponentColor((int) (getY() * 10)));
     }
 
@@ -47,7 +46,7 @@ public class KeyBindingButton extends AbstractComponent {
     public void keyTyped(char typedChar, int keyCode) {
         if (keyCode == 1) keyBinding = false;
         if (keyBinding) {
-            module.setBind(keyCode == 211 ? 0 : keyCode);
+            module.setKey(keyCode == 211 ? 0 : keyCode);
             keyBinding = false;
         }
     }

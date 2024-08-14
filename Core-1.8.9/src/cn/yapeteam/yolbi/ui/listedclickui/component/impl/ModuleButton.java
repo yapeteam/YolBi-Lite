@@ -2,8 +2,7 @@ package cn.yapeteam.yolbi.ui.listedclickui.component.impl;
 
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.font.AbstractFontRenderer;
-import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.setting.Setting;
+import cn.yapeteam.yolbi.module.values.Value;
 import cn.yapeteam.yolbi.ui.listedclickui.ImplScreen;
 import cn.yapeteam.yolbi.ui.listedclickui.component.AbstractComponent;
 import cn.yapeteam.yolbi.ui.listedclickui.component.Limitation;
@@ -51,7 +50,7 @@ public class ModuleButton extends AbstractComponent {
         keyBindingButton.setHeight(ImplScreen.keyBindHeight);
         getChildComponents().add(keyBindingButton);
         y += ImplScreen.keyBindHeight + ImplScreen.valueSpacing;
-        for (Setting value : module.getSettings()) {
+        for (Value<?> value : module.getValues()) {
             ValueButton valueButton = new ValueButton(this, value);
             valueButton.setX(getX());
             valueButton.setY(y);
@@ -70,9 +69,9 @@ public class ModuleButton extends AbstractComponent {
         for (AbstractComponent component : getChildComponents()) {
             component.setX(getX());
             component.setY(y);
-            if (!(component instanceof ValueButton && !((ValueButton) component).getValue().visibleCheck.get()))
+            if (!(component instanceof ValueButton && !((ValueButton) component).getValue().getVisibility().get()))
                 y += component.getHeight() + ImplScreen.valueSpacing;
-            if (extended && !(component instanceof ValueButton && !((ValueButton) component).getValue().visibleCheck.get()))
+            if (extended && !(component instanceof ValueButton && !((ValueButton) component).getValue().getVisibility().get()))
                 extend += component.getHeight() + ImplScreen.valueSpacing;
         }
         blur.update(getX(), getY(), getWidth(), getHeight());
@@ -108,7 +107,7 @@ public class ModuleButton extends AbstractComponent {
             }
         }
         if (extended)
-            getChildComponents().stream().filter(c -> !(c instanceof ValueButton && !((ValueButton) c).getValue().visibleCheck.get())).collect(Collectors.toList()).forEach(c -> c.drawComponent(mouseX, mouseY, partialTicks, limitation));
+            getChildComponents().stream().filter(c -> !(c instanceof ValueButton && !((ValueButton) c).getValue().getVisibility().get())).collect(Collectors.toList()).forEach(c -> c.drawComponent(mouseX, mouseY, partialTicks, limitation));
     }
 
     @Override
@@ -120,12 +119,12 @@ public class ModuleButton extends AbstractComponent {
                     extended = !extended;
             }
         if (extended)
-            getChildComponents().stream().filter(c -> !(c instanceof ValueButton && !((ValueButton) c).getValue().visibleCheck.get())).collect(Collectors.toList()).forEach(c -> c.mouseClicked(mouseX, mouseY, mouseButton));
+            getChildComponents().stream().filter(c -> !(c instanceof ValueButton && !((ValueButton) c).getValue().getVisibility().get())).collect(Collectors.toList()).forEach(c -> c.mouseClicked(mouseX, mouseY, mouseButton));
     }
 
     @Override
     public void mouseReleased(float mouseX, float mouseY, int state) {
         if (extended)
-            getChildComponents().stream().filter(c -> !(c instanceof ValueButton && !((ValueButton) c).getValue().visibleCheck.get())).collect(Collectors.toList()).forEach(c -> c.mouseReleased(mouseX, mouseY, state));
+            getChildComponents().stream().filter(c -> !(c instanceof ValueButton && !((ValueButton) c).getValue().getVisibility().get())).collect(Collectors.toList()).forEach(c -> c.mouseReleased(mouseX, mouseY, state));
     }
 }

@@ -7,7 +7,9 @@ import cn.yapeteam.yolbi.config.ConfigManager;
 import cn.yapeteam.yolbi.event.EventManager;
 import cn.yapeteam.yolbi.event.impl.client.EventClientShutdown;
 import cn.yapeteam.yolbi.font.FontManager;
+import cn.yapeteam.yolbi.managers.BotManager;
 import cn.yapeteam.yolbi.managers.RotationManager;
+import cn.yapeteam.yolbi.managers.TargetManager;
 import cn.yapeteam.yolbi.module.ModuleManager;
 import cn.yapeteam.yolbi.notification.Notification;
 import cn.yapeteam.yolbi.notification.NotificationManager;
@@ -34,8 +36,8 @@ public class YolBi {
     private ModuleManager moduleManager;
     private FontManager fontManager;
     private NotificationManager notificationManager;
-    // private BotManager botManager;
-    // private TargetManager targetManager;
+    private BotManager botManager;
+    private TargetManager targetManager;
     private RotationManager rotationManager;
 
     public EventManager getEventManager() {
@@ -67,13 +69,13 @@ public class YolBi {
         instance.commandManager = new CommandManager();
         instance.configManager = new ConfigManager();
         instance.moduleManager = new ModuleManager();
-        // instance.botManager = new BotManager();
-        // instance.targetManager = new TargetManager();
+        instance.botManager = new BotManager();
+        instance.targetManager = new TargetManager();
         instance.notificationManager = new NotificationManager();
         instance.eventManager.register(instance.commandManager);
         instance.eventManager.register(instance.moduleManager);
-        // instance.eventManager.register(instance.botManager);
-        // instance.eventManager.register(instance.targetManager);
+        instance.eventManager.register(instance.botManager);
+        instance.eventManager.register(instance.targetManager);
         instance.eventManager.register(instance.rotationManager);
         instance.eventManager.register(instance.notificationManager);
         instance.eventManager.register(Shader.class);

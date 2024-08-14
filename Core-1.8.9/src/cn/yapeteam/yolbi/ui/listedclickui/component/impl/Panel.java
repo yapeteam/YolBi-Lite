@@ -2,7 +2,6 @@ package cn.yapeteam.yolbi.ui.listedclickui.component.impl;
 
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.font.AbstractFontRenderer;
-import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.shader.impl.ShaderRoundedRect;
 import cn.yapeteam.yolbi.ui.listedclickui.ImplScreen;
 import cn.yapeteam.yolbi.ui.listedclickui.component.AbstractComponent;
@@ -13,18 +12,17 @@ import cn.yapeteam.yolbi.utils.render.RenderUtil;
 import lombok.Getter;
 
 import java.awt.*;
-import java.util.stream.Collectors;
 
 /**
  * @author TIMER_err
  */
 public class Panel extends AbstractComponent {
     @Getter
-    private final Module.category category;
+    private final ModuleCategory category;
     @Getter
     private final ImplScreen screenIn;
 
-    public Panel(ImplScreen screenIn, Module.category category) {
+    public Panel(ImplScreen screenIn, ModuleCategory category) {
         super(null);
         this.category = category;
         this.screenIn = screenIn;
@@ -34,7 +32,7 @@ public class Panel extends AbstractComponent {
     public void init() {
         getChildComponents().clear();
         float y = getY() + ImplScreen.panelTopHeight;
-        for (Module module : YolBi.instance.getModuleManager().getModules().stream().filter(m -> m.moduleCategory() == category).collect(Collectors.toList())) {
+        for (Module module : YolBi.instance.getModuleManager().getModulesByCategory(category)) {
             ModuleButton moduleButton = new ModuleButton(this, module);
             moduleButton.setX(getX());
             moduleButton.setY(y);
@@ -57,7 +55,7 @@ public class Panel extends AbstractComponent {
             height += childComponent.getHeight() + ImplScreen.moduleSpacing;
             if (((ModuleButton) childComponent).isExtended()) {
                 for (AbstractComponent component : childComponent.getChildComponents()) {
-                    if (!(component instanceof ValueButton && !((ValueButton) component).getValue().visibleCheck.get()))
+                    if (!(component instanceof ValueButton && !((ValueButton) component).getValue().getVisibility().get()))
                         height += component.getHeight() + ImplScreen.valueSpacing;
                 }
                 height -= ImplScreen.valueSpacing;

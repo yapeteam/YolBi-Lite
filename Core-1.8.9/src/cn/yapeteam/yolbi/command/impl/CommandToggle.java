@@ -2,7 +2,6 @@ package cn.yapeteam.yolbi.command.impl;
 
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.command.AbstractCommand;
-import cn.yapeteam.yolbi.module.Module;
 
 public class CommandToggle extends AbstractCommand {
     public CommandToggle() {
@@ -12,7 +11,7 @@ public class CommandToggle extends AbstractCommand {
     @Override
     public void process(String[] args) {
         if (args.length == 1) {
-            Module module = YolBi.instance.getModuleManager().getModule(args[0]);
+            Module module = YolBi.instance.getModuleManager().getModuleByName(args[0]);
             if (module != null) {
                 module.toggle();
                 printMessage("Toggled " + args[0]);
