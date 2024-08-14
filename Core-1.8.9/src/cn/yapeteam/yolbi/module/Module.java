@@ -1,6 +1,7 @@
 package cn.yapeteam.yolbi.module;
 
 
+import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.module.setting.Setting;
 import cn.yapeteam.yolbi.module.setting.impl.ButtonSetting;
 import cn.yapeteam.yolbi.module.setting.impl.ModeValue;
@@ -16,9 +17,7 @@ import org.lwjgl.input.Mouse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static net.optifine.reflect.Reflector.FMLCommonHandler;
-import static net.optifine.reflect.Reflector.MinecraftForge_EVENT_BUS;
-
+@Getter
 public class Module {
     @Getter
     @Setter
@@ -33,6 +32,7 @@ public class Module {
     @Getter
     @Setter
     private boolean enabled;
+    @Getter
     private int keycode;
     private final @Nullable String toolTip;
     protected static Minecraft mc;
@@ -108,11 +108,7 @@ public class Module {
         }
         this.setEnabled(true);
         ModuleManager.organizedModules.add(this);
-//        if (ModuleManager.hud.isEnabled()) {
-//            ModuleManager.sort();
-//        }
-
-//        FMLCommonHandler.instance().bus().register(this);
+        YolBi.instance.getEventManager().register(this);
         this.onEnable();
     }
 
@@ -123,7 +119,7 @@ public class Module {
         this.setEnabled(false);
         ModuleManager.organizedModules.remove(this);
 
-//            FMLCommonHandler.instance().bus().unregister(this);
+        YolBi.instance.getEventManager().unregister(this);
         this.onDisable();
     }
 
@@ -229,10 +225,6 @@ public class Module {
     public void guiButtonToggled(ButtonSetting b) {
     }
 
-    public int getKeycode() {
-        return this.keycode;
-    }
-
     public void setBind(int keybind) {
         this.keycode = keybind;
     }
@@ -243,7 +235,7 @@ public class Module {
         movement,
         player,
         world,
-        render,
+        visual,
         minigames,
         fun,
         other,
@@ -251,6 +243,7 @@ public class Module {
         profiles,
         scripts,
         exploit,
-        experimental
+        experimental,
+        search
     }
 }

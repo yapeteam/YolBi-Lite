@@ -1,6 +1,7 @@
 package cn.yapeteam.yolbi.server.handlers.modules;
 
 import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.utils.web.URLUtil;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
@@ -21,7 +22,7 @@ public class ModulesHttpHandler implements HttpHandler {
 
         // Iterate through modules and add relevant information to the response
         for (Module module : YolBi.instance.getModuleManager().getModules()) {
-            if (module.getCategory().name().equalsIgnoreCase(category) /*&& !module.getModuleInfo().hidden()*/) {
+            if (module.moduleCategory().name().equalsIgnoreCase(category) /*&& !module.getModuleInfo().hidden()*/) {
                 JsonObject moduleJson = new JsonObject();
                 moduleJson.addProperty("name", module.getName());
                 /*moduleJson.addProperty("description", module.getModuleInfo().description());*/
