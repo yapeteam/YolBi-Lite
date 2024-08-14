@@ -16,7 +16,6 @@ import org.lwjgl.input.Mouse;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-@Getter
 public class Module {
     @Getter
     @Setter
@@ -246,7 +245,6 @@ public class Module {
         profiles,
         scripts,
         exploit,
-        experimental,
-        search
+        experimental
     }
 }

@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@Getter
 public class ButtonSetting extends Setting {
     @Getter
     private final String name;
