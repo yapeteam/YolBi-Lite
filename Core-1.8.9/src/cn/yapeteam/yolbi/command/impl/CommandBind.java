@@ -3,7 +3,6 @@ package cn.yapeteam.yolbi.command.impl;
 import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.command.AbstractCommand;
-import cn.yapeteam.yolbi.module.Module;
 import org.lwjgl.input.Keyboard;
 
 import java.lang.reflect.Field;
@@ -16,7 +15,7 @@ public class CommandBind extends AbstractCommand {
     @Override
     public void process(String[] args) {
         if (args.length == 2) {
-            Module module = YolBi.instance.getModuleManager().getModule(args[0]);
+            Module module = YolBi.instance.getModuleManager().getModuleByName(args[0]);
             if (module == null) {
                 printMessage("Module not found " + args[0]);
                 return;
@@ -34,7 +33,7 @@ public class CommandBind extends AbstractCommand {
             }
             if (code == 0)
                 printMessage("Key not found " + args[1]);
-            module.setBind(code);
+            module.setKey(code);
             printMessage("Bind " + module.getName() + " to Key " + code);
         }
     }

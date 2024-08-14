@@ -24,7 +24,6 @@ public class SliderSetting extends Setting implements InputSetting {
     private double max;
     @Getter
     private final double min;
-    @Getter
     private final double intervals;
     public boolean isString;
     private String settingInfo = "";
