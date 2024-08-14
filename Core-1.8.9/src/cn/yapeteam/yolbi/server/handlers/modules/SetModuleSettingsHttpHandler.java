@@ -1,6 +1,7 @@
 package cn.yapeteam.yolbi.server.handlers.modules;
 
 import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.values.Value;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.ColorValue;

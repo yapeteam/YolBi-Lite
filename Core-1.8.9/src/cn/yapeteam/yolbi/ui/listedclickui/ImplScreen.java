@@ -4,6 +4,7 @@ import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.ymixin.annotations.Super;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
+import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.module.impl.visual.ClickUI;
 import cn.yapeteam.yolbi.module.impl.visual.ClientTheme;
 import cn.yapeteam.yolbi.ui.listedclickui.component.AbstractComponent;

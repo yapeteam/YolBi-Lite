@@ -1,6 +1,7 @@
 package cn.yapeteam.yolbi.server.handlers.modules;
 
 import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.utils.web.URLUtil;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
