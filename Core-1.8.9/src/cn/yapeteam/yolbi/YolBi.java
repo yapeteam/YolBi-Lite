@@ -7,14 +7,13 @@ import cn.yapeteam.yolbi.config.ConfigManager;
 import cn.yapeteam.yolbi.event.EventManager;
 import cn.yapeteam.yolbi.event.impl.client.EventClientShutdown;
 import cn.yapeteam.yolbi.font.FontManager;
-import cn.yapeteam.yolbi.managers.*;
+import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.module.ModuleManager;
 import cn.yapeteam.yolbi.notification.Notification;
 import cn.yapeteam.yolbi.notification.NotificationManager;
 import cn.yapeteam.yolbi.notification.NotificationType;
 import cn.yapeteam.yolbi.server.WebServer;
 import cn.yapeteam.yolbi.shader.Shader;
-import cn.yapeteam.yolbi.ui.YolbiClickGui;
 import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.render.ESPUtil;
 import lombok.Getter;
@@ -30,28 +29,32 @@ public class YolBi {
     public static final File YOLBI_DIR = new File(System.getProperty("user.home"), ".yolbi");
     public static boolean initialized = false;
     private EventManager eventManager;
-    @Getter
     private CommandManager commandManager;
-    @Getter
     private ConfigManager configManager;
-    @Getter
     private ModuleManager moduleManager;
-    @Getter
     private FontManager fontManager;
-    @Getter
     private NotificationManager notificationManager;
-    @Getter
-    private BotManager botManager;
-    @Getter
-    private TargetManager targetManager;
-    @Getter
-    private RenderManager renderManager;
-    @Getter
+    // private BotManager botManager;
+    // private TargetManager targetManager;
     private RotationManager rotationManager;
-    @Getter
-    private ColorManager colorManager;
 
-    private YolbiClickGui clickGui;
+    public EventManager getEventManager() {
+        if (eventManager == null)
+            eventManager = new EventManager();
+        return eventManager;
+    }
+
+    public FontManager getFontManager() {
+        if (fontManager == null)
+            fontManager = new FontManager();
+        return fontManager;
+    }
+
+    public RotationManager getRotationManager() {
+        if (rotationManager == null)
+            rotationManager = new RotationManager();
+        return rotationManager;
+    }
 
     public static void initialize() {
         if (initialized || instance == null) return;
@@ -64,21 +67,15 @@ public class YolBi {
         instance.commandManager = new CommandManager();
         instance.configManager = new ConfigManager();
         instance.moduleManager = new ModuleManager();
-        instance.fontManager = new FontManager();
-        instance.colorManager = new ColorManager();
-        instance.clickGui = new YolbiClickGui();
-        instance.botManager = new BotManager();
-        instance.targetManager = new TargetManager();
+        // instance.botManager = new BotManager();
+        // instance.targetManager = new TargetManager();
         instance.notificationManager = new NotificationManager();
-        instance.renderManager = new RenderManager();
         instance.eventManager.register(instance.commandManager);
         instance.eventManager.register(instance.moduleManager);
-        instance.eventManager.register(instance.botManager);
-        instance.eventManager.register(instance.targetManager);
+        // instance.eventManager.register(instance.botManager);
+        // instance.eventManager.register(instance.targetManager);
         instance.eventManager.register(instance.rotationManager);
         instance.eventManager.register(instance.notificationManager);
-        instance.eventManager.register(instance.renderManager);
-        instance.eventManager.register(instance.fontManager);
         instance.eventManager.register(Shader.class);
         instance.eventManager.register(ESPUtil.class);
         instance.moduleManager.register();
