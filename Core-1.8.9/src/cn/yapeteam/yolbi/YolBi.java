@@ -83,7 +83,6 @@ public class YolBi {
         instance.commandManager = new CommandManager();
         instance.configManager = new ConfigManager();
         instance.moduleManager = new ModuleManager();
-        instance.fontManager = new FontManager();
         instance.colorManager = new ColorManager();
         instance.clickGui = new YolbiClickGui();
         instance.botManager = new BotManager();

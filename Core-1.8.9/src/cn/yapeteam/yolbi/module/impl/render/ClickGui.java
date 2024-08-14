@@ -17,7 +17,6 @@ public class ClickGui extends Module {
 
     @Override
     public void onDisable() {
-        Keyboard.enableRepeatEvents(false);
         YolBi.instance.getEventManager().unregister(YolBi.instance.getClickGui());
         this.mc.displayGuiScreen(null);
 
