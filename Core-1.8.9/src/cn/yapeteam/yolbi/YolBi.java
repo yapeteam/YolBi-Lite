@@ -29,26 +29,45 @@ public class YolBi {
     public static final String version = VersionInfo.version;
     public static final File YOLBI_DIR = new File(System.getProperty("user.home"), ".yolbi");
     public static boolean initialized = false;
+
+    public EventManager getEventManager() {
+        if (eventManager == null)
+            eventManager = new EventManager();
+        return eventManager;
+    }
+
+    public FontManager getFontManager() {
+        if (fontManager == null)
+            fontManager = new FontManager();
+        return fontManager;
+    }
+
+    public RotationManager getRotationManager() {
+        if (rotationManager == null)
+            rotationManager = new RotationManager();
+        return rotationManager;
+    }
+
     private EventManager eventManager;
-    @Getter
+
     private CommandManager commandManager;
-    @Getter
+
     private ConfigManager configManager;
-    @Getter
+
     private ModuleManager moduleManager;
-    @Getter
+
     private FontManager fontManager;
-    @Getter
+
     private NotificationManager notificationManager;
-    @Getter
+
     private BotManager botManager;
-    @Getter
+
     private TargetManager targetManager;
-    @Getter
+
     private RenderManager renderManager;
-    @Getter
+
     private RotationManager rotationManager;
-    @Getter
+
     private ColorManager colorManager;
 
     private YolbiClickGui clickGui;
