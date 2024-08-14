@@ -7,6 +7,7 @@ import cn.yapeteam.yolbi.utils.render.GuiUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import lombok.Getter;
 import net.minecraft.client.gui.GuiScreen;
+import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 import java.io.IOException;
@@ -41,6 +42,9 @@ public class YolbiClickGui extends GuiScreen implements IMinecraft {
     @Override
     public void initGui() {
         round = 12;
+
+        Keyboard.enableRepeatEvents(true);
+
         if (this.position.x < 0 || this.position.y < 0 ||
                 this.position.x + this.scale.x > IMinecraft.ScaledResolution.getScaledWidth() ||
                 this.position.y + this.scale.y > IMinecraft.ScaledResolution.getScaledHeight()) {
@@ -54,6 +58,7 @@ public class YolbiClickGui extends GuiScreen implements IMinecraft {
     public void onGuiClosed() {
         /* removes the blur */
         YolBi.instance.getModuleManager().getModule("ClickGui").disable();
+        Keyboard.enableRepeatEvents(false);
         dragging = false;
     }
 
