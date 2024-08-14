@@ -1,147 +1,256 @@
 package cn.yapeteam.yolbi.module;
 
-import cn.yapeteam.loader.logger.Logger;
-import cn.yapeteam.yolbi.YolBi;
-import cn.yapeteam.yolbi.config.Config;
-import cn.yapeteam.yolbi.managers.RotationManager;
-import cn.yapeteam.yolbi.module.values.Value;
-import cn.yapeteam.yolbi.module.values.impl.*;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+
+import cn.yapeteam.yolbi.module.setting.Setting;
+import cn.yapeteam.yolbi.module.setting.impl.ButtonSetting;
+import cn.yapeteam.yolbi.module.setting.impl.ModeValue;
+import cn.yapeteam.yolbi.utils.i18n.I18nModule;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Iterator;
 
-@Getter
-@Setter
-public abstract class Module {
-    protected static final Minecraft mc = Minecraft.getMinecraft();
-    protected static final RotationManager rotationManager = YolBi.instance.getRotationManager();
-    private final String name;
-    private final ModuleCategory category;
-    private int key;
+import static net.optifine.reflect.Reflector.FMLCommonHandler;
+import static net.optifine.reflect.Reflector.MinecraftForge_EVENT_BUS;
 
-    protected Module(String name, ModuleCategory category, int key) {
-        this.name = name;
-        this.category = category;
-        this.key = key;
-        YolBi.instance.getConfigManager().registerConfig(getConfig());
+public class Module {
+    @Getter
+    @Setter
+    private @Nullable I18nModule i18nObject = null;
+
+    @Getter
+    protected final ArrayList<Setting> settings;
+    private final String moduleName;
+    private String prettyName;
+    private String prettyInfo = "";
+    private final category moduleCategory;
+    @Getter
+    @Setter
+    private boolean enabled;
+    private int keycode;
+    private final @Nullable String toolTip;
+    protected static Minecraft mc;
+    private boolean isToggled = false;
+    public boolean canBeEnabled = true;
+    public boolean ignoreOnSave = false;
+    @Setter
+    @Getter
+    public boolean hidden = false;
+
+    public Module(String moduleName, category moduleCategory, int keycode) {
+        this(moduleName, moduleCategory, keycode, null);
     }
 
-    protected Module(String name, ModuleCategory category) {
-        this(name, category, 0);
+    public Module(String moduleName, category moduleCategory, int keycode, @Nullable String toolTip) {
+        this.moduleName = moduleName;
+        this.prettyName = moduleName;
+        this.moduleCategory = moduleCategory;
+        this.keycode = keycode;
+        this.toolTip = toolTip;
+        this.enabled = false;
+        mc = Minecraft.getMinecraft();
+        this.settings = new ArrayList<>();
     }
 
-    protected boolean enabled = false;
+    public static Module getModule(Class<? extends Module> a) {
+        Iterator<Module> var1 = ModuleManager.modules.iterator();
 
-    private boolean listening = false;
+        Module module;
+        do {
+            if (!var1.hasNext()) {
+                return null;
+            }
 
-    private String description = null;
+            module = var1.next();
+        } while (module.getClass() != a);
 
-    private final ArrayList<Value<?>> values = new ArrayList<>();
-
-    protected void onEnable() {
-        //invoke on enabled
+        return module;
     }
 
-    protected void onDisable() {
-        //invoke on disabled
+    public Module(String name, category moduleCategory) {
+        this(name, moduleCategory, null);
     }
 
-    public final void setEnabled(boolean enabled) {
-        if (this.enabled != enabled) {
-            this.enabled = enabled;
+    public Module(String name, category moduleCategory, String toolTip) {
+        this(name, moduleCategory, 0, toolTip);
+    }
 
-            if (enabled) {
-                startListening();
-                onEnable();
+    public void keybind() {
+        if (this.keycode != 0) {
+            try {
+                if (!this.isToggled && (this.keycode >= 1000 ? Mouse.isButtonDown(this.keycode - 1000) : Keyboard.isKeyDown(this.keycode))) {
+                    this.toggle();
+                    this.isToggled = true;
+                } else if ((this.keycode >= 1000 ? !Mouse.isButtonDown(this.keycode - 1000) : !Keyboard.isKeyDown(this.keycode))) {
+                    this.isToggled = false;
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                this.keycode = 0;
+            }
+        }
+    }
+
+    public boolean canBeEnabled() {
+        return this.canBeEnabled;
+    }
+
+    public void enable() {
+        if (!this.canBeEnabled() || this.isEnabled()) {
+            return;
+        }
+        this.setEnabled(true);
+        ModuleManager.organizedModules.add(this);
+//        if (ModuleManager.hud.isEnabled()) {
+//            ModuleManager.sort();
+//        }
+
+//        FMLCommonHandler.instance().bus().register(this);
+        this.onEnable();
+    }
+
+    public void disable() {
+        if (!this.isEnabled()) {
+            return;
+        }
+        this.setEnabled(false);
+        ModuleManager.organizedModules.remove(this);
+
+//            FMLCommonHandler.instance().bus().unregister(this);
+        this.onDisable();
+    }
+
+    public String getInfo() {
+        return "";
+    }
+
+    public String getPrettyInfo() {
+        return getInfo();
+    }
+
+    public String getName() {
+        return this.moduleName;
+    }
+
+    public String getPrettyName() {
+        return i18nObject != null ? i18nObject.getName() : getName();
+    }
+
+    public @Nullable String getToolTip() {
+        return toolTip;
+    }
+
+    public @Nullable String getPrettyToolTip() {
+        return i18nObject != null ? i18nObject.getToolTip() : getToolTip();
+    }
+
+    public String getRawPrettyName() {
+        return prettyName;
+    }
+
+    public String getRawPrettyInfo() {
+        return prettyInfo.isEmpty() ? getInfo() : prettyInfo;
+    }
+
+    public void setPrettyName(String name) {
+        this.prettyName = name;
+        ModuleManager.sort();
+    }
+
+    public void setPrettyInfo(String name) {
+        this.prettyInfo = name;
+        ModuleManager.sort();
+    }
+
+    public void registerSetting(Setting setting) {
+        synchronized (settings) {
+            if (settings.contains(setting))
+                throw new RuntimeException("Setting '" + setting.getName() + "' is already registered in module '" + this.getName() + "'!");
+
+            setting.setParent(this);
+            if (setting instanceof ModeValue) {
+                this.settings.add(0, setting);
             } else {
-                stopListening();
-                onDisable();
+                this.settings.add(setting);
             }
         }
     }
 
-    public final void toggle() {
-        setEnabled(!this.enabled);
-    }
-
-    protected final void startListening() {
-        if (!listening) {
-            YolBi.instance.getEventManager().register(this);
-            listening = true;
+    public void registerSetting(Setting @NotNull ... setting) {
+        for (Setting set : setting) {
+            registerSetting(set);
         }
     }
 
-    protected final void stopListening() {
-        if (listening) {
-            YolBi.instance.getEventManager().unregister(this);
-            listening = false;
+    public void unregisterSetting(Setting setting) {
+        synchronized (settings) {
+            this.settings.remove(setting);
         }
     }
 
-    public void addValues(Value<?>... values) {
-        this.values.addAll(Arrays.asList(values));
+    public category moduleCategory() {
+        return this.moduleCategory;
     }
 
-    public Value<?> getValueByName(String name) {
-        return values.stream().filter(v -> v.getName().equals(name)).findFirst().orElse(null);
+    public void onEnable() {
     }
 
-    public String getSuffix() {
-        return null;
+    public void onDisable() {
     }
 
-    public Config getConfig() {
-        return new Config(name) {
-            @Override
-            public void save(JsonObject content) {
-                content.addProperty("enabled", enabled);
-                content.addProperty("key", key);
-                for (Value<?> value : values) {
-                    if (value.getValue() != null)
-                        if (value instanceof BooleanValue)
-                            content.addProperty(value.getName(), ((BooleanValue) value).getValue());
-                        else if (value instanceof ColorValue)
-                            content.addProperty(value.getName(), ((ColorValue) value).getColor());
-                        else if (value instanceof ModeValue)
-                            content.addProperty(value.getName(), ((ModeValue<?>) value).getValue().toString());
-                        else if (value instanceof NumberValue)
-                            content.addProperty(value.getName(), ((NumberValue<?>) value).getValue());
-                        else if (value instanceof TextValue)
-                            content.addProperty(value.getName(), ((TextValue) value).getValue());
-                }
-            }
+    public void toggle() {
+        if (this.isEnabled()) {
+            this.disable();
+//            if (Settings.toggleSound.getInput() != 0) mc.thePlayer.playSound(Settings.getToggleSound(false), 1, 1);
+//            if (Notifications.moduleToggled.isToggled() && !(this instanceof Gui))
+//                Notifications.sendNotification(Notifications.NotificationTypes.INFO, "§4Disabled " + this.getPrettyName());
+        } else {
+            this.enable();
+//            if (Settings.toggleSound.getInput() != 0) mc.thePlayer.playSound(Settings.getToggleSound(true), 1, 1);
+//            if (Notifications.moduleToggled.isToggled() && !(this instanceof Gui))
+//                Notifications.sendNotification(Notifications.NotificationTypes.INFO, "§2Enabled " + this.getPrettyName());
+        }
 
-            @Override
-            public void load(JsonObject content) {
-                JsonElement enabled = content.get("enabled");
-                try {
-                    setEnabled(enabled != null && enabled.getAsBoolean());
-                } catch (Throwable e) {
-                    Logger.exception(e);
-                }
-                JsonElement key = content.get("key");
-                if (key != null) setKey(key.getAsInt());
-                for (Value<?> value : values) {
-                    JsonElement val = content.get(value.getName());
-                    if (val == null) continue;
-                    if (value instanceof BooleanValue)
-                        ((BooleanValue) value).setValue(val.getAsBoolean());
-                    else if (value instanceof ColorValue)
-                        ((ColorValue) value).setValue((new Color(val.getAsInt())));
-                    else if (value instanceof ModeValue)
-                        ((ModeValue<?>) value).setMode(val.getAsString());
-                    else if (value instanceof NumberValue)
-                        ((NumberValue<?>) value).setValue(val.getAsNumber(), false);
-                    else if (value instanceof TextValue)
-                        ((TextValue) value).setValue(val.getAsString());
-                }
-            }
-        };
+    }
+
+    public void onUpdate() {
+    }
+
+    public void guiUpdate() {
+    }
+
+    public void guiButtonToggled(ButtonSetting b) {
+    }
+
+    public int getKeycode() {
+        return this.keycode;
+    }
+
+    public void setBind(int keybind) {
+        this.keycode = keybind;
+    }
+
+
+    public enum category {
+        combat,
+        movement,
+        player,
+        world,
+        render,
+        minigames,
+        fun,
+        other,
+        client,
+        profiles,
+        scripts,
+        exploit,
+        experimental
     }
 }

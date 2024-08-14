@@ -80,7 +80,7 @@ public class YolBi {
         instance.eventManager.register(instance.notificationManager);
         instance.eventManager.register(Shader.class);
         instance.eventManager.register(ESPUtil.class);
-        instance.moduleManager.load();
+        instance.moduleManager.register();
         try {
             instance.getConfigManager().load();
             WebServer.start();
