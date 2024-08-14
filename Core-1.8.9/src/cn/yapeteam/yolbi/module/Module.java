@@ -238,7 +238,7 @@ public class Module {
         movement,
         player,
         world,
-        visual,
+        render,
         minigames,
         fun,
         other,

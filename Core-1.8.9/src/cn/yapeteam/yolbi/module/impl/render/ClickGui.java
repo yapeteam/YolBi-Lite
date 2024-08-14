@@ -6,7 +6,7 @@ import org.lwjgl.input.Keyboard;
 
 public class ClickGui extends Module {
     public ClickGui() {
-        super("ClickGui", Module.category.visual, Keyboard.KEY_RCONTROL);
+        super("ClickGui", Module.category.render, Keyboard.KEY_RSHIFT);
     }
 
     @Override
