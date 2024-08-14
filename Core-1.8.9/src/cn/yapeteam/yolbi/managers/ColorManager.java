@@ -68,7 +68,7 @@ public class ColorManager {
         return new Color(color.getRed(), color.getGreen(), blue);
     }
 
-    static Color withAlpha(final Color color, final int alpha) {
+    public static Color withAlpha(final Color color, final int alpha) {
         return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) MathUtils.clamp(0, 255, alpha));
     }
 
