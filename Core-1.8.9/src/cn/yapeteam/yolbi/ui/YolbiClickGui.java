@@ -1,3 +1,4 @@
+// Java
 package cn.yapeteam.yolbi.ui;
 
 import cn.yapeteam.ymixin.annotations.Super;
@@ -108,6 +109,11 @@ public class YolbiClickGui extends GuiScreen implements IMinecraft {
             draggingOffsetX = position.x - mouseX;
             draggingOffsetY = position.y - mouseY;
             dragging = true;
+        }
+
+        // Only register click if within the ClickGUI
+        else if (GuiUtil.mouseOver(position.getX(), position.getY(), scale.getX(), scale.getY(), mouseX, mouseY)) {
+            sidebar.clickSidebar(mouseX, mouseY, mouseButton);
         }
     }
 
