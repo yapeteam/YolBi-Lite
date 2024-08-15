@@ -5,7 +5,7 @@ import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.render.EventRender3D;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
-import cn.yapeteam.yolbi.utils.render.RenderUtil;
+import cn.yapeteam.yolbi.utils.render.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 
@@ -28,6 +28,6 @@ public class ESP extends Module {
         if (mc.theWorld != null)
             for (Entity entity : mc.theWorld.loadedEntityList)
                 if (entity != mc.thePlayer && entity instanceof EntityLivingBase)
-                    RenderUtil.drawEntityBox((EntityLivingBase) entity, new Color(theme.getColor(0)), true, true, 1, event.getPartialTicks());
+                    RenderManager.drawEntityBox((EntityLivingBase) entity, new Color(theme.getColor(0)), true, true, 1, event.getPartialTicks());
     }
 }

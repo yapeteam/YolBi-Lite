@@ -23,7 +23,7 @@ import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.math.MathUtils;
 import cn.yapeteam.yolbi.utils.misc.TimerUtil;
 import cn.yapeteam.yolbi.utils.player.RotationsUtil;
-import cn.yapeteam.yolbi.utils.render.RenderUtil;
+import cn.yapeteam.yolbi.utils.render.RenderManager;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import lombok.Getter;
 import lombok.val;
@@ -246,7 +246,7 @@ public class KillAura extends Module {
         if (lastTarget == null) return;
         float animate = (float) auraESPAnim.animate(target != null ? 1 : 0);
         float renderPartialTicks = Objects.requireNonNull(ReflectionManager.Minecraft$getTimer(mc)).renderPartialTicks;
-        RenderUtil.renderESPImage(texture, lastTarget, 2 - animate, interpolate(prevEspValue, espValue, renderPartialTicks), Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, animate, renderPartialTicks);
+        RenderManager.renderESPImage(texture, lastTarget, 2 - animate, interpolate(prevEspValue, espValue, renderPartialTicks), Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, animate, renderPartialTicks);
     }
 
     public static float interpolate(float oldValue, float newValue, float interpolationValue) {

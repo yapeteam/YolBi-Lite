@@ -8,6 +8,7 @@ import cn.yapeteam.yolbi.event.EventManager;
 import cn.yapeteam.yolbi.event.impl.client.EventClientShutdown;
 import cn.yapeteam.yolbi.font.FontManager;
 import cn.yapeteam.yolbi.managers.BotManager;
+import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.managers.TargetManager;
 import cn.yapeteam.yolbi.module.ModuleManager;
@@ -26,11 +27,12 @@ import java.io.IOException;
 @Getter
 public class YolBi {
     public static YolBi instance = new YolBi();
-    public static final String name = "YolBi Lite";
+    public static final String name = "YolBi";
     public static final String version = VersionInfo.version;
     public static final File YOLBI_DIR = new File(System.getProperty("user.home"), ".yolbi");
     public static boolean initialized = false;
     private EventManager eventManager;
+    private RenderManager renderManager;
     private CommandManager commandManager;
     private ConfigManager configManager;
     private ModuleManager moduleManager;
@@ -72,6 +74,8 @@ public class YolBi {
         instance.botManager = new BotManager();
         instance.targetManager = new TargetManager();
         instance.notificationManager = new NotificationManager();
+        instance.renderManager = new RenderManager();
+        instance.eventManager.register(instance.renderManager);
         instance.eventManager.register(instance.commandManager);
         instance.eventManager.register(instance.moduleManager);
         instance.eventManager.register(instance.botManager);

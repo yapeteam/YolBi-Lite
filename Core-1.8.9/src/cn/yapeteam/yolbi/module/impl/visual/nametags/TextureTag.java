@@ -2,7 +2,7 @@ package cn.yapeteam.yolbi.module.impl.visual.nametags;
 
 import cn.yapeteam.yolbi.module.impl.visual.NameTags;
 import cn.yapeteam.yolbi.utils.IMinecraft;
-import cn.yapeteam.yolbi.utils.render.RenderUtil;
+import cn.yapeteam.yolbi.utils.render.RenderManager;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
@@ -24,7 +24,7 @@ public class TextureTag implements IMinecraft {
                 GlStateManager.translate(array[0] / sr.getScaleFactor(), array[1] / sr.getScaleFactor(), 0.0D);
                 scale();
                 GlStateManager.translate(0.0D, -2.5D, 0.0D);
-                RenderUtil.drawImage(NameTags.texture, -size / 2f, 0, size, size, new Color(255, 255, 255, alpha).getRGB());
+                RenderManager.drawImage(NameTags.texture, -size / 2f, 0, size, size, new Color(255, 255, 255, alpha).getRGB());
             }
             GlStateManager.popMatrix();
         }

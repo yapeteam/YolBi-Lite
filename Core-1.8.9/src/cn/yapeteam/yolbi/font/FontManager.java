@@ -19,13 +19,15 @@ public class FontManager {
         PingFangBold18 = new AWTFontRenderer(getFont("PingFang_Bold.ttf", 16), true);
         FLUXICON14 = new AWTFontRenderer(getFont("fluxicon.ttf", 18), false);
         default18 = new AWTFontRenderer(new Font(null, Font.PLAIN, 18), true);
+        productSansRegular16 = new AWTFontRenderer(getFont("PTSans-Regular.ttf", 16), true);
+        productSansRegular32 = new AWTFontRenderer(getFont("PTSans-Regular.ttf", 32), true);
     }
 
-    private static Font getFont(String name, int size, int type) {
+    public static Font getFont(String name, int size, int type) {
         return FontUtil.getFontFromTTF(ResourceManager.resources.getStream("fonts/" + name), size, type);
     }
 
-    private static Font getFont(String name, int size) {
+    public static Font getFont(String name, int size) {
         return FontUtil.getFontFromTTF(ResourceManager.resources.getStream("fonts/" + name), size, Font.PLAIN);
     }
 
@@ -39,4 +41,6 @@ public class FontManager {
     private final AbstractFontRenderer PingFangBold18;
     private final AbstractFontRenderer FLUXICON14;
     private final AbstractFontRenderer default18;
+    private final AbstractFontRenderer productSansRegular32;
+    private final AbstractFontRenderer productSansRegular16;
 }

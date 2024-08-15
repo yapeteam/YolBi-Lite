@@ -5,7 +5,7 @@ import cn.yapeteam.yolbi.font.AbstractFontRenderer;
 import cn.yapeteam.yolbi.module.impl.visual.NameTags;
 import cn.yapeteam.yolbi.utils.IMinecraft;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
-import cn.yapeteam.yolbi.utils.render.RenderUtil;
+import cn.yapeteam.yolbi.utils.render.RenderManager;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
@@ -37,12 +37,12 @@ public class DistanceNameTag implements IMinecraft {
                 float n2 = (float) wqy16.getStringWidth(string2);
                 float n3 = Math.max(n, n2);
                 float n4 = n3 + 8.0f;
-                RenderUtil.drawRect(-n4 / 2.0f, -25.0f, n4 / 2.0f, 0.0f, new Color(20, 20, 20, alpha).getRGB());
+                RenderManager.drawRect(-n4 / 2.0f, -25.0f, n4 / 2.0f, 0.0f, new Color(20, 20, 20, alpha).getRGB());
                 wqy16.drawStringWithShadow(string2, -n4 / 2.0f + 4.0f, -19.0f, -1);
                 YolBi.instance.getFontManager().getPingFang13().drawStringWithShadow(string, -n4 / 2.0f + 2.5f, -10.0f, -1);
                 float n11 = (float) Math.ceil(entity.getHealth() + entity.getAbsorptionAmount()) / (entity.getMaxHealth() + entity.getAbsorptionAmount());
                 int color = NameTags.getColor(entity.getDisplayName().getFormattedText());
-                RenderUtil.drawRect(-n4 / 2.0f, -2.0f, Math.min(n4, n4 / 2.0f - n4 / 2.0f * (1.0f - n11) * 2.0f), 0.0f, ColorUtil.reAlpha(color, 0.8f));
+                RenderManager.drawRect(-n4 / 2.0f, -2.0f, Math.min(n4, n4 / 2.0f - n4 / 2.0f * (1.0f - n11) * 2.0f), 0.0f, ColorUtil.reAlpha(color, 0.8f));
                 if (armor) NameTags.renderArmor(entity);
             }
             GlStateManager.popMatrix();

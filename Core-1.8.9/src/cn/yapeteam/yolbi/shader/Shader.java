@@ -2,7 +2,7 @@ package cn.yapeteam.yolbi.shader;
 
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventLoop;
-import cn.yapeteam.yolbi.utils.render.RenderUtil;
+import cn.yapeteam.yolbi.utils.render.RenderManager;
 import lombok.AllArgsConstructor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -60,7 +60,7 @@ public abstract class Shader {
             disposing = true;
             compile();
         }
-        RenderUtil.drawImage(texture, x, y, getRealWidth(), getRealHeight(), color);
+        RenderManager.drawImage(texture, x, y, getRealWidth(), getRealHeight(), color);
     }
 
     public BufferedImage generate() {

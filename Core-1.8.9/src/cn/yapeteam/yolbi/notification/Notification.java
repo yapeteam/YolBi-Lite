@@ -5,7 +5,7 @@ import cn.yapeteam.yolbi.utils.animation.Animation;
 import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
 import cn.yapeteam.yolbi.utils.render.GradientBlur;
-import cn.yapeteam.yolbi.utils.render.RenderUtil;
+import cn.yapeteam.yolbi.utils.render.RenderManager;
 import lombok.Getter;
 import lombok.val;
 import net.minecraft.client.gui.ScaledResolution;
@@ -101,9 +101,9 @@ public class Notification {
 
         float x = (float) animationX.animate(targetX), y = (float) animationY.animate(targetY);
         blur.update(x, y, width, height);
-        RenderUtil.drawBloomShadow(x, y, width, height, 6, 5, new Color(0, 0, 0).getRGB(), false);
+        RenderManager.drawBloomShadow(x, y, width, height, 6, 5, new Color(0, 0, 0).getRGB(), false);
         blur.render(x, y, width, height, partialTicks, 1);
-        RenderUtil.drawRect(x, y, x + width * animationProcess.animate(1), y + height, ColorUtil.reAlpha(color, 0.6f).getRGB());
+        RenderManager.drawRect(x, y, x + width * animationProcess.animate(1), y + height, ColorUtil.reAlpha(color, 0.6f).getRGB());
         font.drawString(content, x + 5, y + (height - font.getStringHeight()) / 2f, type == NotificationType.WARNING ? 0 : -1);
     }
 }

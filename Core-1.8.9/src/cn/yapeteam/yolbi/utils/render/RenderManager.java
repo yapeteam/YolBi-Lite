@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
@@ -28,13 +27,13 @@ import java.util.Map;
 import static org.lwjgl.opengl.GL11.*;
 
 @SuppressWarnings({"DuplicatedCode", "unused"})
-public class RenderUtil {
+public class RenderManager {
     private static final Minecraft mc = Minecraft.getMinecraft();
     private static final Map<Integer, Integer> shadowCache = new HashMap<>();
 
 
     public static int colorSwitch(Color firstColor, Color secondColor, float time, int index, long timePerIndex, double speed) {
-        return RenderUtil.colorSwitch(firstColor, secondColor, time, index, timePerIndex, speed, 255.0);
+        return RenderManager.colorSwitch(firstColor, secondColor, time, index, timePerIndex, speed, 255.0);
     }
 
     public static int colorSwitch(Color firstColor, Color secondColor, float time, int index, long timePerIndex, double speed, double alpha) {
@@ -62,7 +61,7 @@ public class RenderUtil {
     }
 
     public static void drawGoodCircle(double x2, double y2, float radius, int color) {//徐锦良的奇妙命名
-        RenderUtil.color(color);
+        RenderManager.color(color);
         GLUtils.setup2DRendering(() -> {
             GL11.glEnable(2832);
             GL11.glHint(3153, 4354);
@@ -72,10 +71,10 @@ public class RenderUtil {
     }
 
     public static void renderRoundedRect(float x2, float y2, float width, float height, float radius, int color) {
-        RenderUtil.drawGoodCircle(x2 + radius, y2 + radius, radius, color);
-        RenderUtil.drawGoodCircle(x2 + width - radius, y2 + radius, radius, color);
-        RenderUtil.drawGoodCircle(x2 + radius, y2 + height - radius, radius, color);
-        RenderUtil.drawGoodCircle(x2 + width - radius, y2 + height - radius, radius, color);
+        RenderManager.drawGoodCircle(x2 + radius, y2 + radius, radius, color);
+        RenderManager.drawGoodCircle(x2 + width - radius, y2 + radius, radius, color);
+        RenderManager.drawGoodCircle(x2 + radius, y2 + height - radius, radius, color);
+        RenderManager.drawGoodCircle(x2 + width - radius, y2 + height - radius, radius, color);
         drawRect3(x2 + radius, y2, width - radius * 2.0f, height, color);
         drawRect3(x2, y2 + radius, width, height - radius * 2.0f, color);
     }
@@ -103,8 +102,8 @@ public class RenderUtil {
     }
 
     public static void drawRect3(double x2, double y2, double width, double height, int color) {
-        RenderUtil.resetColor();
-        RenderUtil.setAlphaLimit(0.0f);
+        RenderManager.resetColor();
+        RenderManager.setAlphaLimit(0.0f);
         GLUtils.setup2DRendering(true);
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
@@ -695,9 +694,9 @@ public class RenderUtil {
 
     static {
         try {
-            renderPosX = RenderManager.class.getDeclaredField(Mapper.map("net.minecraft.client.renderer.entity.RenderManager", "renderPosX", null, Mapper.Type.Field));
-            renderPosY = RenderManager.class.getDeclaredField(Mapper.map("net.minecraft.client.renderer.entity.RenderManager", "renderPosY", null, Mapper.Type.Field));
-            renderPosZ = RenderManager.class.getDeclaredField(Mapper.map("net.minecraft.client.renderer.entity.RenderManager", "renderPosZ", null, Mapper.Type.Field));
+            renderPosX = net.minecraft.client.renderer.entity.RenderManager.class.getDeclaredField(Mapper.map("net.minecraft.client.renderer.entity.RenderManager", "renderPosX", null, Mapper.Type.Field));
+            renderPosY = net.minecraft.client.renderer.entity.RenderManager.class.getDeclaredField(Mapper.map("net.minecraft.client.renderer.entity.RenderManager", "renderPosY", null, Mapper.Type.Field));
+            renderPosZ = net.minecraft.client.renderer.entity.RenderManager.class.getDeclaredField(Mapper.map("net.minecraft.client.renderer.entity.RenderManager", "renderPosZ", null, Mapper.Type.Field));
             renderPosX.setAccessible(true);
             renderPosY.setAccessible(true);
             renderPosZ.setAccessible(true);
@@ -715,7 +714,7 @@ public class RenderUtil {
     }
 
     public static void drawEntityBox(final EntityLivingBase entity, final Color color, final boolean outline, final boolean box, final float outlineWidth, float partialTicks) {
-        final RenderManager renderManager = mc.getRenderManager();
+        final net.minecraft.client.renderer.entity.RenderManager renderManager = mc.getRenderManager();
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         enableGlCap(GL_BLEND);
         disableGlCap(GL_TEXTURE_2D, GL_DEPTH_TEST);
@@ -786,7 +785,7 @@ public class RenderUtil {
     // }
 
     public static void drawEntityBox(AxisAlignedBB entityBox, double lastTickPosX, double lastTickPosY, double lastTickPosZ, double posX, double posY, double posZ, final Color color, final boolean outline, final boolean box, final float outlineWidth, float partialTicks) {
-        final RenderManager renderManager = mc.getRenderManager();
+        final net.minecraft.client.renderer.entity.RenderManager renderManager = mc.getRenderManager();
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         enableGlCap(GL_BLEND);
         disableGlCap(GL_TEXTURE_2D, GL_DEPTH_TEST);
@@ -923,7 +922,7 @@ public class RenderUtil {
             return;
         }
         Map<Integer, Boolean> map = glCapMap.get(scale);
-        map.forEach(RenderUtil::setGlState);
+        map.forEach(RenderManager::setGlState);
         map.clear();
     }
 
@@ -1102,7 +1101,7 @@ public class RenderUtil {
     }
 
     public static void renderESPImage(int texture, EntityLivingBase entity, float scale, float rotate, Color color, Color color2, Color color3, Color color4, float alpha, float partialTicks) {
-        RenderManager renderManager = mc.getRenderManager();
+        net.minecraft.client.renderer.entity.RenderManager renderManager = mc.getRenderManager();
         double x = interpolate(entity.posX, entity.prevPosX, partialTicks) - ReflectionManager.GetRenderManager$renderPosX(renderManager);
         double y = interpolate(entity.posY, entity.prevPosY, partialTicks) - ReflectionManager.GetRenderManager$renderPosY(renderManager);
         double z = interpolate(entity.posZ, entity.prevPosZ, partialTicks) - ReflectionManager.GetRenderManager$renderPosZ(renderManager);

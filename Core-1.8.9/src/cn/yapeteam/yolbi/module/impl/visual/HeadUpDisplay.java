@@ -11,7 +11,7 @@ import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.utils.animation.Animation;
 import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.render.GradientBlur;
-import cn.yapeteam.yolbi.utils.render.RenderUtil;
+import cn.yapeteam.yolbi.utils.render.RenderManager;
 import lombok.Getter;
 import lombok.val;
 import net.minecraft.client.gui.ScaledResolution;
@@ -66,7 +66,7 @@ public class HeadUpDisplay extends Module {
 
         public void renderShadow(ScaledResolution sr) {
             float x = sr.getScaledWidth() + deltaX;
-            RenderUtil.drawBloomShadow(x, y, width, height, 12, 6, color, false);
+            RenderManager.drawBloomShadow(x, y, width, height, 12, 6, color, false);
         }
 
         public void render(ScaledResolution sr, float partialTicks) {
@@ -74,7 +74,7 @@ public class HeadUpDisplay extends Module {
             float x = sr.getScaledWidth() + deltaX;
             GlStateManager.disableBlend();
             blur.render(x, y, width, height, partialTicks, 1);
-            RenderUtil.drawRect(x, y, x + width, y + height, new Color(0, 0, 0, 66).getRGB());
+            RenderManager.drawRect(x, y, x + width, y + height, new Color(0, 0, 0, 66).getRGB());
             String text = getText(module);
             font.drawString(text, x + 2.5f, y + (height - font.getStringHeight()) / 2f + 0.5f, new Color(0, 0, 0).getRGB());
             font.drawString(text, x + 2, y + (height - font.getStringHeight()) / 2f, color, false);

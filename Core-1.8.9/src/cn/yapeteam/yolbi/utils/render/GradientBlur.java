@@ -105,10 +105,10 @@ public class GradientBlur implements IMinecraft {
         color2 = ColorUtil.reAlpha(color2, alpha);
         switch (type) {
             case LR:
-                RenderUtil.drawGradientRectLR(x, y, x + width, y + height, color1.getRGB(), color2.getRGB());
+                RenderManager.drawGradientRectLR(x, y, x + width, y + height, color1.getRGB(), color2.getRGB());
                 break;
             case TB:
-                RenderUtil.drawGradientRectTB(x, y, x + width, y + height, color1.getRGB(), color2.getRGB());
+                RenderManager.drawGradientRectTB(x, y, x + width, y + height, color1.getRGB(), color2.getRGB());
         }
     }
 

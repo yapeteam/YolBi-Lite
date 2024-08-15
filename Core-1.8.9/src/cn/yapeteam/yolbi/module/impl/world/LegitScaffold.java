@@ -12,7 +12,7 @@ import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.player.PlayerUtil;
 import cn.yapeteam.yolbi.utils.render.GradientBlur;
-import cn.yapeteam.yolbi.utils.render.RenderUtil;
+import cn.yapeteam.yolbi.utils.render.RenderManager;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemBlock;
@@ -78,7 +78,7 @@ public class LegitScaffold extends Module {
         float x = sr.getScaledWidth() / 2f - width / 2f;
         float y = sr.getScaledHeight() / 2f + 10;
         blur.update(x, y, width, height);
-        RenderUtil.drawBloomShadow(x, y, width, height, 5, 5, new Color(0, 0, 0).getRGB(), false);
+        RenderManager.drawBloomShadow(x, y, width, height, 5, 5, new Color(0, 0, 0).getRGB(), false);
         blur.render(x, y, width, height, partialTicks, 1);
         fontRenderer.drawString(text, x + 5, y + (height - fontRenderer.getStringHeight("A")) / 2f, -1);
     }
