@@ -1,14 +1,15 @@
 package cn.yapeteam.yolbi.mixin.injection;
 
-import cn.yapeteam.ymixin.annotations.Inject;
-import cn.yapeteam.ymixin.annotations.Local;
-import cn.yapeteam.ymixin.annotations.Mixin;
-import cn.yapeteam.ymixin.annotations.Target;
+import cn.yapeteam.loader.logger.Logger;
+import cn.yapeteam.ymixin.annotations.*;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.impl.network.EventPacket;
 import cn.yapeteam.yolbi.event.impl.network.EventPacketReceive;
 import cn.yapeteam.yolbi.event.impl.network.EventPacketSend;
 import cn.yapeteam.yolbi.managers.PacketManager;
+import io.netty.channel.Channel;
+import lombok.Getter;
+import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.INetHandlerPlayClient;
@@ -17,6 +18,25 @@ import net.minecraft.network.play.INetHandlerPlayServer;
 @Mixin(NetworkManager.class)
 @SuppressWarnings("UnnecessaryReturnStatement")
 public class MixinNetworkManager {
+
+    @Shadow
+    @Getter
+    private static Channel channel;
+
+    @Shadow
+    @Getter
+    private static INetHandler packetListener;
+
+    static{
+        try{
+            PacketManager.channel = channel;
+            PacketManager.packetListener = packetListener;
+        }catch (Exception e){
+            Logger.exception(e);
+        }
+
+    }
+
     @Inject(
             method = "sendPacket",
             desc = "(Lnet/minecraft/network/Packet;)V",

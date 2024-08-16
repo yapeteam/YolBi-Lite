@@ -442,11 +442,11 @@ public class RenderManager {
         GlStateManager.enableAlpha();
         GlStateManager.alphaFunc(516, (float) ((double) limit * 0.01));
     }
-    public static void drawBloomShadow(float x, float y, float width, float height, int blurRadius, Color color) {
-        drawBloomShadow(x, y, width, height, blurRadius, 0, color);
+    public static void drawBloomShadow(double x, double y, double width, double height, int blurRadius, Color color) {
+        drawBloomShadow((float) x, (float) y, (float) width, (float) height, blurRadius, 0, color);
     }
 
-    public static void drawBloomShadow(float x, float y, float width, float height, int blurRadius, int roundRadius, Color color) {
+    public static void drawBloomShadow(double x, double y, double width, double height, int blurRadius, int roundRadius, Color color) {
         glPushMatrix();
         GlStateManager.alphaFunc(GL11.GL_GREATER, 0.01f);
         width = width + blurRadius * 2;
@@ -454,8 +454,8 @@ public class RenderManager {
         x = x - blurRadius;
         y = y - blurRadius;
 
-        float _X = x - 0.25f;
-        float _Y = y + 0.25f;
+        float _X = (float) (x - 0.25f);
+        float _Y = (float) (y + 0.25f);
 
         int identifier = (width + "," + height + "," + blurRadius).hashCode();
 
@@ -486,13 +486,13 @@ public class RenderManager {
         GL11.glVertex2f(_X, _Y);
 
         GL11.glTexCoord2f(0, 1); // bottom left
-        GL11.glVertex2f(_X, _Y + height);
+        GL11.glVertex2f(_X, (float) (_Y + height));
 
         GL11.glTexCoord2f(1, 1); // bottom right
-        GL11.glVertex2f(_X + width, _Y + height);
+        GL11.glVertex2f((float) (_X + width), (float) (_Y + height));
 
         GL11.glTexCoord2f(1, 0); // top right
-        GL11.glVertex2f(_X + width, _Y);
+        GL11.glVertex2f((float) (_X + width), _Y);
         GL11.glEnd();
 
         enableTexture2D();

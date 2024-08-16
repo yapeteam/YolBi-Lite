@@ -1,10 +1,11 @@
 package cn.yapeteam.yolbi.managers;
 
-import cn.yapeteam.ymixin.utils.Mapper;
 import cn.yapeteam.loader.logger.Logger;
+import cn.yapeteam.ymixin.utils.Mapper;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.impl.network.EventFinalPacketSend;
 import cn.yapeteam.yolbi.utils.IMinecraft;
+import io.netty.channel.Channel;
 import io.netty.util.concurrent.GenericFutureListener;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetworkManager;
@@ -32,15 +33,24 @@ public class PacketManager implements IMinecraft {
 
     public static Method flushOutboundQueue = null, dispatchPacket = null;
 
+    public static Channel channel;
+
+    public static INetHandler packetListener;
+
     static {
         try {
             flushOutboundQueue = NetworkManager.class.getDeclaredMethod(Mapper.map("net.minecraft.network.NetworkManager", "flushOutboundQueue", "()V", Mapper.Type.Method));
             dispatchPacket = NetworkManager.class.getDeclaredMethod(Mapper.map("net.minecraft.network.NetworkManager", "dispatchPacket", "(Lnet/minecraft/network/Packet;[Lio/netty/util/concurrent/GenericFutureListener;)V", Mapper.Type.Method), Packet.class, GenericFutureListener[].class);
-
             flushOutboundQueue.setAccessible(true);
             dispatchPacket.setAccessible(true);
         } catch (NoSuchMethodException e) {
             Logger.exception(e);
+        }
+    }
+
+    public static void receivePacket(Packet packet){
+        if(channel.isOpen()){
+            packet.processPacket(packetListener);
         }
     }
 

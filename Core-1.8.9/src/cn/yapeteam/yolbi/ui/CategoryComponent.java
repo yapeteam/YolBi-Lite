@@ -4,6 +4,7 @@ package cn.yapeteam.yolbi.ui;
 import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.font.AbstractFontRenderer;
+import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.module.ModuleCategory;
 import cn.yapeteam.yolbi.utils.IMinecraft;
 import cn.yapeteam.yolbi.utils.render.GuiUtil;
@@ -41,12 +42,14 @@ public final class CategoryComponent implements IMinecraft {
             rectColor = new Color(66, 68, 73, 255); // Hover color
         }
         if (YolbiClickGui.currentCategory == category) {
-            rectColor = new Color(46, 66, 109, 255); // Selected color
+            rectColor = new Color(79, 199, 200).darker(); // Selected color
         }
 
+        // Draw bloom shadow
+        RenderManager.drawBloomShadow(x + 2, y - 5.5, width + 9, 15, 5, 5, rectColor);
 
         /* Draws selection */
-        YolBi.instance.getRenderManager().roundedRectangle(x + 1.5 + (YolbiClickGui.currentCategory == category ? 3 : 0), y - 5.5, width + 11, 15, 4, rectColor.getRGB());
+        YolBi.instance.getRenderManager().roundedRectangle(x + 1.5 + (YolbiClickGui.currentCategory == category ? 3 : 0), y - 5.5, width + 9, 15, 4, rectColor.getRGB());
 
         // draws icon
         icon17.drawString(category.getIcon(), x + 4 + (YolbiClickGui.currentCategory == category ? 3 : 0), y, new Color(255, 255, 255));
