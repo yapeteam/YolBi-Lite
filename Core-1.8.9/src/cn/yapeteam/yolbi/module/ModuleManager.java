@@ -9,10 +9,7 @@ import cn.yapeteam.yolbi.module.impl.misc.ClientSpoof;
 import cn.yapeteam.yolbi.module.impl.misc.NoteBot;
 import cn.yapeteam.yolbi.module.impl.misc.SelfDestruct;
 import cn.yapeteam.yolbi.module.impl.movement.*;
-import cn.yapeteam.yolbi.module.impl.player.AutoArmor;
-import cn.yapeteam.yolbi.module.impl.player.ChestStealer;
-import cn.yapeteam.yolbi.module.impl.player.MurdererFinder;
-import cn.yapeteam.yolbi.module.impl.player.SlotHandler;
+import cn.yapeteam.yolbi.module.impl.player.*;
 import cn.yapeteam.yolbi.module.impl.visual.*;
 import cn.yapeteam.yolbi.module.impl.world.FastPlace;
 import cn.yapeteam.yolbi.module.impl.world.LegitScaffold;
@@ -64,6 +61,7 @@ public class ModuleManager {
         modules.add(new FastPlace());
         modules.add(new ClickAssist());
         modules.add(new HitSelect());
+        modules.add(new Backtrack());
         modules.sort((m1, m2) -> -Integer.compare(m2.getName().charAt(0), m1.getName().charAt(0)));
     }
 
