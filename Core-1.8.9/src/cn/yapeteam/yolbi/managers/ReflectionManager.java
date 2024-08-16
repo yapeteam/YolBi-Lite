@@ -27,6 +27,7 @@ import java.lang.reflect.Method;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unchecked")
 public class ReflectionManager {
@@ -758,7 +759,7 @@ public class ReflectionManager {
 
     public static <T> Object callMethod(Class<? super T> clazz, @Nullable T instance, String methodName, Object ... parameters) {
         try {
-            return getMethodFast(clazz, methodName, parameters.getClass()).invoke(instance, parameters);
+            return getMethodFast(clazz, methodName, Arrays.stream(parameters).map(Object::getClass).toArray(Class[]::new)).invoke(instance, parameters);
         } catch (Exception e) {
             Logger.error("Unable to call method %s on type %s", methodName, clazz.getName());
             return new Object();
