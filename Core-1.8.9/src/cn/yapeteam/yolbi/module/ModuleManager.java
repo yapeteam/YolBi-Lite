@@ -60,6 +60,7 @@ public class ModuleManager {
         modules.add(new HitSelect());
         modules.add(new Backtrack());
         modules.add(new Disabler());
+        modules.add(new Speed());
         modules.sort((m1, m2) -> -Integer.compare(m2.getName().charAt(0), m1.getName().charAt(0)));
     }
 
