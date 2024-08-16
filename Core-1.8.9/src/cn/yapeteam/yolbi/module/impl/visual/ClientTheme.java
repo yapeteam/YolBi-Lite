@@ -19,7 +19,7 @@ public class ClientTheme extends Module {
     private final NumberValue<Double> brightness = new NumberValue<>("Brightness", () -> color.is("Rainbow"), 0.9, 0.05, 1.0, 0.05);
 
     public ClientTheme() {
-        super("ClientTheme", ModuleCategory.VISUAL);
+        super("ClientTheme", ModuleCategory.RENDER);
         this.addValues(color, color1, color2, color3, saturation, brightness);
         instance = this;
     }

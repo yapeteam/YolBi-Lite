@@ -12,7 +12,7 @@ import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.player.PlayerUtil;
 import cn.yapeteam.yolbi.utils.render.GradientBlur;
-import cn.yapeteam.yolbi.utils.render.RenderManager;
+import cn.yapeteam.yolbi.managers.RenderManager;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemBlock;
@@ -32,7 +32,7 @@ public class LegitScaffold extends Module {
     private long lastSneakTime = -1;
 
     public LegitScaffold() {
-        super("LegitScaffold", ModuleCategory.WORLD);
+        super("LegitScaffold", ModuleCategory.GHOST);
         NumberValue.setBound(minDelay, maxDelay);
         addValues(minDelay, maxDelay, pitchCheck, pitch, onlySPressed, onlySneak, showBlockCount);
     }

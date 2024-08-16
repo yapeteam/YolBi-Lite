@@ -2,7 +2,7 @@ package cn.yapeteam.yolbi.module.impl.visual.nametags;
 
 import cn.yapeteam.yolbi.module.impl.visual.NameTags;
 import cn.yapeteam.yolbi.utils.IMinecraft;
-import cn.yapeteam.yolbi.utils.render.RenderManager;
+import cn.yapeteam.yolbi.managers.RenderManager;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;

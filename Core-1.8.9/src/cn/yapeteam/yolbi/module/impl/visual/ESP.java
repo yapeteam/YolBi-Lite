@@ -5,7 +5,7 @@ import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.render.EventRender3D;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.ModuleCategory;
-import cn.yapeteam.yolbi.utils.render.RenderManager;
+import cn.yapeteam.yolbi.managers.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 
@@ -15,7 +15,7 @@ public class ESP extends Module {
     private ClientTheme theme;
 
     public ESP() {
-        super("ESP", ModuleCategory.VISUAL);
+        super("ESP", ModuleCategory.RENDER);
     }
 
     @Override

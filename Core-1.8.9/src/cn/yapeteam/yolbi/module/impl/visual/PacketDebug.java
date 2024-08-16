@@ -20,7 +20,7 @@ public class PacketDebug extends Module {
     ArrayList<Group<Class<?>, String, Long>> list = new ArrayList<>();
 
     public PacketDebug() {
-        super("PacketDebug", ModuleCategory.VISUAL);
+        super("PacketDebug", ModuleCategory.RENDER);
     }
 
     @Listener

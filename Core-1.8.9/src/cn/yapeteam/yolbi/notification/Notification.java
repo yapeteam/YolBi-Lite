@@ -5,7 +5,7 @@ import cn.yapeteam.yolbi.utils.animation.Animation;
 import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
 import cn.yapeteam.yolbi.utils.render.GradientBlur;
-import cn.yapeteam.yolbi.utils.render.RenderManager;
+import cn.yapeteam.yolbi.managers.RenderManager;
 import lombok.Getter;
 import lombok.val;
 import net.minecraft.client.gui.ScaledResolution;

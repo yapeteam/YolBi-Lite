@@ -14,7 +14,7 @@ public class FastPlace extends Module {
     private boolean noblock;
 
     public FastPlace() {
-        super("FastPlace", ModuleCategory.WORLD, Keyboard.KEY_NONE);
+        super("FastPlace", ModuleCategory.GHOST, Keyboard.KEY_NONE);
     }
 
     @Listener

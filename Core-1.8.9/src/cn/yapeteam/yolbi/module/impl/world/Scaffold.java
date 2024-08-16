@@ -40,7 +40,7 @@ public class Scaffold extends Module {
     private int sneak$bridged = 0;
 
     public Scaffold() {
-        super("Scaffold", ModuleCategory.WORLD);
+        super("Scaffold", ModuleCategory.GHOST);
         this.addValues(rotationMode = new ModeValue<>("Rotation mode", "Static", "Normal", "Static"));
         this.addValues(sneak = new BooleanValue("Sneak", true));
         this.addValues(sneakEveryBlocks = new NumberValue<>("Sneak every blocks", 1, 0, 10, 1));

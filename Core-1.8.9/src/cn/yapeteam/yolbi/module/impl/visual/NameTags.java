@@ -71,7 +71,7 @@ public class NameTags extends Module {
     }
 
     public NameTags() {
-        super("NameTags", ModuleCategory.VISUAL);
+        super("NameTags", ModuleCategory.RENDER);
         this.addValues(mode, headSize, invis, armor, alpha);
     }
 

@@ -23,7 +23,7 @@ import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.math.MathUtils;
 import cn.yapeteam.yolbi.utils.misc.TimerUtil;
 import cn.yapeteam.yolbi.utils.player.RotationsUtil;
-import cn.yapeteam.yolbi.utils.render.RenderManager;
+import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import lombok.Getter;
 import lombok.val;

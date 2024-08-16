@@ -23,31 +23,35 @@ public final class CategoryComponent implements IMinecraft {
 
     AbstractFontRenderer productSans16 = YolBi.instance.getFontManager().getProductSansRegular16();
 
+    AbstractFontRenderer icon17 = YolBi.instance.getFontManager().getIcons17();
+
     public void render(final double offset, final double sidebarWidth, final double opacity, final float mouseX, final float mouseY) {
         /* Gets position depending on sidebar animation */
         x = (float) (YolbiClickGui.position.x - (69 - sidebarWidth) - 21);
-        y = (float) (YolbiClickGui.position.y + offset) + 16;
+        y = (float) (YolbiClickGui.position.y + offset) + 30;
 
-        final double width = productSans16.getStringWidth(category.name());
+        final double width = productSans16.getStringWidth(category.name()) + icon17.getStringWidth(category.getIcon());
 
         GlStateManager.pushMatrix();
 
         /* Check if the category is hovered */
         boolean isHovered = GuiUtil.mouseOver(x - 11, y - 5, 70, 22, mouseX, mouseY);
-        int rectOpacity = (int) opacity;
+        Color rectColor = new Color(0, 0, 0, 0);
         if (isHovered) {
-            rectOpacity = 200; // Slightly glow when hovered
+            rectColor = new Color(66, 68, 73, 255); // Hover color
         }
         if (YolbiClickGui.currentCategory == category) {
-            rectOpacity = 255; // Full opacity for selected category
+            rectColor = new Color(46, 66, 109, 255); // Selected color
         }
 
-        /* Draws selection */
-        YolBi.instance.getRenderManager().roundedRectangle(x + 1.5, y - 5.5, width + 9, 15, 4,
-                new Color(79, 199, 200, rectOpacity).darker().getRGB()
-        );
 
-        productSans16.drawString(category.name(), x + 7, y, Color.WHITE);
+        /* Draws selection */
+        YolBi.instance.getRenderManager().roundedRectangle(x + 1.5 + (YolbiClickGui.currentCategory == category ? 3 : 0), y - 5.5, width + 11, 15, 4, rectColor.getRGB());
+
+        // draws icon
+        icon17.drawString(category.getIcon(), x + 4 + (YolbiClickGui.currentCategory == category ? 3 : 0), y, new Color(255, 255, 255));
+
+        productSans16.drawString(category.name(), x + 7 + icon17.getStringWidth(category.getIcon()) + (YolbiClickGui.currentCategory == category ? 3 : 0), y, new Color(245, 245, 247));
 
         GlStateManager.popMatrix();
     }

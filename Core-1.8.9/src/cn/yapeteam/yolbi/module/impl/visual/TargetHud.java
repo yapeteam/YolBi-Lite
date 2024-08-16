@@ -11,7 +11,7 @@ import cn.yapeteam.yolbi.module.impl.combat.KillAura;
 import cn.yapeteam.yolbi.utils.animation.Animation;
 import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.render.GradientBlur;
-import cn.yapeteam.yolbi.utils.render.RenderManager;
+import cn.yapeteam.yolbi.managers.RenderManager;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,7 +20,7 @@ import java.awt.*;
 
 public class TargetHud extends Module {
     public TargetHud() {
-        super("TargetHUD", ModuleCategory.VISUAL);
+        super("TargetHUD", ModuleCategory.RENDER);
     }
 
     @Listener(Priority.HIGH)

@@ -11,7 +11,7 @@ import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.utils.animation.Animation;
 import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.render.GradientBlur;
-import cn.yapeteam.yolbi.utils.render.RenderManager;
+import cn.yapeteam.yolbi.managers.RenderManager;
 import lombok.Getter;
 import lombok.val;
 import net.minecraft.client.gui.ScaledResolution;
@@ -34,7 +34,7 @@ public class HeadUpDisplay extends Module {
     public static HeadUpDisplay instance;
 
     public HeadUpDisplay() {
-        super("HUD", ModuleCategory.VISUAL);
+        super("HUD", ModuleCategory.RENDER);
         addValues(waterMark, moduleList, notification, font);
         instance = this;
     }

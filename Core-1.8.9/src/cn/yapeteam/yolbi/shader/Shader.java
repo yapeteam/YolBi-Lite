@@ -2,7 +2,7 @@ package cn.yapeteam.yolbi.shader;
 
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventLoop;
-import cn.yapeteam.yolbi.utils.render.RenderManager;
+import cn.yapeteam.yolbi.managers.RenderManager;
 import lombok.AllArgsConstructor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;

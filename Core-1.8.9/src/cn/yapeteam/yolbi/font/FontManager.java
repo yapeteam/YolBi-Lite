@@ -21,6 +21,7 @@ public class FontManager {
         default18 = new AWTFontRenderer(new Font(null, Font.PLAIN, 18), true);
         productSansRegular16 = new AWTFontRenderer(getFont("PTSans-Regular.ttf", 16), true);
         productSansRegular32 = new AWTFontRenderer(getFont("PTSans-Regular.ttf", 32), true);
+        icons17 = new AWTFontRenderer(getFont("Icon-1.ttf", 17), false);
     }
 
     public static Font getFont(String name, int size, int type) {
@@ -43,4 +44,5 @@ public class FontManager {
     private final AbstractFontRenderer default18;
     private final AbstractFontRenderer productSansRegular32;
     private final AbstractFontRenderer productSansRegular16;
+    private final AbstractFontRenderer icons17;
 }

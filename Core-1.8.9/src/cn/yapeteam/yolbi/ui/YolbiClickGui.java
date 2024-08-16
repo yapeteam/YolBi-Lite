@@ -25,8 +25,8 @@ public class YolbiClickGui extends GuiScreen implements IMinecraft {
     public static Vector2f scale = new Vector2f(320 * 1.3f, 260 * 1.3f);
 
     /* Colors */
-    public final Color backgroundColor = new Color(23, 26, 33);
-    public static final Color sidebarColor = new Color(18, 20, 25);
+    public final Color backgroundColor = new Color(30, 31, 34); // Dark mode background color
+    public static final Color sidebarColor = new Color(43, 45, 48); // Dark mode sidebar color
 
     public float draggingOffsetX, draggingOffsetY;
     public boolean dragging;

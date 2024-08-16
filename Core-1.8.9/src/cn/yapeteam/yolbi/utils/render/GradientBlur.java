@@ -1,5 +1,6 @@
 package cn.yapeteam.yolbi.utils.render;
 
+import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.utils.IMinecraft;
 import lombok.Getter;
 import net.minecraft.client.renderer.texture.TextureUtil;
