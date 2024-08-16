@@ -112,8 +112,7 @@ public class Backtrack extends Module {
                 if (packetQueue.element().getCold().getCum(currentLatency)) {
                     Packet<INetHandlerPlayClient> packet = (Packet<INetHandlerPlayClient>) packetQueue.remove().getPacket();
                     skipPackets.add(packet);
-                    PacketManager.receivePacket(packet);
-//                    ReflectionManager.callMethod(NetworkManager.class, mc.getNetHandler().getNetworkManager(), "channelRead0", packet);
+                    ReflectionManager.callMethod(NetworkManager.class, mc.getNetHandler().getNetworkManager(), "channelRead0", packet);
                 } else {
                     break;
                 }
@@ -287,7 +286,7 @@ public class Backtrack extends Module {
             for (TimedPacket timedPacket : packetQueue) {
                 Packet<INetHandlerPlayClient> packet = (Packet<INetHandlerPlayClient>) timedPacket.getPacket();
                 skipPackets.add(packet);
-                PacketManager.receivePacket(packet);
+                ReflectionManager.callMethod(NetworkManager.class, mc.getNetHandler().getNetworkManager(), "channelRead0", packet);
             }
             packetQueue.clear();
         }
