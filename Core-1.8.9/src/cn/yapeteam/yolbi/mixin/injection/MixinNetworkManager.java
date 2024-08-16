@@ -30,7 +30,7 @@ public class MixinNetworkManager {
     static{
         try{
             PacketManager.channel = channel;
-            PacketManager.packetListener = packetListener;
+            PacketManager.packetListener = (INetHandlerPlayClient) packetListener;
         }catch (Exception e){
             Logger.exception(e);
         }

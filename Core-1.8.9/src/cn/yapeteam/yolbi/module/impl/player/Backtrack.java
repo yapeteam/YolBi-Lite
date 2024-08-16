@@ -24,6 +24,7 @@ import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.backtrack.TimedPacket;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.network.play.server.*;
@@ -111,11 +112,12 @@ public class Backtrack extends Module {
                 if (packetQueue.element().getCold().getCum(currentLatency)) {
                     Packet<INetHandlerPlayClient> packet = (Packet<INetHandlerPlayClient>) packetQueue.remove().getPacket();
                     skipPackets.add(packet);
-                    PacketManager.dispatchPacket.invoke(packet);
+                    PacketManager.receivePacket(packet);
+//                    ReflectionManager.callMethod(NetworkManager.class, mc.getNetHandler().getNetworkManager(), "channelRead0", packet);
                 } else {
                     break;
                 }
-            } catch (NullPointerException | InvocationTargetException | IllegalAccessException exception) {
+            } catch (NullPointerException exception) {
                 Utils.sendMessage(exception.getMessage());
             }
         }
@@ -285,11 +287,7 @@ public class Backtrack extends Module {
             for (TimedPacket timedPacket : packetQueue) {
                 Packet<INetHandlerPlayClient> packet = (Packet<INetHandlerPlayClient>) timedPacket.getPacket();
                 skipPackets.add(packet);
-                try {
-                    PacketManager.dispatchPacket.invoke(packet);
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    Utils.sendMessage(e.getMessage());
-                }
+                PacketManager.receivePacket(packet);
             }
             packetQueue.clear();
         }

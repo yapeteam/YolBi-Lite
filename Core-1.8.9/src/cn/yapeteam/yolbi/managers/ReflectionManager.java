@@ -699,6 +699,7 @@ public class ReflectionManager {
     }
 
     private static final Map<Pair<Class<?>, String>, Field> cacheField = new HashMap<>();
+    private static final Map<Pair<Class<?>, String>, Method> cacheMethod = new HashMap<>();
 
     public static @NotNull Field getFieldFast(Class<?> clazz, String @NotNull ... fieldNames) throws RuntimeException {
         Exception failed = null;
@@ -722,6 +723,22 @@ public class ReflectionManager {
         throw new RuntimeException(failed);
     }
 
+    public static @NotNull Method getMethodFast(Class<?> clazz, String methodName, @Nullable Class<?> ... parameters) throws RuntimeException {
+        final Pair<Class<?>, String> data = new Pair<>(clazz, methodName);
+        if (cacheMethod.containsKey(data)) {
+            return cacheMethod.get(data);
+        }
+
+        try {
+            Method f = clazz.getDeclaredMethod(methodName, parameters);
+            f.setAccessible(true);
+            cacheMethod.put(data, f);
+            return f;
+        } catch (Exception var8) {
+            throw new RuntimeException(var8);
+        }
+    }
+
     public static <T, E> void setValue(Class<? super T> clazz, @Nullable T instance, E value, String... fieldNames) {
         try {
             getFieldFast(clazz, fieldNames).set(instance, value);
@@ -735,6 +752,15 @@ public class ReflectionManager {
             return getFieldFast(clazz, fieldNames).get(instance);
         } catch (Exception e) {
             Logger.error("Unable to get any field %s on type %s", Arrays.toString(fieldNames), clazz.getName());
+            return new Object();
+        }
+    }
+
+    public static <T> Object callMethod(Class<? super T> clazz, @Nullable T instance, String methodName, Object ... parameters) {
+        try {
+            return getMethodFast(clazz, methodName, parameters.getClass()).invoke(instance, parameters);
+        } catch (Exception e) {
+            Logger.error("Unable to call method %s on type %s", methodName, clazz.getName());
             return new Object();
         }
     }
