@@ -1,9 +1,9 @@
 package cn.yapeteam.yolbi.utils.render.shader.impl;
 
-import com.alan.clients.util.shader.base.RiseShader;
-import com.alan.clients.util.shader.base.RiseShaderProgram;
-import com.alan.clients.util.shader.base.ShaderRenderType;
-import com.alan.clients.util.shader.base.ShaderUniforms;
+import cn.yapeteam.yolbi.utils.render.shader.base.RiseShader;
+import cn.yapeteam.yolbi.utils.render.shader.base.RiseShaderProgram;
+import cn.yapeteam.yolbi.utils.render.shader.base.ShaderRenderType;
+import cn.yapeteam.yolbi.utils.render.shader.base.ShaderUniforms;
 import lombok.Setter;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.shader.Framebuffer;

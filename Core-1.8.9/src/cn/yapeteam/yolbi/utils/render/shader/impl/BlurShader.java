@@ -1,10 +1,10 @@
 package cn.yapeteam.yolbi.utils.render.shader.impl;
 
-import cn.yapeteam.yolbi.utils.render.shader.base.RiseShader;
-import cn.yapeteam.yolbi.utils.render.shader.base.RiseShaderProgram;
-import cn.yapeteam.yolbi.utils.render.shader.base.ShaderRenderType;
-import cn.yapeteam.yolbi.utils.render.shader.base.ShaderUniforms;
-import cn.yapeteam.yolbi.utils.render.shader.kernel.GaussianKernel;
+import com.alan.clients.util.shader.base.RiseShader;
+import com.alan.clients.util.shader.base.RiseShaderProgram;
+import com.alan.clients.util.shader.base.ShaderRenderType;
+import com.alan.clients.util.shader.base.ShaderUniforms;
+import com.alan.clients.util.shader.kernel.GaussianKernel;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.renderer.GlStateManager;
@@ -109,14 +109,14 @@ public class BlurShader extends RiseShader {
         int width = mc.displayWidth;
         int height = mc.displayHeight;
 
-        if (shouldResize(inputFramebuffer, width, height)) {
+        if (inputFramebuffer.shouldResize(width, height)) {
             inputFramebuffer.deleteFramebuffer();
             inputFramebuffer = new Framebuffer(mc.displayWidth, mc.displayHeight, true);
         } else {
             inputFramebuffer.framebufferClear();
         }
 
-        if (shouldResize(outputFramebuffer, width, height)) {
+        if (outputFramebuffer.shouldResize(width, height)) {
             outputFramebuffer.deleteFramebuffer();
             outputFramebuffer = new Framebuffer(mc.displayWidth, mc.displayHeight, true);
         } else {
