@@ -24,6 +24,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import static net.minecraft.client.renderer.GlStateManager.disableBlend;
+import static net.minecraft.client.renderer.GlStateManager.enableTexture2D;
 import static org.lwjgl.opengl.GL11.*;
 
 @SuppressWarnings({"DuplicatedCode", "unused"})
@@ -100,7 +102,66 @@ public class RenderManager {
         GlStateManager.enableAlpha();
         GlStateManager.alphaFunc(516, (float) ((double) limit * 0.01));
     }
+    public static void drawBloomShadow(float x, float y, float width, float height, int blurRadius, Color color) {
+        drawBloomShadow(x, y, width, height, blurRadius, 0, color);
+    }
 
+    public static void drawBloomShadow(float x, float y, float width, float height, int blurRadius, int roundRadius, Color color) {
+        glPushMatrix();
+        GlStateManager.alphaFunc(GL11.GL_GREATER, 0.01f);
+        width = width + blurRadius * 2;
+        height = height + blurRadius * 2;
+        x = x - blurRadius;
+        y = y - blurRadius;
+
+        float _X = x - 0.25f;
+        float _Y = y + 0.25f;
+
+        int identifier = (width + "," + height + "," + blurRadius).hashCode();
+
+        glEnable(GL11.GL_TEXTURE_2D);
+        glDisable(GL_CULL_FACE);
+        glEnable(GL11.GL_ALPHA_TEST);
+        GlStateManager.enableBlend();
+
+        if (shadowCache.containsKey(identifier)) {
+            GlStateManager.bindTexture(shadowCache.get(identifier));
+        } else {
+            if (width <= 0) width = 1;
+            if (height <= 0) height = 1;
+            BufferedImage original = new BufferedImage((int) width, (int) height, BufferedImage.TYPE_INT_ARGB_PRE);
+            Graphics g = original.getGraphics();
+            g.setColor(new Color(-1));
+            g.fillRoundRect(blurRadius, blurRadius, (int) (width - blurRadius * 2), (int) (height - blurRadius * 2), roundRadius, roundRadius);
+            g.dispose();
+            GaussianFilter op = new GaussianFilter(blurRadius);
+            BufferedImage blurred = op.filter(original, null);
+            shadowCache.put(identifier, TextureUtil.uploadTextureImageAllocate(TextureUtil.glGenTextures(), blurred, true, false));
+        }
+
+        color(color.getRGB());
+
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glTexCoord2f(0, 0); // top left
+        GL11.glVertex2f(_X, _Y);
+
+        GL11.glTexCoord2f(0, 1); // bottom left
+        GL11.glVertex2f(_X, _Y + height);
+
+        GL11.glTexCoord2f(1, 1); // bottom right
+        GL11.glVertex2f(_X + width, _Y + height);
+
+        GL11.glTexCoord2f(1, 0); // top right
+        GL11.glVertex2f(_X + width, _Y);
+        GL11.glEnd();
+
+        enableTexture2D();
+        disableBlend();
+        GlStateManager.resetColor();
+
+        glEnable(GL_CULL_FACE);
+        glPopMatrix();
+    }
     public static void drawRect3(double x2, double y2, double width, double height, int color) {
         RenderManager.resetColor();
         RenderManager.setAlphaLimit(0.0f);
