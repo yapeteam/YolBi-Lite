@@ -45,8 +45,8 @@ public final class CategoryComponent implements IMinecraft {
             rectColor = new Color(79, 199, 200).darker(); // Selected color
         }
 
-        // Draw bloom shadow
-        RenderManager.drawBloomShadow(x + 2, y - 5.5, width + 9, 15, 5, 5, rectColor);
+        // draws bloom
+        RenderManager.drawBloomShadow(x+1.5,y - 5.5, width + 14, 15 , 3, 4, rectColor);
 
         /* Draws selection */
         YolBi.instance.getRenderManager().roundedRectangle(x + 1.5 + (YolbiClickGui.currentCategory == category ? 3 : 0), y - 5.5, width + 9, 15, 4, rectColor.getRGB());
