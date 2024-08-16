@@ -4,10 +4,7 @@ import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventKey;
 import cn.yapeteam.yolbi.module.impl.combat.*;
-import cn.yapeteam.yolbi.module.impl.misc.AntiInvisible;
-import cn.yapeteam.yolbi.module.impl.misc.ClientSpoof;
-import cn.yapeteam.yolbi.module.impl.misc.NoteBot;
-import cn.yapeteam.yolbi.module.impl.misc.SelfDestruct;
+import cn.yapeteam.yolbi.module.impl.misc.*;
 import cn.yapeteam.yolbi.module.impl.movement.*;
 import cn.yapeteam.yolbi.module.impl.player.*;
 import cn.yapeteam.yolbi.module.impl.visual.*;
@@ -62,6 +59,7 @@ public class ModuleManager {
         modules.add(new ClickAssist());
         modules.add(new HitSelect());
         modules.add(new Backtrack());
+        modules.add(new Disabler());
         modules.sort((m1, m2) -> -Integer.compare(m2.getName().charAt(0), m1.getName().charAt(0)));
     }
 
