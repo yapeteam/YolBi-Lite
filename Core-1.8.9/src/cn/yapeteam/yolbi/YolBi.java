@@ -41,6 +41,8 @@ public class YolBi {
     private BotManager botManager;
     private TargetManager targetManager;
     private RotationManager rotationManager;
+    @Getter
+    private static final long startMillisTime = System.currentTimeMillis();
 
     public EventManager getEventManager() {
         if (eventManager == null)

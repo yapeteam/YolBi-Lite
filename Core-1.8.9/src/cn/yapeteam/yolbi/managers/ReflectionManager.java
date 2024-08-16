@@ -757,6 +757,7 @@ public class ReflectionManager {
         }
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public static <T> Object callMethod(Class<? super T> clazz, @Nullable T instance, String methodName, Object ... parameters) {
         try {
             return getMethodFast(clazz, methodName, Arrays.stream(parameters).map(Object::getClass).toArray(Class[]::new)).invoke(instance, parameters);
