@@ -24,7 +24,7 @@ public class ModuleInfoHttpHandler implements HttpHandler {
 
         AtomicBoolean moduleFound = new AtomicBoolean(false);
 
-        YolBi.instance.getModuleManager().getModules().stream().filter(module -> module.getName().equalsIgnoreCase(Displayname)).forEach(Module -> {
+        YolBi.instance.getModuleManager().getAll().stream().filter(module -> module.getName().equalsIgnoreCase(Displayname)).forEach(Module -> {
             Module.setEnabled(Enabled);
             moduleFound.set(true);
         });

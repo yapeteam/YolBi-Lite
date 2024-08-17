@@ -5,6 +5,7 @@ import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.render.EventAlpha;
 import cn.yapeteam.yolbi.layer.Layer;
+import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.api.Category;
 import cn.yapeteam.yolbi.ui.standard.components.ModuleComponent;
@@ -171,7 +172,7 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
         //Information from gui draw screen to use in this event, we use this event instead of gui draw screen because it allows the clickgui to have an outro animation
         final int mouseX = (int) mouse.x;
         final int mouseY = (int) mouse.y;
-        final float partialTicks = IMinecraft.mc.frameTimer().renderPartialTicks;
+        final float partialTicks = ReflectionManager.Minecraft$getTimer(mc).renderPartialTicks;
 
         /* Handles dragging */
         if (dragging) {

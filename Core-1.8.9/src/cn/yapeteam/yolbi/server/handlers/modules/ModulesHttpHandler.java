@@ -21,8 +21,8 @@ public class ModulesHttpHandler implements HttpHandler {
         JsonObject response = new JsonObject();
 
         // Iterate through modules and add relevant information to the response
-        for (Module module : YolBi.instance.getModuleManager().getModules()) {
-            if (module.getCategory().name().equalsIgnoreCase(category) /*&& !module.getModuleInfo().hidden()*/) {
+        for (Module module : YolBi.instance.getModuleManager().getAll()) {
+            if (module.getModuleInfo().category().name().equalsIgnoreCase(category) /*&& !module.getModuleInfo().hidden()*/) {
                 JsonObject moduleJson = new JsonObject();
                 moduleJson.addProperty("name", module.getName());
                 /*moduleJson.addProperty("description", module.getModuleInfo().description());*/

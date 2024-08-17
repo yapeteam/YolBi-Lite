@@ -2,7 +2,6 @@ package cn.yapeteam.yolbi;
 
 import cn.yapeteam.loader.VersionInfo;
 import cn.yapeteam.loader.logger.Logger;
-import cn.yapeteam.yolbi.command.CommandManager;
 import cn.yapeteam.yolbi.config.ConfigManager;
 import cn.yapeteam.yolbi.event.EventManager;
 import cn.yapeteam.yolbi.event.impl.client.EventClientShutdown;
@@ -31,7 +30,6 @@ public class YolBi {
     public static boolean initialized = false;
     private EventManager eventManager;
     private RenderManager renderManager;
-    private CommandManager commandManager;
     private ConfigManager configManager;
     private ModuleManager moduleManager;
     private BotManager botManager;
@@ -66,7 +64,6 @@ public class YolBi {
             instance.rotationManager = new RotationManager();
         instance.clickGUI = new RiseClickGUI();
         instance.layerManager = new LayerManager();
-        instance.commandManager = new CommandManager();
         instance.configManager = new ConfigManager();
         instance.moduleManager = new ModuleManager();
         instance.botManager = new BotManager();
@@ -74,7 +71,6 @@ public class YolBi {
         instance.renderManager = new RenderManager();
         instance.themeManager = new ThemeManager();
         instance.eventManager.register(instance.renderManager);
-        instance.eventManager.register(instance.commandManager);
         instance.eventManager.register(instance.moduleManager);
         instance.eventManager.register(instance.botManager);
         instance.eventManager.register(instance.targetManager);

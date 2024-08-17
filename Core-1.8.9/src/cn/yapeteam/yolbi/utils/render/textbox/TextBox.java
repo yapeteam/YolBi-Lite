@@ -9,9 +9,7 @@ import cn.yapeteam.yolbi.utils.render.GuiUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector2d;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
-
 
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
@@ -135,7 +133,7 @@ public class TextBox {
 
         /* Renders cursor */
         if (this.selected) {
-            (this.fontRenderer == Minecraft.getMinecraft().fontRendererObj ? Fonts.MAIN.get(18, Weight.REGULAR) : this.fontRenderer).draw("|", (float) (posX + animatedCursorPosition + 1), position.y - 1, new Color(this.color.getRed(), this.color.getBlue(), this.color.getGreen(), this.color.getAlpha() == 0 ? 0 : (int) ((((Math.sin(System.currentTimeMillis() / 150D) + 1) / 2) * 255))).hashCode());
+            (this.fontRenderer == Fonts.MINECRAFT.get() ? Fonts.MAIN.get(18, Weight.REGULAR) : this.fontRenderer).draw("|", (float) (posX + animatedCursorPosition + 1), position.y - 1, new Color(this.color.getRed(), this.color.getBlue(), this.color.getGreen(), this.color.getAlpha() == 0 ? 0 : (int) ((((Math.sin(System.currentTimeMillis() / 150D) + 1) / 2) * 255))).hashCode());
         }
     }
 

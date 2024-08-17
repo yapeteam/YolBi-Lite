@@ -1,12 +1,12 @@
 package cn.yapeteam.yolbi.font;
 
 import cn.yapeteam.yolbi.utils.font.Font;
+import cn.yapeteam.yolbi.utils.font.impl.rise.FontRenderer;
 import cn.yapeteam.yolbi.utils.font.impl.rise.FontUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 
 public enum Fonts {
     MAIN("SF-Pro-Rounded-%s", "otf"),
-    MINECRAFT("Minecraft", () -> Minecraft.getMinecraft().fontRendererObj),
+    MINECRAFT("Minecraft", () -> new MinecraftFontWrapper(Minecraft.getMinecraft().fontRendererObj)),
     ICONS_1("Icon-1", "ttf"),
     ICONS_2("Icon-3", "ttf"),
     CUSTOM("", "ttf");
