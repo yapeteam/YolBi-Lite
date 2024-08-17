@@ -2,12 +2,13 @@ package cn.yapeteam.yolbi.utils.render.shader.base;
 
 import cn.yapeteam.yolbi.utils.IMinecraft;
 import cn.yapeteam.yolbi.utils.render.shader.ShaderUtil;
+import lombok.Getter;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
+@Getter
 public class RiseShaderProgram implements IMinecraft {
-
     private final int programId;
 
     public RiseShaderProgram(final String fragmentPath, final String vertexPath) {
@@ -40,7 +41,4 @@ public class RiseShaderProgram implements IMinecraft {
         GL20.glUseProgram(0);
     }
 
-    public int getProgramId() {
-        return programId;
-    }
 }

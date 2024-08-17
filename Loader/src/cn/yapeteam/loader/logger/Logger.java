@@ -105,7 +105,7 @@ public class Logger {
         builder.append("\t\t").append(ConsoleColors.CYAN).append("Message: ").append(ex.getMessage()).append('\n');
         builder.append("\t\t").append(ConsoleColors.GREEN).append("StackTrace:").append('\n');
         for (StackTraceElement stackTraceElement : ex.getStackTrace())
-            builder.append("\t\t").append("\t").append(ConsoleColors.RED_BOLD).append(stackTraceElement).append('\n');
+            builder.append("\t\t\t").append(ConsoleColors.RED_BOLD).append(stackTraceElement).append('\n');
         log(builder.toString(), ConsoleColors.NONE);
     }
 

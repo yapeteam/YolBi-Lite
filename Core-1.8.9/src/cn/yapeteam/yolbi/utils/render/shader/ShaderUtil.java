@@ -1,32 +1,30 @@
 package cn.yapeteam.yolbi.utils.render.shader;
 
+import cn.yapeteam.loader.ResourceManager;
+import cn.yapeteam.loader.logger.Logger;
+import cn.yapeteam.loader.utils.StreamUtils;
+import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.utils.IMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 import static org.lwjgl.opengl.GL11.*;
 
 public class ShaderUtil implements IMinecraft {
-
-    private static final IResourceManager RESOURCE_MANAGER = mc.getResourceManager();
-
     public static int createShader(final String fragmentResource, final String vertexResource) {
         final String fragmentSource = getShaderResource(fragmentResource);
         final String vertexSource = getShaderResource(vertexResource);
 
         if (fragmentResource == null || vertexResource == null) {
-            System.out.println("An error occurred whilst creating shader");
-            System.out.println("Fragment: " + fragmentSource == null);
-            System.out.println("Vertex: " + vertexSource == null);
+            Logger.error("An error occurred whilst creating shader");
+            Logger.error("Fragment: {}", fragmentSource == null);
+            Logger.error("Vertex: {}", vertexSource == null);
             return -1;
         }
 
@@ -57,34 +55,26 @@ public class ShaderUtil implements IMinecraft {
         if (compiled) return true;
 
         final String shaderLog = GL20.glGetShaderInfoLog(shaderId, 8192);
-        System.out.println("\nError while compiling shader: ");
-        System.out.println("-------------------------------");
-        System.out.println(shaderLog);
+        Logger.error("\nError while compiling shader: ");
+        Logger.error("-------------------------------");
+        Logger.error(shaderLog);
         return false;
     }
 
     public static String getShaderResource(final String resource) {
         try {
-            final InputStream inputStream = RESOURCE_MANAGER.getResource(new ResourceLocation("rise/shader/" + resource)).getInputStream();
-            final InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            final BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String source = "";
-
-            try {
-                for (String s; (s = bufferedReader.readLine()) != null; source += s + System.lineSeparator()) ;
-            } catch (final IOException ignored) {
-            }
-
-            return source;
+            final InputStream inputStream = ResourceManager.resources.getStream("shader/" + resource);
+            if (inputStream == null) return null;
+            return new String(StreamUtils.readStream(inputStream), StandardCharsets.UTF_8);
         } catch (final IOException | NullPointerException e) {
-            System.out.println("An error occurred while getting a shader resource");
-            e.printStackTrace();
+            Logger.error("An error occurred while getting a shader resource");
+            Logger.exception(e);
             return null;
         }
     }
 
     public static void drawQuads(final ScaledResolution sr) {
-        if (Minecraft.getMinecraft().gameSettings.ofFastRender) return;
+        if (ReflectionManager.hasOptifine && Minecraft.getMinecraft().gameSettings.ofFastRender) return;
         final float width = (float) sr.getScaledWidth_double();
         final float height = (float) sr.getScaledHeight_double();
         glBegin(GL_QUADS);
