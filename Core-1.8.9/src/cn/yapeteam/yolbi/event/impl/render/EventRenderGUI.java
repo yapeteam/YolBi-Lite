@@ -1,6 +1,6 @@
 package cn.yapeteam.yolbi.event.impl.render;
 
-import cn.yapeteam.yolbi.event.type.CancellableEvent;
+import cn.yapeteam.yolbi.event.Event;
 
-public class EventRenderGUI extends CancellableEvent {
+public class EventRenderGUI extends Event {
 }

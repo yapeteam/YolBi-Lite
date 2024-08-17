@@ -5,6 +5,7 @@ import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import cn.yapeteam.yolbi.event.impl.render.EventRender3D;
+import cn.yapeteam.yolbi.event.impl.render.EventRenderGUI;
 import cn.yapeteam.yolbi.utils.render.shader.base.RiseShader;
 import cn.yapeteam.yolbi.utils.render.shader.base.ShaderRenderType;
 import lombok.Getter;
@@ -44,7 +45,7 @@ public class LayerManager {
     }
 
     @Listener
-    public void onRenderGUI(EventRender2D eventRender2D){
+    public void onRenderGUI(EventRenderGUI eventRender2D){
         render(ShaderRenderType.OVERLAY);
     };
 

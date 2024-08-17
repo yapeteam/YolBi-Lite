@@ -4,6 +4,7 @@ import cn.yapeteam.ymixin.annotations.*;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.impl.player.EventMouseOver;
 import cn.yapeteam.yolbi.event.impl.render.EventRender3D;
+import cn.yapeteam.yolbi.event.impl.render.EventRenderGUI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.Entity;
@@ -39,6 +40,19 @@ public class MixinEntityRenderer {
         EventMouseOver event = new EventMouseOver(3.0f);
         YolBi.instance.getEventManager().post(event);
     }
+
+    @Inject(
+            method = "updateCameraAndRender", desc = "(FJ)V",
+            target = @Target(
+                    value = "INVOKEVIRTUAL",
+                    target = "net/minecraft/client/gui/GuiScreen.drawScreen(IIF)V",
+                    shift = Target.Shift.BEFORE
+            )
+    )
+    private void onRenderGUI() {
+        YolBi.instance.getEventManager().post(new EventRenderGUI());
+    }
+
 
     //@Modify(method = "getMouseOver", desc = "(F)V", replacepath = "cn/yapeteam/yolbi/event/impl/player/EventMouseOver", replacementfunc = "getReach", funcdesc = "()F")
     //private void modifygetMouseOver(@Local(source = "partialTicks", index = 1) float partialTicks) {
