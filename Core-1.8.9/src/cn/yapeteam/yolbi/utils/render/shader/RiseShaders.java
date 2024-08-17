@@ -5,11 +5,11 @@ import cn.yapeteam.yolbi.utils.render.shader.impl.*;
 
 public interface RiseShaders {
     AlphaShader ALPHA_SHADER = new AlphaShader();
-    RiseShader BLOOM_SHADER = new BloomShader();
+    RiseShader POST_BLOOM_SHADER = new BloomShader();
     RiseShader UI_BLOOM_SHADER = new BloomShader();
     RiseShader UI_POST_BLOOM_SHADER = new BloomShader();
-    BlurShader GAUSSIAN_BLUR_SHADER = new BlurShader();
-    BlurShader UI_GAUSSIAN_BLUR_SHADER = new BlurShader();
+    GaussianBlurShader GAUSSIAN_BLUR_SHADER = new GaussianBlurShader();
+    GaussianBlurShader UI_GAUSSIAN_BLUR_SHADER = new GaussianBlurShader();
 
     RiseShader OUTLINE_SHADER = new OutlineShader();
     RQShader RQ_SHADER = new RQShader();
