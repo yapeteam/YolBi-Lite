@@ -67,4 +67,8 @@ public class Animation {
         this.startValue = value;
         this.finished = false;
     }
+
+    public void run(int i) {
+        animate(i);
+    }
 }
