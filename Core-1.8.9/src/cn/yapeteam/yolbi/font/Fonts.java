@@ -4,7 +4,6 @@ import cn.yapeteam.yolbi.utils.font.Font;
 import cn.yapeteam.yolbi.utils.font.impl.rise.FontRenderer;
 import cn.yapeteam.yolbi.utils.font.impl.rise.FontUtil;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
 
@@ -13,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Supplier;
 
+@Getter
 public enum Fonts {
     MAIN("SF-Pro-Rounded-%s", "otf"),
     MINECRAFT("Minecraft", () -> new MinecraftFontWrapper(Minecraft.getMinecraft().fontRendererObj)),
@@ -32,13 +32,11 @@ public enum Fonts {
         this.get = get;
     }
 
-    Supplier<Font> get;
-    Font font;
-    @Setter
-    @Getter
-    String name;
+    private Supplier<Font> get;
+    private Font font;
+
+    private String name;
     final String extention;
-    @Getter
     private final HashMap<Integer, FontRenderer> sizes = new HashMap<>();
 
     private static final boolean ORACAL = System.getProperty("java.vm.vendor").equals("Oracle Corporation");
@@ -74,7 +72,7 @@ public enum Fonts {
                 font = FontUtil.getDiskResource(location, size);
             } else {
                 for (String alias : weight.getAliases()) {
-                    location = "rise/font/" + String.format(name, alias) + "." + extention;
+                    location = "fonts/" + String.format(name, alias) + "." + extention;
                     font = FontUtil.getResource(location, size);
 
                     if (font != null) break;

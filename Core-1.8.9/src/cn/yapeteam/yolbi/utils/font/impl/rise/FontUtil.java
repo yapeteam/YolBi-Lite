@@ -1,17 +1,14 @@
 package cn.yapeteam.yolbi.utils.font.impl.rise;
 
 
-import cn.yapeteam.yolbi.utils.interfaces.Accessor;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.util.ResourceLocation;
+import cn.yapeteam.loader.ResourceManager;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class FontUtil {
-
-    private static final IResourceManager RESOURCE_MANAGER = Accessor.mc.getResourceManager();
 
     /**
      * Method which gets a font by a resource name
@@ -22,7 +19,7 @@ public class FontUtil {
      */
     public static Font getResource(final String resource, final int size) {
         try {
-            return Font.createFont(Font.TRUETYPE_FONT, RESOURCE_MANAGER.getResource(new ResourceLocation(resource)).getInputStream()).deriveFont((float) size);
+            return Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(ResourceManager.resources.getStream(resource))).deriveFont((float) size);
         } catch (final FontFormatException | IOException ignored) {
             return null;
         }
