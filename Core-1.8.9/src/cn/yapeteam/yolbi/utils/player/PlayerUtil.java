@@ -1,6 +1,5 @@
 package cn.yapeteam.yolbi.utils.player;
 
-import cn.yapeteam.yolbi.module.impl.combat.CombatSettings;
 import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
 import com.google.common.base.Predicates;
 import lombok.experimental.UtilityClass;
@@ -14,11 +13,6 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemFishingRod;
-import net.minecraft.item.ItemSword;
 import net.minecraft.util.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -45,7 +39,6 @@ public class PlayerUtil implements IMinecraft {
         put(13, 12); // Water Breathing
     }};
 
-    CombatSettings settings = new CombatSettings();
 
     private int getPing(Entity entity) {
         val uniqueID = mc.getNetHandler().getPlayerInfo(entity.getUniqueID());
@@ -209,13 +202,13 @@ public class PlayerUtil implements IMinecraft {
         return (float) (yaw * -1.0D);
     }
 
-    public static boolean holdingWeapon() {
-        if (mc.thePlayer.getHeldItem() == null) {
-            return false;
-        }
-        Item getItem = mc.thePlayer.getHeldItem().getItem();
-        return getItem instanceof ItemSword || (settings.getAxe().getValue() && getItem instanceof ItemAxe) || (settings.getRod().getValue() && getItem instanceof ItemFishingRod) || (settings.getStick().getValue() && getItem == Items.stick);
-    }
+//    public static boolean holdingWeapon() {
+//        if (mc.thePlayer.getHeldItem() == null) {
+//            return false;
+//        }
+//        Item getItem = mc.thePlayer.getHeldItem().getItem();
+//        return getItem instanceof ItemSword || (settings.getAxe().getValue() && getItem instanceof ItemAxe) || (settings.getRod().getValue() && getItem instanceof ItemFishingRod) || (settings.getStick().getValue() && getItem == Items.stick);
+//    }
 
     public static boolean overAir() {
         return mc.theWorld.isAirBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1.0, mc.thePlayer.posZ));

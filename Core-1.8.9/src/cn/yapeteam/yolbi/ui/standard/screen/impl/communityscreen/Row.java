@@ -1,24 +1,20 @@
 package cn.yapeteam.yolbi.ui.standard.screen.impl.communityscreen;
 
-import com.alan.clients.font.Fonts;
-import com.alan.clients.font.Weight;
-import com.alan.clients.ui.click.standard.RiseClickGUI;
-import com.alan.clients.ui.click.standard.screen.impl.CommunityScreen;
-import com.alan.clients.util.Accessor;
-import com.alan.clients.util.dragging.Mouse;
-import com.alan.clients.util.gui.GUIUtil;
-import com.alan.clients.util.gui.ScrollUtil;
-import com.alan.clients.util.vector.Vector2f;
+
+import cn.yapeteam.yolbi.font.Fonts;
+import cn.yapeteam.yolbi.font.Weight;
+import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
+import cn.yapeteam.yolbi.ui.standard.screen.impl.CommunityScreen;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
+import cn.yapeteam.yolbi.utils.render.ScrollUtil;
+import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
-
-import static com.alan.clients.ui.click.standard.screen.impl.CommunityScreen.PADDING;
 
 @Getter
 @Setter
