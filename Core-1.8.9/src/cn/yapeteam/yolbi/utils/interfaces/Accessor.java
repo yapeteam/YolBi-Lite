@@ -39,7 +39,7 @@ public interface Accessor {
     }
 
     default <T extends Module> T getModule(final Class<T> clazz) {
-        return getInstance().getModuleManager().getModule(clazz);
+        return getInstance().getModuleManager().get(clazz);
     }
 
 

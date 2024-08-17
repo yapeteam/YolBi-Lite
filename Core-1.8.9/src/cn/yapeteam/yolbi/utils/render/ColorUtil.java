@@ -12,7 +12,7 @@ public class ColorUtil {
      *
      * @param hex used hex code
      */
-    static void glColor(final int hex) {
+    public static void glColor(final int hex) {
         final float a = (hex >> 24 & 0xFF) / 255.0F;
         final float r = (hex >> 16 & 0xFF) / 255.0F;
         final float g = (hex >> 8 & 0xFF) / 255.0F;

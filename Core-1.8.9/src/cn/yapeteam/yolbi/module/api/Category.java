@@ -1,9 +1,9 @@
 package cn.yapeteam.yolbi.module.api;
 
-import com.alan.clients.font.Fonts;
-import com.alan.clients.ui.click.standard.screen.Screen;
-import com.alan.clients.ui.click.standard.screen.impl.*;
-import com.alan.clients.util.font.Font;
+import cn.yapeteam.yolbi.font.Fonts;
+import cn.yapeteam.yolbi.ui.standard.screen.Screen;
+import cn.yapeteam.yolbi.ui.standard.screen.impl.*;
+import cn.yapeteam.yolbi.utils.font.Font;
 import lombok.Getter;
 
 /**
