@@ -22,17 +22,17 @@ public abstract class Module {
     protected static final Minecraft mc = Minecraft.getMinecraft();
     protected static final RotationManager rotationManager = YolBi.instance.getRotationManager();
     private final String name;
-    private final ModuleCategory category;
+    private final Category category;
     private int key;
 
-    protected Module(String name, ModuleCategory category, int key) {
+    protected Module(String name, Category category, int key) {
         this.name = name;
         this.category = category;
         this.key = key;
         YolBi.instance.getConfigManager().registerConfig(getConfig());
     }
 
-    protected Module(String name, ModuleCategory category) {
+    protected Module(String name, Category category) {
         this(name, category, 0);
     }
 

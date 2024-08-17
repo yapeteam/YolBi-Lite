@@ -84,7 +84,7 @@ public class ModuleManager {
         return (T) modules.stream().filter(m -> m.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
-    public List<Module> getModulesByCategory(ModuleCategory category) {
+    public List<Module> getModulesByCategory(Category category) {
         return modules.stream().filter(m -> m.getCategory() == category).collect(Collectors.toList());
     }
 }

@@ -1,7 +1,6 @@
 package cn.yapeteam.yolbi.module.impl.player;
 
 import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -12,11 +11,10 @@ import cn.yapeteam.yolbi.event.impl.network.EventPacketReceive;
 import cn.yapeteam.yolbi.event.impl.player.EventAttack;
 import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
 import cn.yapeteam.yolbi.event.impl.render.EventRender3D;
-import cn.yapeteam.yolbi.managers.PacketManager;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.compat.SliderSetting;
 import cn.yapeteam.yolbi.utils.Utils;
 import cn.yapeteam.yolbi.utils.animation.Animation;
@@ -55,7 +53,7 @@ public class Backtrack extends Module {
     private int currentLatency = 0;
 
     public Backtrack() {
-        super("Backtrack", ModuleCategory.PLAYER);
+        super("Backtrack", Category.PLAYER);
         this.addValues(minLatency);
         this.addValues(maxLatency);
         this.addValues(minDistance);

@@ -2,7 +2,7 @@ package cn.yapeteam.yolbi.module.impl.combat;
 
 import cn.yapeteam.loader.Natives;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
@@ -46,7 +46,7 @@ public class AutoClicker extends Module {
     private Thread clickThread = null;
 
     public AutoClicker() {
-        super("AutoClicker", ModuleCategory.COMBAT);
+        super("AutoClicker", Category.COMBAT);
         addValues(cps, range, pressPercentage, leftClick, rightClick, noeat, nomine, clickprio);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             Natives.SendLeft(false);

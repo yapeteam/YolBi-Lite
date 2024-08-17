@@ -10,7 +10,7 @@ import cn.yapeteam.yolbi.event.impl.render.EventRender3D;
 import cn.yapeteam.yolbi.font.FontUtil;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.impl.combat.AntiBot;
 import cn.yapeteam.yolbi.module.impl.player.MurdererFinder;
 import cn.yapeteam.yolbi.module.impl.visual.nametags.DistanceNameTag;
@@ -71,7 +71,7 @@ public class NameTags extends Module {
     }
 
     public NameTags() {
-        super("NameTags", ModuleCategory.RENDER);
+        super("NameTags", Category.RENDER);
         this.addValues(mode, headSize, invis, armor, alpha);
     }
 

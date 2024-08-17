@@ -5,7 +5,7 @@ import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.player.EventAttack;
 import cn.yapeteam.yolbi.event.impl.player.EventMotion;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.misc.KeyCodeMapper;
 import cn.yapeteam.yolbi.utils.misc.VirtualKeyBoard;
@@ -26,7 +26,7 @@ public class WTap extends Module {
     private boolean isTapping = false;
 
     public WTap() {
-        super("WTap", ModuleCategory.COMBAT);
+        super("WTap", Category.COMBAT);
         addValues(tapMinDelay, tapMaxDelay, tapMinHold, tapMaxHold, tapAccuracy);
     }
 

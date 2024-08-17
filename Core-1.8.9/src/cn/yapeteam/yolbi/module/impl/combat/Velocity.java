@@ -4,7 +4,7 @@ import cn.yapeteam.loader.Natives;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.network.EventPacket;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.math.MathUtils;
 import cn.yapeteam.yolbi.utils.misc.VirtualKeyBoard;
@@ -32,7 +32,7 @@ public class Velocity extends Module {
 
 
     public Velocity() {
-        super("Velocity", ModuleCategory.COMBAT);
+        super("Velocity", Category.COMBAT);
         NumberValue.setBound(minJumpDelay, maxJumpDelay);
         NumberValue.setBound(minJumpHold, maxJumpHold);
         addValues(probability, maxJumpDelay, minJumpDelay, maxJumpHold, minJumpHold);

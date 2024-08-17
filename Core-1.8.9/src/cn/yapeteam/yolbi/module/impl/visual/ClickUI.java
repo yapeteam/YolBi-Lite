@@ -4,7 +4,7 @@ import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.client.EventClientShutdown;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.ui.YolbiClickGui;
@@ -19,7 +19,7 @@ public class ClickUI extends Module {
     private final NumberValue<Integer> blurRadius = new NumberValue<>("blurRadius", blur::getValue, 3, 0, 50, 1);
 
     public ClickUI() {
-        super("ClickGUI", ModuleCategory.RENDER, Keyboard.KEY_RCONTROL);
+        super("ClickGUI", Category.RENDER, Keyboard.KEY_RCONTROL);
         if (ReflectionManager.hasOptifine)
             blur.setCallback((oldV, newV) -> !mc.gameSettings.ofFastRender && newV);
         else blur.setVisibility(() -> true);

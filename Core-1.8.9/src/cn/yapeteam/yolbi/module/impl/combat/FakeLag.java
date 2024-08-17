@@ -6,7 +6,7 @@ import cn.yapeteam.yolbi.event.impl.network.EventPacketSend;
 import cn.yapeteam.yolbi.event.impl.player.EventAttack;
 import cn.yapeteam.yolbi.event.impl.render.EventRender3D;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.misc.TimerUtil;
@@ -37,7 +37,7 @@ public class FakeLag extends Module {
     private boolean attacked = false;
 
     public FakeLag() {
-        super("FakeLag", ModuleCategory.COMBAT);
+        super("FakeLag", Category.COMBAT);
         addValues(delay, render);
     }
 

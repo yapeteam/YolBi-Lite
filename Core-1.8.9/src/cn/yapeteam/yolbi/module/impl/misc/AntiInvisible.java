@@ -1,12 +1,12 @@
 package cn.yapeteam.yolbi.module.impl.misc;
 
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.utils.misc.ObjectStore;
 
 public class AntiInvisible extends Module {
     public AntiInvisible() {
-        super("AntiInvisible", ModuleCategory.MISC);
+        super("AntiInvisible", Category.MISC);
     }
 
     @Override

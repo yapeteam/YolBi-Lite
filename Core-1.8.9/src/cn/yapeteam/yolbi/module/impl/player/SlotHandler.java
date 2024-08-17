@@ -4,7 +4,7 @@ import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -24,7 +24,7 @@ public class SlotHandler extends Module {
     private static long lastSetCurrentSlotTime = -1;
 
     public SlotHandler() {
-        super("SlotHandler", ModuleCategory.PLAYER);
+        super("SlotHandler", Category.PLAYER);
         NumberValue.setBound(mindelay, maxdelay);
         NumberValue.setBound(minswitchbackdelay, maxswitchbackdelay);
         addValues(mode, maxdelay, mindelay, maxswitchbackdelay, minswitchbackdelay);

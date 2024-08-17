@@ -12,7 +12,7 @@ import cn.yapeteam.yolbi.event.impl.render.EventRender3D;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.managers.TargetManager;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.impl.movement.StrafeFix;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
@@ -42,7 +42,7 @@ import java.util.Random;
 
 public class KillAura extends Module {
     public KillAura() {
-        super("KillAura", ModuleCategory.COMBAT);
+        super("KillAura", Category.COMBAT);
         minRotationSpeed.setCallback((oldV, newV) -> newV > maxRotationSpeed.getValue() ? oldV : newV);
         maxRotationSpeed.setCallback((oldV, newV) -> newV < minRotationSpeed.getValue() ? oldV : newV);
         addValues(cps, cpsRange, searchRange, autoBlock, blockDelay, maxRotationSpeed, minRotationSpeed, autoRod, invisibility, death, captureMark);

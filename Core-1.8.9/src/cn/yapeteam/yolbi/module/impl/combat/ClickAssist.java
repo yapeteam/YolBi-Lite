@@ -4,8 +4,7 @@ import cn.yapeteam.loader.Natives;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.player.EventMotion;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
-import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 
 import java.util.concurrent.Executors;
@@ -24,7 +23,7 @@ public class ClickAssist extends Module {
     public static NumberValue<Integer> MinClickHold = new NumberValue("Min Click Hold", 8, 0, 20, 1);
 
     public ClickAssist() {
-        super("ClickAssist", ModuleCategory.COMBAT);
+        super("ClickAssist", Category.COMBAT);
         addValues(ExtraLeft, ExtraRight, MaxClickDelay, MinClickDelay, MaxClickHold, MinClickHold);
     }
 

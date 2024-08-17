@@ -7,7 +7,7 @@ import cn.yapeteam.yolbi.event.impl.player.EventMotion;
 import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.notification.Notification;
 import cn.yapeteam.yolbi.notification.NotificationType;
 import cn.yapeteam.yolbi.utils.animation.Easing;
@@ -25,7 +25,7 @@ public class Disabler extends Module {
     private static boolean isFinished = false;
 
     public Disabler() {
-        super("Disabler", ModuleCategory.MISC);
+        super("Disabler", Category.MISC);
     }
 
     public static boolean isDisabled() {

@@ -3,7 +3,7 @@ package cn.yapeteam.yolbi.module.impl.player;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventTick;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.misc.TimerUtil;
@@ -22,7 +22,7 @@ public class AutoArmor extends Module {
     private final NumberValue<Integer> delay = new NumberValue<>("delay", 1, 0, 10, 1);
 
     public AutoArmor() {
-        super("AutoArmor", ModuleCategory.PLAYER);
+        super("AutoArmor", Category.PLAYER);
         addValues(mode, delay);
     }
 

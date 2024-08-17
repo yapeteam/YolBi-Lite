@@ -4,7 +4,7 @@ import cn.yapeteam.loader.Natives;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.utils.misc.VirtualKeyBoard;
 import cn.yapeteam.yolbi.utils.player.PlayerUtil;
@@ -22,7 +22,7 @@ public class Eagle extends Module {
     private final BooleanValue onlyground = new BooleanValue("Only Ground", false);
 
     public Eagle() {
-        super("Eagle", ModuleCategory.MOVEMENT);
+        super("Eagle", Category.MOVEMENT);
         addValues(onlyblocks, onlybackwards, onlyground);
     }
 

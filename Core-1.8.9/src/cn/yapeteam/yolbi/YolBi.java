@@ -7,6 +7,7 @@ import cn.yapeteam.yolbi.config.ConfigManager;
 import cn.yapeteam.yolbi.event.EventManager;
 import cn.yapeteam.yolbi.event.impl.client.EventClientShutdown;
 import cn.yapeteam.yolbi.font.FontManager;
+import cn.yapeteam.yolbi.layer.LayerManager;
 import cn.yapeteam.yolbi.managers.BotManager;
 import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.managers.RotationManager;
@@ -16,7 +17,8 @@ import cn.yapeteam.yolbi.notification.Notification;
 import cn.yapeteam.yolbi.notification.NotificationManager;
 import cn.yapeteam.yolbi.notification.NotificationType;
 import cn.yapeteam.yolbi.server.WebServer;
-import cn.yapeteam.yolbi.shader.Shader;
+import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
+import cn.yapeteam.yolbi.ui.theme.ThemeManager;
 import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.render.ESPUtil;
 import lombok.Getter;
@@ -30,6 +32,7 @@ public class YolBi {
     public static final String name = "YolBi";
     public static final String version = VersionInfo.version;
     public static final File YOLBI_DIR = new File(System.getProperty("user.home"), ".yolbi");
+    public static boolean DEVELOPMENT = false;
     public static boolean initialized = false;
     private EventManager eventManager;
     private RenderManager renderManager;
@@ -41,6 +44,10 @@ public class YolBi {
     private BotManager botManager;
     private TargetManager targetManager;
     private RotationManager rotationManager;
+    private LayerManager layerManager;
+    private ThemeManager themeManager;
+    private RiseClickGUI clickGUI;
+
     @Getter
     private static final long startMillisTime = System.currentTimeMillis();
 
@@ -70,6 +77,8 @@ public class YolBi {
             instance.eventManager = new EventManager();
         if (instance.rotationManager == null)
             instance.rotationManager = new RotationManager();
+        instance.clickGUI = new RiseClickGUI();
+        instance.layerManager = new LayerManager();
         instance.commandManager = new CommandManager();
         instance.configManager = new ConfigManager();
         instance.moduleManager = new ModuleManager();
@@ -77,6 +86,8 @@ public class YolBi {
         instance.targetManager = new TargetManager();
         instance.notificationManager = new NotificationManager();
         instance.renderManager = new RenderManager();
+        instance.fontManager = new FontManager();
+        instance.themeManager = new ThemeManager();
         instance.eventManager.register(instance.renderManager);
         instance.eventManager.register(instance.commandManager);
         instance.eventManager.register(instance.moduleManager);
@@ -84,7 +95,7 @@ public class YolBi {
         instance.eventManager.register(instance.targetManager);
         instance.eventManager.register(instance.rotationManager);
         instance.eventManager.register(instance.notificationManager);
-        instance.eventManager.register(Shader.class);
+        instance.eventManager.register(instance.themeManager);
         instance.eventManager.register(ESPUtil.class);
         instance.moduleManager.load();
         try {

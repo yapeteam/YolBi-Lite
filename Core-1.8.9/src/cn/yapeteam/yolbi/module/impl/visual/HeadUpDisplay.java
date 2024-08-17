@@ -5,7 +5,7 @@ import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import cn.yapeteam.yolbi.font.AbstractFontRenderer;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.utils.animation.Animation;
@@ -34,7 +34,7 @@ public class HeadUpDisplay extends Module {
     public static HeadUpDisplay instance;
 
     public HeadUpDisplay() {
-        super("HUD", ModuleCategory.RENDER);
+        super("HUD", Category.RENDER);
         addValues(waterMark, moduleList, notification, font);
         instance = this;
     }

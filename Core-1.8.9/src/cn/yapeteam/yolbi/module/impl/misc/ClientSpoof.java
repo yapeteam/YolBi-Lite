@@ -3,7 +3,7 @@ package cn.yapeteam.yolbi.module.impl.misc;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.network.EventPacketSend;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.managers.PacketManager;
 import io.netty.buffer.Unpooled;
@@ -24,7 +24,7 @@ public class ClientSpoof extends Module {
     );
 
     public ClientSpoof() {
-        super("ClientSpoof", ModuleCategory.MISC);
+        super("ClientSpoof", Category.MISC);
         addValues(mode);
     }
 

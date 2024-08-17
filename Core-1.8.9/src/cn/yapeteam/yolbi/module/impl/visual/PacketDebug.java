@@ -8,7 +8,7 @@ import cn.yapeteam.yolbi.event.impl.network.EventPacketSend;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import cn.yapeteam.yolbi.font.AbstractFontRenderer;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
 
@@ -20,7 +20,7 @@ public class PacketDebug extends Module {
     ArrayList<Group<Class<?>, String, Long>> list = new ArrayList<>();
 
     public PacketDebug() {
-        super("PacketDebug", ModuleCategory.RENDER);
+        super("PacketDebug", Category.RENDER);
     }
 
     @Listener

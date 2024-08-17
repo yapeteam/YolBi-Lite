@@ -3,7 +3,7 @@ package cn.yapeteam.yolbi.module.impl.movement;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventTick;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import net.minecraft.client.settings.KeyBinding;
 import org.lwjgl.input.Keyboard;
 
@@ -11,7 +11,7 @@ import org.lwjgl.input.Keyboard;
 public class Sprint extends Module {
 
     public Sprint() {
-        super("Sprint", ModuleCategory.MOVEMENT);
+        super("Sprint", Category.MOVEMENT);
     }
 
     @Override

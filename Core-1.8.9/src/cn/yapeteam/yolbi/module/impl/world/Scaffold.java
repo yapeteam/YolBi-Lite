@@ -4,7 +4,7 @@ import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventLoadWorld;
 import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
@@ -40,7 +40,7 @@ public class Scaffold extends Module {
     private int sneak$bridged = 0;
 
     public Scaffold() {
-        super("Scaffold", ModuleCategory.GHOST);
+        super("Scaffold", Category.GHOST);
         this.addValues(rotationMode = new ModeValue<>("Rotation mode", "Static", "Normal", "Static"));
         this.addValues(sneak = new BooleanValue("Sneak", true));
         this.addValues(sneakEveryBlocks = new NumberValue<>("Sneak every blocks", 1, 0, 10, 1));

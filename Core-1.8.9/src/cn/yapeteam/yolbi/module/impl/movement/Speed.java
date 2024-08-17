@@ -3,7 +3,7 @@ package cn.yapeteam.yolbi.module.impl.movement;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.impl.misc.Disabler;
 import cn.yapeteam.yolbi.utils.Utils;
 import cn.yapeteam.yolbi.utils.player.MoveUtil;
@@ -13,7 +13,7 @@ public class Speed extends Module {
     private int offGroundTicks = 0;
 
     public Speed() {
-        super("Speed", ModuleCategory.MOVEMENT);
+        super("Speed", Category.MOVEMENT);
     }
 
     @Override

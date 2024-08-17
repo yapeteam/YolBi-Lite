@@ -6,7 +6,7 @@ import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventLoadWorld;
 import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
@@ -45,7 +45,7 @@ public class ChestStealer extends Module {
     private final BooleanValue ignore = new BooleanValue("Ignore Trash Items", true);
 
     public ChestStealer() {
-        super("ChestStealer", ModuleCategory.PLAYER);
+        super("ChestStealer", Category.PLAYER);
         addValues(mode, delayNext, delayFirst, drop, close, chestAura, ignore);
     }
 

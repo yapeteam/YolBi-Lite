@@ -4,7 +4,7 @@ import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventTick;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import net.minecraft.item.ItemBlock;
 import org.lwjgl.input.Keyboard;
@@ -14,7 +14,7 @@ public class FastPlace extends Module {
     private boolean noblock;
 
     public FastPlace() {
-        super("FastPlace", ModuleCategory.GHOST, Keyboard.KEY_NONE);
+        super("FastPlace", Category.GHOST, Keyboard.KEY_NONE);
     }
 
     @Listener

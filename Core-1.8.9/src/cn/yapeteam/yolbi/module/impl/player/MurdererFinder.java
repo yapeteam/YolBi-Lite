@@ -3,7 +3,7 @@ package cn.yapeteam.yolbi.module.impl.player;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventTick;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.utils.player.PlayerUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -18,7 +18,7 @@ public class MurdererFinder extends Module {
     public HashSet<String> names = new HashSet<>();
 
     public MurdererFinder() {
-        super("MurdererFinder", ModuleCategory.PLAYER, Keyboard.KEY_NONE);
+        super("MurdererFinder", Category.PLAYER, Keyboard.KEY_NONE);
         instance = this;
     }
 

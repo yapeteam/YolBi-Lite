@@ -7,7 +7,7 @@ import cn.yapeteam.yolbi.event.impl.game.EventTick;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import cn.yapeteam.yolbi.managers.TargetManager;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
@@ -34,7 +34,7 @@ public class AimAssist extends Module {
 
 
     public AimAssist() {
-        super("AimAssist", ModuleCategory.COMBAT);
+        super("AimAssist", Category.COMBAT);
         addValues(Range, TargetPriority, ClickAim, View, WeaponOnly, rotSpeed);
     }
 

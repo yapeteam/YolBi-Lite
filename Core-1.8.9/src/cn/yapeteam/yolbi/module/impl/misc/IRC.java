@@ -82,12 +82,11 @@ import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventTick;
 import cn.yapeteam.yolbi.event.impl.network.EventPacketReceive;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import io.netty.buffer.Unpooled;
 
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.play.INetHandlerPlayServer;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
 import net.minecraft.network.play.server.S38PacketPlayerListItem;
 import net.minecraft.util.ChatComponentText;
@@ -102,7 +101,7 @@ public class IRC extends Module {
     private String nickname = "[Yolbi]";
 
     public IRC() {
-        super("IRC", ModuleCategory.MISC);
+        super("IRC", Category.MISC);
     }
 
     @Override

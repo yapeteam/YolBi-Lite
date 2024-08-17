@@ -1,7 +1,7 @@
 package cn.yapeteam.yolbi.module.impl.combat;
 
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import lombok.Getter;
 
@@ -18,7 +18,7 @@ public class CombatSettings extends Module {
     private final BooleanValue stick = new BooleanValue("Stick as Weapon", false);
 
     public CombatSettings() {
-        super("Combat Settings", ModuleCategory.COMBAT);
+        super("Combat Settings", Category.COMBAT);
         addValues(players, notTeamMates, animals, mobs, villagers, rod, axe, stick);
     }
 

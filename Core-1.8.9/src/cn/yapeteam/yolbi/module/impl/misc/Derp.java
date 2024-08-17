@@ -3,7 +3,7 @@ package cn.yapeteam.yolbi.module.impl.misc;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.player.EventMotion;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 
 @Deprecated
@@ -15,7 +15,7 @@ public class Derp extends Module {
 
 
     protected Derp() {
-        super("Derp", ModuleCategory.MISC);
+        super("Derp", Category.MISC);
         addValues(speed, pitch);
     }
 

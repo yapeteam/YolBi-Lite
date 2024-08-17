@@ -8,8 +8,8 @@ public interface RiseShaders {
     RiseShader POST_BLOOM_SHADER = new BloomShader();
     RiseShader UI_BLOOM_SHADER = new BloomShader();
     RiseShader UI_POST_BLOOM_SHADER = new BloomShader();
-    GaussianBlurShader GAUSSIAN_BLUR_SHADER = new GaussianBlurShader();
-    GaussianBlurShader UI_GAUSSIAN_BLUR_SHADER = new GaussianBlurShader();
+    BlurShader GAUSSIAN_BLUR_SHADER = new BlurShader();
+    BlurShader UI_GAUSSIAN_BLUR_SHADER = new BlurShader();
 
     RiseShader OUTLINE_SHADER = new OutlineShader();
     RQShader RQ_SHADER = new RQShader();

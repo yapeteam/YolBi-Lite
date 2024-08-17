@@ -4,7 +4,7 @@ import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.network.EventPacketReceive;
 import cn.yapeteam.yolbi.event.impl.network.EventPacketSend;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
@@ -18,7 +18,7 @@ public class BlatantVelocity extends Module {
             vertically = new NumberValue<>("Vertically", () -> mode.is("Vanilla"), 0.0, 0.0, 100.0, 1.0);
 
     public BlatantVelocity() {
-        super("BlatantVelocity", ModuleCategory.COMBAT);
+        super("BlatantVelocity", Category.COMBAT);
         addValues(mode, horizontal, vertically);
     }
 

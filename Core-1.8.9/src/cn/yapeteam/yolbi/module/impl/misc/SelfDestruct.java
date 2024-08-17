@@ -4,14 +4,14 @@ import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.mixin.MixinManager;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.notification.Notification;
 import cn.yapeteam.yolbi.notification.NotificationType;
 import cn.yapeteam.yolbi.utils.animation.Easing;
 
 public class SelfDestruct extends Module {
     public SelfDestruct() {
-        super("自毁", ModuleCategory.MISC);
+        super("自毁", Category.MISC);
     }
 
     public void onEnable() {

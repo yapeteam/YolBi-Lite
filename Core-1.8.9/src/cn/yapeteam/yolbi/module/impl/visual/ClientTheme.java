@@ -1,7 +1,7 @@
 package cn.yapeteam.yolbi.module.impl.visual;
 
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.ColorValue;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
@@ -19,7 +19,7 @@ public class ClientTheme extends Module {
     private final NumberValue<Double> brightness = new NumberValue<>("Brightness", () -> color.is("Rainbow"), 0.9, 0.05, 1.0, 0.05);
 
     public ClientTheme() {
-        super("ClientTheme", ModuleCategory.RENDER);
+        super("ClientTheme", Category.RENDER);
         this.addValues(color, color1, color2, color3, saturation, brightness);
         instance = this;
     }

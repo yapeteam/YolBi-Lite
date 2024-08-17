@@ -29,7 +29,7 @@ public class ColorUtil {
         GL11.glColor4f(color.getRed() / 255.0F, color.getGreen() / 255.0F, color.getBlue() / 255.0F, color.getAlpha() / 255.0F);
     }
 
-    static Color withAlpha(final Color color, final int alpha) {
+    public static Color withAlpha(final Color color, final int alpha) {
         return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) MathUtils.clamp(0, 255, alpha));
     }
 

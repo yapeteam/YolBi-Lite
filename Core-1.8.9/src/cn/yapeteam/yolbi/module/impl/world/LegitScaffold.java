@@ -6,7 +6,7 @@ import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import cn.yapeteam.yolbi.font.AbstractFontRenderer;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.impl.player.SlotHandler;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
@@ -32,7 +32,7 @@ public class LegitScaffold extends Module {
     private long lastSneakTime = -1;
 
     public LegitScaffold() {
-        super("LegitScaffold", ModuleCategory.GHOST);
+        super("LegitScaffold", Category.GHOST);
         NumberValue.setBound(minDelay, maxDelay);
         addValues(minDelay, maxDelay, pitchCheck, pitch, onlySPressed, onlySneak, showBlockCount);
     }

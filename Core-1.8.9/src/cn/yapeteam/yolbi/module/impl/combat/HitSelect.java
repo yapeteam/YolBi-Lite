@@ -1,17 +1,15 @@
 package cn.yapeteam.yolbi.module.impl.combat;
 
 import cn.yapeteam.loader.Natives;
-import cn.yapeteam.ymixin.annotations.Target;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.player.EventAttack;
 import cn.yapeteam.yolbi.event.impl.player.EventMotion;
 import cn.yapeteam.yolbi.managers.TargetManager;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.math.MathUtils;
-import cn.yapeteam.yolbi.utils.player.MoveUtil;
 import net.minecraft.entity.Entity;
 
 import java.util.concurrent.Executors;
@@ -27,7 +25,7 @@ public class HitSelect extends Module {
     public static final NumberValue<Integer> chance = new NumberValue<>("Chance", 80, 0, 100, 1);
 
     public HitSelect() {
-        super("HitSelect", ModuleCategory.COMBAT);
+        super("HitSelect", Category.COMBAT);
         addValues(mode, maxdelay, mindelay, chance);
     }
 

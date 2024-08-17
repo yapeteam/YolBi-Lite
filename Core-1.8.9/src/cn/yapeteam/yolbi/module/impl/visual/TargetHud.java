@@ -6,7 +6,7 @@ import cn.yapeteam.yolbi.event.Priority;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import cn.yapeteam.yolbi.font.AbstractFontRenderer;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.impl.combat.KillAura;
 import cn.yapeteam.yolbi.utils.animation.Animation;
 import cn.yapeteam.yolbi.utils.animation.Easing;
@@ -20,7 +20,7 @@ import java.awt.*;
 
 public class TargetHud extends Module {
     public TargetHud() {
-        super("TargetHUD", ModuleCategory.RENDER);
+        super("TargetHUD", Category.RENDER);
     }
 
     @Listener(Priority.HIGH)

@@ -4,7 +4,7 @@ import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
 import cn.yapeteam.yolbi.managers.BotManager;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.ModuleCategory;
+import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.ModeValue;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.Entity;
@@ -15,7 +15,7 @@ public class AntiBot extends Module {
     private final ModeValue<String> mode = new ModeValue<>("Check Mode", "Hypixel", "Hypixel");
 
     public AntiBot() {
-        super("AntiBot", ModuleCategory.COMBAT);
+        super("AntiBot", Category.COMBAT);
         addValues(mode);
     }
 

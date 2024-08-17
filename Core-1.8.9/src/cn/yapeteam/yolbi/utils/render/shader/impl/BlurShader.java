@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL13;
 import java.nio.FloatBuffer;
 import java.util.List;
 
-public class GaussianBlurShader extends RiseShader {
+public class BlurShader extends RiseShader {
 
     private final RiseShaderProgram blurProgram = new RiseShaderProgram("blur.frag", "vertex.vsh");
     private Framebuffer inputFramebuffer = new Framebuffer(mc.displayWidth, mc.displayHeight, true);
