@@ -8,6 +8,7 @@ import cn.yapeteam.yolbi.value.Value;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.function.BooleanSupplier;
 
 /**
@@ -23,6 +24,7 @@ public class BoundsNumberValue extends Value<Number> {
     private final Number decimalPlaces;
     private Number secondValue;
     private Number defaultSecondValue;
+    private String suffix = "";
 
     public BoundsNumberValue(final String name, final Module parent,
                              final Number defaultValue, final Number defaultSecondValue,
@@ -30,6 +32,18 @@ public class BoundsNumberValue extends Value<Number> {
         super(name, parent, defaultValue);
         this.decimalPlaces = step;
 
+        this.min = min;
+        this.max = max;
+        this.secondValue = defaultSecondValue;
+        this.defaultSecondValue = defaultSecondValue;
+    }
+
+    public BoundsNumberValue(final String name, final Module parent,
+                             final Number defaultValue, final Number defaultSecondValue,
+                             final Number min, final Number max, final Number step, String suffix) {
+        super(name, parent, defaultValue);
+        this.decimalPlaces = step;
+        this.suffix = suffix;
         this.min = min;
         this.max = max;
         this.secondValue = defaultSecondValue;

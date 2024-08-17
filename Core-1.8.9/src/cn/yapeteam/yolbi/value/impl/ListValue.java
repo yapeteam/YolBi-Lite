@@ -5,6 +5,8 @@ import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.ui.standard.components.value.impl.ListValueComponent;
 import cn.yapeteam.yolbi.value.Mode;
 import cn.yapeteam.yolbi.value.Value;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonPrimitive;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -64,5 +66,16 @@ public class ListValue<T> extends Value<T> {
     @Override
     public ListValueComponent createUIComponent() {
         return new ListValueComponent(this);
+    }
+
+    public JsonArray getSubValuesAsJson() {
+        JsonArray subValues = new JsonArray();
+
+        for (T mode : modes) {
+            // Assuming mode.toString() returns the name of the mode
+            subValues.add(new JsonPrimitive(mode.toString()));
+        }
+
+        return subValues;
     }
 }

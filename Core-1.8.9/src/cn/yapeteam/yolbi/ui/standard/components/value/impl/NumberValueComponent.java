@@ -1,20 +1,21 @@
 package cn.yapeteam.yolbi.ui.standard.components.value.impl;
 
-import com.alan.clients.font.Fonts;
-import com.alan.clients.font.Weight;
-import com.alan.clients.ui.click.standard.components.value.ValueComponent;
-import com.alan.clients.ui.click.standard.screen.Colors;
-import com.alan.clients.util.Accessor;
-import com.alan.clients.util.gui.GUIUtil;
-import com.alan.clients.util.gui.textbox.TextAlign;
-import com.alan.clients.util.gui.textbox.TextBox;
-import com.alan.clients.util.math.MathUtil;
-import com.alan.clients.util.render.ColorUtil;
-import com.alan.clients.util.render.RenderUtil;
-import com.alan.clients.util.vector.Vector2d;
-import com.alan.clients.value.Value;
-import com.alan.clients.value.impl.NumberValue;
-import rip.vantage.commons.util.time.StopWatch;
+
+import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.font.Fonts;
+import cn.yapeteam.yolbi.font.Weight;
+import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
+import cn.yapeteam.yolbi.ui.standard.screen.Colors;
+import cn.yapeteam.yolbi.utils.StopWatch;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
+import cn.yapeteam.yolbi.utils.math.MathUtils;
+import cn.yapeteam.yolbi.utils.render.ColorUtil;
+import cn.yapeteam.yolbi.utils.render.GuiUtil;
+import cn.yapeteam.yolbi.utils.render.textbox.TextAlign;
+import cn.yapeteam.yolbi.utils.render.textbox.TextBox;
+import cn.yapeteam.yolbi.utils.vector.Vector2d;
+import cn.yapeteam.yolbi.value.Value;
+import cn.yapeteam.yolbi.value.impl.NumberValue;
 
 public class NumberValueComponent extends ValueComponent implements Accessor {
 
@@ -55,7 +56,7 @@ public class NumberValueComponent extends ValueComponent implements Accessor {
         }
 
         //Used to determine if the mouse is over the slider
-        this.mouseOver = GUIUtil.mouseOver(this.position.x + valueWidth - 5, this.position.y - 3.5F, SLIDER_WIDTH + 10, this.height, mouseX, mouseY);
+        this.mouseOver = GuiUtil.mouseOver(this.position.x + valueWidth - 5, this.position.y - 3.5F, SLIDER_WIDTH + 10, this.height, mouseX, mouseY);
         if (this.mouseOver) {
             hoverTime = Math.min(1, hoverTime + stopWatch.getElapsedTime() / 200.0F);
         } else {
@@ -74,7 +75,7 @@ public class NumberValueComponent extends ValueComponent implements Accessor {
 //        Fonts.SF_ROUNDED.get(16, Weight.REGULAR).drawString(value, this.position.x + valueWidth + 105, this.position.y, this.getClickGUI().fontDarkColor.hashCode());
 
         // Draws background
-        RenderUtil.roundedRectangle(this.position.x + valueWidth, this.position.y + 1.5F, SLIDER_WIDTH, 2, 1, Colors.BACKGROUND.getWithAlpha(opacity));
+        YolBi.instance.getRenderManager().roundedRectangle(this.position.x + valueWidth, this.position.y + 1.5F, SLIDER_WIDTH, 2, 1, Colors.BACKGROUND.getWithAlpha(opacity));
 
         selector = this.position.x + valueWidth;
 
@@ -86,7 +87,7 @@ public class NumberValueComponent extends ValueComponent implements Accessor {
             percentage = Math.max(Math.min(percentage, 1), 0);
 
             numberValue.setValue((numberValue.getMin().doubleValue() + (numberValue.getMax().doubleValue() - numberValue.getMin().doubleValue()) * percentage));
-            numberValue.setValue(MathUtil.roundWithSteps(numberValue.getValue().doubleValue(), numberValue.getDecimalPlaces().floatValue()));
+            numberValue.setValue(MathUtils.roundWithSteps(numberValue.getValue().doubleValue(), numberValue.getDecimalPlaces().floatValue()));
         }
 
         //Animations
@@ -96,7 +97,7 @@ public class NumberValueComponent extends ValueComponent implements Accessor {
         }
 
         final double positionX = selector + renderPercentage * 100;
-        RenderUtil.roundedRectangle(positionX - grabberWidth / 2.0F, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2.0F, ColorUtil.withAlpha(getTheme().getFirstColor(), opacity));
+        YolBi.instance.getRenderManager().roundedRectangle(positionX - grabberWidth / 2.0F, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2.0F, ColorUtil.withAlpha(getTheme().getFirstColor(), opacity));
         stopWatch.reset();
     }
 
@@ -131,7 +132,7 @@ public class NumberValueComponent extends ValueComponent implements Accessor {
         }
 
         final double positionX = selector + renderPercentage * 100;
-        RenderUtil.roundedRectangle(positionX - grabberWidth / 2.0F, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2f, ColorUtil.withAlpha(getTheme().getFirstColor(), opacity));
+        YolBi.instance.getRenderManager().roundedRectangle(positionX - grabberWidth / 2.0F, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2f, ColorUtil.withAlpha(getTheme().getFirstColor(), opacity));
     }
 
     @Override

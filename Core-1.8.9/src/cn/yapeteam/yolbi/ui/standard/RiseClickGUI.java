@@ -5,8 +5,8 @@ import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.render.EventAlpha;
 import cn.yapeteam.yolbi.layer.Layer;
-import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.Module;
+import cn.yapeteam.yolbi.module.api.Category;
 import cn.yapeteam.yolbi.ui.standard.components.ModuleComponent;
 import cn.yapeteam.yolbi.ui.standard.components.category.SidebarCategory;
 import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
@@ -17,12 +17,12 @@ import cn.yapeteam.yolbi.ui.standard.screen.Colors;
 import cn.yapeteam.yolbi.ui.standard.screen.Screen;
 import cn.yapeteam.yolbi.ui.standard.screen.impl.SearchScreen;
 import cn.yapeteam.yolbi.ui.standard.screen.impl.ThemeScreen;
-import cn.yapeteam.yolbi.utils.interfaces.Accessor;
-import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
 import cn.yapeteam.yolbi.utils.StopWatch;
-import cn.yapeteam.yolbi.utils.interfaces.ThreadAccess;
 import cn.yapeteam.yolbi.utils.animation.Animation;
 import cn.yapeteam.yolbi.utils.animation.Easing;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
+import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.ThreadAccess;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
 import cn.yapeteam.yolbi.utils.render.GuiUtil;
 import cn.yapeteam.yolbi.utils.render.shader.base.ShaderRenderType;
@@ -78,7 +78,7 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
     public void rebuildModuleCache() {
         moduleList.clear();
 
-        java.util.List<Module> sortedModules = YolBi.instance.getModuleManager().getModules();
+        java.util.List<Module> sortedModules = YolBi.instance.getModuleManager().getAll();
         sortedModules.sort((o1, o2) -> Collator.getInstance().compare(o1.getName(), o2.getName()));
         sortedModules.forEach(module -> moduleList.add(new ModuleComponent(module)));
     }
@@ -171,7 +171,7 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
         //Information from gui draw screen to use in this event, we use this event instead of gui draw screen because it allows the clickgui to have an outro animation
         final int mouseX = (int) mouse.x;
         final int mouseY = (int) mouse.y;
-        final float partialTicks = IMinecraft.mc.getTimer().renderPartialTicks;
+        final float partialTicks = IMinecraft.mc.frameTimer().renderPartialTicks;
 
         /* Handles dragging */
         if (dragging) {
@@ -198,7 +198,7 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
 
         // Makes it not render the ClickGUI if it's animation is 0
         if (animationTime == 0) {
-            YolBi.instance.getModuleManager().getModule(ClickGUI.class).setEnabled(false);
+            YolBi.instance.getModuleManager().get("Clickgui").setEnabled(false);
             return;
         }
 
@@ -251,7 +251,7 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
         final int opacity2 = 255 - (int) Math.max(0, Math.min(255, timeInCategory.getElapsedTime() < length ? 255 - (timeInCategory.getElapsedTime() * (255f / length)) : ((timeInCategory.getElapsedTime() - length) * (255f / length))));
 
         if (timeInCategory.getElapsedTime() <= length * 2) {
-            YolBi.instance.getRenderManager()().roundedRectangle(position.x, position.y, scale.x, scale.y, round, Colors.BACKGROUND.getWithAlpha(opacity2));
+            YolBi.instance.getRenderManager().roundedRectangle(position.x, position.y, scale.x, scale.y, round, Colors.BACKGROUND.getWithAlpha(opacity2));
         }
 
         sidebar.preRenderClickGUI();

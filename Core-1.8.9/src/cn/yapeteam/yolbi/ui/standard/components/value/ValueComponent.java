@@ -1,8 +1,9 @@
 package cn.yapeteam.yolbi.ui.standard.components.value;
 
-import com.alan.clients.util.Accessor;
-import com.alan.clients.util.vector.Vector2d;
-import com.alan.clients.value.Value;
+
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
+import cn.yapeteam.yolbi.utils.vector.Vector2d;
+import cn.yapeteam.yolbi.value.Value;
 import lombok.Getter;
 import lombok.Setter;
 

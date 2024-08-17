@@ -1,20 +1,21 @@
 package cn.yapeteam.yolbi.ui.standard.components.theme;
 
-import com.alan.clients.font.Fonts;
-import com.alan.clients.font.Weight;
-import com.alan.clients.ui.theme.Themes;
-import com.alan.clients.util.Accessor;
-import com.alan.clients.util.animation.Animation;
-import com.alan.clients.util.animation.Easing;
-import com.alan.clients.util.render.ColorUtil;
-import com.alan.clients.util.render.RenderUtil;
-import com.alan.clients.util.vector.Vector3d;
+
+import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.font.Fonts;
+import cn.yapeteam.yolbi.font.Weight;
+import cn.yapeteam.yolbi.ui.theme.Themes;
+import cn.yapeteam.yolbi.utils.animation.Animation;
+import cn.yapeteam.yolbi.utils.animation.Easing;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
+import cn.yapeteam.yolbi.utils.render.ColorUtil;
+import cn.yapeteam.yolbi.utils.vector.Vector3d;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.awt.*;
 
-import static com.alan.clients.layer.Layers.BLOOM;
+import static cn.yapeteam.yolbi.layer.Layers.BLOOM;
 
 /**
  * @author Hazsi
@@ -44,22 +45,22 @@ public class ThemeComponent implements Accessor {
         // This needs to be done in a runnable so that's its run AFTER the NORMAL_BLOOM_RUNNABLES runnable
 
         // Draw background
-        RenderUtil.roundedRectangle(x, y, width, 50, 10, color);
+        YolBi.instance.getRenderManager().roundedRectangle(x, y, width, 50, 10, color);
 
         if (this.activeTheme.isTriColor()) {
-            RenderUtil.drawRoundedGradientRectTest(x, y, width, 30, 9,
+            YolBi.instance.getRenderManager().drawRoundedGradientRectTest(x, y, width, 30, 9,
                     ColorUtil.withAlpha(activeTheme.getFirstColor(), alpha),
                     ColorUtil.withAlpha(activeTheme.getSecondColor(), alpha),
                     ColorUtil.withAlpha(activeTheme.getThirdColor(), alpha), false,
                     true, true, false, false);
         } else {
-            RenderUtil.drawRoundedGradientRectTest(x, y, width, 30, 9,
+            YolBi.instance.getRenderManager().drawRoundedGradientRectTest(x, y, width, 30, 9,
                     ColorUtil.withAlpha(activeTheme.getFirstColor(), alpha),
                     ColorUtil.withAlpha(activeTheme.getSecondColor(), alpha), false,
                     true, true, false, false);
         }
 
-        RenderUtil.rectangle(x, y + 30, width, 10, color);
+        YolBi.instance.getRenderManager().rectangle(x, y + 30, width, 10, color);
 
         Fonts.MAIN.get(16, Weight.REGULAR).drawCentered(activeTheme.getThemeName(),
                 x + width / 2D, y + 37, active ? ColorUtil.withAlpha(this.getTheme().getFirstColor(), alpha).getRGB() :
@@ -72,13 +73,13 @@ public class ThemeComponent implements Accessor {
         if (selectorAlpha > 0 && getClickGUI().animationTime > 0.8) {
             getLayer(BLOOM, 3).add(() -> {
                 if (this.activeTheme.isTriColor()) {
-                    RenderUtil.drawRoundedGradientRectTest(x, y, width, 30, 10,
+                    YolBi.instance.getRenderManager().drawRoundedGradientRectTest(x, y, width, 30, 10,
                             ColorUtil.withAlpha(activeTheme.getFirstColor(), alpha),
                             ColorUtil.withAlpha(activeTheme.getSecondColor(), alpha),
                             ColorUtil.withAlpha(activeTheme.getThirdColor(), alpha), false,
                             true, true, false, false);
                 } else {
-                    RenderUtil.drawRoundedGradientRectTest(x + 1, y, width - 2, 30, 10,
+                    YolBi.instance.getRenderManager().drawRoundedGradientRectTest(x + 1, y, width - 2, 30, 10,
                             ColorUtil.withAlpha(activeTheme.getFirstColor(), selectorAlpha),
                             ColorUtil.withAlpha(activeTheme.getSecondColor(), selectorAlpha), false,
                             true, true, false, false);

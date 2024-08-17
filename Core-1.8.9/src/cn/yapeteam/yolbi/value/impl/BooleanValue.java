@@ -7,6 +7,7 @@ import cn.yapeteam.yolbi.value.Mode;
 import cn.yapeteam.yolbi.value.Value;
 import lombok.Getter;
 
+import java.util.List;
 import java.util.function.BooleanSupplier;
 
 /**

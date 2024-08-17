@@ -19,14 +19,8 @@ public enum Category {
     RENDER("category.render", Fonts.ICONS_1.get(17), "g", 0x5, new CategoryScreen()),
     EXPLOIT("category.exploit", Fonts.ICONS_1.get(17), "a", 0x6, new CategoryScreen()),
     GHOST("category.ghost", Fonts.ICONS_1.get(17), "f", 0x7, new CategoryScreen()),
-//    AI("category.ai", Fonts.ICONS_1.get(17), "e", 0x8, new AIScreen()),
-    SCRIPT("category.script", Fonts.ICONS_2.get(17), "m", 0x7, new CommunityScreen()),
 
-    THEME("category.themes", Fonts.ICONS_2.get(17), "U", 0xA, new ThemeScreen()),
-
-    LANGUAGE("category.language", Fonts.ICONS_2.get(17), "U", 0xA, new LanguageScreen())/*,
-
-    COMMUNITY("category.irc", Fonts.ICONS_2.get(17), "j", 0x9, new CommunityScreen())*/;
+    THEME("category.themes", Fonts.ICONS_2.get(17), "U", 0xA, new ThemeScreen());
 
     // name of category (in case we don't use enum names)
     @Getter

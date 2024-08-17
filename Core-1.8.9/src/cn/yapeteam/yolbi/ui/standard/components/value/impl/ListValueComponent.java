@@ -1,8 +1,11 @@
 package cn.yapeteam.yolbi.ui.standard.components.value.impl;
 
 
+import cn.yapeteam.yolbi.font.Fonts;
+import cn.yapeteam.yolbi.font.Weight;
 import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
 import cn.yapeteam.yolbi.ui.standard.screen.Colors;
+import cn.yapeteam.yolbi.utils.render.GuiUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector2d;
 import cn.yapeteam.yolbi.value.Mode;
 import cn.yapeteam.yolbi.value.Value;
@@ -43,7 +46,7 @@ public class ListValueComponent extends ValueComponent {
         final boolean left = mouseButton == 0;
         final boolean right = mouseButton == 1;
 
-        if (GUIUtil.mouseOver(this.position.x, this.position.y - 3.5f, getClickGUI().width - 70, this.height, mouseX, mouseY)) {
+        if (GuiUtil.mouseOver(this.position.x, this.position.y - 3.5f, getClickGUI().width - 70, this.height, mouseX, mouseY)) {
             final int currentIndex = listValue.getModes().indexOf(listValue.getValue());
 
             Object value = null;

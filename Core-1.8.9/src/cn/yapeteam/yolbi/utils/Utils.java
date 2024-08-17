@@ -2,7 +2,6 @@ package cn.yapeteam.yolbi.utils;
 
 import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.values.impl.compat.SliderSetting;
 import cn.yapeteam.yolbi.utils.player.PlayerUtil;
 import cn.yapeteam.yolbi.utils.player.RotationsUtil;
 import com.google.common.collect.Iterables;
@@ -344,14 +343,6 @@ public class Utils {
     @Contract(pure = true)
     public static @NotNull String formatColor(@NotNull String txt) {
         return txt.replaceAll("&", "§");
-    }
-
-    public static void correctValue(@NotNull SliderSetting c, @NotNull SliderSetting d) {
-        if (c.getInput() > d.getInput()) {
-            double p = c.getInput();
-            c.setValue(d.getInput());
-            d.setValue(p);
-        }
     }
 
     public static String generateRandomString(final int n) {

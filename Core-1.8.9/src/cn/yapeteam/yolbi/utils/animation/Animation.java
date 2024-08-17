@@ -68,7 +68,7 @@ public class Animation {
         this.finished = false;
     }
 
-    public void run(int i) {
+    public void run(double i) {
         animate(i);
     }
 }

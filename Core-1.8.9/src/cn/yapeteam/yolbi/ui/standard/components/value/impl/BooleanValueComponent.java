@@ -1,16 +1,17 @@
 package cn.yapeteam.yolbi.ui.standard.components.value.impl;
 
-import com.alan.clients.font.Fonts;
-import com.alan.clients.font.Weight;
-import com.alan.clients.ui.click.standard.components.value.ValueComponent;
-import com.alan.clients.ui.click.standard.screen.Colors;
-import com.alan.clients.util.gui.GUIUtil;
-import com.alan.clients.util.render.ColorUtil;
-import com.alan.clients.util.render.RenderUtil;
-import com.alan.clients.util.vector.Vector2d;
-import com.alan.clients.value.Value;
-import com.alan.clients.value.impl.BooleanValue;
-import rip.vantage.commons.util.time.StopWatch;
+
+import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.font.Fonts;
+import cn.yapeteam.yolbi.font.Weight;
+import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
+import cn.yapeteam.yolbi.ui.standard.screen.Colors;
+import cn.yapeteam.yolbi.utils.StopWatch;
+import cn.yapeteam.yolbi.utils.render.ColorUtil;
+import cn.yapeteam.yolbi.utils.render.GuiUtil;
+import cn.yapeteam.yolbi.utils.vector.Vector2d;
+import cn.yapeteam.yolbi.value.Value;
+import cn.yapeteam.yolbi.value.impl.BooleanValue;
 
 public class BooleanValueComponent extends ValueComponent {
 
@@ -36,10 +37,10 @@ public class BooleanValueComponent extends ValueComponent {
             scale = Math.max(0, scale - stopwatch.getElapsedTime() / 20f);
         }
 
-        RenderUtil.roundedRectangle(positionX - 5f / 2f + 5, this.position.y - 5f / 2f + 2.5, 5, 5, 2.5F, Colors.BACKGROUND.getWithAlpha(opacity));
+        YolBi.instance.getRenderManager().roundedRectangle(positionX - 5f / 2f + 5, this.position.y - 5f / 2f + 2.5, 5, 5, 2.5F, Colors.BACKGROUND.getWithAlpha(opacity));
 
         if (scale != 0) {
-            RenderUtil.roundedRectangle(positionX - scale / 2 + 4, this.position.y - scale / 2 + 2.5, scale, scale, scale / 2.0F, ColorUtil.withAlpha(this.getTheme().getFirstColor(), opacity));
+            YolBi.instance.getRenderManager().roundedRectangle(positionX - scale / 2 + 4, this.position.y - scale / 2 + 2.5, scale, scale, scale / 2.0F, ColorUtil.withAlpha(this.getTheme().getFirstColor(), opacity));
         }
 
         stopwatch.reset();
@@ -53,7 +54,7 @@ public class BooleanValueComponent extends ValueComponent {
 
         final BooleanValue booleanValue = (BooleanValue) value;
 
-        if (GUIUtil.mouseOver(position.x, this.position.y - 3.5f, getClickGUI().width - 70, this.height, mouseX, mouseY)) {
+        if (GuiUtil.mouseOver(position.x, this.position.y - 3.5f, getClickGUI().width - 70, this.height, mouseX, mouseY)) {
             booleanValue.setValue(!booleanValue.getValue());
             return true;
         }
@@ -73,7 +74,7 @@ public class BooleanValueComponent extends ValueComponent {
         }
 
         final double positionX = this.position.x + Fonts.MAIN.get(16, Weight.REGULAR).width(this.value.getName()) + 2;
-        RenderUtil.roundedRectangle(positionX - scale / 2 + 4, this.position.y - scale / 2 + 2.5, scale, scale, scale / 2.0F, ColorUtil.withAlpha(this.getTheme().getFirstColor(), opacity));
+        YolBi.instance.getRenderManager().roundedRectangle(positionX - scale / 2 + 4, this.position.y - scale / 2 + 2.5, scale, scale, scale / 2.0F, ColorUtil.withAlpha(this.getTheme().getFirstColor(), opacity));
     }
 
     @Override

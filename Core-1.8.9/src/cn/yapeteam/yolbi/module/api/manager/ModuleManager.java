@@ -45,12 +45,11 @@ public final class ModuleManager {
     }
 
     public <T extends Module> T get(final String name) {
-        // noinspection unchecked
-        return (T) this.getAll().stream()
-                .filter(module -> Arrays.stream(module.getAliases()).anyMatch(alias ->
-                        alias.replace(" ", "")
-                                .equalsIgnoreCase(name.replace(" ", ""))))
-                .findAny().orElse(null);
+        return this.getAll().stream()
+                .filter(module -> module.getName().replace(" ", "").equalsIgnoreCase(name.replace(" ", "")))
+                .map(module -> (T) module)
+                .findAny()
+                .orElse(null);
     }
 
     public void put(Class clazz, Module module) {

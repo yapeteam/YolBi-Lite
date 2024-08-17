@@ -1,11 +1,14 @@
 package cn.yapeteam.yolbi.ui.standard.screen.impl;
 
 
-import cn.yapeteam.yolbi.module.Category;
+import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.module.api.Category;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.standard.components.ModuleComponent;
 import cn.yapeteam.yolbi.ui.standard.screen.Screen;
+import cn.yapeteam.yolbi.utils.StopWatch;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
+import cn.yapeteam.yolbi.utils.render.ScrollUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector2d;
 import lombok.Getter;
 import lombok.Setter;
@@ -97,7 +100,7 @@ public final class CategoryScreen implements Screen, Accessor {
         this.category = this.getCategory();
         if (this.category == null) return;
 
-        this.relevantModules = Client.INSTANCE.getClickGUI().getModuleList().stream()
+        this.relevantModules = YolBi.instance.getClickGUI().getModuleList().stream()
                 .filter((module) -> module.getModule().getModuleInfo().category() == this.category)
                 .collect(Collectors.toCollection(ArrayList::new));
     }

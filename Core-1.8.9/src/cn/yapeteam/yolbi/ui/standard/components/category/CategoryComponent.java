@@ -4,7 +4,6 @@ package cn.yapeteam.yolbi.ui.standard.components.category;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.font.Fonts;
 import cn.yapeteam.yolbi.font.Weight;
-import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.module.api.Category;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.standard.screen.Screen;
@@ -60,7 +59,7 @@ public final class CategoryComponent implements Accessor {
         //     ColorUtil.withAlpha(getTheme().getAccentColor(new Vector2d(0, y / 5D)), (int) (Math.min(animation.getValue(), opacity))).darker());
 
         YolBi.instance.getRenderManager().roundedRectangle(x, y - 5.5, width + 8, 15, 5,
-                ColorUtil.withAlpha(getTheme().getAccentColor(new Vector2d(0, y / 5D)), (int) (Math.min(animation.getValue(), opacity))).darker().getRGB());
+                ColorUtil.withAlpha(getTheme().getAccentColor(new Vector2d(0, y / 5D)), (int) (Math.min(animation.getValue(), opacity))).darker());
 
         int color = new Color(255, 255, 255, Math.min(selectedScreen.equals(category.getClickGUIScreen()) ? 255 : 200, (int) opacity)).hashCode();
 
@@ -87,7 +86,7 @@ public final class CategoryComponent implements Accessor {
         final double width = Fonts.MAIN.get(16, Weight.REGULAR).width(category.getName()) + spacer * 2 + category.getFontRenderer().width(category.getIcon());
 
         YolBi.instance.getRenderManager().roundedRectangle(x, y - 5, width + 8, 14, 5,
-                ColorUtil.withAlpha(this.getTheme().getAccentColor(new Vector2d(0, y / 5D)), (int) (Math.min(animation.getValue(), opacity))).darker().getRGB());
+                ColorUtil.withAlpha(this.getTheme().getAccentColor(new Vector2d(0, y / 5D)), (int) (Math.min(animation.getValue(), opacity))).darker());
     }
 
     public void release() {

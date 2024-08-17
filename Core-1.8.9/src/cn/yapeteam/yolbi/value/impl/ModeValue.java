@@ -4,6 +4,8 @@ package cn.yapeteam.yolbi.value.impl;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.value.Mode;
 import cn.yapeteam.yolbi.value.Value;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonPrimitive;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -76,6 +78,14 @@ public class ModeValue extends ListValue<Mode<?>> {
                 .findFirst()
                 .orElse(modes.get(0))
         );
+    }
+
+    public JsonArray getAllSubValuesAsJson() {
+        JsonArray allSubValuesJson = new JsonArray();
+        for (Mode<?> mode : getModes()) {
+            allSubValuesJson.add(new JsonPrimitive(mode.getName()));
+        }
+        return allSubValuesJson;
     }
 
     @Override

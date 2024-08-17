@@ -1,11 +1,18 @@
 package cn.yapeteam.yolbi.ui.standard.components.value.impl;
 
 
-import cn.yapeteam.yolbi.module.values.Value;
+import cn.yapeteam.yolbi.font.Fonts;
+import cn.yapeteam.yolbi.font.Weight;
 import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
 import cn.yapeteam.yolbi.ui.standard.screen.Colors;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
+import cn.yapeteam.yolbi.utils.render.textbox.TextAlign;
+import cn.yapeteam.yolbi.utils.render.textbox.TextBox;
 import cn.yapeteam.yolbi.utils.vector.Vector2d;
+import cn.yapeteam.yolbi.value.Value;
+import cn.yapeteam.yolbi.value.impl.StringValue;
+
+import java.awt.*;
 
 public class StringValueComponent extends ValueComponent {
 

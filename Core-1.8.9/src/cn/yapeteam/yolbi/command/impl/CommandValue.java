@@ -3,8 +3,11 @@ package cn.yapeteam.yolbi.command.impl;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.command.AbstractCommand;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.values.Value;
-import cn.yapeteam.yolbi.module.values.impl.*;
+import cn.yapeteam.yolbi.value.Value;
+import cn.yapeteam.yolbi.value.impl.BooleanValue;
+import cn.yapeteam.yolbi.value.impl.ColorValue;
+import cn.yapeteam.yolbi.value.impl.ModeValue;
+import cn.yapeteam.yolbi.value.impl.NumberValue;
 
 import java.awt.*;
 
@@ -17,9 +20,9 @@ public class CommandValue extends AbstractCommand {
     @Override
     public void process(String[] args) {
         if (args.length == 3) {
-            Module module = YolBi.instance.getModuleManager().getModuleByName(args[0]);
+            Module module = YolBi.instance.getModuleManager().get(args[0]);
             if (module != null) {
-                Value<?> value = module.getValueByName(args[1]);
+                Value<?> value = module.getValues().get(args[1]);
                 if (value instanceof BooleanValue) {
                     ((BooleanValue) value).setValue(Boolean.parseBoolean(args[2]));
                 } else if (value instanceof ColorValue) {

@@ -3,6 +3,7 @@ package cn.yapeteam.yolbi.managers;
 import cn.yapeteam.ymixin.utils.Mapper;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
 import cn.yapeteam.yolbi.utils.render.GLUtils;
+import cn.yapeteam.yolbi.utils.render.shader.RiseShaders;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
@@ -28,6 +29,18 @@ public class RenderManager {
     private static final Minecraft mc = Minecraft.getMinecraft();
     private static final Map<Integer, Integer> shadowCache = new HashMap<>();
 
+
+    public void dropShadow(final int loops, final double x, final double y, final double width, final double height, final double opacity, final double edgeRadius) {
+        GlStateManager.alphaFunc(516, 0);
+        GlStateManager.enableBlend();
+        GlStateManager.enableAlpha();
+
+        for (float margin = 0; margin <= loops / 2f; margin += 0.5f) {
+            roundedRectangle(x - margin / 2f, y - margin / 2f,
+                    width + margin, height + margin, edgeRadius,
+                    new Color(0, 0, 0, (int) Math.max(0.5f, (opacity - margin * 1.2) / 5.5f)));
+        }
+    }
 
     // avoid bugs using glstatemanager
     public void start() {
@@ -66,6 +79,39 @@ public class RenderManager {
         GL11.glEnd();
 
         stop();
+    }
+
+    public static void drawRoundedGradientRect(double x, double y, double width, double height, double radius, Color firstColor, Color secondColor, boolean vertical) {
+        RiseShaders.RGQ_SHADER.draw(x, y, width, height, radius, firstColor, secondColor, vertical);
+    }
+
+    public static void drawRoundedGradientRectTest(double x, double y, double width, double height, double radius, Color firstColor, Color secondColor, boolean vertical) {
+        RiseShaders.RGQ_SHADER_TEST.draw(x, y, width, height, radius, firstColor, secondColor, vertical);
+    }
+
+    public static void drawRoundedGradientRectTest(double x, double y, double width, double height, double radius, Color firstColor, Color secondColor, boolean vertical, boolean leftTop, boolean rightTop, boolean rightBottom, boolean leftBottom) {
+        RiseShaders.RGQ_SHADER_TEST.draw((float) x, (float) y, (float) width, (float) height, (float) radius, firstColor, secondColor, vertical, leftTop, rightTop, rightBottom, leftBottom);
+    }
+
+    public static void drawRoundedGradientRectTest(double x, double y, double width, double height, double radius, Color firstColor, Color secondColor, Color thirdColor, boolean vertical, boolean leftTop, boolean rightTop, boolean rightBottom, boolean leftBottom) {
+        RiseShaders.R_TRI_GQ_SHADER.draw((float) x, (float) y, (float) width, (float) height, (float) radius, firstColor, secondColor, thirdColor, vertical, leftTop, rightTop, rightBottom, leftBottom);
+    }
+
+    public static void drawRoundedGradientRect(double x, double y, double width, double height, double radius, Color firstColor, Color secondColor, boolean vertical, boolean leftTop, boolean rightTop, boolean rightBottom, boolean leftBottom) {
+        RiseShaders.RGQ_SHADER.draw(x, y, width, height, radius, firstColor, secondColor, vertical, leftTop, rightTop, rightBottom, leftBottom);
+    }
+
+
+    public void roundedRectangle(double x, double y, double width, double height, double radius, Color color, boolean leftTop, boolean rightTop, boolean rightBottom, boolean leftBottom) {
+        RiseShaders.RQ_SHADER.draw((float) x, (float) y, (float) width, (float) height, (float) radius, color, leftTop, rightTop, rightBottom, leftBottom);
+    }
+
+    public void roundedOutlineRectangle(double x, double y, double width, double height, double radius, double borderSize, Color color) {
+        RiseShaders.ROQ_SHADER.draw(x, y, width, height, radius, borderSize, color);
+    }
+
+    public void roundedOutlineGradientRectangle(double x, double y, double width, double height, double radius, double borderSize, Color color1, Color color2) {
+        RiseShaders.ROGQ_SHADER.draw(x, y, width, height, radius, borderSize, color1, color2);
     }
 
     public void rainbowRectangle(final double x, final double y, final double width, final double height) {
@@ -180,8 +226,8 @@ public class RenderManager {
         image(imageLocation, (float) x, (float) y, (float) width, (float) height);
     }
 
-    public void roundedRectangle(double x, double y, double width, double height, double radius, int color) {
-        RenderManager.drawFastRoundedRect(x, y, x + width, y + height, radius, color);
+    public void roundedRectangle(double x, double y, double width, double height, double radius, Color color) {
+        RiseShaders.RQ_SHADER.draw((float) x, (float) y, (float) width, (float) height, (float) radius, color);
     }
 
     public void scissor(double x, double y, double width, double height) {
@@ -395,38 +441,6 @@ public class RenderManager {
         return getColor(red, green, blue, 255);
     }
 
-    public static void drawGoodCircle(double x2, double y2, float radius, int color) {//徐锦良的奇妙命名
-        RenderManager.color(color);
-        GLUtils.setup2DRendering(() -> {
-            GL11.glEnable(2832);
-            GL11.glHint(3153, 4354);
-            GL11.glPointSize(radius * (float) (2 * Minecraft.getMinecraft().gameSettings.guiScale));
-            GLUtils.render(0, () -> GL11.glVertex2d(x2, y2));
-        });
-    }
-
-    public static void renderRoundedRect(float x2, float y2, float width, float height, float radius, int color) {
-        RenderManager.drawGoodCircle(x2 + radius, y2 + radius, radius, color);
-        RenderManager.drawGoodCircle(x2 + width - radius, y2 + radius, radius, color);
-        RenderManager.drawGoodCircle(x2 + radius, y2 + height - radius, radius, color);
-        RenderManager.drawGoodCircle(x2 + width - radius, y2 + height - radius, radius, color);
-        drawRect3(x2 + radius, y2, width - radius * 2.0f, height, color);
-        drawRect3(x2, y2 + radius, width, height - radius * 2.0f, color);
-    }
-
-    public static void drawScaledCustomSizeModalRect(float x, float y, float u, float v, float uWidth, float vHeight, float width, float height, float tileWidth, float tileHeight) {
-        float f = 1.0F / tileWidth;
-        float f1 = 1.0F / tileHeight;
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        worldrenderer.pos(x, y + height, 0.0).tex(u * f, (v + vHeight) * f1).endVertex();
-        worldrenderer.pos(x + width, y + height, 0.0).tex((u + uWidth) * f, (v + vHeight) * f1).endVertex();
-        worldrenderer.pos(x + width, y, 0.0).tex((u + uWidth) * f, v * f1).endVertex();
-        worldrenderer.pos(x, y, 0.0).tex(u * f, v * f1).endVertex();
-        tessellator.draw();
-    }
-
     public static void resetColor() {
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
     }
@@ -637,68 +651,6 @@ public class RenderManager {
 
     public static double interpolate(double current, double old, double scale) {
         return (old + (current - old) * scale);
-    }
-
-    public static void drawFastRoundedRect(double left, double top, double right, double bottom, double radius, int color) {
-        GlStateManager.disableCull();
-        GlStateManager.disableTexture2D();
-        GlStateManager.enableBlend();
-        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        glColor4f((color >> 16 & 0xFF) / 255.0f, (color >> 8 & 0xFF) / 255.0f, (color & 0xFF) / 255.0f, (color >> 24 & 0xFF) / 255.0f);
-        glBegin(5);
-        glVertex2d(left + radius, top);
-        glVertex2d(left + radius, bottom);
-        glVertex2d(right - radius, top);
-        glVertex2d(right - radius, bottom);
-        glEnd();
-        glBegin(5);
-        glVertex2d(left, top + radius);
-        glVertex2d(left + radius, top + radius);
-        glVertex2d(left, bottom - radius);
-        glVertex2d(left + radius, bottom - radius);
-        glEnd();
-        glBegin(5);
-        glVertex2d(right, top + radius);
-        glVertex2d(right - radius, top + radius);
-        glVertex2d(right, bottom - radius);
-        glVertex2d(right - radius, bottom - radius);
-        glEnd();
-        glBegin(6);
-        double d1 = right - radius;
-        double d2 = top + radius;
-        glVertex2d(d1, d2);
-        int j;
-        for (j = 0; j <= 18; ++j)
-            glVertex2d(d1 + radius * Math.cos(Math.toRadians(j * 5.0f)), d2 - radius * Math.sin(Math.toRadians(j * 5.0f)));
-        glEnd();
-        glBegin(6);
-        d1 = left + radius;
-        d2 = top + radius;
-        glVertex2d(d1, d2);
-        for (j = 0; j <= 18; ++j)
-            glVertex2d(d1 - radius * Math.cos(Math.toRadians(j * 5.0f)), d2 - radius * Math.sin(Math.toRadians(j * 5.0f)));
-        glEnd();
-        glBegin(6);
-        d1 = left + radius;
-        d2 = bottom - radius;
-        glVertex2d(d1, d2);
-        for (j = 0; j <= 18; ++j)
-            glVertex2d(d1 - radius * Math.cos(Math.toRadians(j * 5.0f)), d2 + radius * Math.sin(Math.toRadians(j * 5.0f)));
-        glEnd();
-        glBegin(6);
-        d1 = right - radius;
-        d2 = bottom - radius;
-        glVertex2d(d1, d2);
-        for (j = 0; j <= 18; ++j)
-            glVertex2d(d1 + radius * Math.cos(Math.toRadians(j * 5.0f)), d2 + radius * Math.sin(Math.toRadians(j * 5.0f)));
-        glEnd();
-        GlStateManager.enableTexture2D();
-        GlStateManager.enableCull();
-        GlStateManager.disableBlend();
-    }
-
-    public static void drawFastRoundedRect2(double x, double y, double width, double height, double radius, int color) {
-        drawFastRoundedRect(x, y, x + width, y + height, radius, color);
     }
 
     public static void circle(final float x, final float y, final float radius, final int fill) {

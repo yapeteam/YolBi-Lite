@@ -20,12 +20,22 @@ public class NumberValue extends Value<Number> {
     private final Number min;
     private final Number max;
     private final Number decimalPlaces;
+    private String suffix = "";
 
     public NumberValue(final String name, final Module parent, final Number defaultValue,
                        final Number min, final Number max, final Number decimalPlaces) {
         super(name, parent, defaultValue);
         this.decimalPlaces = decimalPlaces;
 
+        this.min = min;
+        this.max = max;
+    }
+
+    public NumberValue(final String name, final Module parent, final Number defaultValue,
+                       final Number min, final Number max, final Number decimalPlaces, final String suffix) {
+        super(name, parent, defaultValue);
+        this.decimalPlaces = decimalPlaces;
+        this.suffix = suffix;
         this.min = min;
         this.max = max;
     }

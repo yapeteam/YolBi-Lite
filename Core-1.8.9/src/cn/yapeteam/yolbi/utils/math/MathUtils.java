@@ -14,6 +14,14 @@ public class MathUtils {
         return ThreadLocalRandom.current().nextDouble(min, max);
     }
 
+    public static double roundWithSteps(final double value, final double steps) {
+        double a = ((Math.round(value / steps)) * steps);
+        a *= 1000;
+        a = (int) a;
+        a /= 1000;
+        return a;
+    }
+
     public static double lerp(final double a, final double b, final double c) {
         return a + c * (b - a);
     }

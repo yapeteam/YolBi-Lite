@@ -1,6 +1,7 @@
 package cn.yapeteam.yolbi.ui.standard.screen.impl;
 
 
+import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.font.Fonts;
 import cn.yapeteam.yolbi.font.Weight;
 import cn.yapeteam.yolbi.ui.standard.components.theme.ThemeComponent;
@@ -8,9 +9,12 @@ import cn.yapeteam.yolbi.ui.standard.components.theme.ThemeKeyColorComponent;
 import cn.yapeteam.yolbi.ui.standard.screen.Screen;
 import cn.yapeteam.yolbi.ui.theme.Themes;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
+import cn.yapeteam.yolbi.utils.render.GuiUtil;
+import cn.yapeteam.yolbi.utils.render.ScrollUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector2d;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -60,7 +64,7 @@ public class ThemeScreen implements Screen, Accessor {
 
 //        FontManager.getIconsThree(28).drawString("4",
 //                position.getX() + sidebar + 14, position.getY() + 16 + scrollUtil.getScroll(), -1);
-        Fonts.MAIN.get(16, Weight.REGULAR).drawRight(Localization.get("ui.themes.text"),
+        Fonts.MAIN.get(16, Weight.REGULAR).drawRight("You can click on a color to filter by it. Click again to reset",
                 position.getX() + scale.getX() - 20, position.getY() + 20 + scrollUtil.getScroll(), new Color(255, 255, 255, 128).getRGB());
 
         // Draw key colors
@@ -96,13 +100,13 @@ public class ThemeScreen implements Screen, Accessor {
         if (mouseButton > 0) return;
 
         for (ThemeComponent theme : this.visibleThemes) {
-            if (GUIUtil.mouseOver(theme.getLastDraw().getX(), theme.getLastDraw().getY(), theme.getLastDraw().getZ(), 50, mouseX, mouseY)) {
-                Client.INSTANCE.getThemeManager().setTheme(theme.getActiveTheme());
+            if (GuiUtil.mouseOver(theme.getLastDraw().getX(), theme.getLastDraw().getY(), theme.getLastDraw().getZ(), 50, mouseX, mouseY)) {
+                YolBi.instance.getThemeManager().setTheme(theme.getActiveTheme());
             }
         }
 
         for (ThemeKeyColorComponent color : this.colors) {
-            if (GUIUtil.mouseOver(color.getLastDraw().getX(), color.getLastDraw().getY(), color.getLastDraw().getZ(), 17, mouseX, mouseY)) {
+            if (GuiUtil.mouseOver(color.getLastDraw().getX(), color.getLastDraw().getY(), color.getLastDraw().getZ(), 17, mouseX, mouseY)) {
                 if (this.selectedColor == color) {
                     this.selectedColor = null;
                 } else {

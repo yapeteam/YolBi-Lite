@@ -1,22 +1,23 @@
 package cn.yapeteam.yolbi.ui.standard.screen.impl;
 
-import com.alan.clients.Client;
-import com.alan.clients.font.Fonts;
-import com.alan.clients.font.Weight;
-import com.alan.clients.ui.click.standard.RiseClickGUI;
-import com.alan.clients.ui.click.standard.components.ModuleComponent;
-import com.alan.clients.ui.click.standard.components.value.ValueComponent;
-import com.alan.clients.ui.click.standard.components.value.impl.StringValueComponent;
-import com.alan.clients.ui.click.standard.screen.Colors;
-import com.alan.clients.ui.click.standard.screen.Screen;
-import com.alan.clients.util.Accessor;
-import com.alan.clients.util.gui.ScrollUtil;
-import com.alan.clients.util.gui.textbox.TextAlign;
-import com.alan.clients.util.gui.textbox.TextBox;
-import com.alan.clients.util.vector.Vector2d;
+
+import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.font.Fonts;
+import cn.yapeteam.yolbi.font.Weight;
+import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
+import cn.yapeteam.yolbi.ui.standard.components.ModuleComponent;
+import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
+import cn.yapeteam.yolbi.ui.standard.components.value.impl.StringValueComponent;
+import cn.yapeteam.yolbi.ui.standard.screen.Colors;
+import cn.yapeteam.yolbi.ui.standard.screen.Screen;
+import cn.yapeteam.yolbi.utils.StopWatch;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
+import cn.yapeteam.yolbi.utils.render.ScrollUtil;
+import cn.yapeteam.yolbi.utils.render.textbox.TextAlign;
+import cn.yapeteam.yolbi.utils.render.textbox.TextBox;
+import cn.yapeteam.yolbi.utils.vector.Vector2d;
 import lombok.Getter;
 import lombok.Setter;
-import rip.vantage.commons.util.time.StopWatch;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -137,13 +138,11 @@ public final class ConfigScreen implements Screen, Accessor {
     public ArrayList<ModuleComponent> getRelevantModules(final String search) {
         final ArrayList<ModuleComponent> relevantModules = new ArrayList<>();
 
-        for (final ModuleComponent module : Client.INSTANCE.getClickGUI().getModuleList()) {
-            for (String alias: module.getModule().getModuleInfo().aliases()) {
-                if (alias.toLowerCase().replaceAll(" ", "")
-                        .contains(search.toLowerCase().replaceAll(" ", ""))){
-                    relevantModules.add(module);
-                    break;
-                }
+        for (final ModuleComponent module : YolBi.instance.getClickGUI().getModuleList()) {
+            String moduleName = module.getModule().getModuleInfo().name().replaceAll(" ", "").toLowerCase();
+            String searchQuery = search.replaceAll(" ", "").toLowerCase();
+            if (moduleName.contains(searchQuery)) {
+                relevantModules.add(module);
             }
         }
 

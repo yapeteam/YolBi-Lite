@@ -1,8 +1,9 @@
 package cn.yapeteam.yolbi.ui.standard.components.value.impl;
 
-import com.alan.clients.ui.click.standard.components.value.ValueComponent;
-import com.alan.clients.util.vector.Vector2d;
-import com.alan.clients.value.Value;
+
+import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
+import cn.yapeteam.yolbi.utils.vector.Vector2d;
+import cn.yapeteam.yolbi.value.Value;
 import net.minecraft.util.ResourceLocation;
 
 public class PositionValueComponent extends ValueComponent {

@@ -1,14 +1,15 @@
 package cn.yapeteam.yolbi.ui.standard.components.value.impl;
 
-import com.alan.clients.font.Fonts;
-import com.alan.clients.font.Weight;
-import com.alan.clients.ui.click.standard.components.value.ValueComponent;
-import com.alan.clients.ui.click.standard.screen.Colors;
-import com.alan.clients.util.gui.GUIUtil;
-import com.alan.clients.util.vector.Vector2d;
-import com.alan.clients.value.Mode;
-import com.alan.clients.value.Value;
-import com.alan.clients.value.impl.ModeValue;
+
+import cn.yapeteam.yolbi.font.Fonts;
+import cn.yapeteam.yolbi.font.Weight;
+import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
+import cn.yapeteam.yolbi.ui.standard.screen.Colors;
+import cn.yapeteam.yolbi.utils.render.GuiUtil;
+import cn.yapeteam.yolbi.utils.vector.Vector2d;
+import cn.yapeteam.yolbi.value.Mode;
+import cn.yapeteam.yolbi.value.Value;
+import cn.yapeteam.yolbi.value.impl.ModeValue;
 import lombok.Getter;
 
 @Getter
@@ -40,7 +41,7 @@ public class ModeValueComponent extends ValueComponent {
         final boolean left = mouseButton == 0;
         final boolean right = mouseButton == 1;
 
-        if (GUIUtil.mouseOver(this.position.x, this.position.y - 3.5f, getClickGUI().width - 70, this.height, mouseX, mouseY)) {
+        if (GuiUtil.mouseOver(this.position.x, this.position.y - 3.5f, getClickGUI().width - 70, this.height, mouseX, mouseY)) {
             final int currentIndex = modeValue.getModes().indexOf(modeValue.getValue());
 
             Mode<?> mode = null;

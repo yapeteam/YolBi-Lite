@@ -2,10 +2,16 @@ package cn.yapeteam.yolbi.ui.standard.components.value.impl;
 
 
 import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.font.Fonts;
+import cn.yapeteam.yolbi.font.Weight;
 import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
 import cn.yapeteam.yolbi.ui.standard.screen.Colors;
 import cn.yapeteam.yolbi.utils.StopWatch;
+import cn.yapeteam.yolbi.utils.math.MathUtils;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
+import cn.yapeteam.yolbi.utils.render.GuiUtil;
+import cn.yapeteam.yolbi.utils.render.textbox.TextAlign;
+import cn.yapeteam.yolbi.utils.render.textbox.TextBox;
 import cn.yapeteam.yolbi.utils.vector.Vector2d;
 import cn.yapeteam.yolbi.value.Value;
 import cn.yapeteam.yolbi.value.impl.BoundsNumberValue;
@@ -63,7 +69,7 @@ public class BoundsNumberValueComponent extends ValueComponent {
         final float valueWidth = Fonts.MAIN.get(16, Weight.REGULAR).width(this.value.getName()) + 7;
 
         //Used to determine if the mouse is over the slider
-        this.mouseOver = GUIUtil.mouseOver(this.position.x + valueWidth - 5, this.position.y - 3.5f, SLIDER_WIDTH + 10, this.height, mouseX, mouseY);
+        this.mouseOver = GuiUtil.mouseOver(this.position.x + valueWidth - 5, this.position.y - 3.5f, SLIDER_WIDTH + 10, this.height, mouseX, mouseY);
         if (this.mouseOver) {
             hoverTime = Math.min(1, hoverTime + stopWatch.getElapsedTime() / 200f);
         } else {
@@ -95,12 +101,12 @@ public class BoundsNumberValueComponent extends ValueComponent {
             percentage1 = Math.max(Math.min(percentage1, 1), 0);
 
             boundsNumberValue.setValue((boundsNumberValue.getMin().doubleValue() + (boundsNumberValue.getMax().doubleValue() - boundsNumberValue.getMin().doubleValue()) * percentage1));
-            boundsNumberValue.setValue(MathUtil.roundWithSteps(boundsNumberValue.getValue().doubleValue(), boundsNumberValue.getDecimalPlaces().doubleValue()));
+            boundsNumberValue.setValue(MathUtils.roundWithSteps(boundsNumberValue.getValue().doubleValue(), boundsNumberValue.getDecimalPlaces().doubleValue()));
 
             if (percentage1 > percentage2) {
                 percentage2 = percentage1;
                 boundsNumberValue.setSecondValue((boundsNumberValue.getMin().doubleValue() + (boundsNumberValue.getMax().doubleValue() - boundsNumberValue.getMin().doubleValue()) * percentage2));
-                boundsNumberValue.setSecondValue(MathUtil.roundWithSteps(boundsNumberValue.getSecondValue().doubleValue(), boundsNumberValue.getDecimalPlaces().doubleValue()));
+                boundsNumberValue.setSecondValue(MathUtils.roundWithSteps(boundsNumberValue.getSecondValue().doubleValue(), boundsNumberValue.getDecimalPlaces().doubleValue()));
             }
         } else if (grabbed2) {
             percentage2 = mouseX - selector2;
@@ -108,12 +114,12 @@ public class BoundsNumberValueComponent extends ValueComponent {
             percentage2 = Math.max(Math.min(percentage2, 1), 0);
 
             boundsNumberValue.setSecondValue((boundsNumberValue.getMin().doubleValue() + (boundsNumberValue.getMax().doubleValue() - boundsNumberValue.getMin().doubleValue()) * percentage2));
-            boundsNumberValue.setSecondValue(MathUtil.roundWithSteps(boundsNumberValue.getSecondValue().doubleValue(), boundsNumberValue.getDecimalPlaces().doubleValue()));
+            boundsNumberValue.setSecondValue(MathUtils.roundWithSteps(boundsNumberValue.getSecondValue().doubleValue(), boundsNumberValue.getDecimalPlaces().doubleValue()));
 
             if (percentage2 < percentage1) {
                 percentage1 = percentage2;
                 boundsNumberValue.setValue((boundsNumberValue.getMin().doubleValue() + (boundsNumberValue.getMax().doubleValue() - boundsNumberValue.getMin().doubleValue()) * percentage1));
-                boundsNumberValue.setValue(MathUtil.roundWithSteps(boundsNumberValue.getValue().doubleValue(), boundsNumberValue.getDecimalPlaces().doubleValue()));
+                boundsNumberValue.setValue(MathUtils.roundWithSteps(boundsNumberValue.getValue().doubleValue(), boundsNumberValue.getDecimalPlaces().doubleValue()));
             }
         }
 
