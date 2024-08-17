@@ -12,13 +12,9 @@ import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.managers.TargetManager;
 import cn.yapeteam.yolbi.module.api.manager.ModuleManager;
-import cn.yapeteam.yolbi.notification.Notification;
-import cn.yapeteam.yolbi.notification.NotificationManager;
-import cn.yapeteam.yolbi.notification.NotificationType;
 import cn.yapeteam.yolbi.server.WebServer;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.theme.ThemeManager;
-import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.render.ESPUtil;
 import lombok.Getter;
 
@@ -38,7 +34,6 @@ public class YolBi {
     private CommandManager commandManager;
     private ConfigManager configManager;
     private ModuleManager moduleManager;
-    private NotificationManager notificationManager;
     private BotManager botManager;
     private TargetManager targetManager;
     private RotationManager rotationManager;
@@ -76,7 +71,6 @@ public class YolBi {
         instance.moduleManager = new ModuleManager();
         instance.botManager = new BotManager();
         instance.targetManager = new TargetManager();
-        instance.notificationManager = new NotificationManager();
         instance.renderManager = new RenderManager();
         instance.themeManager = new ThemeManager();
         instance.eventManager.register(instance.renderManager);
@@ -85,7 +79,6 @@ public class YolBi {
         instance.eventManager.register(instance.botManager);
         instance.eventManager.register(instance.targetManager);
         instance.eventManager.register(instance.rotationManager);
-        instance.eventManager.register(instance.notificationManager);
         instance.eventManager.register(instance.themeManager);
         instance.eventManager.register(ESPUtil.class);
         instance.moduleManager.init();
@@ -95,14 +88,6 @@ public class YolBi {
         } catch (Throwable e) {
             Logger.exception(e);
         }
-        instance.getNotificationManager().post(
-                new Notification(
-                        "Injected Yolbi successfully",
-                        Easing.EASE_IN_OUT_QUAD,
-                        Easing.EASE_IN_OUT_QUAD,
-                        15000, NotificationType.INIT
-                )
-        );
     }
 
     public void shutdown() {

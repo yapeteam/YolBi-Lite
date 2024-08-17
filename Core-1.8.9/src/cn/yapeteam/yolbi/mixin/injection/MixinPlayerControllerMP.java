@@ -4,7 +4,6 @@ import cn.yapeteam.ymixin.annotations.*;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.impl.player.EventAttack;
 import cn.yapeteam.yolbi.event.type.CancellableEvent;
-import cn.yapeteam.yolbi.module.impl.combat.Reach;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.WorldSettings;
@@ -30,18 +29,5 @@ public class MixinPlayerControllerMP {
             //noinspection UnnecessaryReturnStatement
             return;
         }
-    }
-
-    @Overwrite(
-            method = "getBlockReachDistance",
-            desc = "()F"
-    )
-    public float getBlockReachDistance() {
-        if (YolBi.instance != null && YolBi.instance.getModuleManager() != null) {
-            Reach reach = YolBi.instance.getModuleManager().getModule(Reach.class);
-            if (reach != null && reach.isEnabled() && !reach.getValues().isEmpty())
-                return ((Number) reach.getValues().get(0).getValue()).floatValue();
-        }
-        return this.currentGameType.isCreative() ? 5.0F : 4.0F;
     }
 }
