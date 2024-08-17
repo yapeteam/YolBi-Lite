@@ -14,14 +14,14 @@ import cn.yapeteam.yolbi.module.api.manager.ModuleManager;
 import cn.yapeteam.yolbi.server.WebServer;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.theme.ThemeManager;
-import cn.yapeteam.yolbi.utils.render.ESPUtil;
+import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
 import lombok.Getter;
 
 import java.io.File;
 import java.io.IOException;
 
 @Getter
-public class YolBi {
+public class YolBi implements IMinecraft {
     public static YolBi instance = new YolBi();
     public static final String name = "YolBi";
     public static final String version = VersionInfo.version;
@@ -62,8 +62,8 @@ public class YolBi {
             instance.eventManager = new EventManager();
         if (instance.rotationManager == null)
             instance.rotationManager = new RotationManager();
-        instance.clickGUI = new RiseClickGUI();
-        instance.layerManager = new LayerManager();
+        mc.addScheduledTask(() -> instance.clickGUI = new RiseClickGUI());
+        mc.addScheduledTask(() -> instance.layerManager = new LayerManager());
         instance.configManager = new ConfigManager();
         instance.moduleManager = new ModuleManager();
         instance.botManager = new BotManager();
@@ -76,7 +76,6 @@ public class YolBi {
         instance.eventManager.register(instance.targetManager);
         instance.eventManager.register(instance.rotationManager);
         instance.eventManager.register(instance.themeManager);
-        instance.eventManager.register(ESPUtil.class);
         instance.moduleManager.init();
         try {
             instance.getConfigManager().load();

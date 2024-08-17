@@ -15,7 +15,6 @@ import cn.yapeteam.yolbi.utils.render.GuiUtil;
 import lombok.Getter;
 import org.lwjgl.input.Mouse;
 
-
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;

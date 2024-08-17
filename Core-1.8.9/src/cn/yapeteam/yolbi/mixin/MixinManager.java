@@ -27,7 +27,6 @@ public class MixinManager {
         add("MixinEntity");
         add("MixinBlockNote");
         add("MixinMinecraft");
-        add("MixinGuiIngame");
         add("MixinModelBiped");
         add("MixinEntityPlayer");
         add("MixinNetworkManager");
