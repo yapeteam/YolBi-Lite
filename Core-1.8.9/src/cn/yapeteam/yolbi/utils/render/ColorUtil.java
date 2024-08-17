@@ -1,8 +1,46 @@
 package cn.yapeteam.yolbi.utils.render;
 
+import cn.yapeteam.yolbi.utils.math.MathUtils;
+import org.lwjgl.opengl.GL11;
+
 import java.awt.*;
 
 public class ColorUtil {
+
+    /**
+     * Method which colors using a hex code
+     *
+     * @param hex used hex code
+     */
+    static void glColor(final int hex) {
+        final float a = (hex >> 24 & 0xFF) / 255.0F;
+        final float r = (hex >> 16 & 0xFF) / 255.0F;
+        final float g = (hex >> 8 & 0xFF) / 255.0F;
+        final float b = (hex & 0xFF) / 255.0F;
+        GL11.glColor4f(r, g, b, a);
+    }
+
+    /**
+     * Method which colors using a color
+     *
+     * @param color used color
+     */
+    public static void glColor(final Color color) {
+        GL11.glColor4f(color.getRed() / 255.0F, color.getGreen() / 255.0F, color.getBlue() / 255.0F, color.getAlpha() / 255.0F);
+    }
+
+    static Color withAlpha(final Color color, final int alpha) {
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) MathUtils.clamp(0, 255, alpha));
+    }
+
+    public static Color mixColors(final Color color1, final Color color2, final double percent) {
+        final double inverse_percent = 1.0 - percent;
+        final int redPart = (int) (color1.getRed() * percent + color2.getRed() * inverse_percent);
+        final int greenPart = (int) (color1.getGreen() * percent + color2.getGreen() * inverse_percent);
+        final int bluePart = (int) (color1.getBlue() * percent + color2.getBlue() * inverse_percent);
+        return new Color(redPart, greenPart, bluePart);
+    }
+
     public static Color colorFromInt(int color) {
         Color c = new Color(color);
         return new Color(c.getRed(), c.getGreen(), c.getBlue(), 255);

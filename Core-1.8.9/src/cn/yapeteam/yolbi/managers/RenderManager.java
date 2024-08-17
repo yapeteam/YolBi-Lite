@@ -1,8 +1,6 @@
 package cn.yapeteam.yolbi.managers;
 
 import cn.yapeteam.ymixin.utils.Mapper;
-import cn.yapeteam.yolbi.shader.GaussianFilter;
-import cn.yapeteam.yolbi.shader.impl.ShaderScissor;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
 import cn.yapeteam.yolbi.utils.render.GLUtils;
 import net.minecraft.client.Minecraft;
@@ -12,7 +10,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
@@ -21,14 +18,10 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static net.minecraft.client.renderer.GlStateManager.disableBlend;
-import static net.minecraft.client.renderer.GlStateManager.enableTexture2D;
 import static org.lwjgl.opengl.GL11.*;
 
 public class RenderManager {
@@ -62,7 +55,7 @@ public class RenderManager {
         start();
 
         if (color != null) {
-            ColorManager.glColor(color);
+            ColorUtil.glColor(color);
         }
 
         GL11.glBegin(GL11.GL_QUADS);
@@ -115,11 +108,11 @@ public class RenderManager {
         GL11.glShadeModel(GL11.GL_SMOOTH);
         GL11.glBegin(GL11.GL_QUADS);
 
-        ColorManager.glColor(topColor);
+        ColorUtil.glColor(topColor);
         GL11.glVertex2d(x, y);
         GL11.glVertex2d(x + width, y);
 
-        ColorManager.glColor(bottomColor);
+        ColorUtil.glColor(bottomColor);
         GL11.glVertex2d(x + width, y + height);
         GL11.glVertex2d(x, y + height);
 
@@ -144,11 +137,11 @@ public class RenderManager {
         GL11.glShadeModel(GL11.GL_SMOOTH);
         GL11.glBegin(GL11.GL_QUADS);
 
-        ColorManager.glColor(leftColor);
+        ColorUtil.glColor(leftColor);
         GL11.glVertex2d(x, y);
         GL11.glVertex2d(x, y + height);
 
-        ColorManager.glColor(rightColor);
+        ColorUtil.glColor(rightColor);
         GL11.glVertex2d(x + width, y + height);
         GL11.glVertex2d(x + width, y);
 
@@ -442,66 +435,7 @@ public class RenderManager {
         GlStateManager.enableAlpha();
         GlStateManager.alphaFunc(516, (float) ((double) limit * 0.01));
     }
-    public static void drawBloomShadow(double x, double y, double width, double height, int blurRadius, Color color) {
-        drawBloomShadow((float) x, (float) y, (float) width, (float) height, blurRadius, 0, color);
-    }
 
-    public static void drawBloomShadow(double x, double y, double width, double height, int blurRadius, int roundRadius, Color color) {
-        glPushMatrix();
-        GlStateManager.alphaFunc(GL11.GL_GREATER, 0.01f);
-        width = width + blurRadius * 2;
-        height = height + blurRadius * 2;
-        x = x - blurRadius;
-        y = y - blurRadius;
-
-        float _X = (float) (x - 0.25f);
-        float _Y = (float) (y + 0.25f);
-
-        int identifier = (width + "," + height + "," + blurRadius).hashCode();
-
-        glEnable(GL11.GL_TEXTURE_2D);
-        glDisable(GL_CULL_FACE);
-        glEnable(GL11.GL_ALPHA_TEST);
-        GlStateManager.enableBlend();
-
-        if (shadowCache.containsKey(identifier)) {
-            GlStateManager.bindTexture(shadowCache.get(identifier));
-        } else {
-            if (width <= 0) width = 1;
-            if (height <= 0) height = 1;
-            BufferedImage original = new BufferedImage((int) width, (int) height, BufferedImage.TYPE_INT_ARGB_PRE);
-            Graphics g = original.getGraphics();
-            g.setColor(new Color(-1));
-            g.fillRoundRect(blurRadius, blurRadius, (int) (width - blurRadius * 2), (int) (height - blurRadius * 2), roundRadius, roundRadius);
-            g.dispose();
-            GaussianFilter op = new GaussianFilter(blurRadius);
-            BufferedImage blurred = op.filter(original, null);
-            shadowCache.put(identifier, TextureUtil.uploadTextureImageAllocate(TextureUtil.glGenTextures(), blurred, true, false));
-        }
-
-        color(color.getRGB());
-
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glTexCoord2f(0, 0); // top left
-        GL11.glVertex2f(_X, _Y);
-
-        GL11.glTexCoord2f(0, 1); // bottom left
-        GL11.glVertex2f(_X, (float) (_Y + height));
-
-        GL11.glTexCoord2f(1, 1); // bottom right
-        GL11.glVertex2f((float) (_X + width), (float) (_Y + height));
-
-        GL11.glTexCoord2f(1, 0); // top right
-        GL11.glVertex2f((float) (_X + width), _Y);
-        GL11.glEnd();
-
-        enableTexture2D();
-        disableBlend();
-        GlStateManager.resetColor();
-
-        glEnable(GL_CULL_FACE);
-        glPopMatrix();
-    }
     public static void drawRect3(double x2, double y2, double width, double height, int color) {
         RenderManager.resetColor();
         RenderManager.setAlphaLimit(0.0f);
@@ -1427,59 +1361,6 @@ public class RenderManager {
         GlStateManager.color(red, green, blue, alpha);
     }
 
-    public static void drawBloomShadow(float x, float y, float width, float height, int blurRadius, Color color, boolean scissor) {
-        drawBloomShadow(x, y, width, height, blurRadius, 0, color.getRGB(), scissor, false, false, false, false);
-    }
-
-    public static void drawBloomShadow(float x, float y, float width, float height, int blurRadius, int color, boolean scissor) {
-        drawBloomShadow(x, y, width, height, blurRadius, 0, color, scissor, false, false, false, false);
-    }
-
-    public static void drawBloomShadow(float x, float y, float width, float height, int blurRadius, int roundRadius, int color, boolean scissor) {
-        drawBloomShadow(x, y, width, height, blurRadius, roundRadius, color, scissor, false, false, false, false);
-    }
-
-    public static void drawBloomShadow(float x, float y, float width, float height, int blurRadius, int roundRadius, int color, boolean scissor, boolean cut_top, boolean cut_bottom, boolean cut_left, boolean cut_right) {
-        width = width + blurRadius * 2;
-        height = height + blurRadius * 2;
-        x -= blurRadius - 0.5f;
-        y -= blurRadius - 0.5f;
-
-        int identifier = Arrays.deepHashCode(new Object[]{width, height, blurRadius, roundRadius});
-        if (!shadowCache.containsKey(identifier)) {
-            if (width <= 0) width = 1;
-            if (height <= 0) height = 1;
-            BufferedImage original = new BufferedImage((int) width, (int) height, BufferedImage.TYPE_INT_ARGB_PRE);
-            Graphics g = original.getGraphics();
-            g.setColor(ColorUtil.colorFromInt(-1));
-            g.fillRoundRect(blurRadius, blurRadius, (int) (width - blurRadius * 2), (int) (height - blurRadius * 2), roundRadius, roundRadius);
-            g.dispose();
-            GaussianFilter op = new GaussianFilter(blurRadius);
-            BufferedImage blurred = op.filter(original, null);
-            int cut_x = blurRadius, cut_y = blurRadius, cut_w = (int) (width - blurRadius * 2), cut_h = (int) (height - blurRadius * 2);
-            if (cut_top) {
-                cut_y = 0;
-                cut_h = (int) (height - blurRadius);
-            }
-
-            if (cut_bottom) {
-                cut_h = (int) (height - blurRadius);
-            }
-
-            if (cut_left) {
-                cut_x = 0;
-                cut_w = (int) (width - blurRadius);
-            }
-
-            if (cut_right) {
-                cut_w = (int) (width - blurRadius);
-            }
-            if (scissor)
-                blurred = new ShaderScissor(cut_x, cut_y, cut_w, cut_h, blurred, 1, false, false).generate();
-            shadowCache.put(identifier, TextureUtil.uploadTextureImageAllocate(TextureUtil.glGenTextures(), blurred, true, false));
-        }
-        drawImage(shadowCache.get(identifier), x, y, width, height, color);
-    }
 
     private static void drawESPImage(int texture, double x, double y, double x2, double y2, Color c, Color c2, Color c3, Color c4, float alpha) {
         GlStateManager.bindTexture(texture);
