@@ -1,7 +1,7 @@
 package cn.yapeteam.yolbi.utils.player;
 
 import cn.yapeteam.yolbi.module.impl.combat.CombatSettings;
-import cn.yapeteam.yolbi.utils.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
 import com.google.common.base.Predicates;
 import lombok.experimental.UtilityClass;
 import lombok.val;

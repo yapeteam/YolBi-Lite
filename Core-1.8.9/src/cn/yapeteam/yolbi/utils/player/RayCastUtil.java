@@ -4,7 +4,7 @@ package cn.yapeteam.yolbi.utils.player;
 import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.ymixin.utils.Mapper;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
-import cn.yapeteam.yolbi.utils.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import com.google.common.base.Predicates;
 import kotlin.Triple;

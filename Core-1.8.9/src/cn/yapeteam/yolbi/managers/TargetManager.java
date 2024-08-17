@@ -3,7 +3,7 @@ package cn.yapeteam.yolbi.managers;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.module.impl.combat.AntiBot;
 import cn.yapeteam.yolbi.module.impl.combat.CombatSettings;
-import cn.yapeteam.yolbi.utils.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
 import cn.yapeteam.yolbi.utils.player.PlayerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

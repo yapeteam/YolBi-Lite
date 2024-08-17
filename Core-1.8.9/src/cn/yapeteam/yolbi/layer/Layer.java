@@ -1,7 +1,7 @@
 package cn.yapeteam.yolbi.layer;
 
 
-import cn.yapeteam.yolbi.utils.Accessor;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.render.shader.base.RiseShader;
 import cn.yapeteam.yolbi.utils.render.shader.base.ShaderRenderType;
 import lombok.Getter;

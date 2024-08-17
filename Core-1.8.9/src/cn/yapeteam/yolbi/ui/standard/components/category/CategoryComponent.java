@@ -3,7 +3,7 @@ package cn.yapeteam.yolbi.ui.standard.components.category;
 
 import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
-import cn.yapeteam.yolbi.utils.Accessor;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.animation.Animation;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector2d;

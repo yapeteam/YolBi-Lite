@@ -1,7 +1,7 @@
 package cn.yapeteam.yolbi.utils.player;
 
 import cn.yapeteam.yolbi.event.impl.player.EventMoveInput;
-import cn.yapeteam.yolbi.utils.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
 import lombok.experimental.UtilityClass;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.potion.Potion;

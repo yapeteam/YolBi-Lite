@@ -1,19 +1,14 @@
 package cn.yapeteam.yolbi.ui.standard.components.value.impl;
 
-import com.alan.clients.font.Fonts;
-import com.alan.clients.font.Weight;
-import com.alan.clients.ui.click.standard.components.value.ValueComponent;
-import com.alan.clients.ui.click.standard.screen.Colors;
-import com.alan.clients.util.gui.GUIUtil;
-import com.alan.clients.util.gui.textbox.TextAlign;
-import com.alan.clients.util.gui.textbox.TextBox;
-import com.alan.clients.util.math.MathUtil;
-import com.alan.clients.util.render.ColorUtil;
-import com.alan.clients.util.render.RenderUtil;
-import com.alan.clients.util.vector.Vector2d;
-import com.alan.clients.value.Value;
-import com.alan.clients.value.impl.BoundsNumberValue;
-import rip.vantage.commons.util.time.StopWatch;
+
+import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
+import cn.yapeteam.yolbi.ui.standard.screen.Colors;
+import cn.yapeteam.yolbi.utils.StopWatch;
+import cn.yapeteam.yolbi.utils.render.ColorUtil;
+import cn.yapeteam.yolbi.utils.vector.Vector2d;
+import cn.yapeteam.yolbi.value.Value;
+import cn.yapeteam.yolbi.value.impl.BoundsNumberValue;
 
 import java.awt.*;
 
@@ -87,7 +82,7 @@ public class BoundsNumberValueComponent extends ValueComponent {
 //        Fonts.SF_ROUNDED.get(16, Weight.REGULAR).drawString(value.replace(".0", ""), this.position.x + valueWidth + 105, this.position.y, this.getClickGUI().fontDarkColor.hashCode());
 
         // Draws background
-        RenderUtil.roundedRectangle(this.position.x + valueWidth, this.position.y + 1.5f, SLIDER_WIDTH, 2, 1, Colors.BACKGROUND.getWithAlpha(Math.min(opacity, Colors.BACKGROUND.get().getAlpha())));
+        YolBi.instance.getRenderManager().roundedRectangle(this.position.x + valueWidth, this.position.y + 1.5f, SLIDER_WIDTH, 2, 1, Colors.BACKGROUND.getWithAlpha(Math.min(opacity, Colors.BACKGROUND.get().getAlpha())));
 
         selector1 = this.position.x + valueWidth;
         selector2 = this.position.x + valueWidth;
@@ -130,21 +125,21 @@ public class BoundsNumberValueComponent extends ValueComponent {
         }
 
         //Selectors
-        //RenderUtil.triangleCentered(selector1 + renderPercentage1 * 100 - 5, this.position.y + 15, 11, this.getClickGUI().accentColor);
-        //RenderUtil.triangleCentered(selector2 + renderPercentage2 * 100 + 5, this.position.y + 15, -12, this.getClickGUI().accentColor);
+        //YolBi.instance.getRenderManager().triangleCentered(selector1 + renderPercentage1 * 100 - 5, this.position.y + 15, 11, this.getClickGUI().accentColor);
+        //YolBi.instance.getRenderManager().triangleCentered(selector2 + renderPercentage2 * 100 + 5, this.position.y + 15, -12, this.getClickGUI().accentColor);
 
         final double startPositionX = selector1 + renderPercentage1 * 100;
         final double endPositionX = selector2 + renderPercentage2 * 100;
         final double boundsWidth = endPositionX - startPositionX;
 
         if (percentage1 != percentage2) {
-            RenderUtil.roundedRectangle(startPositionX, this.position.y + 1.5f, boundsWidth, 2, 1, ColorUtil.withAlpha(getTheme().getFirstColor(), Math.min(70, opacity)));
+            YolBi.instance.getRenderManager().roundedRectangle(startPositionX, this.position.y + 1.5f, boundsWidth, 2, 1, ColorUtil.withAlpha(getTheme().getFirstColor(), Math.min(70, opacity)));
         }
 
-        RenderUtil.roundedRectangle(startPositionX - grabberWidth / 2f, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2.0f, ColorUtil.withAlpha(getTheme().getFirstColor(), opacity));
+        YolBi.instance.getRenderManager().roundedRectangle(startPositionX - grabberWidth / 2f, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2.0f, ColorUtil.withAlpha(getTheme().getFirstColor(), opacity));
 
         if (percentage1 != percentage2) {
-            RenderUtil.roundedRectangle(endPositionX - grabberWidth / 2f, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2.0f, ColorUtil.withAlpha(getTheme().getFirstColor(), opacity));
+            YolBi.instance.getRenderManager().roundedRectangle(endPositionX - grabberWidth / 2f, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2.0f, ColorUtil.withAlpha(getTheme().getFirstColor(), opacity));
         }
 
         stopWatch.reset();
@@ -191,8 +186,8 @@ public class BoundsNumberValueComponent extends ValueComponent {
         final double startPositionX = selector1 + renderPercentage1 * 100;
         final double endPositionX = selector2 + renderPercentage2 * 100;
         final Color color = ColorUtil.withAlpha(getTheme().getFirstColor(), opacity);
-        RenderUtil.roundedRectangle(startPositionX - grabberWidth / 2.0F, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2f, color);
-        RenderUtil.roundedRectangle(endPositionX - grabberWidth / 2.0F, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2f, color);
+        YolBi.instance.getRenderManager().roundedRectangle(startPositionX - grabberWidth / 2.0F, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2f, color);
+        YolBi.instance.getRenderManager().roundedRectangle(endPositionX - grabberWidth / 2.0F, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2f, color);
     }
 
     @Override

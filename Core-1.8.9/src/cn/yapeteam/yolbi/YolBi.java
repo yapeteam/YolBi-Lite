@@ -12,7 +12,7 @@ import cn.yapeteam.yolbi.managers.BotManager;
 import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.managers.TargetManager;
-import cn.yapeteam.yolbi.module.ModuleManager;
+import cn.yapeteam.yolbi.module.api.manager.ModuleManager;
 import cn.yapeteam.yolbi.notification.Notification;
 import cn.yapeteam.yolbi.notification.NotificationManager;
 import cn.yapeteam.yolbi.notification.NotificationType;
@@ -97,7 +97,7 @@ public class YolBi {
         instance.eventManager.register(instance.notificationManager);
         instance.eventManager.register(instance.themeManager);
         instance.eventManager.register(ESPUtil.class);
-        instance.moduleManager.load();
+        instance.moduleManager.init();
         try {
             instance.getConfigManager().load();
             WebServer.start();

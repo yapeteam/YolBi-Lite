@@ -1,7 +1,7 @@
 package cn.yapeteam.yolbi.event.impl.player;
 
 import cn.yapeteam.yolbi.event.type.CancellableEvent;
-import cn.yapeteam.yolbi.utils.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

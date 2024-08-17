@@ -1,6 +1,6 @@
 package cn.yapeteam.yolbi.utils.render.shader.base;
 
-import cn.yapeteam.yolbi.utils.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
 import cn.yapeteam.yolbi.utils.render.shader.ShaderUtil;
 import lombok.Getter;
 import net.minecraft.client.gui.ScaledResolution;

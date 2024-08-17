@@ -1,17 +1,11 @@
 package cn.yapeteam.yolbi.ui.standard.components.value.impl;
 
-import com.alan.clients.font.Fonts;
-import com.alan.clients.font.Weight;
-import com.alan.clients.ui.click.standard.components.value.ValueComponent;
-import com.alan.clients.ui.click.standard.screen.Colors;
-import com.alan.clients.util.gui.textbox.TextAlign;
-import com.alan.clients.util.gui.textbox.TextBox;
-import com.alan.clients.util.render.ColorUtil;
-import com.alan.clients.util.vector.Vector2d;
-import com.alan.clients.value.Value;
-import com.alan.clients.value.impl.StringValue;
 
-import java.awt.*;
+import cn.yapeteam.yolbi.module.values.Value;
+import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
+import cn.yapeteam.yolbi.ui.standard.screen.Colors;
+import cn.yapeteam.yolbi.utils.render.ColorUtil;
+import cn.yapeteam.yolbi.utils.vector.Vector2d;
 
 public class StringValueComponent extends ValueComponent {
 

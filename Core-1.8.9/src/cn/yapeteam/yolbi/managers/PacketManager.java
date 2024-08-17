@@ -4,7 +4,7 @@ import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.ymixin.utils.Mapper;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.impl.network.EventFinalPacketSend;
-import cn.yapeteam.yolbi.utils.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
 import io.netty.channel.Channel;
 import io.netty.util.concurrent.GenericFutureListener;
 import net.minecraft.network.INetHandler;

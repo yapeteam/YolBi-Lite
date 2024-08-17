@@ -8,7 +8,7 @@ import cn.yapeteam.yolbi.ui.standard.components.value.impl.BoundsNumberValueComp
 import cn.yapeteam.yolbi.ui.standard.components.value.impl.NumberValueComponent;
 import cn.yapeteam.yolbi.ui.standard.screen.Colors;
 import cn.yapeteam.yolbi.ui.standard.screen.impl.SearchScreen;
-import cn.yapeteam.yolbi.utils.Accessor;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.animation.Animation;
 import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.vector.Vector2d;

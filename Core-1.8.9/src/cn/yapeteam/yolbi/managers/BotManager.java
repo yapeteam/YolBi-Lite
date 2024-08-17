@@ -4,8 +4,7 @@ import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventLoadWorld;
 import cn.yapeteam.yolbi.event.impl.game.EventTick;
 import cn.yapeteam.yolbi.module.impl.combat.AntiBot;
-import cn.yapeteam.yolbi.utils.IMinecraft;
-import net.minecraft.client.network.NetworkPlayerInfo;
+import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 

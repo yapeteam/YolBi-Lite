@@ -1,6 +1,6 @@
 package cn.yapeteam.yolbi.utils.render.shader.base;
 
-import cn.yapeteam.yolbi.utils.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.shader.Framebuffer;

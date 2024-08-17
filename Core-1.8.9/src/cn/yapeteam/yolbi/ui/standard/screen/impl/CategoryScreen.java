@@ -5,7 +5,7 @@ import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.standard.components.ModuleComponent;
 import cn.yapeteam.yolbi.ui.standard.screen.Screen;
-import cn.yapeteam.yolbi.utils.Accessor;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.vector.Vector2d;
 import lombok.Getter;
 import lombok.Setter;
