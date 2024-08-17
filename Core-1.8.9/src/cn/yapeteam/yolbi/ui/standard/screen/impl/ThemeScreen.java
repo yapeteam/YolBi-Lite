@@ -1,20 +1,16 @@
 package cn.yapeteam.yolbi.ui.standard.screen.impl;
 
-import com.alan.clients.Client;
-import com.alan.clients.font.Fonts;
-import com.alan.clients.font.Weight;
-import com.alan.clients.ui.click.standard.components.theme.ThemeComponent;
-import com.alan.clients.ui.click.standard.components.theme.ThemeKeyColorComponent;
-import com.alan.clients.ui.click.standard.screen.Screen;
-import com.alan.clients.ui.theme.Themes;
-import com.alan.clients.util.Accessor;
-import com.alan.clients.util.gui.GUIUtil;
-import com.alan.clients.util.gui.ScrollUtil;
-import com.alan.clients.util.localization.Localization;
-import com.alan.clients.util.vector.Vector2d;
-import com.alan.clients.util.vector.Vector2f;
 
-import java.awt.*;
+import cn.yapeteam.yolbi.font.Fonts;
+import cn.yapeteam.yolbi.font.Weight;
+import cn.yapeteam.yolbi.ui.standard.components.theme.ThemeComponent;
+import cn.yapeteam.yolbi.ui.standard.components.theme.ThemeKeyColorComponent;
+import cn.yapeteam.yolbi.ui.standard.screen.Screen;
+import cn.yapeteam.yolbi.ui.theme.Themes;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
+import cn.yapeteam.yolbi.utils.vector.Vector2d;
+import cn.yapeteam.yolbi.utils.vector.Vector2f;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
