@@ -7,7 +7,7 @@ import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.Category;
 import cn.yapeteam.yolbi.module.values.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.values.impl.NumberValue;
-import cn.yapeteam.yolbi.ui.YolbiClickGui;
+import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import lombok.Getter;
 import org.lwjgl.input.Keyboard;
 
@@ -27,13 +27,13 @@ public class ClickUI extends Module {
     }
 
     @Getter
-    private YolbiClickGui screen = null;
+    private RiseClickGUI screen = null;
 
     @Override
     protected void onEnable() {
         if (ReflectionManager.hasOptifine && mc.gameSettings.ofFastRender)
             blur.setValue(false);
-        if (screen == null) screen = new YolbiClickGui();
+        if (screen == null) screen = new RiseClickGUI();
         mc.displayGuiScreen(screen);
     }
 

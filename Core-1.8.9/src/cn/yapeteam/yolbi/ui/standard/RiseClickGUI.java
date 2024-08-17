@@ -3,7 +3,10 @@ package cn.yapeteam.yolbi.ui.standard;
 
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
+import cn.yapeteam.yolbi.event.impl.render.EventAlpha;
+import cn.yapeteam.yolbi.layer.Layer;
 import cn.yapeteam.yolbi.module.Category;
+import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.ui.standard.components.ModuleComponent;
 import cn.yapeteam.yolbi.ui.standard.components.category.SidebarCategory;
 import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
@@ -15,6 +18,9 @@ import cn.yapeteam.yolbi.ui.standard.screen.Screen;
 import cn.yapeteam.yolbi.ui.standard.screen.impl.SearchScreen;
 import cn.yapeteam.yolbi.ui.standard.screen.impl.ThemeScreen;
 import cn.yapeteam.yolbi.utils.Accessor;
+import cn.yapeteam.yolbi.utils.IMinecraft;
+import cn.yapeteam.yolbi.utils.StopWatch;
+import cn.yapeteam.yolbi.utils.ThreadAccess;
 import cn.yapeteam.yolbi.utils.animation.Animation;
 import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
@@ -30,14 +36,15 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
-import sun.plugin.javascript.navig4.Layer;
 
 import java.io.IOException;
 import java.text.Collator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import static cn.yapeteam.yolbi.layer.Layers.BLOOM;
+
 @Getter
-public class RiseClickGUI extends GuiScreen implements Accessor, ThreadAccess {
+public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, ThreadAccess {
 
     public Vector2f position = new Vector2f(-1, -1);
     public Vector2f scale = new Vector2f(320 * 1.3f, 260 * 1.3f);
@@ -70,9 +77,8 @@ public class RiseClickGUI extends GuiScreen implements Accessor, ThreadAccess {
 
     public void rebuildModuleCache() {
         moduleList.clear();
-        if (Client.instance.getPacketLogManager().isPacketLogging() && !YolBi.DEVELOPMENT_SWITCH) return;
 
-        java.util.List<Module> sortedModules = YolBi.instance.getModuleManager().getAll();
+        java.util.List<Module> sortedModules = YolBi.instance.getModuleManager().getModules();
         sortedModules.sort((o1, o2) -> Collator.getInstance().compare(o1.getName(), o2.getName()));
         sortedModules.forEach(module -> moduleList.add(new ModuleComponent(module)));
     }
@@ -83,12 +89,12 @@ public class RiseClickGUI extends GuiScreen implements Accessor, ThreadAccess {
             rebuildModuleCache();
         }
 
-        threadPool.execute(() -> {
+        ThreadAccess.threadPool.execute(() -> {
             round = 12;
             scaleAnimation.reset();
             scaleAnimation.setValue(0);
 
-            ScaledResolution scaledResolution = mc.scaledResolution;
+            ScaledResolution scaledResolution = new ScaledResolution(IMinecraft.mc);
 
             lastScreen = selectedScreen;
             timeInCategory.reset();
@@ -151,7 +157,7 @@ public class RiseClickGUI extends GuiScreen implements Accessor, ThreadAccess {
     }
 
     @Listener
-    public final Listener<AlphaEvent> onAlpha = event -> {
+    public void onAlphaEvent(EventAlpha event) {
         if (animationTime <= 0.99) renderGUI();
     };
 
@@ -165,7 +171,7 @@ public class RiseClickGUI extends GuiScreen implements Accessor, ThreadAccess {
         //Information from gui draw screen to use in this event, we use this event instead of gui draw screen because it allows the clickgui to have an outro animation
         final int mouseX = (int) mouse.x;
         final int mouseY = (int) mouse.y;
-        final float partialTicks = mc.getTimer().renderPartialTicks;
+        final float partialTicks = IMinecraft.mc.getTimer().renderPartialTicks;
 
         /* Handles dragging */
         if (dragging) {
@@ -179,16 +185,16 @@ public class RiseClickGUI extends GuiScreen implements Accessor, ThreadAccess {
             position.y = mouseY + draggingOffsetY;
         }
 
-        opacityAnimation.setEasing(mc.currentScreen == YolBi.instance.getClickGUI() ? Easing.EASE_OUT_EXPO : Easing.LINEAR);
-        opacityAnimation.setDuration(mc.currentScreen == YolBi.instance.getClickGUI() ? 300 : 100);
-        opacityAnimation.run(mc.currentScreen == YolBi.instance.getClickGUI() ? 1 : 0);
+        opacityAnimation.setEasing(IMinecraft.mc.currentScreen == YolBi.instance.getClickGUI() ? Easing.EASE_OUT_EXPO : Easing.LINEAR);
+        opacityAnimation.setDuration(IMinecraft.mc.currentScreen == YolBi.instance.getClickGUI() ? 300 : 100);
+        opacityAnimation.run(IMinecraft.mc.currentScreen == YolBi.instance.getClickGUI() ? 1 : 0);
         opacity = opacityAnimation.getValue();
 
-        scaleAnimation.setEasing(mc.currentScreen == YolBi.instance.getClickGUI() ? Easing.EASE_OUT_EXPO : Easing.LINEAR);
-        scaleAnimation.run(mc.currentScreen == YolBi.instance.getClickGUI() ? 1 : 0);
+        scaleAnimation.setEasing(IMinecraft.mc.currentScreen == YolBi.instance.getClickGUI() ? Easing.EASE_OUT_EXPO : Easing.LINEAR);
+        scaleAnimation.run(IMinecraft.mc.currentScreen == YolBi.instance.getClickGUI() ? 1 : 0);
         animationTime = scaleAnimation.getValue();
 
-        if (mc.currentScreen == YolBi.instance.getClickGUI() && animationTime == 0) animationTime = 0.01;
+        if (IMinecraft.mc.currentScreen == YolBi.instance.getClickGUI() && animationTime == 0) animationTime = 0.01;
 
         // Makes it not render the ClickGUI if it's animation is 0
         if (animationTime == 0) {

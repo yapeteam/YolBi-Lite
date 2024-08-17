@@ -1,23 +1,15 @@
 package cn.yapeteam.yolbi.ui.standard.components.category;
 
-import com.alan.clients.Client;
-import com.alan.clients.font.Fonts;
-import com.alan.clients.font.Weight;
-import com.alan.clients.module.api.Category;
-import com.alan.clients.ui.click.standard.RiseClickGUI;
-import com.alan.clients.ui.click.standard.screen.Screen;
-import com.alan.clients.util.Accessor;
-import com.alan.clients.util.animation.Animation;
-import com.alan.clients.util.gui.GUIUtil;
-import com.alan.clients.util.localization.Localization;
-import com.alan.clients.util.render.ColorUtil;
-import com.alan.clients.util.render.RenderUtil;
-import com.alan.clients.util.vector.Vector2d;
+
+import cn.yapeteam.yolbi.module.Category;
+import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
+import cn.yapeteam.yolbi.utils.Accessor;
+import cn.yapeteam.yolbi.utils.animation.Animation;
+import cn.yapeteam.yolbi.utils.render.ColorUtil;
+import cn.yapeteam.yolbi.utils.vector.Vector2d;
 import net.minecraft.client.renderer.GlStateManager;
 
-import java.awt.*;
-
-import static com.alan.clients.util.animation.Easing.LINEAR;
+import static cn.yapeteam.yolbi.utils.animation.Easing.LINEAR;
 
 public final class CategoryComponent implements Accessor {
 

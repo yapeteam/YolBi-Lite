@@ -16,7 +16,6 @@ public interface RiseShaders {
     RGQShader RGQ_SHADER = new RGQShader();
     ROQShader ROQ_SHADER = new ROQShader();
     ROGQShader ROGQ_SHADER = new ROGQShader();
-    RiseShader MAIN_MENU_SHADER = new MainMenuBackgroundShader();
     RiseShader BAW_SHADER = new BAWShader();
     RGQTestShader RGQ_SHADER_TEST = new RGQTestShader();
 
