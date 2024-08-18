@@ -27,11 +27,11 @@ public class ModulesHttpHandler implements HttpHandler {
             for (Module module : YolBi.instance.getModuleManager().getAll()) {
                 if (module.getModuleInfo().category().toString().equalsIgnoreCase(category)){
                     JsonObject moduleJson = new JsonObject();
-                    moduleJson.addProperty("name", module.getName());
+                    moduleJson.addProperty("name", module.getModuleInfo().name());
                     moduleJson.addProperty("description", module.getModuleInfo().description());
                     moduleJson.addProperty("Enabled",module.isEnabled());
-                    Logger.info("Module found" + module.getName());
-                    response.add(module.getName(), moduleJson);
+                    Logger.info("Module found" + module.getModuleInfo().name());
+                    response.add(module.getModuleInfo().name(), moduleJson);
                 }
             }
 

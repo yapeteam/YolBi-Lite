@@ -51,7 +51,7 @@ public abstract class Module implements Accessor, ThreadAccess, Toggleable, Bind
 
     @Override
     public String getName() {
-        return displayName;
+        return moduleInfo.name();
     }
 
     public void onKey() {
