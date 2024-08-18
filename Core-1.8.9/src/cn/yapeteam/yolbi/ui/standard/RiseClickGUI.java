@@ -1,6 +1,5 @@
 package cn.yapeteam.yolbi.ui.standard;
 
-
 import cn.yapeteam.ymixin.annotations.Super;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
@@ -25,7 +24,6 @@ import cn.yapeteam.yolbi.utils.StopWatch;
 import cn.yapeteam.yolbi.utils.animation.Animation;
 import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
-import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
 import cn.yapeteam.yolbi.utils.interfaces.ThreadAccess;
 import cn.yapeteam.yolbi.utils.render.GuiUtil;
 import cn.yapeteam.yolbi.utils.render.shader.base.ShaderRenderType;
@@ -48,7 +46,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import static cn.yapeteam.yolbi.layer.Layers.BLOOM;
 
 @Getter
-public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, ThreadAccess {
+public class RiseClickGUI extends GuiScreen implements Accessor, ThreadAccess {
 
     public Vector2f position = new Vector2f(-1, -1);
     public Vector2f scale = new Vector2f(320 * 1.3f, 260 * 1.3f);
@@ -94,12 +92,11 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
             rebuildModuleCache();
         }
 
-        //ThreadAccess.threadPool.execute(() -> {
         round = 12;
         scaleAnimation.reset();
         scaleAnimation.setValue(0);
 
-        ScaledResolution scaledResolution = new ScaledResolution(IMinecraft.mc);
+        ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
 
         lastScreen = selectedScreen;
         timeInCategory.reset();
@@ -125,7 +122,8 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
                 }
             });
         });
-        //});
+
+//        YolBi.instance.getNetworkManager().getCommunication().write(new ClientCommunityPopulateRequest());
     }
 
     @Super
@@ -260,12 +258,6 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
         }
 
         sidebar.preRenderClickGUI();
-
-        // for (int i = 0; i <= 8; i++) {
-        //     double radius = i * 50;
-        //     RenderManager.circle(position.x + sidebar.sidebarWidth - radius / 2, position.y + scale.y / 2 - radius / 2,
-        //             radius, ColorUtil.withAlpha(getTheme().getFirstColor(), 1));
-        // }
 
         /* Sidebar */
         sidebar.renderSidebar(mouseX, mouseY);

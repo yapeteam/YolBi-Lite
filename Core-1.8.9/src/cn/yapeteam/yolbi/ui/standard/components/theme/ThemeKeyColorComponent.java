@@ -10,7 +10,6 @@ import cn.yapeteam.yolbi.utils.render.ColorUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector3d;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.util.MathHelper;
 
 import java.awt.*;
 
@@ -30,7 +29,7 @@ public class ThemeKeyColorComponent implements Accessor {
         RenderManager.roundedRectangle(x + 0.5, y + 0.5, width - 1, 16, 4, color.getColor());
 
         RenderManager.roundedRectangle(x, y, width, 17, 5, new Color(25, 25, 25,
-                MathHelper.clamp_int((int) ((1 - dimAnimation.getValue()) * 128), 0, 255)));
+                (int) ((1 - dimAnimation.getValue()) * 128)));
 
         getLayer(BLOOM).add(() -> {
             RenderManager.roundedRectangle(x, y, width, 17, 5, new Color(18, 21, 30,

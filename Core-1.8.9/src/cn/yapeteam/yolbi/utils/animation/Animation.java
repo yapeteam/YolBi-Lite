@@ -6,13 +6,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Animation {
+
     private Easing easing;
     private long duration;
     private long millis;
     private long startTime;
 
     private double startValue;
-    private double destinationValue = Double.NaN;
+    private double destinationValue;
     private double value;
     private boolean finished;
 
@@ -27,17 +28,16 @@ public class Animation {
      *
      * @param destinationValue the value that the animation is going to reach
      */
-    public double animate(double destinationValue) {
+    public void run(final double destinationValue) {
         this.millis = System.currentTimeMillis();
         if (this.destinationValue != destinationValue) {
-            if (!Double.isNaN(this.destinationValue))
-                this.reset();
             this.destinationValue = destinationValue;
+            this.reset();
         } else {
             this.finished = this.millis - this.duration > this.startTime;
             if (this.finished) {
                 this.value = destinationValue;
-                return this.value;
+                return;
             }
         }
 
@@ -47,7 +47,6 @@ public class Animation {
         } else {
             this.value = this.startValue + (destinationValue - this.startValue) * result;
         }
-        return this.value;
     }
 
     /**
@@ -66,9 +65,5 @@ public class Animation {
         this.startTime = System.currentTimeMillis();
         this.startValue = value;
         this.finished = false;
-    }
-
-    public void run(double i) {
-        animate(i);
     }
 }

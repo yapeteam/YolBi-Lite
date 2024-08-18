@@ -62,9 +62,9 @@ public class ThemeScreen implements Screen, Accessor {
         final double themeWidth = (scale.getX() - sidebar - 29) / 3D;
         final double colorWidth = (scale.getX() - sidebar - 43) / 5D;
 
-        Fonts.ICONS_2.get(28).draw("4",
-                position.getX() + sidebar + 14, position.getY() + 16 + scrollUtil.getScroll(), -1);
-        Fonts.MAIN.get(16, Weight.REGULAR).drawRight("You can click on a color to filter by it. Click again to reset",
+//        FontManager.getIconsThree(28).drawString("4",
+//                position.getX() + sidebar + 14, position.getY() + 16 + scrollUtil.getScroll(), -1);
+        Fonts.MAIN.get(16, Weight.REGULAR).drawRight("You can click on a color to filter by it. Click again to reset.",
                 position.getX() + scale.getX() - 20, position.getY() + 20 + scrollUtil.getScroll(), new Color(255, 255, 255, 128).getRGB());
 
         // Draw key colors
@@ -117,7 +117,6 @@ public class ThemeScreen implements Screen, Accessor {
             }
         }
     }
-
     private void sortThemes() {
         this.visibleThemes.clear();
 
@@ -131,9 +130,10 @@ public class ThemeScreen implements Screen, Accessor {
             if (theme.getActiveTheme().getKeyColors().contains(this.selectedColor.getColor())) {
                 this.visibleThemes.add(theme);
                 theme.getOpacityAnimation().run(255);
-            } else {
-                theme.getOpacityAnimation().run(0);
             }
+//            else {
+//                theme.getOpacityAnimation().run(0);
+//            }
         }
     }
 

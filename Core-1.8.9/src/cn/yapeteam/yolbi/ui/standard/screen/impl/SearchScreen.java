@@ -146,10 +146,9 @@ public final class SearchScreen implements Screen, Accessor {
 
         for (String word : adaptedSearch) {
             for (final ModuleComponent module : YolBi.instance.getClickGUI().getModuleList()) {
-                String moduleName = module.getModule().getModuleInfo().name().replaceAll(" ", "").toLowerCase();
-                String searchQuery = search.replaceAll(" ", "").toLowerCase();
-                if (moduleName.contains(searchQuery)) {
-                    relevantModules.add(module);
+                if (module.getModule().getDisplayName().toLowerCase().replaceAll(" ", "")
+                        .contains(word)) {
+                    if (!relevantModules.contains(module)) relevantModules.add(module);
                 }
             }
         }

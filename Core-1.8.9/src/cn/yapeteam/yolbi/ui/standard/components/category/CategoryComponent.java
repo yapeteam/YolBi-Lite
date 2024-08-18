@@ -52,12 +52,8 @@ public final class CategoryComponent implements Accessor {
 
         double scale = 0.5;
         GlStateManager.pushMatrix();
-//        GlStateManager.translate(x, y, 0);
-//        GlStateManager.scale(scale, scale, 1);
 
-        /* Draws selection */
-        //RenderUtil.roundedRectangle(x + 1.5, y - 6.5, width + 9, 17, 6,
-        //     ColorUtil.withAlpha(getTheme().getAccentColor(new Vector2d(0, y / 5D)), (int) (Math.min(animation.getValue(), opacity))).darker());
+        // draws selection
 
         RenderManager.roundedRectangle(x, y - 5.5, width + 8, 15, 5,
                 ColorUtil.withAlpha(getTheme().getAccentColor(new Vector2d(0, y / 5D)), (int) (Math.min(animation.getValue(), opacity))).darker());
@@ -77,7 +73,7 @@ public final class CategoryComponent implements Accessor {
     public void click(final float mouseX, final float mouseY, final int button) {
         final boolean left = button == 0;
         if (GuiUtil.mouseOver(x - 11, y - 5, 70, 22, mouseX, mouseY) && left) {
-            this.getClickGUI().switchScreen(this.category.getClickGUIScreen());
+            this.getClickGUI().switchScreen(this.category);
             down = true;
         }
     }
