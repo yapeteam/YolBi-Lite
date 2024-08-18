@@ -6,12 +6,12 @@ import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import cn.yapeteam.yolbi.event.impl.render.EventRender3D;
 import cn.yapeteam.yolbi.event.impl.render.EventRenderGUI;
-import cn.yapeteam.yolbi.ui.ingame.GuiIngameCache;
 import cn.yapeteam.yolbi.utils.render.shader.base.RiseShader;
 import cn.yapeteam.yolbi.utils.render.shader.base.ShaderRenderType;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.renderer.GlStateManager;
 
 import java.util.LinkedHashMap;
@@ -51,7 +51,8 @@ public class LayerManager {
 
     @Listener
     public void onRender2D(EventRender2D eventRender2D){
-        GuiIngameCache.renderGameOverlay(0);
+        GuiIngame guiIngame = Minecraft.getMinecraft().ingameGUI;
+        guiIngame.renderGameOverlay(0);
         render(ShaderRenderType.OVERLAY);
     };
 
