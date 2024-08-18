@@ -3,11 +3,12 @@ package cn.yapeteam.yolbi.module.api.manager;
 
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.module.Module;
+import cn.yapeteam.yolbi.module.impl.render.ClickGUI;
+import cn.yapeteam.yolbi.module.impl.render.Interface;
 import cn.yapeteam.yolbi.ui.standard.components.ModuleComponent;
 import cn.yapeteam.yolbi.utils.AdaptiveMap;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -28,6 +29,8 @@ public final class ModuleManager {
     public void init() {
         moduleMap = new AdaptiveMap<>();
 
+        this.put(Interface.class,new Interface());
+        this.put(ClickGUI.class,new ClickGUI());
 
         // Automatic initializations
         this.getAll().stream().filter(module -> module.getModuleInfo().autoEnabled()).forEach(module -> module.setEnabled(true));

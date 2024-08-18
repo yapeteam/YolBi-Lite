@@ -45,7 +45,6 @@ public abstract class Module implements Accessor, ThreadAccess, Toggleable, Bind
 
     public Module(final ModuleInfo info) {
         this.moduleInfo = info;
-
         this.displayName = this.moduleInfo.name();
         this.key = getModuleInfo().keyBind();
     }

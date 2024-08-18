@@ -2,6 +2,7 @@ package cn.yapeteam.yolbi;
 
 import cn.yapeteam.loader.VersionInfo;
 import cn.yapeteam.loader.logger.Logger;
+import cn.yapeteam.yolbi.bindable.BindableManager;
 import cn.yapeteam.yolbi.config.ConfigManager;
 import cn.yapeteam.yolbi.event.EventManager;
 import cn.yapeteam.yolbi.event.impl.client.EventClientShutdown;
@@ -38,6 +39,7 @@ public class YolBi implements IMinecraft {
     private LayerManager layerManager;
     private ThemeManager themeManager;
     private RiseClickGUI clickGUI;
+    private BindableManager bindableManager;
 
     @Getter
     private static final long startMillisTime = System.currentTimeMillis();
@@ -64,6 +66,7 @@ public class YolBi implements IMinecraft {
             instance.rotationManager = new RotationManager();
         mc.addScheduledTask(() -> instance.clickGUI = new RiseClickGUI());
         mc.addScheduledTask(() -> instance.layerManager = new LayerManager());
+        instance.bindableManager = new BindableManager();
         instance.configManager = new ConfigManager();
         instance.moduleManager = new ModuleManager();
         instance.botManager = new BotManager();
@@ -77,6 +80,7 @@ public class YolBi implements IMinecraft {
         instance.eventManager.register(instance.rotationManager);
         instance.eventManager.register(instance.themeManager);
         instance.moduleManager.init();
+        instance.bindableManager.init();
         try {
             instance.getConfigManager().load();
             WebServer.start();
