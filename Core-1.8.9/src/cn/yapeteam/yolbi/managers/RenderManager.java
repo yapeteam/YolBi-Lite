@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
@@ -136,6 +137,7 @@ public class RenderManager {
     public void vertex(final double x, final double y) {
         GL11.glVertex2d(x, y);
     }
+
     public void rectangle(final double x, final double y, final double width, final double height) {
         rectangle(x, y, width, height, null);
     }
@@ -326,6 +328,7 @@ public class RenderManager {
     public void circle(final double x, final double y, final double radius, final boolean filled, final Color color) {
         polygon(x, y, radius, 360, filled, color);
     }
+
     public void circle(final double x, final double y, final double radius, final double sides, final boolean filled, final Color color) {
         polygon(x, y, radius, sides, filled, color);
     }
@@ -341,6 +344,7 @@ public class RenderManager {
     public void circle(final double x, final double y, final double radius) {
         polygon(x, y, radius, 360);
     }
+
     public void circleCentered(double x, double y, final double radius, final boolean filled, final Color color) {
         x -= radius / 2;
         y -= radius / 2;
@@ -1344,7 +1348,7 @@ public class RenderManager {
         float f1 = 0.016666668F * f;
         GlStateManager.scale(-f1, -f1, f1);
         disableGlCap(GL_LIGHTING, GL_DEPTH_TEST, GL_ALPHA_TEST);
-        enableGlCap(GL_BLEND,GL_TEXTURE_2D);
+        enableGlCap(GL_BLEND, GL_TEXTURE_2D);
         GlStateManager.shadeModel(7425);
         GL11.glRotated(rotate, 0.0, 0.0, 1.0);
         float w = 50 * scale, h = 50 * scale;
@@ -1353,5 +1357,16 @@ public class RenderManager {
         resetCaps();
         glColor4f(1F, 1F, 1F, 1F);
         GlStateManager.popMatrix();
+    }
+
+    public static Framebuffer createFrameBuffer(final Framebuffer framebuffer) {
+        if (framebuffer == null || framebuffer.framebufferWidth != mc.displayWidth || framebuffer.framebufferHeight != mc.displayHeight) {
+            if (framebuffer != null) {
+                framebuffer.deleteFramebuffer();
+            }
+
+            return new Framebuffer(mc.displayWidth, mc.displayHeight, false);
+        }
+        return framebuffer;
     }
 }
