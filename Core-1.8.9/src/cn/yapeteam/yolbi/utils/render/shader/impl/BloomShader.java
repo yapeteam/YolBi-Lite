@@ -7,9 +7,7 @@ import cn.yapeteam.yolbi.utils.render.shader.base.ShaderUniforms;
 import cn.yapeteam.yolbi.utils.render.shader.kernel.GaussianKernel;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.shader.Framebuffer;
-import org.jetbrains.annotations.NotNull;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -34,8 +32,8 @@ public class BloomShader extends RiseShader {
 
         switch (type) {
             case CAMERA: {
-                RendererLivingEntity.NAME_TAG_RANGE = 0;
-                RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 0;
+                // RendererLivingEntity.NAME_TAG_RANGE = 0;
+                // RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 0;
 
                 this.inputFramebuffer.bindFramebuffer(true);
                 for (Runnable runnable1 : runnable) {
@@ -43,8 +41,8 @@ public class BloomShader extends RiseShader {
                 }
                 mc.getFramebuffer().bindFramebuffer(true);
 
-                RendererLivingEntity.NAME_TAG_RANGE = 64;
-                RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 32;
+                // RendererLivingEntity.NAME_TAG_RANGE = 64;
+                // RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 32;
 
                 RenderHelper.disableStandardItemLighting();
                 mc.entityRenderer.disableLightmap();

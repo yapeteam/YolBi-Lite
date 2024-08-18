@@ -1,6 +1,7 @@
 package cn.yapeteam.yolbi.ui.standard.components;
 
 
+import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.font.Fonts;
 import cn.yapeteam.yolbi.font.Weight;
 import cn.yapeteam.yolbi.managers.RenderManager;
@@ -26,7 +27,6 @@ import java.util.ArrayList;
 
 @Getter
 public class ModuleComponent implements Accessor {
-
     public Module module;
     public Vector2f scale = getClickGUI().getModuleDefaultScale();
     public boolean expanded;
@@ -102,10 +102,11 @@ public class ModuleComponent implements Accessor {
                     continue;
                 }
 
-                if (valueComponent.getValue().getInternalHideIf() != null && valueComponent.getValue().getInternalHideIf().getAsBoolean()) {
+                if (valueComponent.getValue() != null && valueComponent.getValue().getInternalHideIf() != null && valueComponent.getValue().getInternalHideIf().getAsBoolean()) {
                     continue;
                 }
 
+                if (position == null) return;
                 valueComponent.setOpacity(valueComponent.position == null ? 0 : valueComponent.position.y < position.y + opening.getValue() + 15 ? (int) settingOpacity.getValue() : 0);
                 valueComponent.setOpacity(valueComponent.getValue().getHideIf() == null ? valueComponent.getOpacity() : Math.max(valueComponent.getOpacity() - 40, 0));
 
@@ -130,7 +131,6 @@ public class ModuleComponent implements Accessor {
 
         settingOpacity.setDuration(expanded ? opening.getDuration() / 2 : opening.getDuration() / 3);
         settingOpacity.run(expanded ? 255 : 0);
-
     }
 
     public void key(final char typedChar, final int keyCode) {
@@ -143,10 +143,11 @@ public class ModuleComponent implements Accessor {
             }
         }
 
-//        final boolean overModule = GuiUtil.mouseOver(position.x, position.y, scale.x, getClickGUI().moduleDefaultScale.getY() - 3, Mouse.getMouse().x, Mouse.getMouse().y);
-//        if (overModule) {
-//            module.setKeyCode(keyCode);
-//        }
+        RiseClickGUI screen = YolBi.instance.getClickGUI();
+        final boolean overModule = GuiUtil.mouseOver(position.x, position.y, scale.x, getClickGUI().moduleDefaultScale.getY() - 3, screen.mouse.x, screen.mouse.y);
+        if (overModule) {
+            module.setKey(keyCode);
+        }
     }
 
     public void click(final int mouseX, final int mouseY, final int mouseButton) {
@@ -172,7 +173,7 @@ public class ModuleComponent implements Accessor {
                 if (overClickGUI) {
                     this.module.toggle();
                 }
-            } else if (right && this.module.getValues().size() != 0 && valueSize != 0) {
+            } else if (right && !this.module.getValues().isEmpty() && valueSize != 0) {
                 this.expanded = !this.expanded;
 
                 for (final ValueComponent valueComponent : this.getValueList()) {

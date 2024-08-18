@@ -17,10 +17,10 @@ import net.minecraft.client.renderer.GlStateManager;
 import java.util.LinkedHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Getter
 public class LayerManager {
-    @Getter
     private final LinkedHashMap<Integer, LinkedHashMap<Layers, Layer>> layers = new LinkedHashMap<>();
-    private final int maxLayers = 3;
+    private static final int maxLayers = 3;
 
     @SneakyThrows
     public LayerManager() {
@@ -47,31 +47,29 @@ public class LayerManager {
     @Listener
     public void onRenderGUI(EventRenderGUI eventRender2D){
         render(ShaderRenderType.OVERLAY);
-    };
+    }
 
     @Listener
     public void onRender2D(EventRender2D eventRender2D){
         GuiIngame guiIngame = Minecraft.getMinecraft().ingameGUI;
         guiIngame.renderGameOverlay(0);
         render(ShaderRenderType.OVERLAY);
-    };
+    }
 
     @Listener
     public void onRender3d(EventRender3D eventRender3D){
         render(ShaderRenderType.CAMERA);
-    };
+    }
 
     private void render(ShaderRenderType type) {
         if (YolBi.DEVELOPMENT) {
             AtomicInteger active = new AtomicInteger();
 
-            layers.forEach(((group, layers) -> {
-                layers.values().forEach(layer -> {
-                    if (layer.getShader() != null && !layer.getRunnables().isEmpty()) {
-                        active.getAndIncrement();
-                    }
-                });
-            }));
+            layers.forEach(((group, layers) -> layers.values().forEach(layer -> {
+                if (layer.getShader() != null && !layer.getRunnables().isEmpty()) {
+                    active.getAndIncrement();
+                }
+            })));
 
             if (active.get() > 2 && Minecraft.getMinecraft().currentScreen == null) {
                 System.out.println("To many shader layers rendering " + active.get());

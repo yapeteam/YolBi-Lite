@@ -6,7 +6,6 @@ import cn.yapeteam.yolbi.utils.render.shader.base.ShaderRenderType;
 import cn.yapeteam.yolbi.utils.render.shader.base.ShaderUniforms;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.shader.Framebuffer;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -31,15 +30,15 @@ public class OutlineShader extends RiseShader {
                 this.setActive(!runnable.isEmpty());
 
                 if (this.isActive()) {
-                    RendererLivingEntity.NAME_TAG_RANGE = 0;
-                    RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 0;
+                    // RendererLivingEntity.NAME_TAG_RANGE = 0;
+                    // RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 0;
 
                     this.inputFramebuffer.bindFramebuffer(true);
                     runnable.forEach(Runnable::run);
                     mc.getFramebuffer().bindFramebuffer(true);
 
-                    RendererLivingEntity.NAME_TAG_RANGE = 64;
-                    RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 32;
+                    // RendererLivingEntity.NAME_TAG_RANGE = 64;
+                    // RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 32;
 
                     RenderHelper.disableStandardItemLighting();
                     mc.entityRenderer.disableLightmap();

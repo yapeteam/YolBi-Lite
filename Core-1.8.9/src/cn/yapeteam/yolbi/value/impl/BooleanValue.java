@@ -87,8 +87,7 @@ public class BooleanValue extends Value<Boolean> {
 
         if (this.mode != null && this.getParent() != null) {
             if (((Module) this.getParent()).isEnabled() && this.getValue()) {
-                if (this.getValue()) this.mode.onEnable();
-                else this.mode.onDisable();
+                this.mode.onEnable();
             }
         }
     }

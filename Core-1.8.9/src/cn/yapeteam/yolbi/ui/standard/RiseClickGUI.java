@@ -4,12 +4,13 @@ package cn.yapeteam.yolbi.ui.standard;
 import cn.yapeteam.ymixin.annotations.Super;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
-import cn.yapeteam.yolbi.event.impl.render.EventAlpha;
+import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import cn.yapeteam.yolbi.layer.Layer;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.api.Category;
+import cn.yapeteam.yolbi.module.impl.render.ClickGUI;
 import cn.yapeteam.yolbi.ui.standard.components.ModuleComponent;
 import cn.yapeteam.yolbi.ui.standard.components.category.SidebarCategory;
 import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
@@ -26,7 +27,6 @@ import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
 import cn.yapeteam.yolbi.utils.interfaces.ThreadAccess;
-import cn.yapeteam.yolbi.utils.render.ColorUtil;
 import cn.yapeteam.yolbi.utils.render.GuiUtil;
 import cn.yapeteam.yolbi.utils.render.shader.base.ShaderRenderType;
 import cn.yapeteam.yolbi.utils.render.shader.impl.AlphaShader;
@@ -42,6 +42,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.text.Collator;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static cn.yapeteam.yolbi.layer.Layers.BLOOM;
@@ -93,42 +94,41 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
             rebuildModuleCache();
         }
 
-        ThreadAccess.threadPool.execute(() -> {
-            round = 12;
-            scaleAnimation.reset();
-            scaleAnimation.setValue(0);
+        //ThreadAccess.threadPool.execute(() -> {
+        round = 12;
+        scaleAnimation.reset();
+        scaleAnimation.setValue(0);
 
-            ScaledResolution scaledResolution = new ScaledResolution(IMinecraft.mc);
+        ScaledResolution scaledResolution = new ScaledResolution(IMinecraft.mc);
 
-            lastScreen = selectedScreen;
-            timeInCategory.reset();
-            timeInCategory.setMillis(System.currentTimeMillis() - 150);
+        lastScreen = selectedScreen;
+        timeInCategory.reset();
+        timeInCategory.setMillis(System.currentTimeMillis() - 150);
 
-            Keyboard.enableRepeatEvents(true);
-            stopwatch.reset();
-            selectedScreen.onInit();
+        Keyboard.enableRepeatEvents(true);
+        stopwatch.reset();
+        selectedScreen.onInit();
 
-            if (this.position.x < 0 || this.position.y < 0 ||
-                    this.position.x + this.scale.x > scaledResolution.getScaledWidth() ||
-                    this.position.y + this.scale.y > scaledResolution.getScaledHeight()) {
-                this.position.x = scaledResolution.getScaledWidth() / 2f - this.scale.x / 2;
-                this.position.y = scaledResolution.getScaledHeight() / 2f - this.scale.y / 2;
-            }
+        if (this.position.x < 0 || this.position.y < 0 ||
+                this.position.x + this.scale.x > scaledResolution.getScaledWidth() ||
+                this.position.y + this.scale.y > scaledResolution.getScaledHeight()) {
+            this.position.x = scaledResolution.getScaledWidth() / 2f - this.scale.x / 2;
+            this.position.y = scaledResolution.getScaledHeight() / 2f - this.scale.y / 2;
+        }
 
-            moduleList.forEach(moduleComponent -> {
-                moduleComponent.getValueList().forEach(valueComponent -> {
-                    if (valueComponent instanceof NumberValueComponent) {
-                        ((NumberValueComponent) valueComponent).updateSliders();
-                    } else if (valueComponent instanceof BoundsNumberValueComponent) {
-                        ((BoundsNumberValueComponent) valueComponent).updateSliders();
-                    }
-                });
+        moduleList.forEach(moduleComponent -> {
+            moduleComponent.getValueList().forEach(valueComponent -> {
+                if (valueComponent instanceof NumberValueComponent) {
+                    ((NumberValueComponent) valueComponent).updateSliders();
+                } else if (valueComponent instanceof BoundsNumberValueComponent) {
+                    ((BoundsNumberValueComponent) valueComponent).updateSliders();
+                }
             });
         });
-
-//        YolBi.instance.getNetworkManager().getCommunication().write(new ClientCommunityPopulateRequest());
+        //});
     }
 
+    @Super
     @Override
     public void onGuiClosed() {
         Keyboard.enableRepeatEvents(false);
@@ -162,12 +162,11 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
     }
 
     @Listener
-    public void onAlphaEvent(EventAlpha event) {
+    public void onRender2D(EventRender2D event) {
         if (animationTime <= 0.99) renderGUI();
-    };
+    }
 
     public void renderGUI() {
-
         if (mouse == null) {
             return;
         }
@@ -177,7 +176,7 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
         //Information from gui draw screen to use in this event, we use this event instead of gui draw screen because it allows the clickgui to have an outro animation
         final int mouseX = (int) mouse.x;
         final int mouseY = (int) mouse.y;
-        final float partialTicks = ReflectionManager.Minecraft$getTimer(mc).renderPartialTicks;
+        final float partialTicks = Objects.requireNonNull(ReflectionManager.Minecraft$getTimer(mc)).renderPartialTicks;
 
         /* Handles dragging */
         if (dragging) {
@@ -191,20 +190,20 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
             position.y = mouseY + draggingOffsetY;
         }
 
-        opacityAnimation.setEasing(IMinecraft.mc.currentScreen == YolBi.instance.getClickGUI() ? Easing.EASE_OUT_EXPO : Easing.LINEAR);
-        opacityAnimation.setDuration(IMinecraft.mc.currentScreen == YolBi.instance.getClickGUI() ? 300 : 100);
-        opacityAnimation.run(IMinecraft.mc.currentScreen == YolBi.instance.getClickGUI() ? 1 : 0);
+        opacityAnimation.setEasing(mc.currentScreen == YolBi.instance.getClickGUI() ? Easing.EASE_OUT_EXPO : Easing.LINEAR);
+        opacityAnimation.setDuration(mc.currentScreen == YolBi.instance.getClickGUI() ? 300 : 100);
+        opacityAnimation.run(mc.currentScreen == YolBi.instance.getClickGUI() ? 1 : 0);
         opacity = opacityAnimation.getValue();
 
-        scaleAnimation.setEasing(IMinecraft.mc.currentScreen == YolBi.instance.getClickGUI() ? Easing.EASE_OUT_EXPO : Easing.LINEAR);
-        scaleAnimation.run(IMinecraft.mc.currentScreen == YolBi.instance.getClickGUI() ? 1 : 0);
+        scaleAnimation.setEasing(mc.currentScreen == YolBi.instance.getClickGUI() ? Easing.EASE_OUT_EXPO : Easing.LINEAR);
+        scaleAnimation.run(mc.currentScreen == YolBi.instance.getClickGUI() ? 1 : 0);
         animationTime = scaleAnimation.getValue();
 
-        if (IMinecraft.mc.currentScreen == YolBi.instance.getClickGUI() && animationTime == 0) animationTime = 0.01;
+        if (mc.currentScreen == YolBi.instance.getClickGUI() && animationTime == 0) animationTime = 0.01;
 
-//         Makes it not render the ClickGUI if it's animation is 0
+        // Makes it not render the ClickGUI if it's animation is 0
         if (animationTime == 0) {
-            YolBi.instance.getModuleManager().get("Clickgui").setEnabled(false);
+            YolBi.instance.getModuleManager().get(ClickGUI.class).setEnabled(false);
             return;
         }
 
@@ -262,11 +261,11 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
 
         sidebar.preRenderClickGUI();
 
-        for (int i = 0; i <= 8; i++) {
-            double radius = i * 50;
-            RenderManager.circle(position.x + sidebar.sidebarWidth - radius / 2, position.y + scale.y / 2 - radius / 2,
-                    radius, ColorUtil.withAlpha(getTheme().getFirstColor(), 1));
-        }
+        // for (int i = 0; i <= 8; i++) {
+        //     double radius = i * 50;
+        //     RenderManager.circle(position.x + sidebar.sidebarWidth - radius / 2, position.y + scale.y / 2 - radius / 2,
+        //             radius, ColorUtil.withAlpha(getTheme().getFirstColor(), 1));
+        // }
 
         /* Sidebar */
         sidebar.renderSidebar(mouseX, mouseY);
@@ -394,4 +393,3 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
         return false;
     }
 }
-

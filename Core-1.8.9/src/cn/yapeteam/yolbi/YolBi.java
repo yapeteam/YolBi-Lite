@@ -54,6 +54,20 @@ public class YolBi implements IMinecraft {
         return rotationManager;
     }
 
+    public RiseClickGUI getClickGUI() {
+        if (clickGUI == null)
+            clickGUI = new RiseClickGUI();
+        return clickGUI;
+    }
+
+    public LayerManager getLayerManager() {
+        if (layerManager == null) {
+            layerManager = new LayerManager();
+            eventManager.register(layerManager);
+        }
+        return layerManager;
+    }
+
     public static void initialize() {
         if (initialized || instance == null) return;
         initialized = true;
@@ -62,8 +76,6 @@ public class YolBi implements IMinecraft {
             instance.eventManager = new EventManager();
         if (instance.rotationManager == null)
             instance.rotationManager = new RotationManager();
-        mc.addScheduledTask(() -> instance.clickGUI = new RiseClickGUI());
-        mc.addScheduledTask(() -> instance.layerManager = new LayerManager());
         instance.bindableManager = new BindableManager();
         instance.configManager = new ConfigManager();
         instance.moduleManager = new ModuleManager();
@@ -75,8 +87,8 @@ public class YolBi implements IMinecraft {
         instance.eventManager.register(instance.targetManager);
         instance.eventManager.register(instance.rotationManager);
         instance.eventManager.register(instance.themeManager);
-        instance.moduleManager.init();
         instance.bindableManager.init();
+        mc.addScheduledTask(() -> instance.moduleManager.init());
         try {
             instance.getConfigManager().load();
             WebServer.start();

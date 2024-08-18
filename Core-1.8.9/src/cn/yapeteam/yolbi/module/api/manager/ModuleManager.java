@@ -16,12 +16,11 @@ import java.util.List;
  * @author Patrick
  * @since 10/19/2021
  */
+@SuppressWarnings("unchecked")
 public final class ModuleManager {
+    private final List<ModuleComponent> allModuleComponents = new ArrayList<>();
 
-    private List<ModuleComponent> allModuleComponents = new ArrayList<>(),
-            activeModuleComponents = new ArrayList<>();
-
-    private AdaptiveMap<Class<Module>, Module> moduleMap = new AdaptiveMap<>();
+    private AdaptiveMap<Class<? extends Module>, Module> moduleMap = new AdaptiveMap<>();
 
     /**
      * Called on client start
@@ -29,8 +28,8 @@ public final class ModuleManager {
     public void init() {
         moduleMap = new AdaptiveMap<>();
 
-        this.put(Interface.class,new Interface());
-        this.put(ClickGUI.class,new ClickGUI());
+        this.put(Interface.class, new Interface());
+        this.put(ClickGUI.class, new ClickGUI());
 
         // Automatic initializations
         this.getAll().stream().filter(module -> module.getModuleInfo().autoEnabled()).forEach(module -> module.setEnabled(true));
@@ -55,7 +54,7 @@ public final class ModuleManager {
                 .orElse(null);
     }
 
-    public void put(Class clazz, Module module) {
+    public void put(Class<? extends Module> clazz, Module module) {
         this.moduleMap.put(clazz, module);
     }
 
@@ -73,8 +72,8 @@ public final class ModuleManager {
 
     private void updateArraylistCache() {
         allModuleComponents.clear();
-       getAll().stream()
-                .sorted(Comparator.comparingDouble(module -> - module.getName().length()))
+        getAll().stream()
+                .sorted(Comparator.comparingDouble(module -> -module.getName().length()))
                 .forEach(module -> allModuleComponents.add(new ModuleComponent(module)));
     }
 }

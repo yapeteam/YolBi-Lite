@@ -12,6 +12,7 @@ import cn.yapeteam.yolbi.utils.render.ColorUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector3d;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.minecraft.util.MathHelper;
 
 import java.awt.*;
 
@@ -33,10 +34,10 @@ public class ThemeComponent implements Accessor {
     private final Animation selectorAnimation = new Animation(Easing.EASE_OUT_QUINT, 500);
 
     public void draw(double yOffset, double width) {
-        final int alpha = (int) opacityAnimation.getValue();
+        final int alpha = MathHelper.clamp_int((int) opacityAnimation.getValue(), 0, 255);
 
         final boolean active = this.activeTheme.equals(this.getTheme());
-        final Color color = active ? new Color(15, 19, 26, (int) opacityAnimation.getValue()) :
+        final Color color = active ? new Color(15, 19, 26, MathHelper.clamp_int((int) opacityAnimation.getValue(), 0, 255)) :
                 new Color(18, 21, 30, alpha);
 
         final double x = this.xAnimation.getValue();
@@ -68,7 +69,7 @@ public class ThemeComponent implements Accessor {
 
         // Render selector
         selectorAnimation.run(this.activeTheme.equals(getTheme()) ? 255 : 0);
-        int selectorAlpha = (int) Math.min(selectorAnimation.getValue(), alpha);
+        int selectorAlpha = MathHelper.clamp_int((int) Math.min(selectorAnimation.getValue(), alpha), 0, 255);
 
         if (selectorAlpha > 0 && getClickGUI().animationTime > 0.8) {
             getLayer(BLOOM, 3).add(() -> {

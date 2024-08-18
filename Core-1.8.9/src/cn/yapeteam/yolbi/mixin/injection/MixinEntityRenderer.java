@@ -6,14 +6,10 @@ import cn.yapeteam.yolbi.event.impl.player.EventMouseOver;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import cn.yapeteam.yolbi.event.impl.render.EventRender3D;
 import cn.yapeteam.yolbi.event.impl.render.EventRenderGUI;
-import cn.yapeteam.yolbi.managers.RenderManager;
-import cn.yapeteam.yolbi.utils.misc.ObjectStore;
-import cn.yapeteam.yolbi.utils.render.shader.ShaderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
 
 @Mixin(EntityRenderer.class)
@@ -61,16 +57,16 @@ public class MixinEntityRenderer {
         GlStateManager.pushMatrix();
         YolBi.instance.getEventManager().post(new EventRender2D(partialTicks, sr));
         GlStateManager.popMatrix();
-        mc.getFramebuffer().bindFramebuffer(false);
-        Framebuffer framebuffer = (Framebuffer) ObjectStore.objects.get("framebuffer");
-        if (framebuffer == null) {
-            framebuffer = new Framebuffer(1, 1, false);
-            ObjectStore.objects.put("framebuffer", framebuffer);
-        }
-        framebuffer = RenderManager.createFrameBuffer(framebuffer);
-        framebuffer.bindFramebufferTexture();
-        ShaderUtil.drawQuads(sr);
-        GlStateManager.bindTexture(0);
+        //mc.getFramebuffer().bindFramebuffer(false);
+        //Framebuffer framebuffer = (Framebuffer) ObjectStore.objects.get("framebuffer");
+        //if (framebuffer == null) {
+        //    framebuffer = new Framebuffer(1, 1, false);
+        //    ObjectStore.objects.put("framebuffer", framebuffer);
+        //}
+        //framebuffer = RenderManager.createFrameBuffer(framebuffer);
+        //framebuffer.bindFramebufferTexture();
+        //ShaderUtil.drawQuads(sr);
+        //GlStateManager.bindTexture(0);
     }
 
     @Inject(

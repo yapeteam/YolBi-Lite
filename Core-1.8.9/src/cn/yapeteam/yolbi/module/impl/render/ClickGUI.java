@@ -35,7 +35,7 @@ public final class ClickGUI extends Module {
     public void onRender2d(EventRender2D eventRender2D){
         getLayer(REGULAR, 2).add(() -> YolBi.instance.getClickGUI().render());
         getLayer(BLOOM, 3).add(() -> YolBi.instance.getClickGUI().bloom());
-    };
+    }
 
     @Listener
     public void onKey(EventKey event){
@@ -49,6 +49,5 @@ public final class ClickGUI extends Module {
                 this.toggle();
             }
         }
-    };
+    }
 }
-

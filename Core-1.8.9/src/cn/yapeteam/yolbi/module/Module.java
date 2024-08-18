@@ -77,8 +77,6 @@ public abstract class Module implements Accessor, ThreadAccess, Toggleable, Bind
 
         YolBi.instance.getEventManager().register(new EventModuleToggle(this));
 
-//        SoundUtil.toggleSound(enabled);
-
         if (enabled) {
             superEnable();
         } else {
