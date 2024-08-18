@@ -28,6 +28,8 @@ public class ShaderUtil implements IMinecraft {
             return -1;
         }
 
+        Logger.info("Compiling Shader: {}", fragmentResource);
+
         final int fragmentId = GL20.glCreateShader(GL20.GL_FRAGMENT_SHADER);
         final int vertexId = GL20.glCreateShader(GL20.GL_VERTEX_SHADER);
 
@@ -55,7 +57,7 @@ public class ShaderUtil implements IMinecraft {
         if (compiled) return true;
 
         final String shaderLog = GL20.glGetShaderInfoLog(shaderId, 8192);
-        Logger.error("\nError while compiling shader: ");
+        Logger.error("Error while compiling shader: ");
         Logger.error("-------------------------------");
         Logger.error(shaderLog);
         return false;
