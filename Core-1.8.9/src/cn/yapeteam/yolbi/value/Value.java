@@ -28,6 +28,7 @@ public abstract class Value<T> {
     private Toggleable parent;
 
     private Consumer<T> valueChangeConsumer;
+    @Setter
     private T defaultValue;
 
     public Value(final String name, final Module parent, final T defaultValue) {
@@ -76,10 +77,6 @@ public abstract class Value<T> {
     }
 
     public abstract List<Value<?>> getSubValues();
-
-    public void setDefaultValue(T defaultValue) {
-        this.defaultValue = defaultValue;
-    }
 
     public ValueComponent createUIComponent() {
         return null;

@@ -48,7 +48,6 @@ public class ListValueComponent extends ValueComponent {
 
         if (GuiUtil.mouseOver(this.position.x, this.position.y - 3.5f, getClickGUI().width - 70, this.height, mouseX, mouseY)) {
             final int currentIndex = listValue.getModes().indexOf(listValue.getValue());
-
             Object value = null;
             if (left) {
                 if (listValue.getModes().size() <= currentIndex + 1) {

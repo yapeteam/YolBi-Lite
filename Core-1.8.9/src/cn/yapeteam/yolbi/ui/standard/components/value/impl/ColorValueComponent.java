@@ -88,7 +88,7 @@ public class ColorValueComponent extends ValueComponent {
 
             // Hue Selector
             // RenderManager.roundedRectangle(huePickerX, huePickerY + 0.5, 20, getClickGUI().round - 1.5, 2.5F, Color.RED);
-           // RenderManager.roundedRectangle(huePickerX + huePickerWidth - 20, huePickerY + 0.5, 20, getClickGUI().round - 1.5, 2.5F, Color.RED);
+            // RenderManager.roundedRectangle(huePickerX + huePickerWidth - 20, huePickerY + 0.5, 20, getClickGUI().round - 1.5, 2.5F, Color.RED);
 
             RenderManager.rainbowRectangle(huePickerX, huePickerY + 2.5, huePickerWidth, getClickGUI().round - 5);
 

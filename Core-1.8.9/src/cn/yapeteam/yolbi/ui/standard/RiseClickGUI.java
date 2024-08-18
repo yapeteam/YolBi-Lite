@@ -93,6 +93,7 @@ public class RiseClickGUI extends GuiScreen implements Accessor, ThreadAccess {
             rebuildModuleCache();
         }
 
+        width = ((GuiScreen) this).width;
         round = 12;
         scaleAnimation.reset();
         scaleAnimation.setValue(0);
