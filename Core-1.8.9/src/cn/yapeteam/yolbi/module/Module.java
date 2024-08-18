@@ -37,6 +37,7 @@ public abstract class Module implements Accessor, ThreadAccess, Toggleable, Bind
     public Module() {
         if (this.getClass().isAnnotationPresent(ModuleInfo.class)) {
             this.moduleInfo = this.getClass().getAnnotation(ModuleInfo.class);
+            this.displayName = this.moduleInfo.name();
             this.key = getModuleInfo().keyBind();
         } else {
             throw new RuntimeException("ModuleInfo annotation not found on " + this.getClass().getSimpleName());
