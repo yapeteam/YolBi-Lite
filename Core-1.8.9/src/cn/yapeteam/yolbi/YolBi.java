@@ -8,7 +8,6 @@ import cn.yapeteam.yolbi.event.EventManager;
 import cn.yapeteam.yolbi.event.impl.client.EventClientShutdown;
 import cn.yapeteam.yolbi.layer.LayerManager;
 import cn.yapeteam.yolbi.managers.BotManager;
-import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.managers.TargetManager;
 import cn.yapeteam.yolbi.module.api.manager.ModuleManager;
@@ -30,7 +29,6 @@ public class YolBi implements IMinecraft {
     public static boolean DEVELOPMENT = false;
     public static boolean initialized = false;
     private EventManager eventManager;
-    private RenderManager renderManager;
     private ConfigManager configManager;
     private ModuleManager moduleManager;
     private BotManager botManager;
@@ -71,9 +69,7 @@ public class YolBi implements IMinecraft {
         instance.moduleManager = new ModuleManager();
         instance.botManager = new BotManager();
         instance.targetManager = new TargetManager();
-        instance.renderManager = new RenderManager();
         instance.themeManager = new ThemeManager();
-        instance.eventManager.register(instance.renderManager);
         instance.eventManager.register(instance.moduleManager);
         instance.eventManager.register(instance.botManager);
         instance.eventManager.register(instance.targetManager);

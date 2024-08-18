@@ -1,9 +1,9 @@
 package cn.yapeteam.yolbi.ui.standard.components;
 
 
-import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.font.Fonts;
 import cn.yapeteam.yolbi.font.Weight;
+import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
@@ -67,7 +67,7 @@ public class ModuleComponent implements Accessor {
             final RiseClickGUI clickGUI = this.getClickGUI();
 
             // Main module background
-            YolBi.instance.getRenderManager().roundedRectangle(position.x, position.y, scale.x, scale.y, 6, Colors.OVERLAY.get());
+            RenderManager.roundedRectangle(position.x, position.y, scale.x, scale.y, 6, Colors.OVERLAY.get());
             final Color fontColor = Colors.TEXT.getWithAlpha(module.isEnabled() ? 255 : 200);
 
             // Hover animation
@@ -76,7 +76,7 @@ public class ModuleComponent implements Accessor {
             hoverAnimation.run(overModule ? mouseDown ? 35 : 20 : 0);
 
             // Main module background HOVER OVERLAY
-            YolBi.instance.getRenderManager().roundedRectangle(position.x, position.y, scale.x, scale.y, 6, ColorUtil.withAlpha(Color.BLACK, (int) hoverAnimation.getValue()));
+            RenderManager.roundedRectangle(position.x, position.y, scale.x, scale.y, 6, ColorUtil.withAlpha(Color.BLACK, (int) hoverAnimation.getValue()));
 
             // Draw the module's category if the user is searching
             if (clickGUI.getRenderedScreen() instanceof SearchScreen) {

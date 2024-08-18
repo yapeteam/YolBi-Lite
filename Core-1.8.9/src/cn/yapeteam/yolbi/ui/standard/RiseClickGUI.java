@@ -1,11 +1,13 @@
 package cn.yapeteam.yolbi.ui.standard;
 
 
+import cn.yapeteam.ymixin.annotations.Super;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.render.EventAlpha;
 import cn.yapeteam.yolbi.layer.Layer;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
+import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.api.Category;
 import cn.yapeteam.yolbi.ui.standard.components.ModuleComponent;
@@ -84,6 +86,7 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
         sortedModules.forEach(module -> moduleList.add(new ModuleComponent(module)));
     }
 
+    @Super
     @Override
     public void initGui() {
         if (moduleList == null || moduleList.isEmpty()) {
@@ -139,6 +142,7 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
      * from a sunset picture. Don't think you're safe if you think it's a good idea to remove
      * this again.
      */
+    @Super
     @Override
     public boolean doesGuiPauseGame() {
         return false;
@@ -163,6 +167,7 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
     };
 
     public void renderGUI() {
+
         if (mouse == null) {
             return;
         }
@@ -197,7 +202,7 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
 
         if (IMinecraft.mc.currentScreen == YolBi.instance.getClickGUI() && animationTime == 0) animationTime = 0.01;
 
-        // Makes it not render the ClickGUI if it's animation is 0
+//         Makes it not render the ClickGUI if it's animation is 0
         if (animationTime == 0) {
             YolBi.instance.getModuleManager().get("Clickgui").setEnabled(false);
             return;
@@ -220,17 +225,17 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
 
         /* Drop Shadow */
         if (animationTime > 0.993) {
-            YolBi.instance.getRenderManager().dropShadow(18, position.x, position.y, scale.x, scale.y, 30, round * 1.3);
+            RenderManager.dropShadow(18, position.x, position.y, scale.x, scale.y, 30, round * 1.3);
         }
 
         /* Background */
-        YolBi.instance.getRenderManager().roundedRectangle(position.x, position.y, scale.x, scale.y, round, Colors.BACKGROUND.get());
+        RenderManager.roundedRectangle(position.x, position.y, scale.x, scale.y, round, Colors.BACKGROUND.get());
 
         /* Stop objects from going outside the ClickGUI */
         Runnable startScissor = () -> {
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
             int padding = 1;
-            YolBi.instance.getRenderManager().scissor(position.x * animationTime + translate.x + padding, position.y * animationTime + translate.y + padding, scale.x * animationTime - padding * 2, scale.y * animationTime - padding * 2);
+            RenderManager.scissor(position.x * animationTime + translate.x + padding, position.y * animationTime + translate.y + padding, scale.x * animationTime - padding * 2, scale.y * animationTime - padding * 2);
         };
 
         startScissor.run();
@@ -252,14 +257,14 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
         final int opacity2 = 255 - (int) Math.max(0, Math.min(255, timeInCategory.getElapsedTime() < length ? 255 - (timeInCategory.getElapsedTime() * (255f / length)) : ((timeInCategory.getElapsedTime() - length) * (255f / length))));
 
         if (timeInCategory.getElapsedTime() <= length * 2) {
-            YolBi.instance.getRenderManager().roundedRectangle(position.x, position.y, scale.x, scale.y, round, Colors.BACKGROUND.getWithAlpha(opacity2));
+            RenderManager.roundedRectangle(position.x, position.y, scale.x, scale.y, round, Colors.BACKGROUND.getWithAlpha(opacity2));
         }
 
         sidebar.preRenderClickGUI();
 
         for (int i = 0; i <= 8; i++) {
             double radius = i * 50;
-            YolBi.instance.getRenderManager().circle(position.x + sidebar.sidebarWidth - radius / 2, position.y + scale.y / 2 - radius / 2,
+            RenderManager.circle(position.x + sidebar.sidebarWidth - radius / 2, position.y + scale.y / 2 - radius / 2,
                     radius, ColorUtil.withAlpha(getTheme().getFirstColor(), 1));
         }
 
@@ -280,6 +285,7 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
         stopwatch.reset();
     }
 
+    @Super
     @Override
     public void drawScreen(final int mouseX, final int mouseY, final float partialTicks) {
         this.mouse = new Vector2f(mouseX, mouseY);
@@ -297,7 +303,7 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
 
         /* Stop objects from going outside the ClickGUI */
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        YolBi.instance.getRenderManager().scissor(position.x * animationTime + translate.x, position.y * animationTime + translate.y, scale.x * animationTime, (scale.y - 4) * animationTime);
+        RenderManager.scissor(position.x * animationTime + translate.x, position.y * animationTime + translate.y, scale.x * animationTime, (scale.y - 4) * animationTime);
 
         renderedScreen.onBloom();
         sidebar.bloom();
@@ -306,6 +312,7 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
         GlStateManager.popMatrix();
     }
 
+    @Super
     @Override
     protected void mouseClicked(final int mouseX, final int mouseY, final int mouseButton) throws IOException {
         /* Registers click if you click within the window */
@@ -325,6 +332,7 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
         overlayPresent = null;
     }
 
+    @Super
     @Override
     protected void mouseReleased(final int mouseX, final int mouseY, final int state) {
         /* Registers the mouse being released */
@@ -333,6 +341,7 @@ public class RiseClickGUI extends GuiScreen implements Accessor, IMinecraft, Thr
         selectedScreen.onMouseRelease();
     }
 
+    @Super
     @Override
     protected void keyTyped(final char typedChar, final int keyCode) throws IOException {
         if ("abcdefghijklmnopqrstuvwxyz1234567890 ".contains(String.valueOf(typedChar).toLowerCase()) && selectedScreen.automaticSearchSwitching() && !getClickGUI().activeTextBox()) {

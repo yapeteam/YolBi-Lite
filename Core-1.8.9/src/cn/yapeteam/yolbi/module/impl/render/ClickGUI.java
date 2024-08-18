@@ -46,6 +46,7 @@ public final class ClickGUI extends Module {
 
             if (this.mc.currentScreen == null) {
                 this.mc.setIngameFocus();
+                this.toggle();
             }
         }
     };

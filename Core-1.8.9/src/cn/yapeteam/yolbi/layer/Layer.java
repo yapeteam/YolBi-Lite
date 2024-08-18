@@ -17,9 +17,6 @@ public class Layer implements Accessor {
         this.shader = shader;
     }
 
-    public Layer() {
-    }
-
     public void run(ShaderRenderType type) {
         if (runnables.isEmpty()) {
             return;
