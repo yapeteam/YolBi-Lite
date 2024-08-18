@@ -1,6 +1,7 @@
 package cn.yapeteam.yolbi.ui.standard.components.value.impl;
 
 
+import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.font.Fonts;
 import cn.yapeteam.yolbi.font.Weight;
 import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
@@ -47,6 +48,7 @@ public class ListValueComponent extends ValueComponent {
         final boolean right = mouseButton == 1;
 
         if (GuiUtil.mouseOver(this.position.x, this.position.y - 3.5f, getClickGUI().width - 70, this.height, mouseX, mouseY)) {
+            Logger.info("ListClicked");
             final int currentIndex = listValue.getModes().indexOf(listValue.getValue());
             Object value = null;
             if (left) {
