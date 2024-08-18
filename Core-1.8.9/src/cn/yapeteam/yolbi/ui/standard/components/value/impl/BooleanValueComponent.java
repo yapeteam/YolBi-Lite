@@ -1,7 +1,6 @@
 package cn.yapeteam.yolbi.ui.standard.components.value.impl;
 
 
-import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.font.Fonts;
 import cn.yapeteam.yolbi.font.Weight;
 import cn.yapeteam.yolbi.managers.RenderManager;
@@ -56,7 +55,6 @@ public class BooleanValueComponent extends ValueComponent {
         final BooleanValue booleanValue = (BooleanValue) value;
 
         if (GuiUtil.mouseOver(position.x, this.position.y - 3.5f, getClickGUI().width - 70, this.height, mouseX, mouseY)) {
-            Logger.info("BooleanCLicked");
             booleanValue.setValue(!booleanValue.getValue());
             return true;
         }
