@@ -60,6 +60,7 @@ public class RiseClickGUI extends GuiScreen implements Accessor, ThreadAccess {
     public Screen lastScreen = selectedScreen;
 
     public float draggingOffsetX, draggingOffsetY;
+    public int width;
     public boolean dragging;
     public StopWatch timeInCategory = new StopWatch();
     public StopWatch stopwatch = new StopWatch();

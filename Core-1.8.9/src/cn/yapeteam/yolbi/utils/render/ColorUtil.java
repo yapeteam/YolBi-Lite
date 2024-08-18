@@ -30,7 +30,7 @@ public class ColorUtil {
     }
 
     public static Color withAlpha(final Color color, final int alpha) {
-        return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) MathUtils.clamp(0, 255, alpha));
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) MathUtils.clamp(alpha, 0, 255));
     }
 
     public static Color mixColors(final Color color1, final Color color2, final double percent) {
