@@ -1,9 +1,9 @@
 package cn.yapeteam.yolbi.ui.standard.components.value.impl;
 
 
-import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.font.Fonts;
 import cn.yapeteam.yolbi.font.Weight;
+import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
 import cn.yapeteam.yolbi.ui.standard.screen.Colors;
 import cn.yapeteam.yolbi.utils.StopWatch;
@@ -75,7 +75,7 @@ public class NumberValueComponent extends ValueComponent implements Accessor {
 //        Fonts.SF_ROUNDED.get(16, Weight.REGULAR).drawString(value, this.position.x + valueWidth + 105, this.position.y, this.getClickGUI().fontDarkColor.hashCode());
 
         // Draws background
-        YolBi.instance.getRenderManager().roundedRectangle(this.position.x + valueWidth, this.position.y + 1.5F, SLIDER_WIDTH, 2, 1, Colors.BACKGROUND.getWithAlpha(opacity));
+        RenderManager.roundedRectangle(this.position.x + valueWidth, this.position.y + 1.5F, SLIDER_WIDTH, 2, 1, Colors.BACKGROUND.getWithAlpha(opacity));
 
         selector = this.position.x + valueWidth;
 
@@ -97,7 +97,7 @@ public class NumberValueComponent extends ValueComponent implements Accessor {
         }
 
         final double positionX = selector + renderPercentage * 100;
-        YolBi.instance.getRenderManager().roundedRectangle(positionX - grabberWidth / 2.0F, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2.0F, ColorUtil.withAlpha(getTheme().getFirstColor(), opacity));
+        RenderManager.roundedRectangle(positionX - grabberWidth / 2.0F, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2.0F, ColorUtil.withAlpha(getTheme().getFirstColor(), opacity));
         stopWatch.reset();
     }
 
@@ -132,7 +132,7 @@ public class NumberValueComponent extends ValueComponent implements Accessor {
         }
 
         final double positionX = selector + renderPercentage * 100;
-        YolBi.instance.getRenderManager().roundedRectangle(positionX - grabberWidth / 2.0F, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2f, ColorUtil.withAlpha(getTheme().getFirstColor(), opacity));
+        RenderManager.roundedRectangle(positionX - grabberWidth / 2.0F, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2f, ColorUtil.withAlpha(getTheme().getFirstColor(), opacity));
     }
 
     @Override

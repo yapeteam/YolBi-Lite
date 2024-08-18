@@ -1,9 +1,9 @@
 package cn.yapeteam.yolbi.ui.standard.components.value.impl;
 
 
-import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.font.Fonts;
 import cn.yapeteam.yolbi.font.Weight;
+import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
 import cn.yapeteam.yolbi.ui.standard.screen.Colors;
 import cn.yapeteam.yolbi.utils.StopWatch;
@@ -37,10 +37,10 @@ public class BooleanValueComponent extends ValueComponent {
             scale = Math.max(0, scale - stopwatch.getElapsedTime() / 20f);
         }
 
-        YolBi.instance.getRenderManager().roundedRectangle(positionX - 5f / 2f + 5, this.position.y - 5f / 2f + 2.5, 5, 5, 2.5F, Colors.BACKGROUND.getWithAlpha(opacity));
+        RenderManager.roundedRectangle(positionX - 5f / 2f + 5, this.position.y - 5f / 2f + 2.5, 5, 5, 2.5F, Colors.BACKGROUND.getWithAlpha(opacity));
 
         if (scale != 0) {
-            YolBi.instance.getRenderManager().roundedRectangle(positionX - scale / 2 + 4, this.position.y - scale / 2 + 2.5, scale, scale, scale / 2.0F, ColorUtil.withAlpha(this.getTheme().getFirstColor(), opacity));
+            RenderManager.roundedRectangle(positionX - scale / 2 + 4, this.position.y - scale / 2 + 2.5, scale, scale, scale / 2.0F, ColorUtil.withAlpha(this.getTheme().getFirstColor(), opacity));
         }
 
         stopwatch.reset();
@@ -74,7 +74,7 @@ public class BooleanValueComponent extends ValueComponent {
         }
 
         final double positionX = this.position.x + Fonts.MAIN.get(16, Weight.REGULAR).width(this.value.getName()) + 2;
-        YolBi.instance.getRenderManager().roundedRectangle(positionX - scale / 2 + 4, this.position.y - scale / 2 + 2.5, scale, scale, scale / 2.0F, ColorUtil.withAlpha(this.getTheme().getFirstColor(), opacity));
+        RenderManager.roundedRectangle(positionX - scale / 2 + 4, this.position.y - scale / 2 + 2.5, scale, scale, scale / 2.0F, ColorUtil.withAlpha(this.getTheme().getFirstColor(), opacity));
     }
 
     @Override

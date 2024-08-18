@@ -1,9 +1,9 @@
 package cn.yapeteam.yolbi.ui.standard.components.value.impl;
 
 
-import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.font.Fonts;
 import cn.yapeteam.yolbi.font.Weight;
+import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
 import cn.yapeteam.yolbi.ui.standard.screen.Colors;
 import cn.yapeteam.yolbi.utils.StopWatch;
@@ -88,7 +88,7 @@ public class BoundsNumberValueComponent extends ValueComponent {
 //        Fonts.SF_ROUNDED.get(16, Weight.REGULAR).drawString(value.replace(".0", ""), this.position.x + valueWidth + 105, this.position.y, this.getClickGUI().fontDarkColor.hashCode());
 
         // Draws background
-        YolBi.instance.getRenderManager().roundedRectangle(this.position.x + valueWidth, this.position.y + 1.5f, SLIDER_WIDTH, 2, 1, Colors.BACKGROUND.getWithAlpha(Math.min(opacity, Colors.BACKGROUND.get().getAlpha())));
+        RenderManager.roundedRectangle(this.position.x + valueWidth, this.position.y + 1.5f, SLIDER_WIDTH, 2, 1, Colors.BACKGROUND.getWithAlpha(Math.min(opacity, Colors.BACKGROUND.get().getAlpha())));
 
         selector1 = this.position.x + valueWidth;
         selector2 = this.position.x + valueWidth;
@@ -131,21 +131,21 @@ public class BoundsNumberValueComponent extends ValueComponent {
         }
 
         //Selectors
-        //YolBi.instance.getRenderManager().triangleCentered(selector1 + renderPercentage1 * 100 - 5, this.position.y + 15, 11, this.getClickGUI().accentColor);
-        //YolBi.instance.getRenderManager().triangleCentered(selector2 + renderPercentage2 * 100 + 5, this.position.y + 15, -12, this.getClickGUI().accentColor);
+        //RenderManager.triangleCentered(selector1 + renderPercentage1 * 100 - 5, this.position.y + 15, 11, this.getClickGUI().accentColor);
+        //RenderManager.triangleCentered(selector2 + renderPercentage2 * 100 + 5, this.position.y + 15, -12, this.getClickGUI().accentColor);
 
         final double startPositionX = selector1 + renderPercentage1 * 100;
         final double endPositionX = selector2 + renderPercentage2 * 100;
         final double boundsWidth = endPositionX - startPositionX;
 
         if (percentage1 != percentage2) {
-            YolBi.instance.getRenderManager().roundedRectangle(startPositionX, this.position.y + 1.5f, boundsWidth, 2, 1, ColorUtil.withAlpha(getTheme().getFirstColor(), Math.min(70, opacity)));
+            RenderManager.roundedRectangle(startPositionX, this.position.y + 1.5f, boundsWidth, 2, 1, ColorUtil.withAlpha(getTheme().getFirstColor(), Math.min(70, opacity)));
         }
 
-        YolBi.instance.getRenderManager().roundedRectangle(startPositionX - grabberWidth / 2f, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2.0f, ColorUtil.withAlpha(getTheme().getFirstColor(), opacity));
+        RenderManager.roundedRectangle(startPositionX - grabberWidth / 2f, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2.0f, ColorUtil.withAlpha(getTheme().getFirstColor(), opacity));
 
         if (percentage1 != percentage2) {
-            YolBi.instance.getRenderManager().roundedRectangle(endPositionX - grabberWidth / 2f, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2.0f, ColorUtil.withAlpha(getTheme().getFirstColor(), opacity));
+            RenderManager.roundedRectangle(endPositionX - grabberWidth / 2f, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2.0f, ColorUtil.withAlpha(getTheme().getFirstColor(), opacity));
         }
 
         stopWatch.reset();
@@ -192,8 +192,8 @@ public class BoundsNumberValueComponent extends ValueComponent {
         final double startPositionX = selector1 + renderPercentage1 * 100;
         final double endPositionX = selector2 + renderPercentage2 * 100;
         final Color color = ColorUtil.withAlpha(getTheme().getFirstColor(), opacity);
-        YolBi.instance.getRenderManager().roundedRectangle(startPositionX - grabberWidth / 2.0F, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2f, color);
-        YolBi.instance.getRenderManager().roundedRectangle(endPositionX - grabberWidth / 2.0F, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2f, color);
+        RenderManager.roundedRectangle(startPositionX - grabberWidth / 2.0F, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2f, color);
+        RenderManager.roundedRectangle(endPositionX - grabberWidth / 2.0F, this.position.y, grabberWidth, grabberWidth, grabberWidth / 2f, color);
     }
 
     @Override

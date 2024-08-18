@@ -1,6 +1,5 @@
 package cn.yapeteam.yolbi.utils.render;
 
-import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.utils.StopWatch;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
@@ -59,7 +58,7 @@ public class ScrollUtil implements Accessor {
         double scrollY = position.y + maxHeight * percentage - scrollBarHeight * percentage;
         Color color = ColorUtil.withAlpha(Color.WHITE, 60);
 
-        YolBi.instance.getRenderManager().roundedRectangle(scrollX, scrollY, 1, scrollBarHeight, 0.5f,
+        RenderManager.roundedRectangle(scrollX, scrollY, 1, scrollBarHeight, 0.5f,
                 color);
     }
 

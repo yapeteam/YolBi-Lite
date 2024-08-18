@@ -4,6 +4,7 @@ package cn.yapeteam.yolbi.ui.standard.components.category;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.font.Fonts;
 import cn.yapeteam.yolbi.font.Weight;
+import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.module.api.Category;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.standard.screen.Colors;
@@ -46,12 +47,12 @@ public final class SidebarCategory implements Accessor {
         animation.setDuration(hovering ? 700 : 2000);
         animation.run(hovering ? 0 : -sidebarWidth / 1.5f);
 
-        YolBi.instance.getRenderManager().roundedRectangle(clickGUI.position.x, clickGUI.position.y, sidebarWidth + animation.getValue(), clickGUI.scale.y, getClickGUI().getRound(), color, true, false, false, true);
+        RenderManager.roundedRectangle(clickGUI.position.x, clickGUI.position.y, sidebarWidth + animation.getValue(), clickGUI.scale.y, getClickGUI().getRound(), color, true, false, false, true);
 
         dropShadowAnimation.setDuration(1000);
         dropShadowAnimation.run(clickGUI.getSelectedScreen().hideSideBar() ? 255 : 0);
 
-        YolBi.instance.getRenderManager().horizontalGradient(clickGUI.position.x + sidebarWidth + animation.getValue(), clickGUI.position.y,
+        RenderManager.horizontalGradient(clickGUI.position.x + sidebarWidth + animation.getValue(), clickGUI.position.y,
                 30, clickGUI.scale.y, ColorUtil.withAlpha(Color.BLACK, (int) (Math.min(dropShadowAnimation.getValue(), opacity / 7))),
                 new Color(0, 0, 0, 0));
     }
@@ -82,14 +83,14 @@ public final class SidebarCategory implements Accessor {
         }
 
         /* Drop shadow */
-//        YolBi.instance.getRenderManager().horizontalGradient(clickGUI.position.x + sidebarWidth - 3 - 10, clickGUI.position.y, 20, clickGUI.scale.y, new Color(0, 0, 0, hoverCategory ? (int) (fadeOpacity * 0.25) : 100),
+//        RenderManager.horizontalGradient(clickGUI.position.x + sidebarWidth - 3 - 10, clickGUI.position.y, 20, clickGUI.scale.y, new Color(0, 0, 0, hoverCategory ? (int) (fadeOpacity * 0.25) : 100),
 //                new Color(0, 0, 0, 0));
 
         /* Sidebar background */
         lastTime = time;
-//        YolBi.instance.getRenderManager().dropShadow(4, clickGUI.position.x + 20, clickGUI.position.y, (float) sidebarWidth - 20, clickGUI.scale.y, 60, 1);
+//        RenderManager.dropShadow(4, clickGUI.position.x + 20, clickGUI.position.y, (float) sidebarWidth - 20, clickGUI.scale.y, 60, 1);
 
-        //        YolBi.instance.getRenderManager().rectangle(clickGUI.position.x + 15, clickGUI.position.y, sidebarWidth - 15, clickGUI.scale.y, color);
+        //        RenderManager.rectangle(clickGUI.position.x + 15, clickGUI.position.y, sidebarWidth - 15, clickGUI.scale.y, color);
 
         /* Renders all categories */
         double offsetTop = 10;

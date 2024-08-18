@@ -1,7 +1,7 @@
 package cn.yapeteam.yolbi.ui.standard.components.theme;
 
 
-import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.ui.theme.Themes;
 import cn.yapeteam.yolbi.utils.animation.Animation;
 import cn.yapeteam.yolbi.utils.animation.Easing;
@@ -27,16 +27,16 @@ public class ThemeKeyColorComponent implements Accessor {
     public void draw(double x, double y, double width, boolean selected) {
         double value = dimAnimation.getValue();
 
-        YolBi.instance.getRenderManager().roundedRectangle(x, y, width, 17, 5, new Color(18, 21, 30));
-        YolBi.instance.getRenderManager().roundedRectangle(x + 0.5, y + 0.5, width - 1, 16, 4, color.getColor());
+        RenderManager.roundedRectangle(x, y, width, 17, 5, new Color(18, 21, 30));
+        RenderManager.roundedRectangle(x + 0.5, y + 0.5, width - 1, 16, 4, color.getColor());
 
-        YolBi.instance.getRenderManager().roundedRectangle(x, y, width, 17, 5, new Color(25, 25, 25,
+        RenderManager.roundedRectangle(x, y, width, 17, 5, new Color(25, 25, 25,
                 (int) ((1 - dimAnimation.getValue()) * 128)));
 
         getLayer(BLOOM).add(() -> {
-            YolBi.instance.getRenderManager().roundedRectangle(x, y, width, 17, 5, new Color(18, 21, 30,
+            RenderManager.roundedRectangle(x, y, width, 17, 5, new Color(18, 21, 30,
                     (int) (bloomAnimation.getValue() * 255)));
-            YolBi.instance.getRenderManager().roundedRectangle(x + 0.5, y + 0.5, width - 1, 16, 4,
+            RenderManager.roundedRectangle(x + 0.5, y + 0.5, width - 1, 16, 4,
                     ColorUtil.withAlpha(color.getColor(), (int) (bloomAnimation.getValue() * 255)));
         });
 
