@@ -10,7 +10,7 @@ import cn.yapeteam.yolbi.layer.LayerManager;
 import cn.yapeteam.yolbi.managers.BotManager;
 import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.managers.TargetManager;
-import cn.yapeteam.yolbi.module.api.manager.ModuleManager;
+import cn.yapeteam.yolbi.managers.ModuleManager;
 import cn.yapeteam.yolbi.server.WebServer;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.theme.ThemeManager;

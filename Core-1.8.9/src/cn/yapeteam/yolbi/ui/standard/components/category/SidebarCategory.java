@@ -53,7 +53,7 @@ public final class SidebarCategory implements Accessor {
         dropShadowAnimation.run(clickGUI.getSelectedScreen().hideSideBar() ? 255 : 0);
 
         RenderManager.horizontalGradient(clickGUI.position.x + sidebarWidth + animation.getValue(), clickGUI.position.y,
-                30, clickGUI.scale.y, ColorUtil.withAlpha(Color.BLACK, (int) dropShadowAnimation.getValue()),
+                30, clickGUI.scale.y, ColorUtil.withAlpha(Color.BLACK, (int) (Math.min(dropShadowAnimation.getValue(), opacity / 7))),
                 new Color(0, 0, 0, 0));
     }
 
