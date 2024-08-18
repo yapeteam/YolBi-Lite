@@ -4,6 +4,7 @@ package cn.yapeteam.yolbi.ui.standard.components.theme;
 import cn.yapeteam.yolbi.font.Fonts;
 import cn.yapeteam.yolbi.font.Weight;
 import cn.yapeteam.yolbi.managers.RenderManager;
+import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.theme.Themes;
 import cn.yapeteam.yolbi.utils.animation.Animation;
 import cn.yapeteam.yolbi.utils.animation.Easing;
@@ -12,6 +13,8 @@ import cn.yapeteam.yolbi.utils.render.ColorUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector3d;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
@@ -70,8 +73,18 @@ public class ThemeComponent implements Accessor {
         selectorAnimation.run(this.activeTheme.equals(getTheme()) ? 255 : 0);
         int selectorAlpha = (int) Math.min(selectorAnimation.getValue(), alpha);
 
-        if (selectorAlpha > 0 && getClickGUI().animationTime > 0.8) {
+        RiseClickGUI clickGUI = getClickGUI();
+        if (selectorAlpha > 0 && clickGUI.animationTime > 0.8) {
             getLayer(BLOOM, 3).add(() -> {
+                GlStateManager.pushMatrix();
+                GL11.glEnable(GL11.GL_SCISSOR_TEST);
+                int padding = 1;
+                RenderManager.scissor(
+                        clickGUI.position.x * clickGUI.animationTime + clickGUI.getTranslate().x + padding,
+                        clickGUI.position.y * clickGUI.animationTime + clickGUI.getTranslate().y + padding,
+                        clickGUI.scale.x * clickGUI.animationTime - padding * 2,
+                        clickGUI.scale.y * clickGUI.animationTime - padding * 2
+                );
                 if (this.activeTheme.isTriColor()) {
                     RenderManager.drawRoundedGradientRectTest(x, y, width, 30, 10,
                             ColorUtil.withAlpha(activeTheme.getFirstColor(), alpha),
@@ -84,9 +97,10 @@ public class ThemeComponent implements Accessor {
                             ColorUtil.withAlpha(activeTheme.getSecondColor(), selectorAlpha), false,
                             true, true, false, false);
                 }
-
                 Fonts.MAIN.get(16, Weight.REGULAR).drawCentered(activeTheme.getThemeName(),
                         x + width / 2D, y + 37, ColorUtil.withAlpha(activeTheme.getFirstColor(), selectorAlpha).getRGB());
+                GL11.glDisable(GL11.GL_SCISSOR_TEST);
+                GlStateManager.popMatrix();
             });
         }
 

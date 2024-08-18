@@ -32,7 +32,7 @@ public final class ClickGUI extends Module {
     }
 
     @Listener
-    public void onRender2d(EventRender2D eventRender2D){
+    public void onRender2D(EventRender2D eventRender2D){
         getLayer(REGULAR, 2).add(() -> YolBi.instance.getClickGUI().render());
         getLayer(BLOOM, 3).add(() -> YolBi.instance.getClickGUI().bloom());
     }

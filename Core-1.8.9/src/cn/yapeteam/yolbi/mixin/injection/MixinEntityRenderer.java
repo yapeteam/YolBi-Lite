@@ -57,16 +57,6 @@ public class MixinEntityRenderer {
         GlStateManager.pushMatrix();
         YolBi.instance.getEventManager().post(new EventRender2D(partialTicks, sr));
         GlStateManager.popMatrix();
-        //mc.getFramebuffer().bindFramebuffer(false);
-        //Framebuffer framebuffer = (Framebuffer) ObjectStore.objects.get("framebuffer");
-        //if (framebuffer == null) {
-        //    framebuffer = new Framebuffer(1, 1, false);
-        //    ObjectStore.objects.put("framebuffer", framebuffer);
-        //}
-        //framebuffer = RenderManager.createFrameBuffer(framebuffer);
-        //framebuffer.bindFramebufferTexture();
-        //ShaderUtil.drawQuads(sr);
-        //GlStateManager.bindTexture(0);
     }
 
     @Inject(
@@ -80,9 +70,4 @@ public class MixinEntityRenderer {
     private void onRenderGUI() {
         YolBi.instance.getEventManager().post(new EventRenderGUI());
     }
-
-
-    //@Modify(method = "getMouseOver", desc = "(F)V", replacepath = "cn/yapeteam/yolbi/event/impl/player/EventMouseOver", replacementfunc = "getReach", funcdesc = "()F")
-    //private void modifygetMouseOver(@Local(source = "partialTicks", index = 1) float partialTicks) {
-    //}
 }
