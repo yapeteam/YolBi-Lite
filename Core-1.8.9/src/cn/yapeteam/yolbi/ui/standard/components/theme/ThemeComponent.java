@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-import static cn.yapeteam.yolbi.layer.Layers.BLOOM;
+import static cn.yapeteam.yolbi.utils.layer.Layers.BLOOM;
 
 /**
  * @author Hazsi

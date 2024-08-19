@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.awt.*;
 
-import static cn.yapeteam.yolbi.layer.Layers.BLOOM;
+import static cn.yapeteam.yolbi.utils.layer.Layers.BLOOM;
 
 @Getter
 @RequiredArgsConstructor

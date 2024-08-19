@@ -4,7 +4,7 @@ import cn.yapeteam.ymixin.annotations.Super;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
-import cn.yapeteam.yolbi.layer.Layer;
+import cn.yapeteam.yolbi.utils.layer.Layer;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.module.Module;
@@ -43,7 +43,7 @@ import java.text.Collator;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static cn.yapeteam.yolbi.layer.Layers.BLOOM;
+import static cn.yapeteam.yolbi.utils.layer.Layers.BLOOM;
 
 @Getter
 public class RiseClickGUI extends GuiScreen implements Accessor, ThreadAccess {
@@ -124,8 +124,6 @@ public class RiseClickGUI extends GuiScreen implements Accessor, ThreadAccess {
                 }
             });
         });
-
-//        YolBi.instance.getNetworkManager().getCommunication().write(new ClientCommunityPopulateRequest());
     }
 
     @Super

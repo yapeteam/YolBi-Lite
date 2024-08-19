@@ -1,4 +1,4 @@
-package cn.yapeteam.yolbi.layer;
+package cn.yapeteam.yolbi.utils.layer;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -10,8 +10,8 @@ import cn.yapeteam.yolbi.module.api.ModuleInfo;
 import cn.yapeteam.yolbi.utils.StopWatch;
 import org.lwjgl.input.Keyboard;
 
-import static cn.yapeteam.yolbi.layer.Layers.BLOOM;
-import static cn.yapeteam.yolbi.layer.Layers.REGULAR;
+import static cn.yapeteam.yolbi.utils.layer.Layers.BLOOM;
+import static cn.yapeteam.yolbi.utils.layer.Layers.REGULAR;
 
 @ModuleInfo(name = "ClickGui", description = "module.render.clickgui.description", category = Category.RENDER, keyBind = Keyboard.KEY_RCONTROL)
 public final class ClickGUI extends Module {

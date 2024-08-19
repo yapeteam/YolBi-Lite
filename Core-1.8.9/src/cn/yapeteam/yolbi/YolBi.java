@@ -6,7 +6,7 @@ import cn.yapeteam.yolbi.bindable.BindableManager;
 import cn.yapeteam.yolbi.config.ConfigManager;
 import cn.yapeteam.yolbi.event.EventManager;
 import cn.yapeteam.yolbi.event.impl.client.EventClientShutdown;
-import cn.yapeteam.yolbi.layer.LayerManager;
+import cn.yapeteam.yolbi.managers.LayerManager;
 import cn.yapeteam.yolbi.managers.BotManager;
 import cn.yapeteam.yolbi.managers.RotationManager;
 import cn.yapeteam.yolbi.managers.TargetManager;

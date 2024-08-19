@@ -6,9 +6,7 @@ import cn.yapeteam.yolbi.event.impl.player.EventMouseOver;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import cn.yapeteam.yolbi.event.impl.render.EventRender3D;
 import cn.yapeteam.yolbi.event.impl.render.EventRenderGUI;
-import cn.yapeteam.yolbi.utils.render.GuiUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -59,16 +57,16 @@ public class MixinEntityRenderer {
         GlStateManager.pushMatrix();
         YolBi.instance.getEventManager().post(new EventRender2D(partialTicks, sr));
         GlStateManager.enableBlend();
-        // Cross-hair
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.getTextureManager().bindTexture(Gui.icons);
-        GlStateManager.enableBlend();
-        if (GuiUtil.showCrosshair()) {
-            GlStateManager.tryBlendFuncSeparate(775, 769, 1, 0);
-            GlStateManager.enableAlpha();
-            mc.ingameGUI.drawTexturedModalRect(sr.getScaledWidth() / 2f - 7,
-                    sr.getScaledHeight() / 2f - 7, 0, 0, 16, 16);
-        }
+//        // Cross-hair
+//        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+//        mc.getTextureManager().bindTexture(Gui.icons);
+//        GlStateManager.enableBlend();
+//        if (GuiUtil.showCrosshair()) {
+//            GlStateManager.tryBlendFuncSeparate(775, 769, 1, 0);
+//            GlStateManager.enableAlpha();
+//            mc.ingameGUI.drawTexturedModalRect(sr.getScaledWidth() / 2f - 7,
+//                    sr.getScaledHeight() / 2f - 7, 0, 0, 16, 16);
+//        }
         GlStateManager.popMatrix();
     }
 
