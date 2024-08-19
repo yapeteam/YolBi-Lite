@@ -179,12 +179,10 @@ public class FontRenderer extends cn.yapeteam.yolbi.utils.font.Font {
     }
 
     public int drawWithShadow(final String text, final double x, final double y, final int color) {
-//        drawString(text, x + 0.25, y + 0.25, color, true);
         return draw(text, x, y, color, false);
     }
 
     public void drawCenteredStringWithShadow(final String text, final float x, final float y, final int color) {
-//        drawString(text, x - (width(text) >> 1) + 0.25, y + 0.25, new Color(color, true).getRGB(), true);
         draw(text, x - (width(text) >> 1), y, color, false);
     }
 
@@ -256,18 +254,6 @@ public class FontRenderer extends cn.yapeteam.yolbi.utils.font.Font {
 
         for (int i = 0; i < length; ++i) {
             final char character = text.charAt(i);
-//            if (previousCharacter != COLOR_INVOKER) {
-//                if (character == COLOR_INVOKER) {
-//                    final int index = COLOR_CODE_CHARACTERS.indexOf(text.toLowerCase().charAt(i + 1));
-//                    if (index < 16 || index == 21) {
-//                        characterSet = defaultCharacters;
-//                    } else if (index == 17) {
-//                        characterSet = boldCharacters;
-//                    }
-//                } else if (characterSet.length > character) {
-//                    width += characterSet[character].getWidth() - MARGIN_WIDTH * 2;
-//                }
-//            }
             width += characterSet[character].getWidth() - MARGIN_WIDTH * 2;
 
             previousCharacter = character;
