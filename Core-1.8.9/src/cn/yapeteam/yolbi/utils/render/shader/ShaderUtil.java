@@ -4,7 +4,7 @@ import cn.yapeteam.loader.ResourceManager;
 import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.loader.utils.StreamUtils;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
-import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.opengl.GL11;
@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class ShaderUtil implements IMinecraft {
+public class ShaderUtil implements Accessor {
     public static int createShader(final String fragmentResource, final String vertexResource) {
         final String fragmentSource = getShaderResource(fragmentResource);
         final String vertexSource = getShaderResource(vertexResource);

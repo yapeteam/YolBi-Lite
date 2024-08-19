@@ -8,7 +8,6 @@ import cn.yapeteam.yolbi.module.api.Category;
 import cn.yapeteam.yolbi.module.api.ModuleInfo;
 import cn.yapeteam.yolbi.module.impl.render.Interface;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
-import cn.yapeteam.yolbi.utils.interfaces.ThreadAccess;
 import cn.yapeteam.yolbi.utils.interfaces.Toggleable;
 import cn.yapeteam.yolbi.value.Value;
 import cn.yapeteam.yolbi.value.impl.BooleanValue;
@@ -26,7 +25,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-public abstract class Module implements Accessor, ThreadAccess, Toggleable, Bindable {
+public abstract class Module implements Accessor, Toggleable, Bindable {
 
     private String displayName;
     private final List<Value<?>> values = new ArrayList<>();

@@ -1,7 +1,7 @@
 package cn.yapeteam.yolbi.event.impl.player;
 
 import cn.yapeteam.yolbi.event.type.CancellableEvent;
-import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public final class EventStrafe extends CancellableEvent implements IMinecraft {
+public final class EventStrafe extends CancellableEvent implements Accessor {
     private float forward;
     private float strafe;
     private float friction;

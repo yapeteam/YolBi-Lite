@@ -4,7 +4,6 @@ import cn.yapeteam.ymixin.annotations.Super;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
-import cn.yapeteam.yolbi.utils.layer.Layer;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.module.Module;
@@ -24,7 +23,7 @@ import cn.yapeteam.yolbi.utils.StopWatch;
 import cn.yapeteam.yolbi.utils.animation.Animation;
 import cn.yapeteam.yolbi.utils.animation.Easing;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
-import cn.yapeteam.yolbi.utils.interfaces.ThreadAccess;
+import cn.yapeteam.yolbi.utils.layer.Layer;
 import cn.yapeteam.yolbi.utils.render.GuiUtil;
 import cn.yapeteam.yolbi.utils.render.shader.base.ShaderRenderType;
 import cn.yapeteam.yolbi.utils.render.shader.impl.AlphaShader;
@@ -46,7 +45,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import static cn.yapeteam.yolbi.utils.layer.Layers.BLOOM;
 
 @Getter
-public class RiseClickGUI extends GuiScreen implements Accessor, ThreadAccess {
+public class RiseClickGUI extends GuiScreen implements Accessor{
 
     public Vector2f position = new Vector2f(-1, -1);
     public Vector2f scale = new Vector2f(320 * 1.3f, 260 * 1.3f);

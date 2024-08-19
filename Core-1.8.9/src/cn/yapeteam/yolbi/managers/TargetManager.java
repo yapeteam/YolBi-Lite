@@ -20,7 +20,7 @@ package cn.yapeteam.yolbi.managers;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.module.impl.combat.AntiBot;
 import cn.yapeteam.yolbi.module.impl.combat.CombatSettings;
-import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.player.PlayerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -34,7 +34,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TargetManager implements IMinecraft {
+public class TargetManager implements Accessor {
     private static CombatSettings combatSettingsModule = null;
     private static AntiBot antiBotModule = null;
 

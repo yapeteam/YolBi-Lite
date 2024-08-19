@@ -1,7 +1,7 @@
 package cn.yapeteam.yolbi.utils.player;
 
 import cn.yapeteam.yolbi.event.impl.player.EventMoveInput;
-import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import lombok.experimental.UtilityClass;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.potion.Potion;
@@ -15,7 +15,7 @@ import net.minecraft.util.MathHelper;
  * @since 21/10/2021
  */
 @UtilityClass
-public class MoveUtil implements IMinecraft {
+public class MoveUtil implements Accessor {
 
     public static final double WALK_SPEED = 0.221;
     public static final double BUNNY_SLOPE = 0.66;

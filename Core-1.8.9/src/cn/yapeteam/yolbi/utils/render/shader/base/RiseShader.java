@@ -1,6 +1,6 @@
 package cn.yapeteam.yolbi.utils.render.shader.base;
 
-import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.shader.Framebuffer;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public abstract class RiseShader implements IMinecraft {
+public abstract class RiseShader implements Accessor {
     private boolean active;
 
     public abstract void run(ShaderRenderType type, float partialTicks, List<Runnable> runnable);

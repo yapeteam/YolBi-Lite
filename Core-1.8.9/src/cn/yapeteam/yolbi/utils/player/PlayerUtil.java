@@ -2,7 +2,7 @@ package cn.yapeteam.yolbi.utils.player;
 
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.module.impl.combat.CombatSettings;
-import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import com.google.common.base.Predicates;
 import lombok.experimental.UtilityClass;
 import lombok.val;
@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @UtilityClass
-public class PlayerUtil implements IMinecraft {
+public class PlayerUtil implements Accessor {
 
 
 

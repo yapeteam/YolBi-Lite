@@ -3,12 +3,12 @@ package cn.yapeteam.yolbi.managers;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventLoadWorld;
 import cn.yapeteam.yolbi.event.impl.game.EventTick;
-import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import net.minecraft.entity.Entity;
 
 import java.util.ArrayList;
 
-public class BotManager implements IMinecraft {
+public class BotManager implements Accessor {
     public static ArrayList<Entity> bots = new ArrayList<>();
 
     @Listener

@@ -6,22 +6,18 @@ import cn.yapeteam.yolbi.bindable.BindableManager;
 import cn.yapeteam.yolbi.config.ConfigManager;
 import cn.yapeteam.yolbi.event.EventManager;
 import cn.yapeteam.yolbi.event.impl.client.EventClientShutdown;
-import cn.yapeteam.yolbi.managers.LayerManager;
-import cn.yapeteam.yolbi.managers.BotManager;
-import cn.yapeteam.yolbi.managers.RotationManager;
-import cn.yapeteam.yolbi.managers.TargetManager;
-import cn.yapeteam.yolbi.managers.ModuleManager;
+import cn.yapeteam.yolbi.managers.*;
 import cn.yapeteam.yolbi.server.WebServer;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.theme.ThemeManager;
-import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import lombok.Getter;
 
 import java.io.File;
 import java.io.IOException;
 
 @Getter
-public class YolBi implements IMinecraft {
+public class YolBi implements Accessor {
     public static YolBi instance = new YolBi();
     public static final String name = "YolBi";
     public static final String version = VersionInfo.version;
