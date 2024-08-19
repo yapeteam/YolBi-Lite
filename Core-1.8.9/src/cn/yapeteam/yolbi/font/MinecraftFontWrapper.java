@@ -4,8 +4,6 @@ import cn.yapeteam.yolbi.utils.font.Font;
 import lombok.AllArgsConstructor;
 import net.minecraft.client.gui.FontRenderer;
 
-import java.awt.*;
-
 @AllArgsConstructor
 public class MinecraftFontWrapper extends Font {
     private final FontRenderer fontRenderer;
@@ -43,10 +41,5 @@ public class MinecraftFontWrapper extends Font {
     @Override
     public float height() {
         return fontRenderer.FONT_HEIGHT;
-    }
-
-    @Override
-    public void drawCharacter(char character, int x, int y, Color color) {
-        draw(String.valueOf(character), x, y, color.getRGB());
     }
 }

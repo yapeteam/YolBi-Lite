@@ -1,7 +1,5 @@
 package cn.yapeteam.yolbi.utils.font;
 
-import java.awt.*;
-
 public abstract class Font {
     public abstract int draw(String text, double x, double y, int color, boolean dropShadow);
 
@@ -16,6 +14,4 @@ public abstract class Font {
     public abstract int drawRight(final String text, final double x, final double y, final int color);
 
     public abstract float height();
-
-    public abstract void drawCharacter(final char character, final int x, final int y, final Color color);
 }
