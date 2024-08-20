@@ -1,8 +1,8 @@
 package cn.yapeteam.yolbi.ui.standard.components.theme;
 
 
-import cn.yapeteam.yolbi.font.Fonts;
-import cn.yapeteam.yolbi.font.Weight;
+import cn.yapeteam.yolbi.utils.font.impl.general.Fonts;
+import cn.yapeteam.yolbi.utils.font.impl.general.Weight;
 import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.theme.Themes;

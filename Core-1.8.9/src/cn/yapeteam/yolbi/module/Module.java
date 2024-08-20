@@ -2,16 +2,16 @@ package cn.yapeteam.yolbi.module;
 
 
 import cn.yapeteam.yolbi.YolBi;
-import cn.yapeteam.yolbi.bindable.Bindable;
+import cn.yapeteam.yolbi.module.api.Bindable;
 import cn.yapeteam.yolbi.event.impl.client.EventModuleToggle;
 import cn.yapeteam.yolbi.module.api.Category;
 import cn.yapeteam.yolbi.module.api.ModuleInfo;
 import cn.yapeteam.yolbi.module.impl.render.Interface;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.interfaces.Toggleable;
-import cn.yapeteam.yolbi.value.Value;
-import cn.yapeteam.yolbi.value.impl.BooleanValue;
-import cn.yapeteam.yolbi.value.impl.ModeValue;
+import cn.yapeteam.yolbi.module.api.value.Value;
+import cn.yapeteam.yolbi.module.api.value.impl.BooleanValue;
+import cn.yapeteam.yolbi.module.api.value.impl.ModeValue;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.input.Keyboard;

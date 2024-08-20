@@ -1,6 +1,6 @@
 package cn.yapeteam.yolbi.module.api;
 
-import cn.yapeteam.yolbi.font.Fonts;
+import cn.yapeteam.yolbi.utils.font.impl.general.Fonts;
 import cn.yapeteam.yolbi.ui.standard.screen.Screen;
 import cn.yapeteam.yolbi.ui.standard.screen.impl.*;
 import cn.yapeteam.yolbi.utils.font.Font;

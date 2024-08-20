@@ -1,8 +1,8 @@
 package cn.yapeteam.yolbi.utils.render.textbox;
 
 
-import cn.yapeteam.yolbi.font.Fonts;
-import cn.yapeteam.yolbi.font.Weight;
+import cn.yapeteam.yolbi.utils.font.impl.general.Fonts;
+import cn.yapeteam.yolbi.utils.font.impl.general.Weight;
 import cn.yapeteam.yolbi.utils.StopWatch;
 import cn.yapeteam.yolbi.utils.font.Font;
 import cn.yapeteam.yolbi.utils.render.GuiUtil;

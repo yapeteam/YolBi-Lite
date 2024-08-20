@@ -2,9 +2,9 @@ package cn.yapeteam.yolbi;
 
 import cn.yapeteam.loader.VersionInfo;
 import cn.yapeteam.loader.logger.Logger;
-import cn.yapeteam.yolbi.bindable.BindableManager;
-import cn.yapeteam.yolbi.config.ConfigManager;
-import cn.yapeteam.yolbi.event.EventManager;
+import cn.yapeteam.yolbi.managers.BindableManager;
+import cn.yapeteam.yolbi.managers.ConfigManager;
+import cn.yapeteam.yolbi.managers.EventManager;
 import cn.yapeteam.yolbi.event.impl.client.EventClientShutdown;
 import cn.yapeteam.yolbi.managers.*;
 import cn.yapeteam.yolbi.server.WebServer;

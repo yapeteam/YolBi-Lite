@@ -1,4 +1,4 @@
-package cn.yapeteam.yolbi.font;
+package cn.yapeteam.yolbi.utils.font.impl.general;
 
 import cn.yapeteam.yolbi.utils.font.Font;
 import lombok.AllArgsConstructor;

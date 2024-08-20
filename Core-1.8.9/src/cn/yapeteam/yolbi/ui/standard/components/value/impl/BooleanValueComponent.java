@@ -1,8 +1,8 @@
 package cn.yapeteam.yolbi.ui.standard.components.value.impl;
 
 
-import cn.yapeteam.yolbi.font.Fonts;
-import cn.yapeteam.yolbi.font.Weight;
+import cn.yapeteam.yolbi.utils.font.impl.general.Fonts;
+import cn.yapeteam.yolbi.utils.font.impl.general.Weight;
 import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
 import cn.yapeteam.yolbi.ui.standard.screen.Colors;
@@ -10,8 +10,8 @@ import cn.yapeteam.yolbi.utils.StopWatch;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
 import cn.yapeteam.yolbi.utils.render.GuiUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector2d;
-import cn.yapeteam.yolbi.value.Value;
-import cn.yapeteam.yolbi.value.impl.BooleanValue;
+import cn.yapeteam.yolbi.module.api.value.Value;
+import cn.yapeteam.yolbi.module.api.value.impl.BooleanValue;
 
 public class BooleanValueComponent extends ValueComponent {
 

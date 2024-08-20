@@ -1,4 +1,4 @@
-package cn.yapeteam.yolbi.bindable;
+package cn.yapeteam.yolbi.module.api;
 
 public interface Bindable {
     int getKey();

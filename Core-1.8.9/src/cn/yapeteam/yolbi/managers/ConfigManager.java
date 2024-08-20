@@ -1,6 +1,7 @@
-package cn.yapeteam.yolbi.config;
+package cn.yapeteam.yolbi.managers;
 
 import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.utils.config.Config;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 

@@ -1,4 +1,4 @@
-package cn.yapeteam.yolbi.value;
+package cn.yapeteam.yolbi.module.api.value;
 
 
 import cn.yapeteam.yolbi.YolBi;

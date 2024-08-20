@@ -3,7 +3,7 @@ package cn.yapeteam.yolbi.module.impl.render;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.api.Category;
 import cn.yapeteam.yolbi.module.api.ModuleInfo;
-import cn.yapeteam.yolbi.value.impl.*;
+import cn.yapeteam.yolbi.module.api.value.impl.*;
 
 import java.awt.*;
 

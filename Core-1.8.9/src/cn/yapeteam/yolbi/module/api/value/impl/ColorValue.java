@@ -1,10 +1,10 @@
-package cn.yapeteam.yolbi.value.impl;
+package cn.yapeteam.yolbi.module.api.value.impl;
 
 
 import cn.yapeteam.yolbi.module.Module;
+import cn.yapeteam.yolbi.module.api.value.Mode;
+import cn.yapeteam.yolbi.module.api.value.Value;
 import cn.yapeteam.yolbi.ui.standard.components.value.impl.ColorValueComponent;
-import cn.yapeteam.yolbi.value.Mode;
-import cn.yapeteam.yolbi.value.Value;
 
 
 import java.awt.*;

@@ -6,7 +6,7 @@ import cn.yapeteam.yolbi.event.impl.player.EventMotion;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.api.Category;
 import cn.yapeteam.yolbi.module.api.ModuleInfo;
-import cn.yapeteam.yolbi.value.impl.NumberValue;
+import cn.yapeteam.yolbi.module.api.value.impl.NumberValue;
 
 /**
  * @author Alan

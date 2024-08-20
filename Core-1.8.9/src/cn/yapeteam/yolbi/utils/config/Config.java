@@ -1,4 +1,4 @@
-package cn.yapeteam.yolbi.config;
+package cn.yapeteam.yolbi.utils.config;
 
 import com.google.gson.JsonObject;
 import lombok.AllArgsConstructor;

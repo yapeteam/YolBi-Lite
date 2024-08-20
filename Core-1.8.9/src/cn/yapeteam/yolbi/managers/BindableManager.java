@@ -1,7 +1,8 @@
-package cn.yapeteam.yolbi.bindable;
+package cn.yapeteam.yolbi.managers;
 
 
 import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.module.api.Bindable;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventKey;
 import net.minecraft.client.Minecraft;
