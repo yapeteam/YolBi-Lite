@@ -29,7 +29,7 @@ public class GuiIngameCache implements Accessor {
 
         // Don't optimize if framebuffers are not enabled or optimization should not be used
         if (!OpenGlHelper.isFramebufferEnabled()) {
-//            MC.ingameGUI.renderGameOverlay(partialTicks);
+            MC.ingameGUI.renderGameOverlay(partialTicks);
         }
 
         // Screen size
@@ -79,8 +79,8 @@ public class GuiIngameCache implements Accessor {
             GlStateManager.disableLighting();
             GlStateManager.disableFog();
 
-            // Enabling caching in GlStateManager, render overlay and disable it again
-            MC.ingameGUI.renderGameOverlay(partialTicks);
+//            // Enabling caching in GlStateManager, render overlay and disable it again
+//            MC.ingameGUI.renderGameOverlay(partialTicks);
 
             // Re-bind minecraft framebuffer and un-dirty
             MC.getFramebuffer().bindFramebuffer(false);

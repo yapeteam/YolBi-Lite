@@ -56,17 +56,6 @@ public class MixinEntityRenderer {
     ) {
         GlStateManager.pushMatrix();
         YolBi.instance.getEventManager().post(new EventRender2D(partialTicks, sr));
-        GlStateManager.enableBlend();
-//        // Cross-hair
-//        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-//        mc.getTextureManager().bindTexture(Gui.icons);
-//        GlStateManager.enableBlend();
-//        if (GuiUtil.showCrosshair()) {
-//            GlStateManager.tryBlendFuncSeparate(775, 769, 1, 0);
-//            GlStateManager.enableAlpha();
-//            mc.ingameGUI.drawTexturedModalRect(sr.getScaledWidth() / 2f - 7,
-//                    sr.getScaledHeight() / 2f - 7, 0, 0, 16, 16);
-//        }
         GlStateManager.popMatrix();
     }
 
