@@ -1,5 +1,6 @@
 package cn.yapeteam.yolbi.utils.render.shader.base;
 
+import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,9 @@ public abstract class RiseShader implements Accessor {
     public abstract void update();
 
     protected boolean shouldResize(@NotNull Framebuffer instance, int width, int height) {
+        Logger.info("[DEBUG] Checking if framebuffer should resize. Current size: "
+                + instance.framebufferWidth + "x" + instance.framebufferHeight
+                + ", Target size: " + width + "x" + height);
         return width != instance.framebufferWidth || height != instance.framebufferHeight;
     }
 }
