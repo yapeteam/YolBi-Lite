@@ -1,12 +1,10 @@
 package cn.yapeteam.yolbi.ui.gui;
 
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
-import cn.yapeteam.yolbi.utils.render.GuiUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -27,66 +25,12 @@ public class GuiIngameCache implements Accessor {
             scaledResolution = new ScaledResolution(mc);
         }
 
-        // Don't optimize if framebuffers are not enabled or optimization should not be used
-        if (!OpenGlHelper.isFramebufferEnabled()) {
-            MC.ingameGUI.renderGameOverlay(partialTicks);
-        }
-
         // Screen size
         int width = MC.displayWidth;
         int height = MC.displayHeight;
-
-        // TODO: Do stuff here before cached hud is used (e.g. cross-hair because buggy)
-        GlStateManager.enableBlend();
-
-        // Cross-hair
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.getTextureManager().bindTexture(Gui.icons);
-        GlStateManager.enableBlend();
-
-        if (GuiUtil.showCrosshair()) {
-            GlStateManager.tryBlendFuncSeparate(775, 769, 1, 0);
-            GlStateManager.enableAlpha();
-            mc.ingameGUI.drawTexturedModalRect(scaledResolution.getScaledWidth() / 2f - 7,
-                    scaledResolution.getScaledHeight() / 2 - 7, 0, 0, 16, 16);
-        }
-
-        // Render framebuffer content
-        if (framebuffer != null) {
-            renderCrosshair(width / 2 - 7, height / 2 - 7);
-            GlStateManager.enableBlend();
-            GlStateManager.enableAlpha();
-            GlStateManager.tryBlendFuncSeparate(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GlStateManager.color(1, 1, 1, 1);
-            framebuffer.bindFramebufferTexture();
-            drawTexturedRect(0, 0, (float) scaledResolution.getScaledWidth(), (float) scaledResolution.getScaledHeight(), 0, 1, 1, 0, GL11.GL_NEAREST);
-            GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
-        }
-
-        // If dirty, update framebuffer content
-        if (dirty) {
-            // Re-create/clear framebuffer
-            framebuffer = refreshFramebuffer(framebuffer, width, height);
-
-            // Bind cache framebuffer
-            framebuffer.framebufferClear();
-            framebuffer.bindFramebuffer(false);
-
-            // Calling correct gl functions before rendering to avoid errors
-            GlStateManager.disableBlend();
-            GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GlStateManager.color(1, 1, 1, 1);
-            GlStateManager.disableLighting();
-            GlStateManager.disableFog();
-
-//            // Enabling caching in GlStateManager, render overlay and disable it again
-//            MC.ingameGUI.renderGameOverlay(partialTicks);
-
-            // Re-bind minecraft framebuffer and un-dirty
-            MC.getFramebuffer().bindFramebuffer(false);
-            GlStateManager.enableBlend();
-            dirty = false;
-        }
+//        renderCrosshair(width / 2 - 7, height / 2 - 7);
+//        GlStateManager.disableBlend();
+//        GlStateManager.disableAlpha();
     }
 
     private static final Tessellator TESSELLATOR = Tessellator.getInstance();
