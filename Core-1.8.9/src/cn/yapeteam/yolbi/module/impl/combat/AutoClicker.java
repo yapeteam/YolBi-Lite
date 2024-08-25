@@ -13,7 +13,7 @@ import net.minecraft.util.MovingObjectPosition;
 
 import java.util.Random;
 
-@ModuleInfo(name = "AutoClicker", description = "Automatically clicks for you", category = Category.COMBAT)
+@ModuleInfo(aliases = {"module.ghost.autoclicker.name"}, description = "module.ghost.autoclicker.description", category = Category.COMBAT)
 public class AutoClicker extends Module {
     private final BoundsNumberValue cps = new BoundsNumberValue("Cps", this, 17,20, 0, 50, 1);
     private final BooleanValue leftClick = new BooleanValue("leftClick",this, true),

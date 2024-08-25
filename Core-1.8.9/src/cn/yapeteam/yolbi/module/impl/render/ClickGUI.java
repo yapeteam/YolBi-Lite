@@ -14,7 +14,7 @@ import java.awt.*;
 
 import static cn.yapeteam.yolbi.utils.layer.Layers.REGULAR;
 
-@ModuleInfo(name = "ClickGui", description = "module.render.clickgui.description", category = Category.RENDER, keyBind = Keyboard.KEY_RCONTROL)
+@ModuleInfo(aliases = {"module.render.clickgui.name"}, description = "module.render.clickgui.description", category = Category.RENDER, keyBind = Keyboard.KEY_RCONTROL)
 public final class ClickGUI extends Module {
     private final StopWatch stopWatch = new StopWatch();
 

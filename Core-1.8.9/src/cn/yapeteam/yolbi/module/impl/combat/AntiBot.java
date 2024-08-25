@@ -13,7 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 
-@ModuleInfo(name = "AntiBot", description = "Prevents you from attacking bot", category = Category.COMBAT)
+@ModuleInfo(aliases = {"module.combat.antibot.name"}, description = "module.combat.antibot.description", category = Category.COMBAT)
 public class AntiBot extends Module {
 
     private final ModeValue mode = new ModeValue("Mode", this)

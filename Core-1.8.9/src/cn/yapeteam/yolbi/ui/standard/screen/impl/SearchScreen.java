@@ -2,14 +2,15 @@ package cn.yapeteam.yolbi.ui.standard.screen.impl;
 
 
 import cn.yapeteam.yolbi.YolBi;
-import cn.yapeteam.yolbi.utils.font.impl.general.Fonts;
-import cn.yapeteam.yolbi.utils.font.impl.general.Weight;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.standard.components.ModuleComponent;
 import cn.yapeteam.yolbi.ui.standard.screen.Colors;
 import cn.yapeteam.yolbi.ui.standard.screen.Screen;
 import cn.yapeteam.yolbi.utils.StopWatch;
+import cn.yapeteam.yolbi.utils.font.impl.general.Fonts;
+import cn.yapeteam.yolbi.utils.font.impl.general.Weight;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
+import cn.yapeteam.yolbi.utils.localization.Localization;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
 import cn.yapeteam.yolbi.utils.render.ScrollUtil;
 import cn.yapeteam.yolbi.utils.render.textbox.TextAlign;
@@ -27,7 +28,8 @@ import java.util.Arrays;
 public final class SearchScreen implements Screen, Accessor {
 
     public final TextBox searchBar = new TextBox(new Vector2d(200, 200), Fonts.MAIN.get(20, Weight.REGULAR), Color.WHITE,
-            TextAlign.CENTER, "Start Typing to Search", 150);
+            TextAlign.CENTER, Localization.get("ui.search.text"), 150);
+
     private final StopWatch stopwatch = new StopWatch();
 
     public ScrollUtil scrollUtil = new ScrollUtil();
@@ -146,9 +148,11 @@ public final class SearchScreen implements Screen, Accessor {
 
         for (String word : adaptedSearch) {
             for (final ModuleComponent module : YolBi.instance.getClickGUI().getModuleList()) {
-                if (module.getModule().getDisplayName().toLowerCase().replaceAll(" ", "")
-                        .contains(word)) {
-                    if (!relevantModules.contains(module)) relevantModules.add(module);
+                for (String alias : module.getModule().getAliases()) {
+                    if (alias.toLowerCase().replaceAll(" ", "")
+                            .contains(word)) {
+                        if (!relevantModules.contains(module)) relevantModules.add(module);
+                    }
                 }
             }
         }

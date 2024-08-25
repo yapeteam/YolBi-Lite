@@ -139,10 +139,12 @@ public final class ConfigScreen implements Screen, Accessor {
         final ArrayList<ModuleComponent> relevantModules = new ArrayList<>();
 
         for (final ModuleComponent module : YolBi.instance.getClickGUI().getModuleList()) {
-            if (module.getModule().getDisplayName().toLowerCase().replaceAll(" ", "")
-                    .contains(search.toLowerCase().replaceAll(" ", ""))){
-                relevantModules.add(module);
-                break;
+            for (String alias: module.getModule().getModuleInfo().aliases()) {
+                if (alias.toLowerCase().replaceAll(" ", "")
+                        .contains(search.toLowerCase().replaceAll(" ", ""))){
+                    relevantModules.add(module);
+                    break;
+                }
             }
         }
 

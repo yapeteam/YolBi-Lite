@@ -10,7 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ModuleInfo(name = "Interface", description = "ClickGuiSettings", category = Category.RENDER, autoEnabled = true)
+@ModuleInfo(aliases = {"module.render.interface.name"}, description = "ClickGuiSettings", category = Category.RENDER, autoEnabled = true)
 public final class Interface extends Module {
     private final ModeValue modulesToShow = new ModeValue("Modules to Show", this) {{
         add(new SubMode("All"));

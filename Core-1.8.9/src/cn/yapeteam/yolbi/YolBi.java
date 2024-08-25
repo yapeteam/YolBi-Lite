@@ -2,16 +2,16 @@ package cn.yapeteam.yolbi;
 
 import cn.yapeteam.loader.VersionInfo;
 import cn.yapeteam.loader.logger.Logger;
-import cn.yapeteam.yolbi.managers.BindableManager;
-import cn.yapeteam.yolbi.managers.ConfigManager;
-import cn.yapeteam.yolbi.managers.EventManager;
 import cn.yapeteam.yolbi.event.impl.client.EventClientShutdown;
 import cn.yapeteam.yolbi.managers.*;
 import cn.yapeteam.yolbi.server.WebServer;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.theme.ThemeManager;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
+import cn.yapeteam.yolbi.utils.localization.Locale;
+import cn.yapeteam.yolbi.utils.localization.Localization;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +34,8 @@ public class YolBi implements Accessor {
     private ThemeManager themeManager;
     private RiseClickGUI clickGUI;
     private BindableManager bindableManager;
+    @Setter
+    private Locale locale = Locale.EN_US; // The language of the client
 
     @Getter
     private static final long startMillisTime = System.currentTimeMillis();
@@ -83,6 +85,7 @@ public class YolBi implements Accessor {
         instance.eventManager.register(instance.targetManager);
         instance.eventManager.register(instance.rotationManager);
         instance.eventManager.register(instance.themeManager);
+        Localization.populate();
         instance.bindableManager.init();
         mc.addScheduledTask(() -> instance.moduleManager.init());
         try {

@@ -13,7 +13,7 @@ import cn.yapeteam.yolbi.module.api.value.impl.NumberValue;
  * @since 29/01/2021
  */
 
-@ModuleInfo(name = "ClickAssist", description = "Assists With ur clicking", category = Category.GHOST)
+@ModuleInfo(aliases = {"module.ghost.clickassist.name"}, description = "module.ghost.clickassist.description", category = Category.GHOST)
 public class ClickAssist extends Module {
 
     public final NumberValue extraLeftClicks = new NumberValue("Extra Left Clicks", this, 1, 0, 3, 1);

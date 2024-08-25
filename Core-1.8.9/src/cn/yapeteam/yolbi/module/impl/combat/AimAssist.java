@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@ModuleInfo(name = "AimAssist", description = "Assists with aiming", category = Category.COMBAT)
+@ModuleInfo(aliases = {"module.ghost.aimassist.name"}, description = "module.ghost.aimassist.description", category = Category.COMBAT)
 public class AimAssist extends Module {
     private final NumberValue Range = new NumberValue("Aim Range",this, 5, 3, 10, 1);
 

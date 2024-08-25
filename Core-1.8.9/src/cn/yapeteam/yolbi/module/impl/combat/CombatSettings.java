@@ -7,7 +7,7 @@ import cn.yapeteam.yolbi.module.api.value.impl.BooleanValue;
 import lombok.Getter;
 
 @Getter
-@ModuleInfo(name = "CombatSettings", description = "Combat settings", category = Category.COMBAT)
+@ModuleInfo(aliases = {"module.combat.combatsettings.name"}, description = "module.combat.combatsettings.description", category = Category.COMBAT)
 public class CombatSettings extends Module {
     private final BooleanValue players = new BooleanValue("Players", this,  true);
     private final BooleanValue notTeamMates = new BooleanValue("No Team Mates", this, true, players::getValue);

@@ -2,14 +2,15 @@ package cn.yapeteam.yolbi.ui.standard.components.category;
 
 
 import cn.yapeteam.yolbi.YolBi;
-import cn.yapeteam.yolbi.utils.font.impl.general.Fonts;
-import cn.yapeteam.yolbi.utils.font.impl.general.Weight;
 import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.module.api.Category;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.standard.screen.Screen;
 import cn.yapeteam.yolbi.utils.animation.Animation;
+import cn.yapeteam.yolbi.utils.font.impl.general.Fonts;
+import cn.yapeteam.yolbi.utils.font.impl.general.Weight;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
+import cn.yapeteam.yolbi.utils.localization.Localization;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
 import cn.yapeteam.yolbi.utils.render.GuiUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector2d;
@@ -48,12 +49,16 @@ public final class CategoryComponent implements Accessor {
         animation.run(selectedScreen.equals(category.getClickGUIScreen()) ? 255 : 0);
 
         final double spacer = 4;
-        final double width = Fonts.MAIN.get(16, Weight.REGULAR).width(category.getName()) + spacer * 2 + category.getFontRenderer().width(category.getIcon());
+        final double width = Fonts.MAIN.get(16, Weight.REGULAR).width(Localization.get(category.getName())) + spacer * 2 + category.getFontRenderer().width(category.getIcon());
 
         double scale = 0.5;
         GlStateManager.pushMatrix();
+//        GlStateManager.translate(x, y, 0);
+//        GlStateManager.scale(scale, scale, 1);
 
-        // draws selection
+        /* Draws selection */
+        //RenderManager.roundedRectangle(x + 1.5, y - 6.5, width + 9, 17, 6,
+        //     ColorUtil.withAlpha(getTheme().getAccentColor(new Vector2d(0, y / 5D)), (int) (Math.min(animation.getValue(), opacity))).darker());
 
         RenderManager.roundedRectangle(x, y - 5.5, width + 8, 15, 5,
                 ColorUtil.withAlpha(getTheme().getAccentColor(new Vector2d(0, y / 5D)), (int) (Math.min(animation.getValue(), opacity))).darker());
@@ -62,7 +67,7 @@ public final class CategoryComponent implements Accessor {
 
         category.getFontRenderer().draw(category.getIcon(), (float) (x + animation.getValue() / 80f + 3), y, color);
 
-        Fonts.MAIN.get(16, Weight.REGULAR).draw(category.getName(), (float) (x + animation.getValue() / 80f + 3 + spacer) +
+        Fonts.MAIN.get(16, Weight.REGULAR).draw(Localization.get(category.getName()), (float) (x + animation.getValue() / 80f + 3 + spacer) +
                 Fonts.ICONS_1.get(17).width(category.getIcon()), y, color);
 
         GlStateManager.popMatrix();
@@ -80,7 +85,7 @@ public final class CategoryComponent implements Accessor {
 
     public void bloom(final double opacity) {
         final double spacer = 4;
-        final double width = Fonts.MAIN.get(16, Weight.REGULAR).width(category.getName()) + spacer * 2 + category.getFontRenderer().width(category.getIcon());
+        final double width = Fonts.MAIN.get(16, Weight.REGULAR).width(Localization.get(category.getName())) + spacer * 2 + category.getFontRenderer().width(category.getIcon());
 
         RenderManager.roundedRectangle(x, y - 5, width + 8, 14, 5,
                 ColorUtil.withAlpha(this.getTheme().getAccentColor(new Vector2d(0, y / 5D)), (int) (Math.min(animation.getValue(), opacity))).darker());
