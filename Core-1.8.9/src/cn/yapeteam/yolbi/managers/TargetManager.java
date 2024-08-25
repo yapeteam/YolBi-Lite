@@ -1,22 +1,5 @@
 package cn.yapeteam.yolbi.managers;
 
-//import cn.yapeteam.yolbi.YolBi;
-//import cn.yapeteam.yolbi.module.impl.combat.AntiBot;
-//import cn.yapeteam.yolbi.module.impl.combat.CombatSettings;
-//import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
-//import cn.yapeteam.yolbi.utils.player.PlayerUtil;
-//import net.minecraft.entity.Entity;
-//import net.minecraft.entity.EntityLivingBase;
-//import net.minecraft.entity.monster.EntityMob;
-//import net.minecraft.entity.passive.EntityAnimal;
-//import net.minecraft.entity.passive.EntityVillager;
-//import net.minecraft.entity.player.EntityPlayer;
-//
-//import java.util.ArrayList;
-//import java.util.Comparator;
-//import java.util.List;
-//import java.util.stream.Collectors;
-
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.module.impl.combat.AntiBot;
 import cn.yapeteam.yolbi.module.impl.combat.CombatSettings;
