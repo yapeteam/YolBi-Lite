@@ -2,8 +2,6 @@ package cn.yapeteam.yolbi.ui.standard.components;
 
 
 import cn.yapeteam.yolbi.YolBi;
-import cn.yapeteam.yolbi.font.Fonts;
-import cn.yapeteam.yolbi.font.Weight;
 import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
@@ -15,7 +13,10 @@ import cn.yapeteam.yolbi.ui.standard.screen.impl.SearchScreen;
 import cn.yapeteam.yolbi.utils.StopWatch;
 import cn.yapeteam.yolbi.utils.animation.Animation;
 import cn.yapeteam.yolbi.utils.animation.Easing;
+import cn.yapeteam.yolbi.utils.font.impl.general.Fonts;
+import cn.yapeteam.yolbi.utils.font.impl.general.Weight;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
+import cn.yapeteam.yolbi.utils.localization.Localization;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
 import cn.yapeteam.yolbi.utils.render.GuiUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector2d;
@@ -80,7 +81,7 @@ public class ModuleComponent implements Accessor {
 
             // Draw the module's category if the user is searching
             if (clickGUI.getRenderedScreen() instanceof SearchScreen) {
-                Fonts.MAIN.get(15, Weight.REGULAR).draw("(" + module.getModuleInfo().category().getName() + ")",
+                Fonts.MAIN.get(15, Weight.REGULAR).draw("(" + Localization.get(module.getModuleInfo().category().getName()) + ")",
                         (float) (position.getX() + Fonts.MAIN.get(20, Weight.REGULAR).width(this.module.getName()) + 10F),
                         (float) position.getY() + 10, ColorUtil.withAlpha(fontColor, 64).hashCode());
             }
@@ -90,7 +91,7 @@ public class ModuleComponent implements Accessor {
                     module.isEnabled() ? getTheme().getAccentColor(new Vector2d(0, position.y / 5)).getRGB() : fontColor.getRGB());
 
             // Draw module category
-            Fonts.MAIN.get(15, Weight.REGULAR).draw(module.getModuleInfo().description(), (float) position.x + 6f,
+            Fonts.MAIN.get(15, Weight.REGULAR).draw(Localization.get(module.getModuleInfo().description()), (float) position.x + 6f,
                     (float) position.y + 25, ColorUtil.withAlpha(fontColor, 70).hashCode());
 
             scale = new Vector2f(getClickGUI().moduleDefaultScale.x, height);
@@ -102,11 +103,10 @@ public class ModuleComponent implements Accessor {
                     continue;
                 }
 
-                if (valueComponent.getValue() != null && valueComponent.getValue().getInternalHideIf() != null && valueComponent.getValue().getInternalHideIf().getAsBoolean()) {
+                if (valueComponent.getValue().getInternalHideIf() != null && valueComponent.getValue().getInternalHideIf().getAsBoolean()) {
                     continue;
                 }
 
-                if (position == null) return;
                 valueComponent.setOpacity(valueComponent.position == null ? 0 : valueComponent.position.y < position.y + opening.getValue() + 15 ? (int) settingOpacity.getValue() : 0);
                 valueComponent.setOpacity(valueComponent.getValue().getHideIf() == null ? valueComponent.getOpacity() : Math.max(valueComponent.getOpacity() - 40, 0));
 
@@ -131,6 +131,7 @@ public class ModuleComponent implements Accessor {
 
         settingOpacity.setDuration(expanded ? opening.getDuration() / 2 : opening.getDuration() / 3);
         settingOpacity.run(expanded ? 255 : 0);
+
     }
 
     public void key(final char typedChar, final int keyCode) {

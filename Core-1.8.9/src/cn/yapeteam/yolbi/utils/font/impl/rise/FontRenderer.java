@@ -1,6 +1,7 @@
 package cn.yapeteam.yolbi.utils.font.impl.rise;
 
 
+import cn.yapeteam.yolbi.managers.FontManager;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.MathHelper;
@@ -41,7 +42,6 @@ public class FontRenderer extends cn.yapeteam.yolbi.utils.font.Font {
     private boolean antialiasing = true, international = false;
 
     public FontRenderer(Font font, boolean fractionalMetrics, boolean antialiasing, boolean international) {
-        calculateColorCodes();
         this.antialiasing = antialiasing;
         this.font = font;
         this.fractionalMetrics = fractionalMetrics;
@@ -56,7 +56,6 @@ public class FontRenderer extends cn.yapeteam.yolbi.utils.font.Font {
     }
 
     public FontRenderer(final Font font, final boolean fractionalMetrics, final boolean antialiasing) {
-        calculateColorCodes();
         this.antialiasing = antialiasing;
         this.font = font;
         this.fractionalMetrics = fractionalMetrics;
@@ -66,7 +65,6 @@ public class FontRenderer extends cn.yapeteam.yolbi.utils.font.Font {
     }
 
     public FontRenderer(final Font font, final boolean fractionalMetrics) {
-        calculateColorCodes();
         this.font = font;
         this.fractionalMetrics = fractionalMetrics;
         this.fontHeight = (float) (font.getStringBounds(ALPHABET, new FontRenderContext(new AffineTransform(), true, fractionalMetrics)).getHeight() / 2);
@@ -181,23 +179,18 @@ public class FontRenderer extends cn.yapeteam.yolbi.utils.font.Font {
     }
 
     public int drawWithShadow(final String text, final double x, final double y, final int color) {
-//        drawString(text, x + 0.25, y + 0.25, color, true);
         return draw(text, x, y, color, false);
     }
 
     public void drawCenteredStringWithShadow(final String text, final float x, final float y, final int color) {
-//        drawString(text, x - (width(text) >> 1) + 0.25, y + 0.25, new Color(color, true).getRGB(), true);
         draw(text, x - (width(text) >> 1), y, color, false);
     }
 
     public int draw(String text, double x, double y, final int color, final boolean shadow) {
-        if (text == null) {
-            return 0;
+
+        if (!this.international && this.requiresInternationalFont(text)) {
+            return FontManager.getInternational(this.font.getSize() - 1).draw(text, x, y, color);
         }
-//
-//        if (!this.international && this.requiresInternationalFont(text)) {
-//            return FontManager.getInternational(this.font.getSize() - 1).draw(text, x, y, color);
-//        }
 
         final FontCharacter[] characterSet = this.international ? internationalCharacters : defaultCharacters;
 
@@ -218,34 +211,26 @@ public class FontRenderer extends cn.yapeteam.yolbi.utils.font.Font {
         final double startX = x;
 
         final int length = text.length();
-        ColorUtil.glColor(shadow ? Color.white.getRGB() : color);
-        text = text.replaceAll("\247l", "");
-        try {
-            char[] characters = text.toCharArray();
-            final int textLength = characters.length;
-            final int lineHeightTimes2 = (int) (height() * 2);
-            final int marginWidthTimes2 = MARGIN_WIDTH * 2;
+        ColorUtil.glColor(shadow ? 50 : color);
 
-            for (int i = 0; i < textLength; i++) {
-                char character = characters[i];
+        for (int i = 0; i < length; ++i) {
+            final char character = text.charAt(i);
 
+            try {
                 if (character == '\n') {
                     x = startX;
-                    y += lineHeightTimes2;
+                    y += height() * 2;
                     continue;
                 }
-                if (character == '§') {
-                    i++;
-                    ColorUtil.glColor(new Color(COLOR_CODES["0123456789abcdefklmnor".indexOf(characters[i])]));
-                    continue;
-                }
+
                 final FontCharacter fontCharacter = characterSet[character];
-                float characterWidth = fontCharacter.getWidth();
                 fontCharacter.render((float) x, (float) y);
-                x += characterWidth - marginWidthTimes2;
+                x += fontCharacter.getWidth() - MARGIN_WIDTH * 2;
+            } catch (Exception exception) {
+                System.out.println("Character \"" + character + "\" was out of bounds " +
+                        "(" + ((int) character) + " out of bounds for " + characterSet.length + ")");
+                exception.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         GL11.glDisable(GL11.GL_BLEND);
@@ -257,42 +242,18 @@ public class FontRenderer extends cn.yapeteam.yolbi.utils.font.Font {
         return (int) (x - givenX);
     }
 
-    @Override
-    public void drawCharacter(final char character, final int x, final int y, final Color color) {
-        final FontCharacter[] characterSet = this.international ? internationalCharacters : defaultCharacters;
-
-        final FontCharacter fontCharacter = characterSet[character];
-        GlStateManager.color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
-        fontCharacter.render(x, y);
-    }
-
     public int width(String text) {
-//        if (!this.international && this.requiresInternationalFont(text)) {
-//            return FontManager.getInternational(this.font.getSize()).width(text);
-//        }
-        text = text.replaceAll("\247l", "");
+        if (!this.international && this.requiresInternationalFont(text)) {
+            return FontManager.getInternational(this.font.getSize()).width(text);
+        }
+
         final FontCharacter[] characterSet = this.international ? internationalCharacters : defaultCharacters;
         final int length = text.length();
         char previousCharacter = '.';
         int width = 0;
+
         for (int i = 0; i < length; ++i) {
             final char character = text.charAt(i);
-//            if (previousCharacter != COLOR_INVOKER) {
-//                if (character == COLOR_INVOKER) {
-//                    final int index = COLOR_CODE_CHARACTERS.indexOf(text.toLowerCase().charAt(i + 1));
-//                    if (index < 16 || index == 21) {
-//                        characterSet = defaultCharacters;
-//                    } else if (index == 17) {
-//                        characterSet = boldCharacters;
-//                    }
-//                } else if (characterSet.length > character) {
-//                    width += characterSet[character].getWidth() - MARGIN_WIDTH * 2;
-//                }
-//            }
-            if (character == COLOR_INVOKER) {
-                i++;
-                continue;
-            }
             width += characterSet[character].getWidth() - MARGIN_WIDTH * 2;
 
             previousCharacter = character;

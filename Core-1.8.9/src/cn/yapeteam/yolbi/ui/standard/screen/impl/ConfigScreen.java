@@ -2,8 +2,8 @@ package cn.yapeteam.yolbi.ui.standard.screen.impl;
 
 
 import cn.yapeteam.yolbi.YolBi;
-import cn.yapeteam.yolbi.font.Fonts;
-import cn.yapeteam.yolbi.font.Weight;
+import cn.yapeteam.yolbi.utils.font.impl.general.Fonts;
+import cn.yapeteam.yolbi.utils.font.impl.general.Weight;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.standard.components.ModuleComponent;
 import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
@@ -139,10 +139,12 @@ public final class ConfigScreen implements Screen, Accessor {
         final ArrayList<ModuleComponent> relevantModules = new ArrayList<>();
 
         for (final ModuleComponent module : YolBi.instance.getClickGUI().getModuleList()) {
-            if (module.getModule().getDisplayName().toLowerCase().replaceAll(" ", "")
-                    .contains(search.toLowerCase().replaceAll(" ", ""))){
-                relevantModules.add(module);
-                break;
+            for (String alias: module.getModule().getModuleInfo().aliases()) {
+                if (alias.toLowerCase().replaceAll(" ", "")
+                        .contains(search.toLowerCase().replaceAll(" ", ""))){
+                    relevantModules.add(module);
+                    break;
+                }
             }
         }
 

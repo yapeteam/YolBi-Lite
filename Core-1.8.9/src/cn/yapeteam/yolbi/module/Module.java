@@ -2,22 +2,24 @@ package cn.yapeteam.yolbi.module;
 
 
 import cn.yapeteam.yolbi.YolBi;
-import cn.yapeteam.yolbi.bindable.Bindable;
 import cn.yapeteam.yolbi.event.impl.client.EventModuleToggle;
+import cn.yapeteam.yolbi.module.api.Bindable;
 import cn.yapeteam.yolbi.module.api.Category;
 import cn.yapeteam.yolbi.module.api.ModuleInfo;
+import cn.yapeteam.yolbi.module.api.value.Value;
+import cn.yapeteam.yolbi.module.api.value.impl.BooleanValue;
+import cn.yapeteam.yolbi.module.api.value.impl.ModeValue;
+import cn.yapeteam.yolbi.module.impl.render.ClickGUI;
 import cn.yapeteam.yolbi.module.impl.render.Interface;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
-import cn.yapeteam.yolbi.utils.interfaces.ThreadAccess;
 import cn.yapeteam.yolbi.utils.interfaces.Toggleable;
-import cn.yapeteam.yolbi.value.Value;
-import cn.yapeteam.yolbi.value.impl.BooleanValue;
-import cn.yapeteam.yolbi.value.impl.ModeValue;
+import cn.yapeteam.yolbi.utils.localization.Localization;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,9 +28,10 @@ import java.util.List;
  */
 @Getter
 @Setter
-public abstract class Module implements Accessor, ThreadAccess, Toggleable, Bindable {
+public abstract class Module implements Accessor, Toggleable, Bindable {
 
-    private String displayName;
+    private String[] aliases;
+    private String[] displayName;
     private final List<Value<?>> values = new ArrayList<>();
     private ModuleInfo moduleInfo;
     private boolean enabled;
@@ -37,7 +40,9 @@ public abstract class Module implements Accessor, ThreadAccess, Toggleable, Bind
     public Module() {
         if (this.getClass().isAnnotationPresent(ModuleInfo.class)) {
             this.moduleInfo = this.getClass().getAnnotation(ModuleInfo.class);
-            this.displayName = this.moduleInfo.name();
+
+            this.aliases = Arrays.stream(this.moduleInfo.aliases())
+                    .map(Localization::get).toArray(String[]::new);
             this.key = getModuleInfo().keyBind();
         } else {
             throw new RuntimeException("ModuleInfo annotation not found on " + this.getClass().getSimpleName());
@@ -46,13 +51,15 @@ public abstract class Module implements Accessor, ThreadAccess, Toggleable, Bind
 
     public Module(final ModuleInfo info) {
         this.moduleInfo = info;
-        this.displayName = this.moduleInfo.name();
+
+        this.displayName = this.moduleInfo.aliases();
+        this.aliases = this.moduleInfo.aliases();
         this.key = getModuleInfo().keyBind();
     }
 
     @Override
     public String getName() {
-        return this.moduleInfo.name();
+        return aliases[0];
     }
 
     public void onKey() {
@@ -75,7 +82,9 @@ public abstract class Module implements Accessor, ThreadAccess, Toggleable, Bind
 
         this.enabled = enabled;
 
-        YolBi.instance.getEventManager().register(new EventModuleToggle(this));
+        YolBi.instance.getEventManager().post(new EventModuleToggle(this));
+
+//        SoundUtil.toggleSound(enabled);
 
         if (enabled) {
             superEnable();
@@ -155,6 +164,7 @@ public abstract class Module implements Accessor, ThreadAccess, Toggleable, Bind
     }
 
     public boolean shouldDisplay(Interface instance) {
+        if (this instanceof ClickGUI) return false;
         if (!this.getModuleInfo().allowDisable()) return false;
 
         switch (instance.getModulesToShow().getValue().getName()) {

@@ -5,7 +5,7 @@ import cn.yapeteam.yolbi.event.impl.player.EventJump;
 import cn.yapeteam.yolbi.event.impl.player.EventLook;
 import cn.yapeteam.yolbi.event.impl.player.EventMotion;
 import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
-import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.player.PlayerUtil;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import cn.yapeteam.yolbi.utils.vector.Vector3d;
@@ -15,7 +15,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 
-public class RotationManager implements IMinecraft {
+public class RotationManager implements Accessor {
     public boolean active;
     public Vector2f rotations, lastRotations, targetRotations, lastServerRotations;
     private double rotationSpeed;

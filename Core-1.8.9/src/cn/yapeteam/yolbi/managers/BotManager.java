@@ -3,12 +3,14 @@ package cn.yapeteam.yolbi.managers;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventLoadWorld;
 import cn.yapeteam.yolbi.event.impl.game.EventTick;
-import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
+import cn.yapeteam.yolbi.module.impl.combat.AntiBot;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
 
-public class BotManager implements IMinecraft {
+public class BotManager implements Accessor {
     public static ArrayList<Entity> bots = new ArrayList<>();
 
     @Listener
@@ -25,9 +27,9 @@ public class BotManager implements IMinecraft {
     public void TickEvent(EventTick e) {
         if (mc.theWorld == null) return;
         bots.forEach(entity -> {
-//            if (entity != mc.thePlayer && (!bots.contains(entity) && AntiBot.isBot((EntityPlayer) entity))) {
-//                if (!bots.contains(entity)) addBot(entity);
-//            }
+            if (entity != mc.thePlayer && (!bots.contains(entity) && AntiBot.isBot((EntityPlayer) entity))) {
+                if (!bots.contains(entity)) addBot(entity);
+            }
         });
     }
 }

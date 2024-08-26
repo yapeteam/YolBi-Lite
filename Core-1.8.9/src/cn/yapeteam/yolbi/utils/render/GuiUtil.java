@@ -1,6 +1,6 @@
 package cn.yapeteam.yolbi.utils.render;
 
-import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.vector.Vector2d;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import lombok.experimental.UtilityClass;
@@ -9,7 +9,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 
 @UtilityClass
-public class GuiUtil implements IMinecraft {
+public class GuiUtil implements Accessor {
     public boolean mouseOver(final double posX, final double posY, final double width, final double height, final double mouseX, final double mouseY) {
         return mouseX > posX && mouseX < posX + width && mouseY > posY && mouseY < posY + height;
     }

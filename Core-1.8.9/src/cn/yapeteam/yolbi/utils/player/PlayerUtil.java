@@ -1,6 +1,8 @@
 package cn.yapeteam.yolbi.utils.player;
 
-import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
+import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.module.impl.combat.CombatSettings;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import com.google.common.base.Predicates;
 import lombok.experimental.UtilityClass;
 import lombok.val;
@@ -13,6 +15,11 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemFishingRod;
+import net.minecraft.item.ItemSword;
 import net.minecraft.util.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -23,7 +30,10 @@ import java.util.HashMap;
 import java.util.List;
 
 @UtilityClass
-public class PlayerUtil implements IMinecraft {
+public class PlayerUtil implements Accessor {
+
+
+
     private final HashMap<Integer, Integer> GOOD_POTIONS = new HashMap<Integer, Integer>() {{
         put(6, 1); // Instant Health
         put(10, 2); // Regeneration
@@ -202,13 +212,14 @@ public class PlayerUtil implements IMinecraft {
         return (float) (yaw * -1.0D);
     }
 
-//    public static boolean holdingWeapon() {
-//        if (mc.thePlayer.getHeldItem() == null) {
-//            return false;
-//        }
-//        Item getItem = mc.thePlayer.getHeldItem().getItem();
-//        return getItem instanceof ItemSword || (settings.getAxe().getValue() && getItem instanceof ItemAxe) || (settings.getRod().getValue() && getItem instanceof ItemFishingRod) || (settings.getStick().getValue() && getItem == Items.stick);
-//    }
+    public static boolean holdingWeapon() {
+        CombatSettings settings = YolBi.instance.getModuleManager().get(CombatSettings.class);
+        if (mc.thePlayer.getHeldItem() == null) {
+            return false;
+        }
+        Item getItem = mc.thePlayer.getHeldItem().getItem();
+        return getItem instanceof ItemSword || (settings.getAxe().getValue() && getItem instanceof ItemAxe) || (settings.getRod().getValue() && getItem instanceof ItemFishingRod) || (settings.getStick().getValue() && getItem == Items.stick);
+    }
 
     public static boolean overAir() {
         return mc.theWorld.isAirBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1.0, mc.thePlayer.posZ));

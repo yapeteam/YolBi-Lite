@@ -3,9 +3,9 @@ package cn.yapeteam.yolbi.server.handlers.modules;
 
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.module.Module;
+import cn.yapeteam.yolbi.module.api.value.impl.*;
 import cn.yapeteam.yolbi.utils.web.URLUtil;
-import cn.yapeteam.yolbi.value.Value;
-import cn.yapeteam.yolbi.value.impl.*;
+import cn.yapeteam.yolbi.module.api.value.Value;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;

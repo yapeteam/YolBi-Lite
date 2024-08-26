@@ -5,7 +5,6 @@ import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.impl.render.ClickGUI;
 import cn.yapeteam.yolbi.module.impl.render.Interface;
-import cn.yapeteam.yolbi.module.impl.render.Test;
 import cn.yapeteam.yolbi.ui.standard.components.ModuleComponent;
 import cn.yapeteam.yolbi.utils.AdaptiveMap;
 
@@ -31,7 +30,6 @@ public final class ModuleManager {
 
         this.put(Interface.class, new Interface());
         this.put(ClickGUI.class, new ClickGUI());
-        this.put(Test.class, new Test());
 
         // Automatic initializations
         this.getAll().stream().filter(module -> module.getModuleInfo().autoEnabled()).forEach(module -> module.setEnabled(true));

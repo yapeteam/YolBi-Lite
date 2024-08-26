@@ -4,7 +4,7 @@ import cn.yapeteam.loader.ResourceManager;
 import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.loader.utils.StreamUtils;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
-import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.opengl.GL11;
@@ -16,8 +16,9 @@ import java.nio.charset.StandardCharsets;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class ShaderUtil implements IMinecraft {
+public class ShaderUtil implements Accessor {
     public static int createShader(final String fragmentResource, final String vertexResource) {
+        System.out.println("[DEBUG] Creating shader with fragment: " + fragmentResource + " and vertex: " + vertexResource);
         final String fragmentSource = getShaderResource(fragmentResource);
         final String vertexSource = getShaderResource(vertexResource);
 
@@ -44,11 +45,10 @@ public class ShaderUtil implements IMinecraft {
         final int programId = GL20.glCreateProgram();
         GL20.glAttachShader(programId, fragmentId);
         GL20.glAttachShader(programId, vertexId);
-        GL20.glValidateProgram(programId);
         GL20.glLinkProgram(programId);
-        GL20.glDeleteShader(fragmentId);
-        GL20.glDeleteShader(vertexId);
+        GL20.glValidateProgram(programId);
 
+        System.out.println("[DEBUG] Created shader program ID: " + programId);
         return programId;
     }
 

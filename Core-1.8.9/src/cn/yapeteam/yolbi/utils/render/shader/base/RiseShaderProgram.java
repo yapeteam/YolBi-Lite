@@ -1,6 +1,6 @@
 package cn.yapeteam.yolbi.utils.render.shader.base;
 
-import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.render.shader.ShaderUtil;
 import lombok.Getter;
 import net.minecraft.client.gui.ScaledResolution;
@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 @Getter
-public class RiseShaderProgram implements IMinecraft {
+public class RiseShaderProgram implements Accessor {
     private final int programId;
 
     public RiseShaderProgram(final String fragmentPath, final String vertexPath) {

@@ -4,7 +4,7 @@ package cn.yapeteam.yolbi.utils.player;
 import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.ymixin.utils.Mapper;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
-import cn.yapeteam.yolbi.utils.interfaces.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import com.google.common.base.Predicates;
 import kotlin.Triple;
@@ -20,7 +20,7 @@ import java.util.*;
  * @author Patrick
  * @since 11/17/2021
  */
-public final class RayCastUtil implements IMinecraft {
+public final class RayCastUtil implements Accessor {
 
     private static Frustum FRUSTUM;
 
