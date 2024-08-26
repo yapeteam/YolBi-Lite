@@ -97,7 +97,7 @@ jvmtiEnv *jvmti;
 __int64 __fastcall Hook_JVM_EnqueueOperation(int a1, int a2, int a3, int a4, __int64 a5)
 {
     // MessageBoxW(NULL, L"jmap以打死", "Hooked", 0);
-    return 0;
+    return -1;
 }
 
 void HookFuncAddress64(DWORD_PTR FuncAddress, LPVOID lpFunction)
