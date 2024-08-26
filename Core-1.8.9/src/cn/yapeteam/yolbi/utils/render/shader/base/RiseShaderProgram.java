@@ -34,6 +34,7 @@ public class RiseShaderProgram implements Accessor {
     }
 
     public void start() {
+        // Reset depth and alpha states
         GL20.glUseProgram(programId);
     }
 

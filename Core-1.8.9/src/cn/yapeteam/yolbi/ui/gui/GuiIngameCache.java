@@ -1,7 +1,6 @@
 package cn.yapeteam.yolbi.ui.gui;
 
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
-import cn.yapeteam.yolbi.utils.render.shader.ShaderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
@@ -14,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiIngameCache implements Accessor {
     private static final Minecraft MC = Minecraft.getMinecraft();
-    private static Framebuffer framebuffer;
+    private static Framebuffer framebuffer = new Framebuffer(1, 1, false);
 
     // TODO: SET DIRTY TO TRUE IN END OF RUN TICK
     public static boolean dirty;
@@ -22,16 +21,36 @@ public class GuiIngameCache implements Accessor {
     private static ScaledResolution scaledResolution = new ScaledResolution(mc);
 
     public static void renderGameOverlay(float partialTicks) {
-        if (scaledResolution.getScaledWidth() != mc.displayWidth || scaledResolution.getScaledHeight() != mc.displayHeight) {
-            scaledResolution = new ScaledResolution(mc);
-        }
-        GlStateManager.pushMatrix();
-        GlStateManager.enableBlend();
-        GlStateManager.enableAlpha();
-        ShaderUtil.drawQuads(scaledResolution);
-        GlStateManager.disableAlpha();
-        GlStateManager.disableBlend();
-        GlStateManager.popMatrix();
+//        // Re-create/clear framebuffer
+//        framebuffer = refreshFramebuffer(framebuffer, mc.displayWidth, mc.displayHeight);
+//
+//        // Bind cache framebuffer
+//        framebuffer.framebufferClear();
+//        framebuffer.bindFramebuffer(false);
+//
+//        // Calling correct gl functions before rendering to avoid errors
+//        GlStateManager.disableBlend();
+//        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, GL11.GL_ONE_MINUS_SRC_ALPHA);
+//        GlStateManager.color(1, 1, 1, 1);
+//        GlStateManager.disableLighting();
+//        GlStateManager.disableFog();
+//
+//        // Re-bind minecraft framebuffer and un-dirty
+//        MC.getFramebuffer().bindFramebuffer(false);
+//        GlStateManager.enableBlend();
+//
+//        if (scaledResolution.getScaledWidth() != mc.displayWidth || scaledResolution.getScaledHeight() != mc.displayHeight) {
+//            scaledResolution = new ScaledResolution(mc);
+//        }
+//
+//        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+//        GlStateManager.disableLighting();
+//        GlStateManager.enableAlpha();
+//
+//        mc.getFramebuffer().bindFramebuffer(false);
+//        framebuffer.bindFramebufferTexture();
+//        ShaderUtil.drawQuads(scaledResolution);
+//        GlStateManager.bindTexture(0);
     }
 
     private static final Tessellator TESSELLATOR = Tessellator.getInstance();
