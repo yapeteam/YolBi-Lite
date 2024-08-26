@@ -21,7 +21,7 @@ public class ModuleInfoHttpHandler implements HttpHandler {
         JsonObject jsonObject = new JsonObject();
         JsonObject result = new JsonObject();
 
-        YolBi.instance.getModuleManager().getAll().stream().filter(module -> module.getDisplayName().equalsIgnoreCase(Displayname) && module.getModuleInfo().allowDisable()).forEach(Module -> Module.setEnabled(Enabled));
+        YolBi.instance.getModuleManager().getAll().stream().filter(module -> module.getDisplayName()[0].equalsIgnoreCase(Displayname) && module.getModuleInfo().allowDisable()).forEach(Module -> Module.setEnabled(Enabled));
 
         jsonObject.add("result", result);
         jsonObject.addProperty("success", true);

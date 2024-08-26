@@ -1,6 +1,7 @@
 package cn.yapeteam.yolbi.ui.gui;
 
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
+import cn.yapeteam.yolbi.utils.render.shader.ShaderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
@@ -24,13 +25,13 @@ public class GuiIngameCache implements Accessor {
         if (scaledResolution.getScaledWidth() != mc.displayWidth || scaledResolution.getScaledHeight() != mc.displayHeight) {
             scaledResolution = new ScaledResolution(mc);
         }
-
-        // Screen size
-        int width = MC.displayWidth;
-        int height = MC.displayHeight;
-//        renderCrosshair(width / 2 - 7, height / 2 - 7);
-//        GlStateManager.disableBlend();
-//        GlStateManager.disableAlpha();
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
+        GlStateManager.enableAlpha();
+        ShaderUtil.drawQuads(scaledResolution);
+        GlStateManager.disableAlpha();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
 
     private static final Tessellator TESSELLATOR = Tessellator.getInstance();

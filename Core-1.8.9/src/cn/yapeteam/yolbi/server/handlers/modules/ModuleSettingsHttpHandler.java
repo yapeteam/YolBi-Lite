@@ -26,7 +26,7 @@ public class ModuleSettingsHttpHandler implements HttpHandler {
         boolean isFound = false;
 
         for (Module module : YolBi.instance.getModuleManager().getAll()) {
-            if (module.getDisplayName().toLowerCase().equals(moduleName.toLowerCase())) {
+            if (module.getDisplayName()[0].toLowerCase().equals(moduleName.toLowerCase())) {
                 JsonArray moduleJsonArray = new JsonArray();
                 isFound = true;
                 for (final Value<?> setting : module.getAllValues()) {
