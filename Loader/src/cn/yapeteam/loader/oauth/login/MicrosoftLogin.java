@@ -8,6 +8,7 @@ import cn.yapeteam.loader.oauth.util.SSLUtils;
 import com.google.gson.*;
 import com.mojang.util.UUIDTypeAdapter;
 import com.sun.net.httpserver.HttpServer;
+import lombok.Getter;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -62,6 +63,7 @@ public class MicrosoftLogin {
             .build();
     private final CloseableHttpClient client;
     private boolean isCancelled = false;
+    @Getter
     private static Consumer<String> updateStatus = s -> {
     };
     private CountDownLatch serverLatch = null;

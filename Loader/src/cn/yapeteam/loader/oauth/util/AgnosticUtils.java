@@ -1,11 +1,12 @@
 package cn.yapeteam.loader.oauth.util;
 
-import cn.yapeteam.loader.logger.Logger;
+import cn.yapeteam.loader.oauth.login.MicrosoftLogin;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.net.URI;
 
 public class AgnosticUtils {
@@ -21,7 +22,9 @@ public class AgnosticUtils {
         try {
             Desktop.getDesktop().browse(new URI(uri));
         } catch (Exception e) {
-            Logger.exception(e);
+            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(uri), null);
+            MicrosoftLogin.getUpdateStatus().accept("Copied link, please continue login in your browser.");
+            // Logger.exception(e);
         }
     }
 }
