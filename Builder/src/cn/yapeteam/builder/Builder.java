@@ -301,14 +301,14 @@ public class Builder {
             terminal.execute(new String[]{"gcc", "-s", "-c", "../src/inject/Inject.c", "-o", "Inject.o"});
             terminal.execute(new String[]{"gcc", "-s", "-shared", "GetProcAddressR.o", "LoadLibraryR.o", "Inject.o", "-o", "libapi.dll"});
         }
-        terminal.execute(new String[]{"g++", "-s", "-shared", "../src/auth/verifyNative.cpp",
-                "-I" + new File("Builder/include").getAbsolutePath(),
-                "-L" + new File("Builder/lib").getAbsolutePath(),
-                new File("Builder/libcrypto-3-x64.dll").getAbsolutePath(),
-                new File("Builder/libcurl.dll").getAbsolutePath(),
-                new File("Builder/libjsoncpp.dll").getAbsolutePath(),
-                "C:\\Windows\\System32\\IPHLPAPI.DLL", "-o", "libauth" + suffix
-        });
+        //terminal.execute(new String[]{"g++", "-s", "-shared", "../src/auth/verifyNative.cpp",
+        //        "-I" + new File("Builder/include").getAbsolutePath(),
+        //        "-L" + new File("Builder/lib").getAbsolutePath(),
+        //        new File("Builder/libcrypto-3-x64.dll").getAbsolutePath(),
+        //        new File("Builder/libcurl.dll").getAbsolutePath(),
+        //        new File("Builder/libjsoncpp.dll").getAbsolutePath(),
+        //        "C:\\Windows\\System32\\IPHLPAPI.DLL", "-o", "libauth" + suffix
+        //});
     }
 
     public static void main(String[] args) throws Exception {

@@ -22,11 +22,13 @@
             <files>out/production/Core-1.8.9</files>
             <files>out/production/VersionInfo</files>
         </artifact>
-        <artifact name="injection-1.12.2.jar" proguard-config="injection-1.12.2.pro" shield-config="injection-1.12.2.json">
+        <artifact name="injection-1.12.2.jar" proguard-config="injection-1.12.2.pro"
+                  shield-config="injection-1.12.2.json">
             <files>out/production/Core-1.12.2</files>
             <files>out/production/VersionInfo</files>
         </artifact>
-        <artifact name="injection-1.18.1.jar" proguard-config="injection-1.18.1.pro" shield-config="injection-1.18.1.json">
+        <artifact name="injection-1.18.1.jar" proguard-config="injection-1.18.1.pro"
+                  shield-config="injection-1.18.1.json">
             <files>out/production/Core-1.18.1</files>
             <files>out/production/VersionInfo</files>
         </artifact>
@@ -66,10 +68,10 @@
                 <file platform="mac">Loader/dll/build/libagent.dylib</file>
             </archive>
         </artifact>
-        <artifact name="build.zip">
+        <!--<artifact name="build.zip">
             <file>build/injector.jar</file>
             <file platform="windows">Loader/dll/build/libauth.dll</file>
             <extract>resources/deps.zip</extract>
-        </artifact>
+        </artifact>-->
     </build>
 </root>

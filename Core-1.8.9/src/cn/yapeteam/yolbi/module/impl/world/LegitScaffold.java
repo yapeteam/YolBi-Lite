@@ -44,9 +44,9 @@ public class LegitScaffold extends Module {
         ItemStack item = SlotHandler.getHeldItem();
         if (showBlockCount.getValue()) {
             if (item != null && item.getItem() instanceof ItemBlock) {
-                renderStackSize(String.valueOf(item.stackSize), e.getScaledresolution(), e.getPartialTicks());
+                renderStackSize(String.valueOf(item.stackSize), e.getScaledResolution(), e.getPartialTicks());
             } else {
-                renderStackSize("0", e.getScaledresolution(), e.getPartialTicks());
+                renderStackSize("0", e.getScaledResolution(), e.getPartialTicks());
             }
         }
 

@@ -92,7 +92,7 @@ public class HeadUpDisplay extends Module {
 
     @Listener
     private void onRender(EventRender2D e) {
-        ScaledResolution sr = e.getScaledresolution();
+        ScaledResolution sr = e.getScaledResolution();
         if (theme == null)
             theme = YolBi.instance.getModuleManager().getModule(ClientTheme.class);
         val font = getFontRenderer();

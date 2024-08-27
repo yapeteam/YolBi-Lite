@@ -90,13 +90,13 @@ public class NameTags extends Module {
         for (EntityLivingBase entity : entityPositions.keySet()) {
             switch (mode.getValue()) {
                 case Distance:
-                    DistanceNameTag.renderNameTag(entity, invis.getValue(), entityPositions, armor.getValue(), alpha.getValue().intValue(), e.getScaledresolution());
+                    DistanceNameTag.renderNameTag(entity, invis.getValue(), entityPositions, armor.getValue(), alpha.getValue().intValue(), e.getScaledResolution());
                     break;
                 case Short:
-                    DistanceShortNameTag.renderNameTag(entity, invis.getValue(), entityPositions, armor.getValue(), alpha.getValue().intValue(), e.getScaledresolution());
+                    DistanceShortNameTag.renderNameTag(entity, invis.getValue(), entityPositions, armor.getValue(), alpha.getValue().intValue(), e.getScaledResolution());
                     break;
                 case Texture:
-                    TextureTag.renderNameTag(entity, invis.getValue(), entityPositions, alpha.getValue().intValue(), headSize.getValue(), e.getScaledresolution());
+                    TextureTag.renderNameTag(entity, invis.getValue(), entityPositions, alpha.getValue().intValue(), headSize.getValue(), e.getScaledResolution());
             }
         }
         GlStateManager.popMatrix();

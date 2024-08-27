@@ -25,8 +25,8 @@ public class TargetHud extends Module {
 
     @Listener(Priority.HIGH)
     public void onRender2D(EventRender2D event) {
-        float x = event.getScaledresolution().getScaledWidth() / 2f;
-        float y = event.getScaledresolution().getScaledHeight() / 2f;
+        float x = event.getScaledResolution().getScaledWidth() / 2f;
+        float y = event.getScaledResolution().getScaledHeight() / 2f;
         KillAura ka = YolBi.instance.getModuleManager().getModule(KillAura.class);
         EntityLivingBase entityLiving = ka.getTarget();
         if (entityLiving == null && mc.objectMouseOver != null && mc.objectMouseOver.entityHit instanceof EntityLivingBase)

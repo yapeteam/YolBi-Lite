@@ -16,6 +16,8 @@
 #include "../shared/main.c"
 #include "utils.h"
 
+jvmtiEnv *jvmti;
+
 PVOID UnLoad(PVOID arg)
 {
     HMODULE hModule = NULL;
@@ -92,12 +94,15 @@ void UnHookFunction64(char *lpModule, LPCSTR lpFuncName)
     VirtualProtect((LPVOID)FuncAddress, 12, OldProtect, &OldProtect);
 }
 
-jvmtiEnv *jvmti;
-
 __int64 __fastcall Hook_JVM_EnqueueOperation(int a1, int a2, int a3, int a4, __int64 a5)
 {
     // MessageBoxW(NULL, L"jmap以打死", "Hooked", 0);
     return -1;
+}
+
+void My_ExitProcess(UINT code)
+{
+    MessageBoxA(NULL, "EXIT", "Hooked", 0);
 }
 
 void HookFuncAddress64(DWORD_PTR FuncAddress, LPVOID lpFunction)
@@ -144,6 +149,7 @@ jlong NanoTime_Hook(JNIEnv *env, jclass ignored)
     HookMain(env);
     HookFuncAddress64((DWORD_PTR)(*jvmti)->GetLoadedClasses, (LPVOID)HookGetLoadedClasses);
     HookFunction64("jvm.dll", "JVM_EnqueueOperation", (PROC)Hook_JVM_EnqueueOperation); // 你妈的jmap以打死
+    HookFuncAddress64(ExitProcess, My_ExitProcess);                                     // 打死崩端
     return time;
 }
 
