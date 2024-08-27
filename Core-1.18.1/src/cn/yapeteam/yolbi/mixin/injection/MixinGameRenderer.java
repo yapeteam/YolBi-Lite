@@ -6,7 +6,6 @@ import cn.yapeteam.ymixin.annotations.Mixin;
 import cn.yapeteam.ymixin.annotations.Target;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
-import cn.yapeteam.yolbi.utils.render.RenderManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.GameRenderer;
 
@@ -22,7 +21,6 @@ public class MixinGameRenderer {
             )
     )
     private void onRender2D(@Local(source = "poseStack", index = 10) PoseStack poseStack) {
-        RenderManager.currentPoseStack = poseStack;
-        YolBi.instance.getEventManager().post(new EventRender2D());
+        YolBi.instance.getEventManager().post(new EventRender2D(poseStack));
     }
 }
