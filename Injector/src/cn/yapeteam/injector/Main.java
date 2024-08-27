@@ -40,7 +40,7 @@ public class Main {
         //} else {
         SplashScreen splashScreen = new SplashScreen();
         splashScreen.display();
-        //Utils.unzip(Main.class.getResourceAsStream("/injection.zip"), YolBi_Dir);
+        Utils.unzip(Main.class.getResourceAsStream("/injection.zip"), YolBi_Dir);
         if (OS.isFamilyWindows()) {
             System.load(new File(Main.YolBi_Dir, "libapi.dll").getAbsolutePath());
             //System.loadLibrary("libauth");
