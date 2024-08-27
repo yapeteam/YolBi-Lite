@@ -34,12 +34,12 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
-import org.apache.commons.imaging.Imaging;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 import java.nio.FloatBuffer;
@@ -64,7 +64,7 @@ public class NameTags extends Module {
     private static void updateTexture() {
         texture = GL11.glGenTextures();
         try {
-            TextureUtil.uploadTextureImageAllocate(texture, Imaging.getBufferedImage(Objects.requireNonNull(ResourceManager.resources.getStream("imgs/bighead.png"))), false, false);
+            TextureUtil.uploadTextureImageAllocate(texture, ImageIO.read(Objects.requireNonNull(ResourceManager.resources.getStream("imgs/bighead.png"))), false, false);
         } catch (IOException e) {
             Logger.exception(e);
         }

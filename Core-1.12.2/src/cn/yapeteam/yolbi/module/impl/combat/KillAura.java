@@ -38,9 +38,9 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
 import net.minecraft.util.EnumHand;
-import org.apache.commons.imaging.Imaging;
 import org.lwjgl.opengl.GL11;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 import java.util.Objects;
@@ -228,7 +228,7 @@ public class KillAura extends Module {
     private static void updateTexture() {
         texture = GL11.glGenTextures();
         try {
-            TextureUtil.uploadTextureImageAllocate(texture, Imaging.getBufferedImage(Objects.requireNonNull(ResourceManager.resources.getStream("imgs/capture.png"))), false, false);
+            TextureUtil.uploadTextureImageAllocate(texture, ImageIO.read(Objects.requireNonNull(ResourceManager.resources.getStream("imgs/capture.png"))), false, false);
         } catch (IOException e) {
             Logger.exception(e);
         }
