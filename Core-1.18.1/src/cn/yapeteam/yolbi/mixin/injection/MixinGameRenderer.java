@@ -6,6 +6,7 @@ import cn.yapeteam.ymixin.annotations.Mixin;
 import cn.yapeteam.ymixin.annotations.Target;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
+import cn.yapeteam.yolbi.event.impl.render.EventRender3D;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.GameRenderer;
 
@@ -22,5 +23,18 @@ public class MixinGameRenderer {
     )
     private void onRender2D(@Local(source = "poseStack", index = 10) PoseStack poseStack) {
         YolBi.instance.getEventManager().post(new EventRender2D(poseStack));
+    }
+
+    @Inject(
+            method = "renderLevel",
+            desc = "(FJLcom/mojang/blaze3d/vertex/PoseStack;)V",
+            target = @Target(
+                    value = "INVOKEINTERFACE",
+                    target = "net/minecraft/util/profiling/ProfilerFiller.popPush(Ljava/lang/String;)V",
+                    shift = Target.Shift.AFTER
+            )
+    )
+    private void onRender3D(@Local(source = "partialTicks", index = 1) float partialTicks) {
+        YolBi.instance.getEventManager().post(new EventRender3D(partialTicks));
     }
 }

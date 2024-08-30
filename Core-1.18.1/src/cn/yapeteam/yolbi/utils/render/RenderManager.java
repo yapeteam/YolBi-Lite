@@ -145,5 +145,4 @@ public class RenderManager {
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
     }
-
 }
