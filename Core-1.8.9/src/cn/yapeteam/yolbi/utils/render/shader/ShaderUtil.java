@@ -18,7 +18,6 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class ShaderUtil implements Accessor {
     public static int createShader(final String fragmentResource, final String vertexResource) {
-        System.out.println("[DEBUG] Creating shader with fragment: " + fragmentResource + " and vertex: " + vertexResource);
         final String fragmentSource = getShaderResource(fragmentResource);
         final String vertexSource = getShaderResource(vertexResource);
 

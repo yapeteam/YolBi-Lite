@@ -4,9 +4,7 @@ package cn.yapeteam.yolbi.managers;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
-import cn.yapeteam.yolbi.event.impl.render.EventRender3D;
 import cn.yapeteam.yolbi.event.impl.render.EventRenderGUI;
-import cn.yapeteam.yolbi.ui.gui.GuiIngameCache;
 import cn.yapeteam.yolbi.utils.layer.Layer;
 import cn.yapeteam.yolbi.utils.layer.Layers;
 import cn.yapeteam.yolbi.utils.render.shader.base.RiseShader;
@@ -53,13 +51,7 @@ public class LayerManager {
 
     @Listener
     public void onRender2D(EventRender2D eventRender2D){
-        GuiIngameCache.renderGameOverlay(eventRender2D.getPartialTicks());
         render(ShaderRenderType.OVERLAY);
-    }
-
-    @Listener
-    public void onRender3d(EventRender3D eventRender3D){
-        render(ShaderRenderType.CAMERA);
     }
 
     private void render(ShaderRenderType type) {
