@@ -2,6 +2,7 @@ package cn.yapeteam.yolbi.utils.localization;
 
 
 import cn.yapeteam.loader.ResourceManager;
+import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.YolBi;
 
 import java.io.BufferedReader;
@@ -50,12 +51,16 @@ public class Localization {
     public static void populate() {
         for (Locale locale : Locale.values()) {
             String resourcePath = "text/" + locale.getFile() + ".properties";
+            Logger.info("Loading localization file: " + resourcePath);
             try (InputStream stream = ResourceManager.resources.getStream(resourcePath);
                  BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
 
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    locale.getStrings().put(line.split("=")[0], line.split("=")[1]);
+                    String[] parts = line.split("=", 2);
+                    if (parts.length == 2) {
+                        locale.getStrings().put(parts[0], parts[1]);
+                    }
                 }
             } catch (Exception exception) {
                 System.out.println("Localization exception");
