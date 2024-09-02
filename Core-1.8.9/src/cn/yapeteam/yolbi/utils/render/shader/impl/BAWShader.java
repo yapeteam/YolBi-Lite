@@ -1,5 +1,6 @@
 package cn.yapeteam.yolbi.utils.render.shader.impl;
 
+import cn.yapeteam.ymixin.annotations.Super;
 import cn.yapeteam.yolbi.utils.render.shader.base.RiseShader;
 import cn.yapeteam.yolbi.utils.render.shader.base.RiseShaderProgram;
 import cn.yapeteam.yolbi.utils.render.shader.base.ShaderRenderType;
@@ -11,12 +12,14 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
+
 public class BAWShader extends RiseShader {
 
     private final RiseShaderProgram program = new RiseShaderProgram("baw.frag", "vertex.vsh");
 
     private Framebuffer tempFBO = new Framebuffer(mc.displayWidth, mc.displayHeight, true);
 
+    @Super
     @Override
     public void run(ShaderRenderType type, float partialTicks, List<Runnable> runnable) {
         // Prevent rendering
@@ -42,6 +45,7 @@ public class BAWShader extends RiseShader {
         }
     }
 
+    @Super
     @Override
     public void update() {
         // can be true since this is only called in gui screen

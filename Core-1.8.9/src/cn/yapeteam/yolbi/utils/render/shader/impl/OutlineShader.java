@@ -1,5 +1,6 @@
 package cn.yapeteam.yolbi.utils.render.shader.impl;
 
+import cn.yapeteam.ymixin.annotations.Super;
 import cn.yapeteam.yolbi.utils.render.shader.base.RiseShader;
 import cn.yapeteam.yolbi.utils.render.shader.base.RiseShaderProgram;
 import cn.yapeteam.yolbi.utils.render.shader.base.ShaderRenderType;
@@ -17,6 +18,7 @@ public class OutlineShader extends RiseShader {
     private final RiseShaderProgram shaderProgram = new RiseShaderProgram("outline.frag", "vertex.vsh");
     private Framebuffer inputFramebuffer = new Framebuffer(mc.displayWidth, mc.displayHeight, true);
 
+    @Super
     @Override
     public void run(final ShaderRenderType type, final float partialTicks, List<Runnable> runnable) {
         // Prevent rendering
@@ -79,6 +81,7 @@ public class OutlineShader extends RiseShader {
         }
     }
 
+    @Super
     @Override
     public void update() {
         this.setActive(false);

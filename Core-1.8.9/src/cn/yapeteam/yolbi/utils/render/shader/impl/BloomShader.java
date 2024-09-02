@@ -1,5 +1,6 @@
 package cn.yapeteam.yolbi.utils.render.shader.impl;
 
+import cn.yapeteam.ymixin.annotations.Super;
 import cn.yapeteam.yolbi.utils.render.shader.base.RiseShader;
 import cn.yapeteam.yolbi.utils.render.shader.base.RiseShaderProgram;
 import cn.yapeteam.yolbi.utils.render.shader.base.ShaderRenderType;
@@ -7,6 +8,7 @@ import cn.yapeteam.yolbi.utils.render.shader.base.ShaderUniforms;
 import cn.yapeteam.yolbi.utils.render.shader.kernel.GaussianKernel;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.shader.Framebuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
@@ -23,6 +25,7 @@ public class BloomShader extends RiseShader {
     private Framebuffer outputFramebuffer = new Framebuffer(mc.displayWidth, mc.displayHeight, true);
     private GaussianKernel gaussianKernel = new GaussianKernel(0);
 
+    @Super
     @Override
     public void run(final ShaderRenderType type, final float partialTicks, List<Runnable> runnable) {
         // Prevent rendering
@@ -32,17 +35,18 @@ public class BloomShader extends RiseShader {
 
         switch (type) {
             case CAMERA: {
-                // RendererLivingEntity.NAME_TAG_RANGE = 0;
-                // RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 0;
+                RendererLivingEntity.NAME_TAG_RANGE = 0;
+                RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 0;
 
                 this.inputFramebuffer.bindFramebuffer(true);
                 for (Runnable runnable1 : runnable) {
                     runnable1.run();
                 }
+
                 mc.getFramebuffer().bindFramebuffer(true);
 
-                // RendererLivingEntity.NAME_TAG_RANGE = 64;
-                // RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 32;
+                RendererLivingEntity.NAME_TAG_RANGE = 64;
+                RendererLivingEntity.NAME_TAG_RANGE_SNEAK = 32;
 
                 RenderHelper.disableStandardItemLighting();
                 mc.entityRenderer.disableLightmap();
@@ -50,18 +54,18 @@ public class BloomShader extends RiseShader {
             }
 
             case OVERLAY: {
-                this.inputFramebuffer.bindFramebuffer(true);
+//                this.inputFramebuffer.bindFramebuffer(true);
 
                 // prevent concurrent
-                for (Runnable value : runnable) {
-                    value.run();
+                for (int i = 0; i < runnable.size(); ++i) {
+                    runnable.get(i).run();
                 }
 
                 final int radius = 14;
                 final float compression = 2.0F;
                 final int programId = this.bloomProgram.getProgramId();
 
-                this.outputFramebuffer.bindFramebuffer(true);
+//                this.outputFramebuffer.bindFramebuffer(true);
                 this.bloomProgram.start();
 
                 if (this.gaussianKernel.getSize() != radius) {
@@ -87,7 +91,6 @@ public class BloomShader extends RiseShader {
                 inputFramebuffer.bindFramebufferTexture();
                 RiseShaderProgram.drawQuad();
 
-                mc.getFramebuffer().bindFramebuffer(true);
                 GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 ShaderUniforms.uniform2f(programId, "u_direction", 0.0F, compression);
                 outputFramebuffer.bindFramebufferTexture();
@@ -98,11 +101,13 @@ public class BloomShader extends RiseShader {
                 GlStateManager.disableBlend();
 
                 RiseShaderProgram.stop();
+//                mc.getFramebuffer().bindFramebuffer(true);
                 break;
             }
         }
     }
 
+    @Super
     @Override
     public void update() {
         int width = mc.displayWidth;
@@ -112,7 +117,7 @@ public class BloomShader extends RiseShader {
             inputFramebuffer.deleteFramebuffer();
             inputFramebuffer = new Framebuffer(mc.displayWidth, mc.displayHeight, true);
         } else {
-            inputFramebuffer.framebufferClear();
+            outputFramebuffer.framebufferClear();
         }
 
         if (shouldResize(outputFramebuffer, width, height)) {
