@@ -1,7 +1,6 @@
 package cn.yapeteam.yolbi.utils.render.shader.impl;
 
 
-import cn.yapeteam.ymixin.annotations.Super;
 import cn.yapeteam.yolbi.utils.render.shader.base.RiseShader;
 import cn.yapeteam.yolbi.utils.render.shader.base.RiseShaderProgram;
 import cn.yapeteam.yolbi.utils.render.shader.base.ShaderRenderType;
@@ -24,7 +23,6 @@ public class BlurShader extends RiseShader {
     private Framebuffer outputFramebuffer = new Framebuffer(mc.displayWidth, mc.displayHeight, true);
     private GaussianKernel gaussianKernel = new GaussianKernel(0);
 
-    @Super
     @Override
     public void run(final ShaderRenderType type, final float partialTicks, List<Runnable> runnable) {
         // Prevent rendering
@@ -100,7 +98,6 @@ public class BlurShader extends RiseShader {
         }
     }
 
-    @Super
     @Override
     public void update() {
         this.setActive(false);

@@ -1,6 +1,5 @@
 package cn.yapeteam.yolbi.utils.render.shader.impl;
 
-import cn.yapeteam.ymixin.annotations.Super;
 import cn.yapeteam.yolbi.utils.render.shader.base.RiseShader;
 import cn.yapeteam.yolbi.utils.render.shader.base.RiseShaderProgram;
 import cn.yapeteam.yolbi.utils.render.shader.base.ShaderRenderType;
@@ -13,7 +12,6 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
-
 public class AlphaShader extends RiseShader {
 
     private final RiseShaderProgram alphaProgram = new RiseShaderProgram("alpha.frag", "vertex.vsh");
@@ -22,7 +20,6 @@ public class AlphaShader extends RiseShader {
     @Setter
     private float alpha;
 
-    @Super
     @Override
     public void run(final ShaderRenderType type, final float partialTicks, List<Runnable> runnable) {
         // Prevent rendering
@@ -57,7 +54,6 @@ public class AlphaShader extends RiseShader {
         }
     }
 
-    @Super
     @Override
     public void update() {
         if (mc.displayWidth != inputFramebuffer.framebufferWidth || mc.displayHeight != inputFramebuffer.framebufferHeight) {
