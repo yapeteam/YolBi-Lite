@@ -81,6 +81,7 @@ public class BloomShader extends RiseShader {
                 ShaderUniforms.uniform2f(programId, "u_texel_size", 1.0F / mc.displayWidth, 1.0F / mc.displayHeight);
                 ShaderUniforms.uniform2f(programId, "u_direction", compression, 0.0F);
 
+                GL11.glEnable(GL11.GL_DEPTH_TEST);
                 GlStateManager.enableBlend();
                 GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_SRC_ALPHA);
                 GlStateManager.alphaFunc(GL11.GL_GREATER, 0.0F);
@@ -96,6 +97,7 @@ public class BloomShader extends RiseShader {
                 GL13.glActiveTexture(GL13.GL_TEXTURE0);
                 RiseShaderProgram.drawQuad();
                 GlStateManager.disableBlend();
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
 
                 RiseShaderProgram.stop();
                 break;

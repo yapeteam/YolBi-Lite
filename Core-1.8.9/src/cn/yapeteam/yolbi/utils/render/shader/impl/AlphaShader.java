@@ -42,12 +42,14 @@ public class AlphaShader extends RiseShader {
                 ShaderUniforms.uniform1i(programId, "u_diffuse_sampler", 0);
                 ShaderUniforms.uniform1f(programId, "u_alpha", alpha);
 
+                GL11.glEnable(GL11.GL_DEPTH_TEST);
                 GlStateManager.enableBlend();
                 GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 GlStateManager.alphaFunc(GL11.GL_GREATER, 0.0F);
                 this.inputFramebuffer.bindFramebufferTexture();
                 RiseShaderProgram.drawQuad();
                 GlStateManager.disableBlend();
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
 
                 RiseShaderProgram.stop();
             }

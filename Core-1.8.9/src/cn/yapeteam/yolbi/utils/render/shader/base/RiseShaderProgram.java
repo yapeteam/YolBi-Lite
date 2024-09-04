@@ -4,7 +4,6 @@ import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.render.shader.ShaderUtil;
 import lombok.Getter;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
@@ -35,12 +34,10 @@ public class RiseShaderProgram implements Accessor {
     }
 
     public void start() {
-        GlStateManager.pushMatrix();
         GL20.glUseProgram(programId);
     }
 
     public static void stop() {
         GL20.glUseProgram(0);
-        GlStateManager.popMatrix();
     }
 }
