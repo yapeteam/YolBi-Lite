@@ -4,7 +4,6 @@ package cn.yapeteam.yolbi.managers;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
-import cn.yapeteam.yolbi.event.impl.render.EventRenderGUI;
 import cn.yapeteam.yolbi.utils.layer.Layer;
 import cn.yapeteam.yolbi.utils.layer.Layers;
 import cn.yapeteam.yolbi.utils.render.shader.base.RiseShader;
@@ -12,6 +11,7 @@ import cn.yapeteam.yolbi.utils.render.shader.base.ShaderRenderType;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.renderer.GlStateManager;
 
 import java.util.LinkedHashMap;
@@ -44,15 +44,22 @@ public class LayerManager {
         return this.layers.get(group).get(layer);
     }
 
-    @Listener
-    public void onRenderGUI(EventRenderGUI eventRender2D){
-        render(ShaderRenderType.OVERLAY);
-    }
+//    @Listener
+//    public void onRenderGUI(EventRenderGUI eventRender2D){
+//        render(ShaderRenderType.OVERLAY);
+//    }
 
     @Listener
     public void onRender2D(EventRender2D eventRender2D){
+        GuiIngame guiIngame = Minecraft.getMinecraft().ingameGUI;
+        guiIngame.renderGameOverlay(0);
         render(ShaderRenderType.OVERLAY);
     }
+
+//    @Listener
+//    public void onRender3d(EventRender3D eventRender3D){
+//        render(ShaderRenderType.CAMERA);
+//    }
 
     private void render(ShaderRenderType type) {
         if (YolBi.DEVELOPMENT) {
@@ -73,7 +80,7 @@ public class LayerManager {
         layers.forEach((groups, map) -> map.forEach((layer, items) -> items.clear()));
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.disableLighting();
-        GlStateManager.enableAlpha();
+//        GlStateManager.disableLighting();
+//        GlStateManager.enableAlpha();
     }
 }

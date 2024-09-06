@@ -44,10 +44,11 @@ public class ShaderUtil implements Accessor {
         final int programId = GL20.glCreateProgram();
         GL20.glAttachShader(programId, fragmentId);
         GL20.glAttachShader(programId, vertexId);
-        GL20.glLinkProgram(programId);
         GL20.glValidateProgram(programId);
+        GL20.glLinkProgram(programId);
+        GL20.glDeleteShader(fragmentId);
+        GL20.glDeleteShader(vertexId);
 
-        System.out.println("[DEBUG] Created shader program ID: " + programId);
         return programId;
     }
 

@@ -9,7 +9,6 @@ import cn.yapeteam.yolbi.event.impl.render.EventRenderGUI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.EntityRenderer;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 
 @Mixin(EntityRenderer.class)
@@ -54,9 +53,7 @@ public class MixinEntityRenderer {
             @Local(source = "sr", index = 5) ScaledResolution sr,
             @Local(source = "partialTicks", index = 1) float partialTicks
     ) {
-        GlStateManager.pushMatrix();
         YolBi.instance.getEventManager().post(new EventRender2D(partialTicks, sr));
-        GlStateManager.popMatrix();
     }
 
     @Inject(
