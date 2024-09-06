@@ -1,4 +1,4 @@
-package cn.yapeteam.yolbi.module.impl.combat.wtap;
+package cn.yapeteam.yolbi.module.impl.ghost.wtap;
 
 
 import cn.yapeteam.yolbi.event.Listener;

@@ -3,6 +3,8 @@ package cn.yapeteam.yolbi.managers;
 
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.module.Module;
+import cn.yapeteam.yolbi.module.impl.combat.AntiBot;
+import cn.yapeteam.yolbi.module.impl.ghost.*;
 import cn.yapeteam.yolbi.module.impl.render.ClickGUI;
 import cn.yapeteam.yolbi.module.impl.render.Interface;
 import cn.yapeteam.yolbi.ui.standard.components.ModuleComponent;
@@ -30,6 +32,14 @@ public final class ModuleManager {
 
         this.put(Interface.class, new Interface());
         this.put(ClickGUI.class, new ClickGUI());
+        this.put(WTap.class, new WTap());
+        this.put(AntiBot.class, new AntiBot());
+        this.put(AimAssist.class, new AimAssist());
+        this.put(ClickAssist.class, new ClickAssist());
+        this.put(AutoClicker.class, new AutoClicker());
+        this.put(AimAssist.class, new AimAssist());
+        this.put(Reach.class, new Reach());
+
 
         // Automatic initializations
         this.getAll().stream().filter(module -> module.getModuleInfo().autoEnabled()).forEach(module -> module.setEnabled(true));

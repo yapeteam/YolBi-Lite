@@ -18,6 +18,9 @@ public class MixinEntityRenderer {
     @Shadow
     private Entity pointedEntity;
 
+    @Shadow
+    private double d0;
+
     @Inject(
             method = "renderWorldPass", desc = "(IFJ)V",
             target = @Target(
@@ -31,17 +34,24 @@ public class MixinEntityRenderer {
     }
 
     @Inject(
-            method = "getMouseOver",
-            desc = "(F)V",
+            method = "getMouseOver", desc = "(F)V",
             target = @Target(
-                    value = "ISTORE",
-                    shift = Target.Shift.AFTER
+                value = "INVOKE",
+                target = "Lnet/minecraft/client/multiplayer/PlayerControllerMP;getBlockReachDistance()D",
+                shift = Target.Shift.AFTER
             )
     )
     private void getMouseOver(@Local(source = "partialTicks", index = 1) float partialTicks) {
-        EventMouseOver event = new EventMouseOver(3.0f);
+        EventMouseOver event = new EventMouseOver(this.mc.playerController.getBlockReachDistance());
         YolBi.instance.getEventManager().post(event);
+
+        // Modify the reach distance based on the event's result
+        double newReach = event.getReach();
+        if (newReach > this.mc.playerController.getBlockReachDistance()) {
+            d0 = newReach;
+        }
     }
+
 
     @Inject(method = "updateCameraAndRender", desc = "(FJ)V",
             target = @Target(

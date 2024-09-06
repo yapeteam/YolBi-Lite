@@ -6,8 +6,8 @@ import cn.yapeteam.yolbi.module.api.Category;
 import cn.yapeteam.yolbi.module.api.ModuleInfo;
 import cn.yapeteam.yolbi.module.api.value.impl.ModeValue;
 import cn.yapeteam.yolbi.module.api.value.impl.NumberValue;
-import cn.yapeteam.yolbi.module.impl.combat.wtap.LegitWTap;
-import cn.yapeteam.yolbi.module.impl.combat.wtap.SilentWTap;
+import cn.yapeteam.yolbi.module.impl.ghost.wtap.LegitWTap;
+import cn.yapeteam.yolbi.module.impl.ghost.wtap.SilentWTap;
 
 /**
  * @author Alan
