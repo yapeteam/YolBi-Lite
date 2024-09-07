@@ -43,23 +43,12 @@ public class LayerManager {
     public Layer get(Layers layer, int group) {
         return this.layers.get(group).get(layer);
     }
-
-//    @Listener
-//    public void onRenderGUI(EventRenderGUI eventRender2D){
-//        render(ShaderRenderType.OVERLAY);
-//    }
-
     @Listener
     public void onRender2D(EventRender2D eventRender2D){
         GuiIngame guiIngame = Minecraft.getMinecraft().ingameGUI;
         guiIngame.renderGameOverlay(0);
         render(ShaderRenderType.OVERLAY);
     }
-
-//    @Listener
-//    public void onRender3d(EventRender3D eventRender3D){
-//        render(ShaderRenderType.CAMERA);
-//    }
 
     private void render(ShaderRenderType type) {
         if (YolBi.DEVELOPMENT) {

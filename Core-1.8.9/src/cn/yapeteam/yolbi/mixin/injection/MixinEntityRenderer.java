@@ -43,18 +43,6 @@ public class MixinEntityRenderer {
         YolBi.instance.getEventManager().post(new EventRender3D(partialTicks));
     }
 
-//    @Inject(
-//            method = "getMouseOver",
-//            desc = "(F)V",
-//            target = @Target(
-//                    value = "ISTORE",
-//                    shift = Target.Shift.AFTER
-//            )
-//    )
-//    private void getMouseOver(@Local(source = "partialTicks", index = 1) float partialTicks) {
-//
-//    }
-
     @Inject(
             method = "getMouseOver",
             desc = "(F)V",

@@ -130,6 +130,11 @@ public class RiseClickGUI extends GuiScreen implements Accessor{
     public void onGuiClosed() {
         Keyboard.enableRepeatEvents(false);
         dragging = false;
+        try {
+            YolBi.instance.getConfigManager().save();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     Layer alpha = new Layer(new AlphaShader());
