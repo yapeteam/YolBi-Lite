@@ -8,8 +8,8 @@ import cn.yapeteam.yolbi.server.WebServer;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.theme.ThemeManager;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
-import cn.yapeteam.yolbi.utils.localization.Locale;
-import cn.yapeteam.yolbi.utils.localization.Localization;
+import cn.yapeteam.yolbi.utils.profiling.localization.Locale;
+import cn.yapeteam.yolbi.utils.profiling.localization.Localization;
 import lombok.Getter;
 import lombok.Setter;
 

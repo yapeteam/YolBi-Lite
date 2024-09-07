@@ -1,13 +1,14 @@
 package cn.yapeteam.yolbi.utils.interfaces;
 
 import cn.yapeteam.yolbi.YolBi;
-import cn.yapeteam.yolbi.utils.layer.Layer;
 import cn.yapeteam.yolbi.managers.LayerManager;
-import cn.yapeteam.yolbi.utils.layer.Layers;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.theme.Themes;
+import cn.yapeteam.yolbi.utils.render.layer.Layer;
+import cn.yapeteam.yolbi.utils.render.layer.Layers;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 
 
 public interface Accessor {
@@ -46,5 +47,7 @@ public interface Accessor {
     default Minecraft getClient() {
         return Minecraft.getMinecraft();
     }
+
+    ScaledResolution scaledResolution = new ScaledResolution(mc);
 }
 

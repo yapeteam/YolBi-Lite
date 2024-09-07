@@ -1,12 +1,12 @@
 package cn.yapeteam.yolbi.utils.render.textbox;
 
 
-import cn.yapeteam.yolbi.utils.font.impl.general.Fonts;
-import cn.yapeteam.yolbi.utils.font.impl.general.Weight;
+import cn.yapeteam.yolbi.utils.render.font.impl.general.Fonts;
+import cn.yapeteam.yolbi.utils.render.font.impl.general.Weight;
 import cn.yapeteam.yolbi.utils.StopWatch;
-import cn.yapeteam.yolbi.utils.font.Font;
+import cn.yapeteam.yolbi.utils.render.font.Font;
 import cn.yapeteam.yolbi.utils.render.GuiUtil;
-import cn.yapeteam.yolbi.utils.vector.Vector2d;
+import cn.yapeteam.yolbi.utils.math.vector.Vector2d;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.input.Keyboard;

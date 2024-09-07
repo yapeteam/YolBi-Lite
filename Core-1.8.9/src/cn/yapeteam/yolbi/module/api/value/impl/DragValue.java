@@ -4,17 +4,17 @@ package cn.yapeteam.yolbi.module.api.value.impl;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.api.value.Mode;
 import cn.yapeteam.yolbi.module.api.value.Value;
-import cn.yapeteam.yolbi.utils.animation.Animation;
+import cn.yapeteam.yolbi.utils.render.animation.Animation;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
-import cn.yapeteam.yolbi.utils.vector.Vector2d;
+import cn.yapeteam.yolbi.utils.math.vector.Vector2d;
 import lombok.Setter;
 import net.minecraft.client.gui.ScaledResolution;
 
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
-import static cn.yapeteam.yolbi.utils.animation.Easing.EASE_OUT_EXPO;
-import static cn.yapeteam.yolbi.utils.animation.Easing.LINEAR;
+import static cn.yapeteam.yolbi.utils.render.animation.Easing.EASE_OUT_EXPO;
+import static cn.yapeteam.yolbi.utils.render.animation.Easing.LINEAR;
 
 /**
  * @author Alan

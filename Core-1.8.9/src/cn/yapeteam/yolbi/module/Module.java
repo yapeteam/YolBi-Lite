@@ -13,7 +13,7 @@ import cn.yapeteam.yolbi.module.impl.render.ClickGUI;
 import cn.yapeteam.yolbi.module.impl.render.Interface;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.interfaces.Toggleable;
-import cn.yapeteam.yolbi.utils.localization.Localization;
+import cn.yapeteam.yolbi.utils.profiling.localization.Localization;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.input.Keyboard;

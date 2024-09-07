@@ -7,7 +7,7 @@ import cn.yapeteam.yolbi.module.api.Category;
 import cn.yapeteam.yolbi.module.api.ModuleInfo;
 import cn.yapeteam.yolbi.module.api.value.impl.*;
 import cn.yapeteam.yolbi.utils.math.MathUtils;
-import cn.yapeteam.yolbi.utils.misc.VirtualKeyBoard;
+import cn.yapeteam.yolbi.utils.player.misc.VirtualKeyBoard;
 import lombok.Getter;
 import net.minecraft.item.ItemFood;
 import net.minecraft.util.MovingObjectPosition;

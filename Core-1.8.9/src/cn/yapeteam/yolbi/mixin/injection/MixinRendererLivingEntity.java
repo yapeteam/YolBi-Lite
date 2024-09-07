@@ -3,7 +3,7 @@ package cn.yapeteam.yolbi.mixin.injection;
 import cn.yapeteam.ymixin.annotations.*;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.impl.render.EventRotationsRender;
-import cn.yapeteam.yolbi.utils.misc.ObjectStore;
+import cn.yapeteam.yolbi.utils.player.misc.ObjectStore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.EntityLivingBase;

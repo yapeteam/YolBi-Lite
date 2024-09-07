@@ -2,7 +2,7 @@ package cn.yapeteam.yolbi.ui.theme;
 
 
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
-import cn.yapeteam.yolbi.utils.vector.Vector2d;
+import cn.yapeteam.yolbi.utils.math.vector.Vector2d;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.util.EnumChatFormatting;

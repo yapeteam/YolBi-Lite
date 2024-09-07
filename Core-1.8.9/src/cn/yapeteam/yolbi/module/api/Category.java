@@ -1,9 +1,9 @@
 package cn.yapeteam.yolbi.module.api;
 
-import cn.yapeteam.yolbi.utils.font.impl.general.Fonts;
+import cn.yapeteam.yolbi.utils.render.font.impl.general.Fonts;
 import cn.yapeteam.yolbi.ui.standard.screen.Screen;
 import cn.yapeteam.yolbi.ui.standard.screen.impl.*;
-import cn.yapeteam.yolbi.utils.font.Font;
+import cn.yapeteam.yolbi.utils.render.font.Font;
 import lombok.Getter;
 
 /**

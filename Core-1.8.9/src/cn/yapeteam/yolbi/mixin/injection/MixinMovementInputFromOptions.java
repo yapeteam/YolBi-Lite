@@ -6,7 +6,7 @@ import cn.yapeteam.ymixin.annotations.Shadow;
 import cn.yapeteam.ymixin.annotations.Target;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.impl.player.EventMoveInput;
-import cn.yapeteam.yolbi.utils.misc.ObjectStore;
+import cn.yapeteam.yolbi.utils.player.misc.ObjectStore;
 import net.minecraft.util.MovementInputFromOptions;
 
 @Mixin(MovementInputFromOptions.class)
