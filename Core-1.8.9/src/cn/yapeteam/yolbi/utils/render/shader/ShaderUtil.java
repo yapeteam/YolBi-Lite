@@ -18,7 +18,6 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class ShaderUtil implements Accessor {
     public static int createShader(final String fragmentResource, final String vertexResource) {
-        System.out.println("[DEBUG] Creating shader with fragment: " + fragmentResource + " and vertex: " + vertexResource);
         final String fragmentSource = getShaderResource(fragmentResource);
         final String vertexSource = getShaderResource(vertexResource);
 
@@ -45,10 +44,11 @@ public class ShaderUtil implements Accessor {
         final int programId = GL20.glCreateProgram();
         GL20.glAttachShader(programId, fragmentId);
         GL20.glAttachShader(programId, vertexId);
-        GL20.glLinkProgram(programId);
         GL20.glValidateProgram(programId);
+        GL20.glLinkProgram(programId);
+        GL20.glDeleteShader(fragmentId);
+        GL20.glDeleteShader(vertexId);
 
-        System.out.println("[DEBUG] Created shader program ID: " + programId);
         return programId;
     }
 

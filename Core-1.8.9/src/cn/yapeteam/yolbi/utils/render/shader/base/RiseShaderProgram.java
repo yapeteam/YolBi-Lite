@@ -41,5 +41,4 @@ public class RiseShaderProgram implements Accessor {
     public static void stop() {
         GL20.glUseProgram(0);
     }
-
 }

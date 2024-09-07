@@ -1,4 +1,4 @@
-package cn.yapeteam.yolbi.module.impl.combat;
+package cn.yapeteam.yolbi.module.impl.ghost;
 
 import cn.yapeteam.loader.Natives;
 import cn.yapeteam.yolbi.event.Listener;

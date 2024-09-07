@@ -1,4 +1,4 @@
-package cn.yapeteam.yolbi.module.impl.combat;
+package cn.yapeteam.yolbi.module.impl.ghost;
 
 import cn.yapeteam.loader.Natives;
 import cn.yapeteam.yolbi.YolBi;
@@ -10,14 +10,14 @@ import cn.yapeteam.yolbi.managers.TargetManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.api.Category;
 import cn.yapeteam.yolbi.module.api.ModuleInfo;
-import cn.yapeteam.yolbi.utils.misc.VirtualKeyBoard;
-import cn.yapeteam.yolbi.utils.player.PlayerUtil;
-import cn.yapeteam.yolbi.utils.player.RayCastUtil;
-import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import cn.yapeteam.yolbi.module.api.value.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.api.value.impl.ModeValue;
 import cn.yapeteam.yolbi.module.api.value.impl.NumberValue;
 import cn.yapeteam.yolbi.module.api.value.impl.SubMode;
+import cn.yapeteam.yolbi.utils.misc.VirtualKeyBoard;
+import cn.yapeteam.yolbi.utils.player.PlayerUtil;
+import cn.yapeteam.yolbi.utils.player.RayCastUtil;
+import cn.yapeteam.yolbi.utils.vector.Vector2f;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
