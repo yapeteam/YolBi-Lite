@@ -10,6 +10,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.Vec3;
+import pisi.unitedmeows.meowlib.clazz.event;
 
 @Mixin(EntityRenderer.class)
 public class MixinEntityRenderer {
@@ -19,7 +21,13 @@ public class MixinEntityRenderer {
     private Entity pointedEntity;
 
     @Shadow
-    private double d0;
+    private Vec3 vec3;
+
+    @Shadow
+    private boolean flag;
+
+    @Shadow
+    private Vec3 vec33;
 
     @Inject(
             method = "renderWorldPass", desc = "(IFJ)V",
@@ -33,25 +41,35 @@ public class MixinEntityRenderer {
         YolBi.instance.getEventManager().post(new EventRender3D(partialTicks));
     }
 
+//    @Inject(
+//            method = "getMouseOver",
+//            desc = "(F)V",
+//            target = @Target(
+//                    value = "ISTORE",
+//                    shift = Target.Shift.AFTER
+//            )
+//    )
+//    private void getMouseOver(@Local(source = "partialTicks", index = 1) float partialTicks) {
+//
+//    }
+
     @Inject(
-            method = "getMouseOver", desc = "(F)V",
+            method = "getMouseOver",
+            desc = "(F)V",
             target = @Target(
-                value = "INVOKE",
-                target = "Lnet/minecraft/client/multiplayer/PlayerControllerMP;getBlockReachDistance()D",
-                shift = Target.Shift.AFTER
+                    value = "INVOKEVIRTUAL",
+                    target = "net/minecraft/util/Vec3.distanceTo (Lnet/minecraft/util/Vec3;)D",
+                    shift = Target.Shift.BEFORE
             )
     )
-    private void getMouseOver(@Local(source = "partialTicks", index = 1) float partialTicks) {
-        EventMouseOver event = new EventMouseOver(this.mc.playerController.getBlockReachDistance());
+    private void modifyreach(@Local(source = "partialTicks", index = 1) float partialTicks) {
+        EventMouseOver event = new EventMouseOver(3.0f);
         YolBi.instance.getEventManager().post(event);
-
-        // Modify the reach distance based on the event's result
-        double newReach = event.getReach();
-        if (newReach > this.mc.playerController.getBlockReachDistance()) {
-            d0 = newReach;
+        if (this.pointedEntity != null && flag && vec3.distanceTo(vec33) < event.getReach()) {
+//            so we remove check using original minecraft logic
+            flag = false;
         }
     }
-
 
     @Inject(method = "updateCameraAndRender", desc = "(FJ)V",
             target = @Target(
