@@ -2,7 +2,7 @@ package cn.yapeteam.yolbi.ui.standard.components.value;
 
 
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
-import cn.yapeteam.yolbi.utils.vector.Vector2d;
+import cn.yapeteam.yolbi.utils.math.vector.Vector2d;
 import cn.yapeteam.yolbi.module.api.value.Value;
 import lombok.Getter;
 import lombok.Setter;

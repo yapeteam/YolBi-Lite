@@ -1,12 +1,12 @@
 package cn.yapeteam.yolbi.ui.standard.components.value.impl;
 
 
-import cn.yapeteam.yolbi.utils.font.impl.general.Fonts;
-import cn.yapeteam.yolbi.utils.font.impl.general.Weight;
+import cn.yapeteam.yolbi.utils.render.font.impl.general.Fonts;
+import cn.yapeteam.yolbi.utils.render.font.impl.general.Weight;
 import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
 import cn.yapeteam.yolbi.ui.standard.screen.Colors;
 import cn.yapeteam.yolbi.utils.render.GuiUtil;
-import cn.yapeteam.yolbi.utils.vector.Vector2d;
+import cn.yapeteam.yolbi.utils.math.vector.Vector2d;
 import cn.yapeteam.yolbi.module.api.value.Mode;
 import cn.yapeteam.yolbi.module.api.value.Value;
 import cn.yapeteam.yolbi.module.api.value.impl.ModeValue;

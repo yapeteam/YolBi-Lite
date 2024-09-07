@@ -2,8 +2,8 @@ package cn.yapeteam.yolbi.ui.standard.screen.impl;
 
 
 import cn.yapeteam.yolbi.YolBi;
-import cn.yapeteam.yolbi.utils.font.impl.general.Fonts;
-import cn.yapeteam.yolbi.utils.font.impl.general.Weight;
+import cn.yapeteam.yolbi.utils.render.font.impl.general.Fonts;
+import cn.yapeteam.yolbi.utils.render.font.impl.general.Weight;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.standard.components.ModuleComponent;
 import cn.yapeteam.yolbi.ui.standard.components.value.ValueComponent;
@@ -15,7 +15,7 @@ import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.render.ScrollUtil;
 import cn.yapeteam.yolbi.utils.render.textbox.TextAlign;
 import cn.yapeteam.yolbi.utils.render.textbox.TextBox;
-import cn.yapeteam.yolbi.utils.vector.Vector2d;
+import cn.yapeteam.yolbi.utils.math.vector.Vector2d;
 import lombok.Getter;
 import lombok.Setter;
 

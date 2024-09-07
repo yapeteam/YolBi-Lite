@@ -3,17 +3,17 @@ package cn.yapeteam.yolbi.ui.standard.components.theme;
 
 import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.ui.theme.Themes;
-import cn.yapeteam.yolbi.utils.animation.Animation;
-import cn.yapeteam.yolbi.utils.animation.Easing;
+import cn.yapeteam.yolbi.utils.render.animation.Animation;
+import cn.yapeteam.yolbi.utils.render.animation.Easing;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
-import cn.yapeteam.yolbi.utils.vector.Vector3d;
+import cn.yapeteam.yolbi.utils.math.vector.Vector3d;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.awt.*;
 
-import static cn.yapeteam.yolbi.utils.layer.Layers.BLOOM;
+import static cn.yapeteam.yolbi.utils.render.layer.Layers.BLOOM;
 
 @Getter
 @RequiredArgsConstructor

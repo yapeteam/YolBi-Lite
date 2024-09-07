@@ -5,7 +5,7 @@ import cn.yapeteam.ymixin.annotations.Overwrite;
 import cn.yapeteam.ymixin.annotations.Shadow;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.impl.player.EventLook;
-import cn.yapeteam.yolbi.utils.vector.Vector2f;
+import cn.yapeteam.yolbi.utils.math.vector.Vector2f;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.Vec3;
 

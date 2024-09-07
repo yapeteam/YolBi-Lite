@@ -6,19 +6,19 @@ import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.module.api.Category;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.standard.screen.Screen;
-import cn.yapeteam.yolbi.utils.animation.Animation;
-import cn.yapeteam.yolbi.utils.font.impl.general.Fonts;
-import cn.yapeteam.yolbi.utils.font.impl.general.Weight;
+import cn.yapeteam.yolbi.utils.render.animation.Animation;
+import cn.yapeteam.yolbi.utils.render.font.impl.general.Fonts;
+import cn.yapeteam.yolbi.utils.render.font.impl.general.Weight;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
-import cn.yapeteam.yolbi.utils.localization.Localization;
+import cn.yapeteam.yolbi.utils.profiling.localization.Localization;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
 import cn.yapeteam.yolbi.utils.render.GuiUtil;
-import cn.yapeteam.yolbi.utils.vector.Vector2d;
+import cn.yapeteam.yolbi.utils.math.vector.Vector2d;
 import net.minecraft.client.renderer.GlStateManager;
 
 import java.awt.*;
 
-import static cn.yapeteam.yolbi.utils.animation.Easing.LINEAR;
+import static cn.yapeteam.yolbi.utils.render.animation.Easing.LINEAR;
 
 public final class CategoryComponent implements Accessor {
 

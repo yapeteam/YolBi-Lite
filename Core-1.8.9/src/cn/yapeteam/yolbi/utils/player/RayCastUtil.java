@@ -5,7 +5,7 @@ import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.ymixin.utils.Mapper;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
-import cn.yapeteam.yolbi.utils.vector.Vector2f;
+import cn.yapeteam.yolbi.utils.math.vector.Vector2f;
 import com.google.common.base.Predicates;
 import kotlin.Triple;
 import net.minecraft.client.renderer.culling.Frustum;

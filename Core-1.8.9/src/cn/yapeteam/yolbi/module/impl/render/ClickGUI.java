@@ -8,7 +8,7 @@ import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.api.Category;
 import cn.yapeteam.yolbi.module.api.ModuleInfo;
 import cn.yapeteam.yolbi.utils.StopWatch;
-import cn.yapeteam.yolbi.utils.layer.Layers;
+import cn.yapeteam.yolbi.utils.render.layer.Layers;
 import org.lwjgl.input.Keyboard;
 
 @ModuleInfo(aliases = "module.render.clickgui.name", description = "module.render.clickgui.description", category = Category.RENDER, keyBind = Keyboard.KEY_RCONTROL)

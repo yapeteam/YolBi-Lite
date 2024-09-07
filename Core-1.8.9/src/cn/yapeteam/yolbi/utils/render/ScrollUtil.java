@@ -4,7 +4,7 @@ import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.utils.StopWatch;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.math.MathUtils;
-import cn.yapeteam.yolbi.utils.vector.Vector2d;
+import cn.yapeteam.yolbi.utils.math.vector.Vector2d;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.input.Mouse;

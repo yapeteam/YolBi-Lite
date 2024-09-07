@@ -20,15 +20,15 @@ import cn.yapeteam.yolbi.ui.standard.screen.Screen;
 import cn.yapeteam.yolbi.ui.standard.screen.impl.SearchScreen;
 import cn.yapeteam.yolbi.ui.standard.screen.impl.ThemeScreen;
 import cn.yapeteam.yolbi.utils.StopWatch;
-import cn.yapeteam.yolbi.utils.animation.Animation;
-import cn.yapeteam.yolbi.utils.animation.Easing;
+import cn.yapeteam.yolbi.utils.render.animation.Animation;
+import cn.yapeteam.yolbi.utils.render.animation.Easing;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
-import cn.yapeteam.yolbi.utils.layer.Layer;
+import cn.yapeteam.yolbi.utils.render.layer.Layer;
 import cn.yapeteam.yolbi.utils.render.GuiUtil;
 import cn.yapeteam.yolbi.utils.render.shader.base.ShaderRenderType;
 import cn.yapeteam.yolbi.utils.render.shader.impl.AlphaShader;
-import cn.yapeteam.yolbi.utils.vector.Vector2d;
-import cn.yapeteam.yolbi.utils.vector.Vector2f;
+import cn.yapeteam.yolbi.utils.math.vector.Vector2d;
+import cn.yapeteam.yolbi.utils.math.vector.Vector2f;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -42,7 +42,7 @@ import java.text.Collator;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static cn.yapeteam.yolbi.utils.layer.Layers.BLOOM;
+import static cn.yapeteam.yolbi.utils.render.layer.Layers.BLOOM;
 
 @Getter
 public class RiseClickGUI extends GuiScreen implements Accessor{

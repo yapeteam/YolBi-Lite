@@ -3,6 +3,7 @@ package cn.yapeteam.yolbi.mixin.transformer;
 
 import cn.yapeteam.ymixin.ASMTransformer;
 import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.event.Event;
 import cn.yapeteam.yolbi.event.impl.network.EventPacketReceive;
 import cn.yapeteam.yolbi.event.type.CancellableEvent;
 import net.minecraft.network.Connection;

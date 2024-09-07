@@ -5,13 +5,13 @@ import cn.yapeteam.yolbi.managers.RenderManager;
 import cn.yapeteam.yolbi.ui.standard.components.language.LanguageComponent;
 import cn.yapeteam.yolbi.ui.standard.screen.Colors;
 import cn.yapeteam.yolbi.ui.standard.screen.Screen;
-import cn.yapeteam.yolbi.utils.font.impl.general.Fonts;
-import cn.yapeteam.yolbi.utils.font.impl.general.Weight;
+import cn.yapeteam.yolbi.utils.render.font.impl.general.Fonts;
+import cn.yapeteam.yolbi.utils.render.font.impl.general.Weight;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
-import cn.yapeteam.yolbi.utils.localization.Locale;
-import cn.yapeteam.yolbi.utils.localization.Localization;
+import cn.yapeteam.yolbi.utils.profiling.localization.Locale;
+import cn.yapeteam.yolbi.utils.profiling.localization.Localization;
 import cn.yapeteam.yolbi.utils.render.ScrollUtil;
-import cn.yapeteam.yolbi.utils.vector.Vector2f;
+import cn.yapeteam.yolbi.utils.math.vector.Vector2f;
 
 import java.awt.*;
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
 package cn.yapeteam.yolbi.managers;
 
-import cn.yapeteam.yolbi.utils.font.Font;
-import cn.yapeteam.yolbi.utils.font.impl.rise.FontRenderer;
-import cn.yapeteam.yolbi.utils.font.impl.rise.FontUtil;
+import cn.yapeteam.yolbi.utils.render.font.Font;
+import cn.yapeteam.yolbi.utils.render.font.impl.rise.FontRenderer;
+import cn.yapeteam.yolbi.utils.render.font.impl.rise.FontUtil;
 
 import java.util.HashMap;
 

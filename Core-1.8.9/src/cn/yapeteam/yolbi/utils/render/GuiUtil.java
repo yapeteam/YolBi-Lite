@@ -1,8 +1,8 @@
 package cn.yapeteam.yolbi.utils.render;
 
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
-import cn.yapeteam.yolbi.utils.vector.Vector2d;
-import cn.yapeteam.yolbi.utils.vector.Vector2f;
+import cn.yapeteam.yolbi.utils.math.vector.Vector2d;
+import cn.yapeteam.yolbi.utils.math.vector.Vector2f;
 import lombok.experimental.UtilityClass;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.BlockPos;

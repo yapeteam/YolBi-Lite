@@ -19,28 +19,27 @@ public class PlayerModelTransformer extends ASMTransformer {
     //MD: net/minecraft/client/model/PlayerModel/m_6973_ (Lnet/minecraft/world/entity/LivingEntity;FFFFF)V net/minecraft/client/model/PlayerModel/setupAnim (Lnet/minecraft/world/entity/LivingEntity;FFFFF)V
 
 
-    @Inject(method = "setupAnim", desc = "(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V")
-    public void setupAnim(MethodNode methodNode) {
-        AbstractInsnNode node = methodNode.instructions.get(methodNode.instructions.size() - 1);
+    @Inject(method = "setupAnim",desc = "(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V")
+    public void setupAnim(MethodNode methodNode){
+        AbstractInsnNode node=methodNode.instructions.get(methodNode.instructions.size()-1);
         for (int i = 0; i < methodNode.instructions.size(); ++i) {
             AbstractInsnNode n = methodNode.instructions.get(i);
-            if (n.getOpcode() == Opcodes.RETURN) node = n;
+            if(n.getOpcode()== Opcodes.RETURN)node=n;
         }
-        InsnList list = new InsnList();
-        list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-        list.add(new VarInsnNode(Opcodes.ALOAD, 1));
-        list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(PlayerModelTransformer.class), "onSetupAnim", "(Ljava/lang/Object;Ljava/lang/Object;)V"));
-        methodNode.instructions.insertBefore(node, list);
+        InsnList list=new InsnList();
+        list.add(new VarInsnNode(Opcodes.ALOAD,0));
+        list.add(new VarInsnNode(Opcodes.ALOAD,1));
+        list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(PlayerModelTransformer.class),"onSetupAnim","(Ljava/lang/Object;Ljava/lang/Object;)V"));
+        methodNode.instructions.insertBefore(node,list);
 
 
     }
-
-    public static void onSetupAnim(Object model, Object entity) {
-        Rotations rotations = YolBi.instance.getModuleManager().getModule(Rotations.class);
-        if (YolBi.instance.getRotationManager().isActive()
+    public static void onSetupAnim(Object model,Object entity){
+        Rotations rotations=YolBi.instance.getModuleManager().getModule(Rotations.class);
+        if(YolBi.instance.getRotationManager().isActive()
                 && rotations.isEnabled()
-                && entity instanceof LocalPlayer && model instanceof PlayerModel) {
-            ((HumanoidModel<?>) model).head.xRot = (float) (YolBi.instance.getRotationManager().getRation().x / (180.0 / Math.PI));
+                &&entity instanceof LocalPlayer&&model instanceof PlayerModel){
+            ((HumanoidModel<?>) model).head.xRot= (float) (YolBi.instance.getRotationManager().getRation().x/(180.0/Math.PI));
         }
     }
 }
