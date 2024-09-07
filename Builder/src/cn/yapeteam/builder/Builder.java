@@ -91,7 +91,8 @@ public class Builder {
                             output.putNextEntry(entry);
                             output.write(readStream(Files.newInputStream(file.toPath())));
                             output.closeEntry();
-                        } catch (IOException ignored) {
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                     });
                 } else {
@@ -111,13 +112,16 @@ public class Builder {
                 String finalRoot_dir = root_dir;
                 traverseFiles(dir, file -> {
                     String path = file.toString();
-                    String entry_name = finalRoot_dir + (finalRoot_dir.isEmpty() ? "" : "/") + path.substring(root.length()).replace("\\", "/").substring(1);
+                    String entry_name = finalRoot_dir + (finalRoot_dir.isEmpty() ? "" : "/") + path.substring(root.length()).replace("\\", "/");
+                    if (entry_name.startsWith("/"))
+                        entry_name = entry_name.substring(1);
                     ZipEntry entry = new ZipEntry(entry_name);
                     try {
                         output.putNextEntry(entry);
                         output.write(readStream(Files.newInputStream(file.toPath())));
                         output.closeEntry();
-                    } catch (IOException ignored) {
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 });
             }
@@ -126,13 +130,16 @@ public class Builder {
                 System.out.println("file " + node.getTextContent());
                 File file = new File(node.getTextContent());
                 String path = file.toString();
-                String entry_name = root_dir + (root_dir.isEmpty() ? "" : "/") + path.substring(file.getParent() != null ? file.getParent().length() : 0).replace("\\", "/").substring(1);
+                String entry_name = root_dir + (root_dir.isEmpty() ? "" : "/") + path.substring(file.getParent() != null ? file.getParent().length() : 0).replace("\\", "/");
+                if (entry_name.startsWith("/"))
+                    entry_name = entry_name.substring(1);
                 ZipEntry entry = new ZipEntry(entry_name);
                 try {
                     output.putNextEntry(entry);
                     output.write(readStream(Files.newInputStream(file.toPath())));
                     output.closeEntry();
-                } catch (IOException ignored) {
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
             break;
@@ -147,6 +154,7 @@ public class Builder {
                         String entry_name = entry_in.getName();
                         if (entry_name.startsWith("module-info.class")) continue;
                         if (entry_name.startsWith("META-INF/MANIFEST.MF")) continue;
+                        if (entry_name.startsWith("META-INF/LICENSE")) continue;
                         if (entry_name.startsWith(root_dir))
                             entry_name = entry_name.substring(root_dir.length());
                         if (entry_name.startsWith("/"))
@@ -156,7 +164,8 @@ public class Builder {
                         copyStream(output, input);
                         output.closeEntry();
                     }
-                } catch (IOException ignored) {
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
             break;
@@ -176,7 +185,8 @@ public class Builder {
                     }
                     output_inner.finish();
                     output.closeEntry();
-                } catch (IOException ignored) {
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }

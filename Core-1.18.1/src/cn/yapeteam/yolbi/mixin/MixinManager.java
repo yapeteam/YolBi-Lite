@@ -12,7 +12,6 @@ import cn.yapeteam.yolbi.mixin.transformer.*;
 import org.objectweb.asm_9_2.tree.ClassNode;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Map;
@@ -27,10 +26,9 @@ public class MixinManager {
     public static void init() throws Throwable {
         mixinTransformer = new MixinTransformer(JVMTIWrapper.instance::getClassBytes);
         addMixin("MixinMinecraft");
+        addMixin("MixinGameRenderer");
         addTransformer(new EntityPlayerSPTransformer());
-        addTransformer(new EntityRendererTransformer());
         addTransformer(new EntityTransformer());
-        addTransformer(new GuiIngameTransformer());
         addTransformer(new GuiScreenTransformer());
         addTransformer(new KeyBindTransformer());
         addTransformer(new MinecraftTransformer());
@@ -39,7 +37,7 @@ public class MixinManager {
         addTransformer(new PlayerModelTransformer());
     }
 
-    public static void destroyClient() throws IOException {
+    public static void destroyClient() {
         Map<String, byte[]> map = mixinTransformer.getOldBytes();
         for (ClassNode mixin : mixins) {
             Class<?> targetClass = Objects.requireNonNull(Mixin.Helper.getAnnotation(mixin)).value();
@@ -68,10 +66,11 @@ public class MixinManager {
         SocketSender.send("S2");
         int total = mixins.size() + transformers.size();
         ArrayList<String> failed = new ArrayList<>();
+        ArrayList<Class<?>> redefined = new ArrayList<>();
         for (int i = 0; i < mixins.size(); i++) {
             ClassNode mixin = mixins.get(i);
             Class<?> targetClass = Objects.requireNonNull(Mixin.Helper.getAnnotation(mixin)).value();
-            if (targetClass != null) {
+            if (targetClass != null && !redefined.contains(targetClass)) {
                 byte[] bytes = map.get(targetClass.getName());
                 if (bytes == null) {
                     failed.add(mixin.name.replace('/', '.'));
@@ -83,7 +82,8 @@ public class MixinManager {
                 if (code != 0)
                     failed.add(mixin.name.replace('/', '.'));
                 Logger.success("Redefined {}, Return Code {}.", targetClass, code);
-                Thread.sleep(200);
+                redefined.add(targetClass);
+                Thread.sleep(100);
             }
         }
         for (int i = 0; i < transformers.size(); i++) {
@@ -95,12 +95,14 @@ public class MixinManager {
                 continue;
             }
             Files.write(new File(dir, targetClass.getName()).toPath(), bytes);
+            if (redefined.contains(targetClass)) continue;
             int code = JVMTIWrapper.instance.redefineClass(targetClass, bytes);
             SocketSender.send("P2" + " " + (float) (i + mixins.size() + 1) / total * 100f);
             if (code != 0)
                 failed.add(asmTransformer.getClass().getName());
             Logger.success("Redefined {}, Return Code {}.", targetClass, code);
-            Thread.sleep(200);
+            redefined.add(targetClass);
+            Thread.sleep(100);
         }
         for (String s : failed)
             Logger.error("Failed to apply patch: {}", s);

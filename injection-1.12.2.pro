@@ -1,5 +1,5 @@
 -injars build/injection-1.12.2/injection-1.12.2.jar
--outjars build/injection-1.12.2/injection-1.12.2-o.jar
+-outjars build/injection-1.12.2/injection-1.12.2.jar-obf.jar
 
 -libraryjars minecraft-lib/minecraft-1.12.2.jar
 -libraryjars Builder/libs/rt.jar
@@ -18,8 +18,6 @@
 -dontwarn
 -ignorewarnings
 
-
-
 -keep class cn.yapeteam.yolbi.mixin.injection.** {
     <fields>;
     <methods>;
@@ -32,9 +30,6 @@
 -keep,allowshrinking class cn.yapeteam.yolbi.mixin.injection.** {
     <fields>;
     <methods>;
-}
-
--keep class cn.yapeteam.yolbi.font.slick.** {
 }
 
 # Keep - Applications. Keep all application classes, along with their 'main' methods.

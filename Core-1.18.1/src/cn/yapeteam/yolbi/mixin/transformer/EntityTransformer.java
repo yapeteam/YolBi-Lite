@@ -1,7 +1,6 @@
 package cn.yapeteam.yolbi.mixin.transformer;
 
 import cn.yapeteam.ymixin.ASMTransformer;
-
 import cn.yapeteam.ymixin.utils.Mapper;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.impl.player.EventStrafe;

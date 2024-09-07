@@ -1,5 +1,5 @@
 -injars build/injection-1.18.1/injection-1.18.1.jar
--outjars build/injection-1.18.1/injection-1.18.1-o.jar
+-outjars build/injection-1.18.1/injection-1.18.1.jar-obf.jar
 
 -libraryjars minecraft-lib/minecraft-1.18.1.jar
 -libraryjars Builder/libs/rt.jar
@@ -9,15 +9,13 @@
 -dontoptimize
 -printmapping build/injection-1.18.1.mapping
 -obfuscationdictionary dictionaries/keywords.txt
--classobfuscationdictionary dictionaries/glitchy.txt
+-classobfuscationdictionary dictionaries/IiIIiiiIIIiIiI.txt
 -packageobfuscationdictionary dictionaries/yolbi.txt
 -overloadaggressively
 -dontusemixedcaseclassnames
 -keepattributes Exceptions,InnerClasses,Signature,Deprecated,LineNumberTable,LocalVariable*Table,*Annotation*,Synthetic,EnclosingMethod
 -dontwarn
 -ignorewarnings
-
-
 
 -keep class cn.yapeteam.yolbi.mixin.injection.** {
     <fields>;
@@ -28,12 +26,7 @@
     public static void start();
 }
 
--keep,allowshrinking class cn.yapeteam.yolbi.mixin.injection.** {
-    <fields>;
-    <methods>;
-}
-
--keep,allowshrinking class cn.yapeteam.yolbi.mixin.transformer.** {
+-keep,allowshrinking class cn.yapeteam.yolbi.mixin.** {
     <fields>;
     <methods>;
 }
