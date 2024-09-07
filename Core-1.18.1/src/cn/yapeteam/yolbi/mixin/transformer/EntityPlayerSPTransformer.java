@@ -4,6 +4,7 @@ import cn.yapeteam.ymixin.ASMTransformer;
 import cn.yapeteam.ymixin.utils.Mapper;
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.impl.player.EventMotion;
+import cn.yapeteam.yolbi.event.impl.player.EventMoveInput;
 import cn.yapeteam.yolbi.event.impl.player.EventMovement;
 import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
 import net.minecraft.client.player.LocalPlayer;
@@ -42,7 +43,7 @@ public class EntityPlayerSPTransformer extends ASMTransformer {
         for (int i = 0; i < methodNode.instructions.size(); ++i) {
             AbstractInsnNode node = methodNode.instructions.get(i);
             if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(
-                    Mapper.map("net/minecraft/client/tutorial/Tutorial", "onInput", "(Lnet/minecraft/client/player/Input;)V", Mapper.Type.Method))//Mappings.getObfMethod("m_120586_")
+                    Mapper.map("net/minecraft/client/tutorial/Tutorial","onInput","(Lnet/minecraft/client/player/Input;)V", Mapper.Type.Method))//Mappings.getObfMethod("m_120586_")
                     && ((MethodInsnNode) node).owner.equals(
                     Mapper.getObfClass("net/minecraft/client/tutorial/Tutorial"))) {
                 //MD: net/minecraft/client/tutorial/Tutorial/m_120586_ (Lnet/minecraft/client/player/Input;)V net/minecraft/client/tutorial/Tutorial/onInput (Lnet/minecraft/client/player/Input;)V
@@ -74,16 +75,16 @@ public class EntityPlayerSPTransformer extends ASMTransformer {
         list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
                 Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("net/minecraft/world/entity/Entity", "getX", "()D", Mapper.Type.Method), "()D"));//"field_70165_t" Mapper.getObfClass("net/minecraft/world/entity/Entity")
         list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("net/minecraft/world/entity/Entity", "getY", "()D", Mapper.Type.Method), "()D"));
+        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("net/minecraft/world/entity/Entity","getY", "()D",Mapper.Type.Method), "()D"));
         //field_70163_u,posY,2,Entity position Y
         //FD: pk/t net/minecraft/world/entity/Entity/field_70163_u
         list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("net/minecraft/world/entity/Entity", "getZ", "()D", Mapper.Type.Method), "()D"));
+        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("net/minecraft/world/entity/Entity","getZ",  "()D",Mapper.Type.Method), "()D"));
         list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("net/minecraft/world/entity/Entity", "getYRot", "()F", Mapper.Type.Method), "()F"));//yaw
+        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("net/minecraft/world/entity/Entity", "getYRot", "()F",Mapper.Type.Method), "()F"));//yaw
         list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("net/minecraft/world/entity/Entity", "getXRot", "()F", Mapper.Type.Method), "()F"));//pitch
-        list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(EntityPlayerSPTransformer.class), "onMotion", "(DDDFF)L" + EventMotion.class.getName().replace(".", "/") + ";"));
+        list.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Mapper.getObfClass("net/minecraft/world/entity/Entity"), Mapper.map("net/minecraft/world/entity/Entity", "getXRot", "()F",Mapper.Type.Method), "()F"));//pitch
+        list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(EntityPlayerSPTransformer.class), "onMotion", "(DDDFF)Lcn/yapeteam/yolbi/event/impl/player/EventMotion;"));
         list.add(new VarInsnNode(Opcodes.ASTORE, 1));
         j++;
         //ArrayList<AbstractInsnNode> rl=new ArrayList<>();
@@ -97,52 +98,52 @@ public class EntityPlayerSPTransformer extends ASMTransformer {
             //FD: pk/u net/minecraft/world/entity/Entity/field_70161_v
             //FD: pk/y net/minecraft/world/entity/Entity/field_70177_z
             //FD: pk/z net/minecraft/world/entity/Entity/field_70125_A
-            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.map("getYRot", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()F", Mapper.Type.Method))) {
+            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.map("getYRot", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()F",Mapper.Type.Method))) {
                 //标记替换yaw轴
                 AbstractInsnNode aload_0 = methodNode.instructions.get(i - 1);
                 if (aload_0 instanceof VarInsnNode) {
                     ((VarInsnNode) aload_0).var = 1;
-                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, EventMotion.class.getName().replace(".", "/"), "yaw", "F"));
+                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, "cn/yapeteam/yolbi/event/impl/player/EventMotion", "yaw", "F"));
                     methodNode.instructions.remove(node);
                     //rl.add(node);
                 }
             }
-            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.map("getXRot", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()F", Mapper.Type.Method))) {
+            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.map("getXRot", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()F",Mapper.Type.Method))) {
                 //标记替换yaw轴
                 AbstractInsnNode aload_0 = methodNode.instructions.get(i - 1);
                 if (aload_0 instanceof VarInsnNode) {
                     ((VarInsnNode) aload_0).var = 1;
-                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, EventMotion.class.getName().replace(".", "/"), "pitch", "F"));
+                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, "cn/yapeteam/yolbi/event/impl/player/EventMotion", "pitch", "F"));
                     methodNode.instructions.remove(node);
                     //rl.add(node);
                 }
             }
-            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.map("getX", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()D", Mapper.Type.Method))) {
+            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.map("getX", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()D",Mapper.Type.Method))) {
                 //标记替换yaw轴
                 AbstractInsnNode aload_0 = methodNode.instructions.get(i - 1);
                 if (aload_0 instanceof VarInsnNode) {
                     ((VarInsnNode) aload_0).var = 1;
-                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, EventMotion.class.getName().replace(".", "/"), "x", "D"));
+                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, "cn/yapeteam/yolbi/event/impl/player/EventMotion", "x", "D"));
                     methodNode.instructions.remove(node);
                     //rl.add(node);
                 }
             }
-            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.map("getY", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()D", Mapper.Type.Method))) {
+            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.map("getY", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()D",Mapper.Type.Method))) {
                 //标记替换yaw轴
                 AbstractInsnNode aload_0 = methodNode.instructions.get(i - 1);
                 if (aload_0 instanceof VarInsnNode) {
                     ((VarInsnNode) aload_0).var = 1;
-                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, EventMotion.class.getName().replace(".", "/"), "y", "D"));
+                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, "cn/yapeteam/yolbi/event/impl/player/EventMotion", "y", "D"));
                     methodNode.instructions.remove(node);
                     //rl.add(node);
                 }
             }
-            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.map("getZ", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()D", Mapper.Type.Method))) {
+            if (node instanceof MethodInsnNode && ((MethodInsnNode) node).name.equals(Mapper.map("getZ", Mapper.getObfClass("net/minecraft/world/entity/Entity"), "()D",Mapper.Type.Method))) {
                 //标记替换yaw轴
                 AbstractInsnNode aload_0 = methodNode.instructions.get(i - 1);
                 if (aload_0 instanceof VarInsnNode) {
                     ((VarInsnNode) aload_0).var = 1;
-                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, EventMotion.class.getName().replace(".", "/"), "z", "D"));
+                    methodNode.instructions.insert(node, new FieldInsnNode(Opcodes.GETFIELD, "cn/yapeteam/yolbi/event/impl/player/EventMotion", "z", "D"));
                     methodNode.instructions.remove(node);
                     //rl.add(node);
                 }
