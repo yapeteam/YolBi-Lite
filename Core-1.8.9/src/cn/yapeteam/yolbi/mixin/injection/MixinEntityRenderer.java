@@ -6,12 +6,14 @@ import cn.yapeteam.yolbi.event.impl.player.EventMouseOver;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
 import cn.yapeteam.yolbi.event.impl.render.EventRender3D;
 import cn.yapeteam.yolbi.event.impl.render.EventRenderGUI;
+import cn.yapeteam.yolbi.utils.render.GuiUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Vec3;
-import pisi.unitedmeows.meowlib.clazz.event;
 
 @Mixin(EntityRenderer.class)
 public class MixinEntityRenderer {
@@ -58,8 +60,9 @@ public class MixinEntityRenderer {
             desc = "(F)V",
             target = @Target(
                     value = "INVOKEVIRTUAL",
-                    target = "net/minecraft/util/Vec3.distanceTo (Lnet/minecraft/util/Vec3;)D",
-                    shift = Target.Shift.BEFORE
+                    target = "net/minecraft/util/Vec3.distanceTo(Lnet/minecraft/util/Vec3;)D",
+                    shift = Target.Shift.BEFORE,
+                    ordinal = 2
             )
     )
     private void modifyreach(@Local(source = "partialTicks", index = 1) float partialTicks) {
@@ -81,7 +84,20 @@ public class MixinEntityRenderer {
             @Local(source = "sr", index = 5) ScaledResolution sr,
             @Local(source = "partialTicks", index = 1) float partialTicks
     ) {
+        GlStateManager.pushMatrix();
         YolBi.instance.getEventManager().post(new EventRender2D(partialTicks, sr));
+        GlStateManager.enableBlend();
+        // Cross-hair
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        mc.getTextureManager().bindTexture(Gui.icons);
+        GlStateManager.enableBlend();
+        if (GuiUtil.showCrosshair()) {
+            GlStateManager.tryBlendFuncSeparate(775, 769, 1, 0);
+            GlStateManager.enableAlpha();
+            mc.ingameGUI.drawTexturedModalRect(sr.getScaledWidth() / 2f - 7,
+                    sr.getScaledHeight() / 2f - 7, 0, 0, 16, 16);
+        }
+        GlStateManager.popMatrix();
     }
 
     @Inject(
