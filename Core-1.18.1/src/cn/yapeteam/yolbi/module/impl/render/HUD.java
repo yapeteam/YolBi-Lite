@@ -12,6 +12,7 @@ import cn.yapeteam.yolbi.utils.render.RenderManager;
 import cn.yapeteam.yolbi.utils.vector.Vector2d;
 import cn.yapeteam.yolbi.wrappers.ScaledResolutionWrapper;
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -28,10 +29,10 @@ public class HUD extends Module {
 
     @Listener
     public void onRender2D(EventRender2D e) {
-        renderArrayList();
+        renderArrayList(e.getPoseStack());
     }
 
-    private void renderArrayList() {
+    private void renderArrayList(PoseStack poseStack) {
         AbstractFontRenderer font = YolBi.instance.getFontManager().getPingFang18();
         int yCount = 0;
         List<Module> mods = YolBi.instance.getModuleManager().getModules();
@@ -56,9 +57,9 @@ public class HUD extends Module {
 
             if (m.isEnabled()) {
                 int color = ColorUtils.mixColors(new Color(mixColor1.getValue()), new Color(mixColor2.getValue()), ColorUtils.getBlendFactor(new Vector2d(sr.getScaledWidth() - font.getStringWidth(m.getName()) - 6, (int) offset))).getRGB();
-                RenderManager.drawRoundedRect(sr.getScaledWidth(), (int) (6 + offset), sr.getScaledWidth() + 2, (int) (2 + offset + font.getFontHeight("F")), 3, new Color(color).getRGB());
-                RenderManager.drawRoundedRect((int) (sr.getScaledWidth() - font.getStringWidth(m.getName()) - 6), (int) offset + 6, sr.getScaledWidth(), (int) (font.getFontHeight("F") + offset + 4), 5, new Color(225, 242, 255, 105).getRGB());
-                font.drawStringWithShadow(RenderManager.currentPoseStack, m.getName(),
+                RenderManager.drawRoundedRect(poseStack, sr.getScaledWidth(), (int) (6 + offset), sr.getScaledWidth() + 2, (int) (2 + offset + font.getFontHeight("F")), 3, new Color(color).getRGB());
+                RenderManager.drawRoundedRect(poseStack, (int) (sr.getScaledWidth() - font.getStringWidth(m.getName()) - 6), (int) offset + 6, sr.getScaledWidth(), (int) (font.getFontHeight("F") + offset + 4), 5, new Color(225, 242, 255, 105).getRGB());
+                font.drawStringWithShadow(poseStack, m.getName(),
                         sr.getScaledWidth() - font.getStringWidth(m.getName()) - 4, offset + 8, color);
                 yCount++;
             }

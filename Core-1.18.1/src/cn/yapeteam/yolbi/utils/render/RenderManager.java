@@ -13,9 +13,7 @@ import java.awt.*;
 import static com.mojang.blaze3d.vertex.DefaultVertexFormat.POSITION_COLOR;
 
 public class RenderManager {
-    public static PoseStack currentPoseStack;
-
-    public static void drawRoundedRect(int left, int top, int right, int bottom, int radius, int color) {
+    public static void drawRoundedRect(PoseStack poseStack, int left, int top, int right, int bottom, int radius, int color) {
         left += radius;
         top += radius;
         bottom -= radius;
@@ -52,7 +50,7 @@ public class RenderManager {
             double y = (ky != 0) ? bottom : top;
             for (int a = 0; a <= 8; a++)
                 worldrenderer
-                        .vertex(currentPoseStack.last().pose(), (float) (x + Math.sin(0.19634954084936207D * a + Math.PI * cornerId / 2.0D) * radius), (float) (y + Math.cos(0.19634954084936207D * a + Math.PI * cornerId / 2.0D) * radius), 0.0F)
+                        .vertex(poseStack.last().pose(), (float) (x + Math.sin(0.19634954084936207D * a + Math.PI * cornerId / 2.0D) * radius), (float) (y + Math.cos(0.19634954084936207D * a + Math.PI * cornerId / 2.0D) * radius), 0.0F)
                         .color(color).endVertex();
         }
 
@@ -147,5 +145,4 @@ public class RenderManager {
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
     }
-
 }

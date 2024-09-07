@@ -13,6 +13,9 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItemFrame;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 
 @Mixin(EntityRenderer.class)
@@ -21,15 +24,6 @@ public class MixinEntityRenderer {
     private Minecraft mc;
     @Shadow
     private Entity pointedEntity;
-
-    @Shadow
-    private Vec3 vec3;
-
-    @Shadow
-    private boolean flag;
-
-    @Shadow
-    private Vec3 vec33;
 
     @Inject(
             method = "renderWorldPass", desc = "(IFJ)V",
@@ -47,27 +41,37 @@ public class MixinEntityRenderer {
             method = "getMouseOver",
             desc = "(F)V",
             target = @Target(
-                    value = "INVOKEVIRTUAL",
-                    target = "net/minecraft/util/Vec3.distanceTo(Lnet/minecraft/util/Vec3;)D",
+                    value = "PUTFIELD",
+                    target = "net/minecraft/client/renderer/EntityRenderer.pointedEntity Lnet/minecraft/entity/Entity;",
                     shift = Target.Shift.BEFORE,
-                    ordinal = 2
+                    ordinal = 4
             )
     )
-    private void modifyreach(@Local(source = "partialTicks", index = 1) float partialTicks) {
+    private void modifyReach(@Local(source = "vec33", index = 12) Vec3 vec33) {
         EventMouseOver event = new EventMouseOver(3.0f);
         YolBi.instance.getEventManager().post(event);
-        if (this.pointedEntity != null && flag && vec3.distanceTo(vec33) < event.getReach()) {
-//            so we remove check using original minecraft logic
-            flag = false;
+        if (!event.isCancelled()) {
+            // pointedEntity = RayCastUtil.rayCast(new Vector2f(mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch), event.getReach()).entityHit;
+            if (this.pointedEntity != null) {
+                this.mc.objectMouseOver = new MovingObjectPosition(this.pointedEntity, vec33);
+                if (this.pointedEntity instanceof EntityLivingBase || this.pointedEntity instanceof EntityItemFrame) {
+                    this.mc.pointedEntity = this.pointedEntity;
+                }
+            }
+
+            this.mc.mcProfiler.endSection();
+            return;
         }
     }
 
-    @Inject(method = "updateCameraAndRender", desc = "(FJ)V",
+    @Inject(
+            method = "updateCameraAndRender", desc = "(FJ)V",
             target = @Target(
                     value = "INVOKESTATIC",
                     target = "net/minecraft/client/renderer/GlStateManager.alphaFunc(IF)V",
                     shift = Target.Shift.BEFORE
-            ))
+            )
+    )
     private void onRender2D(
             @Local(source = "sr", index = 5) ScaledResolution sr,
             @Local(source = "partialTicks", index = 1) float partialTicks

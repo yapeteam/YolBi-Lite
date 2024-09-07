@@ -21,9 +21,8 @@ public class Reach extends Module {
 
     @Listener
     public void onEventMouseOver(EventMouseOver event) {
-        if(random.nextInt(100) > MathUtils.getRandom(reachpossiblity.getValue().doubleValue(), reachpossiblity.getSecondValue().doubleValue())) {
+        if(random.nextInt(100) > MathUtils.getRandom(reachpossiblity.getValue().doubleValue(), reachpossiblity.getSecondValue().doubleValue()))
             return;
-        }
         event.setReach((float) MathUtils.getRandom(reach.getValue().doubleValue(), reach.getSecondValue().doubleValue()));
     }
 }

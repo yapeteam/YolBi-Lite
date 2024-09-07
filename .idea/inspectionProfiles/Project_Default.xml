@@ -13,8 +13,9 @@
     <inspection_tool class="FieldCanBeLocal" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="EXCLUDE_ANNOS">
         <value>
-          <list size="1">
+          <list size="2">
             <item index="0" class="java.lang.String" itemvalue="cn.yapeteam.loader.mixin.annotations.Shadow" />
+            <item index="1" class="java.lang.String" itemvalue="cn.yapeteam.ymixin.annotations.Shadow" />
           </list>
         </value>
       </option>
