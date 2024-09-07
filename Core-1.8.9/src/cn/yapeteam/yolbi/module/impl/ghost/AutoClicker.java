@@ -6,6 +6,7 @@ import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.api.Category;
 import cn.yapeteam.yolbi.module.api.ModuleInfo;
 import cn.yapeteam.yolbi.module.api.value.impl.*;
+import cn.yapeteam.yolbi.utils.math.MathUtils;
 import cn.yapeteam.yolbi.utils.misc.VirtualKeyBoard;
 import lombok.Getter;
 import net.minecraft.item.ItemFood;
@@ -60,13 +61,8 @@ public class AutoClicker extends Module {
     private static final Random random = new Random();
 
     public static double generate(double cps, double range) {
-        double mean = 1000.0 / cps;
-        double stddev = mean * range / cps;
-        double noise;
-        do {
-            noise = mean + random.nextGaussian() * stddev;
-        } while (noise <= 0);
-        return noise;
+        double mean = 1000.0 / MathUtils.getRandom(cps - range, cps + range);
+        return mean + random.nextGaussian();
     }
 
     private final Runnable leftClickRunnable = () -> {

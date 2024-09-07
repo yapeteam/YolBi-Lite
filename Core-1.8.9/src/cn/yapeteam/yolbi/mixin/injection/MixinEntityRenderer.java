@@ -72,7 +72,7 @@ public class MixinEntityRenderer {
             @Local(source = "sr", index = 5) ScaledResolution sr,
             @Local(source = "partialTicks", index = 1) float partialTicks
     ) {
-        GlStateManager.pushMatrix();
+//        GlStateManager.pushMatrix();
         YolBi.instance.getEventManager().post(new EventRender2D(partialTicks, sr));
         GlStateManager.enableBlend();
         // Cross-hair
@@ -85,7 +85,7 @@ public class MixinEntityRenderer {
             mc.ingameGUI.drawTexturedModalRect(sr.getScaledWidth() / 2f - 7,
                     sr.getScaledHeight() / 2f - 7, 0, 0, 16, 16);
         }
-        GlStateManager.popMatrix();
+//        GlStateManager.popMatrix();
     }
 
     @Inject(
