@@ -1,12 +1,15 @@
 package cn.yapeteam.yolbi.utils.render;
 
+import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.render.EventRender2D;
+import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.math.vector.Vector3d;
 import cn.yapeteam.yolbi.utils.math.vector.Vector4d;
 import lombok.Getter;
 import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import org.lwjgl.opengl.Display;
@@ -53,17 +56,18 @@ public class ProjectionUtil implements Accessor {
     }
 
     private Vector3d project(final int factor, final double x, final double y, final double z) {
-        if (GLU.gluProject((float) x, (float) y, (float) z, ActiveRenderInfo.MODELVIEW, ActiveRenderInfo.PROJECTION, ActiveRenderInfo.VIEWPORT, ActiveRenderInfo.OBJECTCOORDS)) {
-            return new Vector3d((ActiveRenderInfo.OBJECTCOORDS.get(0) / factor), ((Display.getHeight() - ActiveRenderInfo.OBJECTCOORDS.get(1)) / factor), ActiveRenderInfo.OBJECTCOORDS.get(2));
+        if (GLU.gluProject((float) x, (float) y, (float) z, ReflectionManager.GetActiveRenderInfo$MODELVIEW(), ReflectionManager.GetActiveRenderInfo$PROJECTION(), ReflectionManager.GetActiveRenderInfo$VIEWPORT(), ReflectionManager.GetActiveRenderInfo$OBJECTCOORDS())) {
+            return new Vector3d((ReflectionManager.GetActiveRenderInfo$OBJECTCOORDS().get(0) / factor), ((Display.getHeight() - ReflectionManager.GetActiveRenderInfo$OBJECTCOORDS().get(1)) / factor), ReflectionManager.GetActiveRenderInfo$OBJECTCOORDS().get(2));
         }
 
         return null;
     }
 
     public Vector4d project(Entity entity) {
-        final double renderX = ;
-        final double renderY = mc.getRenderManager().renderPosY;
-        final double renderZ = mc.getRenderManager().renderPosZ;
+        RenderManager renderManager = mc.getRenderManager();
+        final double renderX = ReflectionManager.GetRenderManager$renderPosX(renderManager);
+        final double renderY = ReflectionManager.GetRenderManager$renderPosY(renderManager);
+        final double renderZ = ReflectionManager.GetRenderManager$renderPosZ(renderManager);
 
         final double x = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * mc.timer.renderPartialTicks - renderX;
         final double y = (entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * mc.timer.renderPartialTicks) - renderY;
