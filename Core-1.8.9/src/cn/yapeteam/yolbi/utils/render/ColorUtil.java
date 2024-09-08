@@ -7,6 +7,33 @@ import java.awt.*;
 
 public class ColorUtil {
 
+
+    public static Color blendColors(float[] fractions, Color[] colors, float progress) {
+        if (fractions.length == colors.length) {
+            int[] indices = getFractionIndices(fractions, progress);
+            float[] range = new float[]{fractions[indices[0]], fractions[indices[1]]};
+            Color[] colorRange = new Color[]{colors[indices[0]], colors[indices[1]]};
+            float max = range[1] - range[0];
+            float value = progress - range[0];
+            float weight = value / max;
+            return blend(colorRange[0], colorRange[1], 1.0f - weight);
+        }
+        throw new IllegalArgumentException("Fractions and colours must have equal number of elements");
+    }
+
+    public static int[] getFractionIndices(float[] fractions, float progress) {
+        int startPoint;
+        int[] range = new int[2];
+        for (startPoint = 0; startPoint < fractions.length && fractions[startPoint] <= progress; ++startPoint) {
+        }
+        if (startPoint >= fractions.length) {
+            startPoint = fractions.length - 1;
+        }
+        range[0] = startPoint - 1;
+        range[1] = startPoint;
+        return range;
+    }
+
     /**
      * Method which colors using a hex code
      *
