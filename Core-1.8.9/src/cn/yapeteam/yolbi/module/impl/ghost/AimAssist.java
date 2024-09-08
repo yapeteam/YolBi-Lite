@@ -78,7 +78,7 @@ public class AimAssist extends Module {
 
     public Entity getTargets() {
         // define targets first to eliminate any null pointer exceptions
-        List<Entity> targets = TargetManager.getTargets(Range.getValue().doubleValue());
+        List<EntityLivingBase> targets = TargetManager.getTargets(Range.getValue().doubleValue());
         if (View.getValue())
             targets = targets.stream()
                     .filter(RayCastUtil::isInViewFrustrum)

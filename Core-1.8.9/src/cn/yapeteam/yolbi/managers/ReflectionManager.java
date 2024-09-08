@@ -17,8 +17,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
-import net.minecraft.util.*;
 import net.minecraft.util.Timer;
+import net.minecraft.util.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,7 +27,6 @@ import java.lang.reflect.Method;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("unchecked")
 public class ReflectionManager {
@@ -37,6 +36,7 @@ public class ReflectionManager {
     private static Field Minecraft$timer;
     private static Field Minecraft$leftClickCounter;
     public static Field Minecraft$rightClickDelayTimer;
+    private static Field Timer$renderPartialTicks;
     private static Field EntityPlayerSP$lastReportedYaw;
     private static Field EntityPlayerSP$lastReportedPitch;
     private static Field Entity$motionX;
@@ -71,6 +71,12 @@ public class ReflectionManager {
             Minecraft$clickMouse = Minecraft.class.getDeclaredMethod(Mapper.map("net/minecraft/client/Minecraft", "clickMouse", "()V", Mapper.Type.Method));
             Minecraft$clickMouse.setAccessible(true);
         } catch (NoSuchMethodException e) {
+            Logger.exception(e);
+        }
+        try {
+            Timer$renderPartialTicks = Timer.class.getDeclaredField(Mapper.map("net/minecraft/util/Timer", "renderPartialTicks", null, Mapper.Type.Field));
+            Timer$renderPartialTicks.setAccessible(true);
+        } catch (NoSuchFieldException e) {
             Logger.exception(e);
         }
         try {
@@ -665,6 +671,15 @@ public class ReflectionManager {
         } catch (Exception e) {
             Logger.exception(e);
         }
+    }
+
+    public static float GetTimer$renderPartialTicks(Timer timer) {
+        try {
+            return Timer$renderPartialTicks.getFloat(timer);
+        } catch (Exception e) {
+            Logger.exception(e);
+        }
+        return 0;
     }
 
     public static final boolean hasOptifine = Arrays.stream(GameSettings.class.getFields()).anyMatch(f -> f.getName().equals("ofFastRender"));

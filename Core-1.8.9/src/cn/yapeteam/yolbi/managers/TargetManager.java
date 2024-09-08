@@ -5,11 +5,7 @@ import cn.yapeteam.yolbi.module.impl.combat.AntiBot;
 import cn.yapeteam.yolbi.module.impl.combat.CombatSettings;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.player.PlayerUtil;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
@@ -21,20 +17,17 @@ public class TargetManager implements Accessor {
     private static CombatSettings combatSettingsModule = null;
     private static AntiBot antiBotModule = null;
 
-    public static List<Entity> getTargets(double range) {
+    public static List<EntityLivingBase> getTargets(double range) {
         if (combatSettingsModule == null)
             combatSettingsModule = YolBi.instance.getModuleManager().get(CombatSettings.class);
         if (antiBotModule == null)
             antiBotModule = YolBi.instance.getModuleManager().get(AntiBot.class);
         if (mc.theWorld == null) return new ArrayList<>();
-        return mc.theWorld.loadedEntityList.stream()
+        return mc.theWorld.playerEntities.stream()
                 .filter(entity -> entity instanceof EntityLivingBase)
                 .filter(
                         entity -> (combatSettingsModule.getPlayers().getValue() && entity instanceof EntityPlayer &&
-                                !(combatSettingsModule.getNotTeamMates().getValue() && PlayerUtil.sameTeam((EntityPlayer) entity))) ||
-                                (combatSettingsModule.getAnimals().getValue() && entity instanceof EntityAnimal) ||
-                                (combatSettingsModule.getMobs().getValue() && entity instanceof EntityMob) ||
-                                (combatSettingsModule.getVillagers().getValue() && entity instanceof EntityVillager)
+                                !(combatSettingsModule.getNotTeamMates().getValue() && PlayerUtil.sameTeam((EntityPlayer) entity)))
                 )
                 // not ourselves
                 .filter(entity -> entity != mc.thePlayer)

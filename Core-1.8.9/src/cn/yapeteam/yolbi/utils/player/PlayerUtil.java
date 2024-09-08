@@ -12,6 +12,7 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -33,6 +34,17 @@ import java.util.List;
 public class PlayerUtil implements Accessor {
 
 
+    Frustum frustrum = new Frustum();
+
+    public static boolean isInViewFrustrum(Entity entity) {
+        return isInViewFrustrum(entity.getEntityBoundingBox()) || entity.ignoreFrustumCheck;
+    }
+
+    private static boolean isInViewFrustrum(AxisAlignedBB bb) {
+        Entity current = mc.getRenderViewEntity();
+        frustrum.setPosition(current.posX, current.posY, current.posZ);
+        return frustrum.isBoundingBoxInFrustum(bb);
+    }
 
     private final HashMap<Integer, Integer> GOOD_POTIONS = new HashMap<Integer, Integer>() {{
         put(6, 1); // Instant Health

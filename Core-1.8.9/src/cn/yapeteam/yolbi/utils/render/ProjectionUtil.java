@@ -8,10 +8,10 @@ import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.math.vector.Vector3d;
 import cn.yapeteam.yolbi.utils.math.vector.Vector4d;
 import lombok.Getter;
-import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Timer;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.glu.GLU;
 
@@ -23,6 +23,10 @@ import java.util.Map;
 public class ProjectionUtil implements Accessor {
     private static final HashMap<Entity, Projection> nextProjections = new HashMap<>();
     private static HashMap<Entity, Projection> currentProjections = new HashMap<>();
+
+    static {
+        YolBi.instance.getEventManager().register(new ProjectionUtil());
+    }
 
     @Listener
     public void onRender2d(EventRender2D eventRender2D){
@@ -59,7 +63,6 @@ public class ProjectionUtil implements Accessor {
         if (GLU.gluProject((float) x, (float) y, (float) z, ReflectionManager.GetActiveRenderInfo$MODELVIEW(), ReflectionManager.GetActiveRenderInfo$PROJECTION(), ReflectionManager.GetActiveRenderInfo$VIEWPORT(), ReflectionManager.GetActiveRenderInfo$OBJECTCOORDS())) {
             return new Vector3d((ReflectionManager.GetActiveRenderInfo$OBJECTCOORDS().get(0) / factor), ((Display.getHeight() - ReflectionManager.GetActiveRenderInfo$OBJECTCOORDS().get(1)) / factor), ReflectionManager.GetActiveRenderInfo$OBJECTCOORDS().get(2));
         }
-
         return null;
     }
 
@@ -69,9 +72,12 @@ public class ProjectionUtil implements Accessor {
         final double renderY = ReflectionManager.GetRenderManager$renderPosY(renderManager);
         final double renderZ = ReflectionManager.GetRenderManager$renderPosZ(renderManager);
 
-        final double x = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * mc.timer.renderPartialTicks - renderX;
-        final double y = (entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * mc.timer.renderPartialTicks) - renderY;
-        final double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * mc.timer.renderPartialTicks - renderZ;
+        Timer timer = ReflectionManager.Minecraft$getTimer(mc);
+        float renderPartialTicks = ReflectionManager.GetTimer$renderPartialTicks(timer);
+
+        final double x = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * renderPartialTicks - renderX;
+        final double y = (entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * renderPartialTicks) - renderY;
+        final double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * renderPartialTicks - renderZ;
         final double width = (entity.width + 0.2) / 2;
         final double height = entity.height + (entity.isSneaking() ? -0.3D : 0.2D) + 0.05;
         final AxisAlignedBB aabb = new AxisAlignedBB(x - width, y, z - width, x + width, y + height, z + width);
