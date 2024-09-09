@@ -69,7 +69,7 @@ public class LayerManager {
         layers.forEach((groups, map) -> map.forEach((layer, items) -> items.clear()));
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.enableLighting();
+//        GlStateManager.disableLighting();
         GlStateManager.enableAlpha();
     }
 }

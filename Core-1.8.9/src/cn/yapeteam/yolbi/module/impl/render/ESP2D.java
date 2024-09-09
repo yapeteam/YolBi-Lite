@@ -11,7 +11,9 @@ import cn.yapeteam.yolbi.module.api.value.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.api.value.impl.ModeValue;
 import cn.yapeteam.yolbi.module.api.value.impl.NumberValue;
 import cn.yapeteam.yolbi.module.api.value.impl.SubMode;
+import cn.yapeteam.yolbi.utils.math.vector.Vector4d;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
+import cn.yapeteam.yolbi.utils.render.ProjectionUtil;
 import net.minecraft.entity.EntityLivingBase;
 
 import java.awt.*;
@@ -50,82 +52,78 @@ public class ESP2D extends Module {
     @Listener
     public void onRender2D(EventRender2D eventRender2D){
         collectEntities();
+        for (EntityLivingBase entity : collectedEntities) {
 
-        RenderManager.roundedRectangle(0, 0, 100, 100, 5, Color.RED);
-//        for (EntityLivingBase entity : collectedEntities) {
-//
-//            Color color = Color.CYAN;
-//
-//            if(!invis.getValue() && entity.isInvisible()) continue;
-//
-//            // Use ProjectionUtil to project the entity
-//            Vector4d position = ProjectionUtil.get(entity);
-//            if (position == null) continue;
-//
-////            mc.entityRenderer.setupOverlayRendering();
-//
-//            // Extract the projected 2D coordinates from the projection
-//            double posX = position.x;
-//            double posY = position.y;
-//            double endPosX = position.z;
-//            double endPosY = position.w;
-//
-//            if (mode.getValue().toString().equals("Corners")) {
-//                RenderManager.rectangle(posX - 1.0, posY, 1.5, endPosY - posY + 0.5, color);
-//                RenderManager.rectangle(posX - 1.0, posY - 0.5, endPosX - posX + 1.5, 1.0, color);
-//                RenderManager.rectangle(endPosX - 1.0, posY, 1.5, endPosY - posY + 0.5, color);
-//                RenderManager.rectangle(posX - 1.0, endPosY - 1.0, endPosX - posX + 1.5, 1.0, color);
-//
-//                RenderManager.rectangle(posX, posY, 1.0, endPosY - posY, color);
-//                RenderManager.rectangle(posX, endPosY - 0.5, endPosX - posX, 0.5, color);
-//                RenderManager.rectangle(posX, posY, endPosX - posX, 0.5, color);
-//                RenderManager.rectangle(endPosX - 0.5, posY, 0.5, endPosY - posY, color);
-//            } else {
-//                RenderManager.rectangle(posX - 1.0, posY, 1.5, (endPosY - posY) / 4.0 + 0.5, color);
-//                RenderManager.rectangle(posX - 1.0, endPosY - (endPosY - posY) / 4.0 - 0.5, 1.5, (endPosY - posY) / 4.0 + 0.5, color);
-//                RenderManager.rectangle(posX - 1.0, posY - 0.5, (endPosX - posX) / 3.0 + 1.5, 1.5, color);
-//                RenderManager.rectangle(endPosX - (endPosX - posX) / 3.0 - 0.5, posY - 0.5, (endPosX - posX) / 3.0 + 1.5, 1.5, color);
-//                RenderManager.rectangle(endPosX - 1.0, posY, 1.5, (endPosY - posY) / 4.0 + 0.5, color);
-//                RenderManager.rectangle(endPosX - 1.0, endPosY - (endPosY - posY) / 4.0 - 0.5, 1.5, (endPosY - posY) / 4.0 + 0.5, color);
-//                RenderManager.rectangle(posX - 1.0, endPosY - 1.0, (endPosX - posX) / 3.0 + 1.5, 1.5, color);
-//                RenderManager.rectangle(endPosX - (endPosX - posX) / 3.0 - 0.5, endPosY - 1.0, (endPosX - posX) / 3.0 + 1.5, 1.5, color);
-//
-//                RenderManager.rectangle(posX - 0.5, posY, 1.0, (endPosY - posY) / 4.0, color);
-//                RenderManager.rectangle(posX - 0.5, endPosY - (endPosY - posY) / 4.0, 1.0, (endPosY - posY) / 4.0, color);
-//                RenderManager.rectangle(posX, posY, (endPosX - posX) / 3.0, 0.5, color);
-//                RenderManager.rectangle(endPosX - (endPosX - posX) / 3.0, posY, (endPosX - posX) / 3.0, 0.5, color);
-//                RenderManager.rectangle(endPosX - 0.5, posY, 0.5, (endPosY - posY) / 4.0, color);
-//                RenderManager.rectangle(endPosX - 0.5, endPosY - (endPosY - posY) / 4.0, 0.5, (endPosY - posY) / 4.0, color);
-//                RenderManager.rectangle(posX, endPosY - 0.5, (endPosX - posX) / 3.0, 0.5, color);
-//                RenderManager.rectangle(endPosX - (endPosX - posX) / 3.0, endPosY - 0.5, (endPosX - posX) / 3.0, 0.5, color);
-//            }
-//
-//            if (healthbar.getValue()) {
-//                float EntityHealth = entity.getHealth();
-//                float MaxHealth = entity.getMaxHealth();
-//
-//                double barheight = (endPosY - posY - 0.4 * (MaxHealth - 1)) / (MaxHealth);
-//                double healthratio = EntityHealth / MaxHealth;
-//                Color healthcolor = getHealthColor(EntityHealth, MaxHealth);
-//                double yvalue = posY - 0.4;
-//
-//                if (healthmode.getValue().equals("Line") || EntityHealth > 40) {
-//                    RenderManager.roundedRectangle(posX - 3.5, posY -0.5, 1, (endPosY - posY) * healthratio,4, healthcolor);
-//                }else{
-//                    for (int i = 0; i <= MaxHealth; i++) {
-//                        if(i > 20){
-////                        they must have gapped so gold color
-//                            healthcolor = new Color(255, 215, 0);
-//                        }
-//                        // we render a rectangle according to barheight and the gap is 0.4
-//                        RenderManager.rectangle(posX - 3.5, yvalue, 1, barheight, healthcolor);
-//
-//                        yvalue += barheight + 0.4;
-//                    }
-//                }
-//            }
-//
-//        }
+            Color color = Color.CYAN;
+
+            if(!invis.getValue() && entity.isInvisible()) continue;
+
+            // Use ProjectionUtil to project the entity
+            Vector4d position = ProjectionUtil.get(entity);
+            if (position == null) continue;
+
+            // Extract the projected 2D coordinates from the projection
+            double posX = position.x;
+            double posY = position.y;
+            double endPosX = position.z;
+            double endPosY = position.w;
+
+            if (mode.getValue().toString().equals("Corners")) {
+                RenderManager.rectangle(posX - 1.0, posY, 1.5, endPosY - posY + 0.5, color);
+                RenderManager.rectangle(posX - 1.0, posY - 0.5, endPosX - posX + 1.5, 1.0, color);
+                RenderManager.rectangle(endPosX - 1.0, posY, 1.5, endPosY - posY + 0.5, color);
+                RenderManager.rectangle(posX - 1.0, endPosY - 1.0, endPosX - posX + 1.5, 1.0, color);
+
+                RenderManager.rectangle(posX, posY, 1.0, endPosY - posY, color);
+                RenderManager.rectangle(posX, endPosY - 0.5, endPosX - posX, 0.5, color);
+                RenderManager.rectangle(posX, posY, endPosX - posX, 0.5, color);
+                RenderManager.rectangle(endPosX - 0.5, posY, 0.5, endPosY - posY, color);
+            } else {
+                RenderManager.rectangle(posX - 1.0, posY, 1.5, (endPosY - posY) / 4.0 + 0.5, color);
+                RenderManager.rectangle(posX - 1.0, endPosY - (endPosY - posY) / 4.0 - 0.5, 1.5, (endPosY - posY) / 4.0 + 0.5, color);
+                RenderManager.rectangle(posX - 1.0, posY - 0.5, (endPosX - posX) / 3.0 + 1.5, 1.5, color);
+                RenderManager.rectangle(endPosX - (endPosX - posX) / 3.0 - 0.5, posY - 0.5, (endPosX - posX) / 3.0 + 1.5, 1.5, color);
+                RenderManager.rectangle(endPosX - 1.0, posY, 1.5, (endPosY - posY) / 4.0 + 0.5, color);
+                RenderManager.rectangle(endPosX - 1.0, endPosY - (endPosY - posY) / 4.0 - 0.5, 1.5, (endPosY - posY) / 4.0 + 0.5, color);
+                RenderManager.rectangle(posX - 1.0, endPosY - 1.0, (endPosX - posX) / 3.0 + 1.5, 1.5, color);
+                RenderManager.rectangle(endPosX - (endPosX - posX) / 3.0 - 0.5, endPosY - 1.0, (endPosX - posX) / 3.0 + 1.5, 1.5, color);
+
+                RenderManager.rectangle(posX - 0.5, posY, 1.0, (endPosY - posY) / 4.0, color);
+                RenderManager.rectangle(posX - 0.5, endPosY - (endPosY - posY) / 4.0, 1.0, (endPosY - posY) / 4.0, color);
+                RenderManager.rectangle(posX, posY, (endPosX - posX) / 3.0, 0.5, color);
+                RenderManager.rectangle(endPosX - (endPosX - posX) / 3.0, posY, (endPosX - posX) / 3.0, 0.5, color);
+                RenderManager.rectangle(endPosX - 0.5, posY, 0.5, (endPosY - posY) / 4.0, color);
+                RenderManager.rectangle(endPosX - 0.5, endPosY - (endPosY - posY) / 4.0, 0.5, (endPosY - posY) / 4.0, color);
+                RenderManager.rectangle(posX, endPosY - 0.5, (endPosX - posX) / 3.0, 0.5, color);
+                RenderManager.rectangle(endPosX - (endPosX - posX) / 3.0, endPosY - 0.5, (endPosX - posX) / 3.0, 0.5, color);
+            }
+
+            if (healthbar.getValue()) {
+                float EntityHealth = entity.getHealth();
+                float MaxHealth = entity.getMaxHealth();
+
+                double barheight = (endPosY - posY - 0.4 * (MaxHealth - 1)) / (MaxHealth);
+                double healthratio = EntityHealth / MaxHealth;
+                Color healthcolor = getHealthColor(EntityHealth, MaxHealth);
+                double yvalue = posY - 0.4;
+
+                if (healthmode.getValue().equals("Line") || EntityHealth > 40) {
+                    RenderManager.roundedRectangle(posX - 3.5, posY -0.5, 1, (endPosY - posY) * healthratio,4, healthcolor);
+                }else{
+                    for (int i = 0; i <= MaxHealth; i++) {
+                        if(i > 20){
+//                        they must have gapped so gold color
+                            healthcolor = new Color(255, 215, 0);
+                        }
+                        // we render a rectangle according to barheight and the gap is 0.4
+                        RenderManager.rectangle(posX - 3.5, yvalue, 1, barheight, healthcolor);
+
+                        yvalue += barheight + 0.4;
+                    }
+                }
+            }
+
+        }
     }
 
     private void collectEntities() {

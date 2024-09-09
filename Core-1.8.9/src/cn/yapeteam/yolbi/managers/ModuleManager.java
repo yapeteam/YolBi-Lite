@@ -6,10 +6,8 @@ import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.impl.combat.AntiBot;
 import cn.yapeteam.yolbi.module.impl.combat.CombatSettings;
 import cn.yapeteam.yolbi.module.impl.ghost.*;
-import cn.yapeteam.yolbi.module.impl.render.BedESP;
-import cn.yapeteam.yolbi.module.impl.render.ClickGUI;
-import cn.yapeteam.yolbi.module.impl.render.ESP2D;
-import cn.yapeteam.yolbi.module.impl.render.Interface;
+import cn.yapeteam.yolbi.module.impl.player.FakePlayer;
+import cn.yapeteam.yolbi.module.impl.render.*;
 import cn.yapeteam.yolbi.ui.standard.components.ModuleComponent;
 import cn.yapeteam.yolbi.utils.AdaptiveMap;
 
@@ -45,6 +43,7 @@ public final class ModuleManager {
         this.put(BedESP.class, new BedESP());
         this.put(ESP2D.class, new ESP2D());
         this.put(CombatSettings.class, new CombatSettings());
+        this.put(FakePlayer.class, new FakePlayer());
 
         // Automatic initializations
         this.getAll().stream().filter(module -> module.getModuleInfo().autoEnabled()).forEach(module -> module.setEnabled(true));
