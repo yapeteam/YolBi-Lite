@@ -12,6 +12,7 @@ import cn.yapeteam.yolbi.module.api.value.impl.ModeValue;
 import cn.yapeteam.yolbi.module.api.value.impl.NumberValue;
 import cn.yapeteam.yolbi.module.api.value.impl.SubMode;
 import cn.yapeteam.yolbi.utils.math.vector.Vector4d;
+import cn.yapeteam.yolbi.utils.player.PlayerUtil;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
 import cn.yapeteam.yolbi.utils.render.ProjectionUtil;
 import net.minecraft.entity.EntityLivingBase;
@@ -54,7 +55,7 @@ public class ESP2D extends Module {
         collectEntities();
         for (EntityLivingBase entity : collectedEntities) {
 
-            Color color = Color.CYAN;
+            Color color = PlayerUtil.sameTeam(entity) && teamatecolor.getValue() ? new Color(79, 195, 247) : new Color(255, 112, 67);
 
             if(!invis.getValue() && entity.isInvisible()) continue;
 
