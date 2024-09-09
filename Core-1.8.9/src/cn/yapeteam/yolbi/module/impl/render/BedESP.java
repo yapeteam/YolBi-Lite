@@ -12,17 +12,27 @@ import cn.yapeteam.yolbi.module.api.value.impl.BooleanValue;
 import cn.yapeteam.yolbi.module.api.value.impl.NumberValue;
 import cn.yapeteam.yolbi.utils.Utils;
 import cn.yapeteam.yolbi.utils.player.BlockUtils;
+import cn.yapeteam.yolbi.utils.render.shader.ShaderUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
 
 @ModuleInfo(aliases = {"module.render.bedesp.name"}, description = "module.render.bedesp.description", category = Category.RENDER)
 public class BedESP extends Module {
@@ -30,8 +40,9 @@ public class BedESP extends Module {
     BooleanValue firstBed = new BooleanValue("Only render first bed", this, false);
     NumberValue rate = new NumberValue("Rate", this, 0.4, 0.1, 3, 0.1);
 
+    public static final ShaderUtils roundedShader = new ShaderUtils("shader/rrect.frag");
     private BlockPos[] bed = null;
-    private List<BlockPos[]> beds = new ArrayList<>();
+    private final List<BlockPos[]> beds = new ArrayList<>();
     private long lastCheck = 0;
 
     @Listener
@@ -106,15 +117,53 @@ public class BedESP extends Module {
         this.beds.clear();
     }
 
-    private void renderBedDefense(BlockPos bedPos[]) {
-        List<Block> defenseblocks = getBedDefense(bedPos);
-        if (defenseblocks.isEmpty()) {
+    private void renderBedDefense(BlockPos[] bedPos) {
+        List<Block> blocks = getBedDefense(bedPos);
+        BlockPos blockPos = bedPos[0];
+        if (blocks.isEmpty()) {
             return;
         }
 
+        float rotateX = mc.gameSettings.thirdPersonView == 2 ? -1.0F : 1.0F;
+        glPushMatrix();
+        glDisable(GL_DEPTH_TEST);
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glTranslatef((float) (blockPos.getX() - mc.getRenderManager().viewerPosX + 0.5), (float) (blockPos.getY() - mc.getRenderManager().viewerPosY + 3), (float) (blockPos.getZ() - mc.getRenderManager().viewerPosZ + 0.5));
+        glNormal3f(0.0F, 1.0F, 0.0F);
+        glRotatef(-mc.getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
+        glRotatef(mc.getRenderManager().playerViewX, rotateX, 0.0F, 0.0F);
+        glScaled(-0.01666666753590107D * Math.sqrt(mc.thePlayer.getDistance(blockPos.getX(), blockPos.getY(), blockPos.getZ())), -0.01666666753590107D * Math.sqrt(mc.thePlayer.getDistance(blockPos.getX(), blockPos.getY(), blockPos.getZ())), 0.01666666753590107D * Math.sqrt(mc.thePlayer.getDistance(blockPos.getX(), blockPos.getY(), blockPos.getZ())));
+        drawRound(Math.max(17.5, blocks.size() * 17.5) / -2, -0.5, Math.max(17.5, blocks.size() * 17.5) - 2.5, 26.5, 3, new Color(0, 0, 0, 90));
+        String dist = Math.round(mc.thePlayer.getDistance(blockPos.getX(), blockPos.getY(), blockPos.getZ())) + "m";
+        mc.fontRendererObj.drawString(dist, -mc.fontRendererObj.getStringWidth(dist) / 2, 0, new Color(255, 255, 255, 255).getRGB());
+        double offset = (blocks.size() * -17.5) / 2;
+        for (Block block :blocks) {
+            mc.getTextureManager().bindTexture(new ResourceLocation("keystrokesmod:images/" + block.getLocalizedName() + ".png"));
+            Gui.drawModalRectWithCustomSizedTexture((int) offset, 10, 0, 0, 15, 15, 15, 15);
+            offset += 17.5;
+        }
+        GlStateManager.disableBlend();
+        glEnable(GL_DEPTH_TEST);
+        glPopMatrix();
+    }
 
+    public static void drawRound(double x, double y, double width, double height, double radius, @NotNull Color color) {
+        GlStateManager.color(1, 1, 1, 1);
+        roundedShader.init();
 
+        setupRoundedRectUniforms(x, y, width, height, radius);
+        roundedShader.setUniformf("color", color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
 
+        ShaderUtils.drawQuads(x - 1, y - 1, width + 2, height + 2);
+        roundedShader.unload();
+    }
+
+    private static void setupRoundedRectUniforms(double x, double y, double width, double height, double radius) {
+        ScaledResolution sr = new ScaledResolution(mc);
+        roundedShader.setUniformf("location", x * sr.getScaleFactor(), (mc.displayHeight - (height * sr.getScaleFactor())) - (y * sr.getScaleFactor()));
+        roundedShader.setUniformf("rectSize", width * sr.getScaleFactor(), height * sr.getScaleFactor());
+        roundedShader.setUniformf("radius", radius * sr.getScaleFactor());
     }
 
     private List<Block> getBedDefense(BlockPos bedPos[]) {
