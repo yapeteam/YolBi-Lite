@@ -21,45 +21,46 @@ import static net.minecraft.util.EnumChatFormatting.*;
 public enum Themes{
 
     // Primary accent needs to be the first color
-    AUBERGINE("Aubergine", new Color(170, 7, 107), new Color(97, 4, 95), DARK_PURPLE, KeyColors.PURPLE, KeyColors.RED),
-    AQUA("Aqua", new Color(185, 250, 255), new Color(79, 199, 200), EnumChatFormatting.AQUA, KeyColors.AQUA),
-    BANANA("Banana", new Color(253, 236, 177), new Color(255, 255, 255), YELLOW, KeyColors.YELLOW),
-    BLEND("Blend", new Color(71, 148, 253), new Color(71, 253, 160), EnumChatFormatting.AQUA, KeyColors.AQUA, KeyColors.LIME),
-    BLOSSOM("Blossom", new Color(226, 208, 249), new Color(49, 119, 115), DARK_AQUA, KeyColors.PINK, KeyColors.GRAY),
-    BUBBLEGUM("Bubblegum", new Color(243, 145, 216), new Color(152, 165, 243), LIGHT_PURPLE, KeyColors.PINK, KeyColors.PURPLE),
-    CANDY_CANE("Candy Cane", new Color(255, 255, 255), new Color(255, 0, 0), RED, KeyColors.RED),
-    CHERRY("Cherry", new Color(187, 55, 125), new Color(251, 211, 233), RED, KeyColors.RED, KeyColors.PURPLE, KeyColors.PINK),
-    CHRISTMAS("Christmas", new Color(255, 64, 64), new Color(255, 255, 255), new Color(64, 255, 64), RED, KeyColors.RED, KeyColors.LIME),
-    CORAL("Coral", new Color(244, 168, 150), new Color(52, 133, 151), DARK_AQUA, KeyColors.PINK, KeyColors.ORANGE, KeyColors.DARK_BLUE),
-    DIGITAL_HORIZON("Digital Horizon", new Color(95, 195, 228), new Color(229, 93, 135), EnumChatFormatting.AQUA, KeyColors.AQUA, KeyColors.RED, KeyColors.PINK),
-    EXPRESS("Express", new Color(173, 83, 137), new Color(60, 16, 83), DARK_PURPLE, KeyColors.PURPLE, KeyColors.PINK),
-    LIME_WATER("Lime Water", new Color(18, 255, 247), new Color(179, 255, 171), EnumChatFormatting.AQUA, KeyColors.AQUA, KeyColors.LIME),
-    LUSH("Lush", new Color(168, 224, 99), new Color(86, 171, 47), GREEN, KeyColors.LIME, KeyColors.DARK_GREEN),
-    HALOGEN("Halogen", new Color(255, 65, 108), new Color(255, 75, 43), RED, KeyColors.RED, KeyColors.ORANGE),
-    HYPER("Hyper", new Color(236, 110, 173), new Color(52, 148, 230), LIGHT_PURPLE, KeyColors.PINK, KeyColors.DARK_BLUE, KeyColors.AQUA),
-    MAGIC("Magic", new Color(74, 0, 224), new Color(142, 45, 226), BLUE, KeyColors.DARK_BLUE, KeyColors.PURPLE),
-    MAY("May", new Color(253, 219, 245), new Color(238, 79, 238), LIGHT_PURPLE, KeyColors.PINK, KeyColors.PURPLE),
-    ORANGE_JUICE("Orange Juice", new Color(252, 74, 26), new Color(247, 183, 51), GOLD, KeyColors.ORANGE, KeyColors.YELLOW),
-    PASTEL("Pastel", new Color(243, 155, 178), new Color(207, 196, 243), LIGHT_PURPLE, KeyColors.PINK),
-    PUMPKIN("Pumpkin", new Color(241, 166, 98), new Color(255, 216, 169), new Color(227, 139, 42), GOLD, KeyColors.ORANGE),
-    SATIN("Satin", new Color(215, 60, 67), new Color(140, 23, 39), RED, KeyColors.RED),
-    SNOWY_SKY("Snowy Sky", new Color(1, 171, 179), new Color(234, 234, 234), new Color(18, 232, 232), EnumChatFormatting.AQUA, KeyColors.AQUA, KeyColors.GRAY),
-    STEEL_FADE("Steel Fade", new Color(66, 134, 244), new Color(55, 59, 68), BLUE, KeyColors.DARK_BLUE, KeyColors.GRAY),
-    SUNDAE("Sundae", new Color(206, 74, 126), new Color(122, 44, 77), RED, KeyColors.PINK, KeyColors.PURPLE, KeyColors.RED),
-    SUNKIST("Sunkist", new Color(242, 201, 76), new Color(242, 153, 74), YELLOW, KeyColors.YELLOW, KeyColors.ORANGE),
-    WATER("Water", new Color(12, 232, 199), new Color(12, 163, 232), EnumChatFormatting.AQUA, KeyColors.AQUA, KeyColors.DARK_BLUE),
-    WINTER("Winter", Color.WHITE, Color.WHITE, GRAY, KeyColors.GRAY, KeyColors.GRAY),
-    WOOD("Wood", new Color(79, 109, 81), new Color(170, 139, 87), new Color(240, 235, 206), DARK_GREEN, KeyColors.DARK_GREEN);
+    AUBERGINE("Aubergine", new Color(170, 7, 107), new Color(97, 4, 95), DARK_PURPLE,Color.WHITE, KeyColors.PURPLE, KeyColors.RED),
+    AQUA("Aqua", new Color(185, 250, 255), new Color(79, 199, 200), EnumChatFormatting.AQUA,Color.WHITE, KeyColors.AQUA),
+    BANANA("Banana", new Color(253, 236, 177), new Color(255, 255, 255), YELLOW,Color.WHITE, KeyColors.YELLOW),
+    BLEND("Blend", new Color(71, 148, 253), new Color(71, 253, 160), EnumChatFormatting.AQUA,Color.WHITE, KeyColors.AQUA, KeyColors.LIME),
+    BLOSSOM("Blossom", new Color(226, 208, 249), new Color(49, 119, 115), DARK_AQUA,Color.WHITE, KeyColors.PINK, KeyColors.GRAY),
+    BUBBLEGUM("Bubblegum", new Color(243, 145, 216), new Color(152, 165, 243), LIGHT_PURPLE,Color.WHITE, KeyColors.PINK, KeyColors.PURPLE),
+    CANDY_CANE("Candy Cane", new Color(255, 255, 255), new Color(255, 0, 0), RED,Color.WHITE, KeyColors.RED),
+    CHERRY("Cherry", new Color(187, 55, 125), new Color(251, 211, 233), RED,Color.WHITE, KeyColors.RED, KeyColors.PURPLE, KeyColors.PINK),
+    CHRISTMAS("Christmas", new Color(255, 64, 64), new Color(255, 255, 255), new Color(64, 255, 64), RED,Color.WHITE, KeyColors.RED, KeyColors.LIME),
+    CORAL("Coral", new Color(244, 168, 150), new Color(52, 133, 151), DARK_AQUA,Color.WHITE, KeyColors.PINK, KeyColors.ORANGE, KeyColors.DARK_BLUE),
+    DIGITAL_HORIZON("Digital Horizon", new Color(95, 195, 228), new Color(229, 93, 135), EnumChatFormatting.AQUA,Color.WHITE, KeyColors.AQUA, KeyColors.RED, KeyColors.PINK),
+    EXPRESS("Express", new Color(173, 83, 137), new Color(60, 16, 83), DARK_PURPLE,Color.WHITE, KeyColors.PURPLE, KeyColors.PINK),
+    LIME_WATER("Lime Water", new Color(18, 255, 247), new Color(179, 255, 171), EnumChatFormatting.AQUA,Color.WHITE, KeyColors.AQUA, KeyColors.LIME),
+    LUSH("Lush", new Color(168, 224, 99), new Color(86, 171, 47), GREEN,Color.WHITE, KeyColors.LIME, KeyColors.DARK_GREEN),
+    HALOGEN("Halogen", new Color(255, 65, 108), new Color(255, 75, 43), RED,Color.WHITE, KeyColors.RED, KeyColors.ORANGE),
+    HYPER("Hyper", new Color(236, 110, 173), new Color(52, 148, 230), LIGHT_PURPLE,Color.WHITE, KeyColors.PINK, KeyColors.DARK_BLUE, KeyColors.AQUA),
+    MAGIC("Magic", new Color(74, 0, 224), new Color(142, 45, 226), BLUE,Color.WHITE, KeyColors.DARK_BLUE, KeyColors.PURPLE),
+    MAY("May", new Color(253, 219, 245), new Color(238, 79, 238), LIGHT_PURPLE,Color.WHITE, KeyColors.PINK, KeyColors.PURPLE),
+    ORANGE_JUICE("Orange Juice", new Color(252, 74, 26), new Color(247, 183, 51), GOLD,Color.WHITE, KeyColors.ORANGE, KeyColors.YELLOW),
+    PASTEL("Pastel", new Color(243, 155, 178), new Color(207, 196, 243), LIGHT_PURPLE,Color.WHITE, KeyColors.PINK),
+    PUMPKIN("Pumpkin", new Color(241, 166, 98), new Color(255, 216, 169), new Color(227, 139, 42), GOLD,Color.WHITE, KeyColors.ORANGE),
+    SATIN("Satin", new Color(215, 60, 67), new Color(140, 23, 39), RED,Color.WHITE, KeyColors.RED),
+    SNOWY_SKY("Snowy Sky", new Color(1, 171, 179), new Color(234, 234, 234), new Color(18, 232, 232), EnumChatFormatting.AQUA,Color.WHITE, KeyColors.AQUA, KeyColors.GRAY),
+    STEEL_FADE("Steel Fade", new Color(66, 134, 244), new Color(55, 59, 68), BLUE,Color.WHITE, KeyColors.DARK_BLUE, KeyColors.GRAY),
+    SUNDAE("Sundae", new Color(206, 74, 126), new Color(122, 44, 77), RED,Color.WHITE, KeyColors.PINK, KeyColors.PURPLE, KeyColors.RED),
+    SUNKIST("Sunkist", new Color(242, 201, 76), new Color(242, 153, 74), YELLOW,Color.WHITE, KeyColors.YELLOW, KeyColors.ORANGE),
+    WATER("Water", new Color(12, 232, 199), new Color(12, 163, 232), EnumChatFormatting.AQUA,Color.WHITE, KeyColors.AQUA, KeyColors.DARK_BLUE),
+    WINTER("Winter", Color.WHITE, Color.WHITE, GRAY,Color.WHITE, KeyColors.GRAY, KeyColors.GRAY),
+    WOOD("Wood", new Color(79, 109, 81), new Color(170, 139, 87), new Color(240, 235, 206), DARK_GREEN,Color.WHITE, KeyColors.DARK_GREEN);
 
     private final String themeName;
-    private final Color firstColor, secondColor, thirdColor;
+    private final Color firstColor, secondColor, thirdColor,textcolor;
     private final EnumChatFormatting chatAccentColor;
     private final ArrayList<KeyColors> keyColors;
     private final boolean triColor;
 
     // Constructor for bicolor themes (only two colors)
-    Themes(String themeName, Color firstColor, Color secondColor, EnumChatFormatting chatAccentColor, KeyColors... keyColors) {
+    Themes(String themeName, Color firstColor, Color secondColor, EnumChatFormatting chatAccentColor, Color textColor, KeyColors... keyColors) {
         this.themeName = themeName;
+        this.textcolor = textColor;
         this.firstColor = this.thirdColor = firstColor;
         this.secondColor = secondColor;
         this.chatAccentColor = chatAccentColor;
@@ -68,11 +69,12 @@ public enum Themes{
     }
 
     // Constructor for tricolor themes (three colors)
-    Themes(String themeName, Color firstColor, Color secondColor, Color thirdColor, EnumChatFormatting chatAccentColor, KeyColors... keyColors) {
+    Themes(String themeName, Color firstColor, Color secondColor, Color thirdColor, EnumChatFormatting chatAccentColor,Color textColor, KeyColors... keyColors) {
         this.themeName = themeName;
         this.firstColor = firstColor;
         this.secondColor = secondColor;
         this.thirdColor = thirdColor;
+        this.textcolor = textColor;
         this.chatAccentColor = chatAccentColor;
         this.keyColors = new ArrayList<>(Arrays.asList(keyColors));
         this.triColor = true;

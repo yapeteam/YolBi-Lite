@@ -7,19 +7,18 @@ import cn.yapeteam.yolbi.ui.standard.components.ModuleComponent;
 import cn.yapeteam.yolbi.ui.standard.screen.Colors;
 import cn.yapeteam.yolbi.ui.standard.screen.Screen;
 import cn.yapeteam.yolbi.utils.StopWatch;
-import cn.yapeteam.yolbi.utils.render.font.impl.general.Fonts;
-import cn.yapeteam.yolbi.utils.render.font.impl.general.Weight;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
+import cn.yapeteam.yolbi.utils.math.vector.Vector2d;
 import cn.yapeteam.yolbi.utils.profiling.localization.Localization;
 import cn.yapeteam.yolbi.utils.render.ColorUtil;
 import cn.yapeteam.yolbi.utils.render.ScrollUtil;
+import cn.yapeteam.yolbi.utils.render.font.impl.general.Fonts;
+import cn.yapeteam.yolbi.utils.render.font.impl.general.Weight;
 import cn.yapeteam.yolbi.utils.render.textbox.TextAlign;
 import cn.yapeteam.yolbi.utils.render.textbox.TextBox;
-import cn.yapeteam.yolbi.utils.math.vector.Vector2d;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -27,7 +26,7 @@ import java.util.Arrays;
 @Setter
 public final class SearchScreen implements Screen, Accessor {
 
-    public final TextBox searchBar = new TextBox(new Vector2d(200, 200), Fonts.MAIN.get(20, Weight.REGULAR), Color.WHITE,
+    public final TextBox searchBar = new TextBox(new Vector2d(200, 200), Fonts.MAIN.get(20, Weight.REGULAR), getTheme().getTextcolor(),
             TextAlign.CENTER, Localization.get("ui.search.text"), 150);
 
     private final StopWatch stopwatch = new StopWatch();

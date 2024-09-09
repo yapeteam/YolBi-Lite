@@ -102,7 +102,7 @@ public final class SidebarCategory implements Accessor {
         final float posX = (float) (clickGUI.position.getX() + 9 + animation.getValue());
         final float posY = clickGUI.position.getY() + ((19.5F + 30) / 2.0F - Fonts.MAIN.get(42, Weight.REGULAR).height() / 2.0F);
 
-        Fonts.MAIN.get(32, Weight.REGULAR).draw(YolBi.name, posX + 5, posY + 2, ColorUtil.withAlpha(Color.WHITE, (int) opacity).hashCode());
+        Fonts.MAIN.get(32, Weight.REGULAR).draw(YolBi.name, posX + 5, posY + 2, ColorUtil.withAlpha(getTheme().getTextcolor(), (int) opacity).hashCode());
         Fonts.MAIN.get(16, Weight.REGULAR).draw(YolBi.version, posX + 5 + Fonts.MAIN.get(32, Weight.REGULAR).width(YolBi.name), posY, ColorUtil.withAlpha(getTheme().getFirstColor(), (int) Math.min(opacity, 200)).getRGB());
 
 //        this.poppinsBold.drawString(Rise.NAME, (float) (clickGUI.position.x + sidebarWidth - 56), clickGUI.position.y + 12, new Color(0, 0, 0, (int) Math.min(opacity, 100)).hashCode());
