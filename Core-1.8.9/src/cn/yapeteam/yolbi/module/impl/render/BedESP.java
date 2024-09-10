@@ -1,5 +1,6 @@
 package cn.yapeteam.yolbi.module.impl.render;
 
+import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.game.EventLoadWorld;
 import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
@@ -55,13 +56,12 @@ public class BedESP extends Module {
                     Block block = mc.theWorld.getBlockState(blockPos).getBlock();
 
                     if (block == Blocks.bed) {
-                        if (firstBed.getValue() && bed != null) {
+                        if (firstBed.getValue() && bed != null || mc.theWorld.getBlockState(blockPos).getValue(BlockBed.PART) != BlockBed.EnumPartType.HEAD) {
                             return;
                         }
 
                         beds.add(blockPos);
                         bedBlocks.add(new ArrayList<>());
-                        findBed(blockPos, beds.size() - 1);
                     }
                 }
             }
@@ -77,16 +77,13 @@ public class BedESP extends Module {
 
     @Listener
     public void onRender2D(EventRender2D eventRender2D) {
-        // Add debugging log for rendering
-        System.out.println("Rendering bed defenses...");
-
         for (int i = 0; i < beds.size(); i++) {
             BlockPos blockPos = beds.get(i);
             if (mc.theWorld.getBlockState(blockPos).getBlock() != Blocks.bed) {
                 continue;
             }
 
-            renderBedDefense(blockPos, i);
+            renderBedDefense(blockPos);
         }
     }
 
@@ -97,7 +94,7 @@ public class BedESP extends Module {
         bed = null;
     }
 
-    private void renderBedDefense(BlockPos blockPos, int index) {
+    private void renderBedDefense(BlockPos blockPos) {
 
         // Get the projected position of the block
         Vector4d projectedPos = ProjectionUtil.get(new BlockPos(blockPos.getX(), blockPos.getY()+4, blockPos.getZ()));
@@ -120,7 +117,9 @@ public class BedESP extends Module {
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         // Render the rounded rectangle background
-        List<Block> blocks = bedBlocks.get(index);
+        List<Block> blocks = getBedBlocks(blockPos);
+
+        Logger.info("Rendering bed at: " + blockPos + " with " + blocks + " blocks" + "beds: " + beds);
 
         // Calculate the horizontal offset for icons
         RenderManager.roundedRectangle(screenX, screenY, Math.max(17.5, blocks.size() * 17.5) - 2.5, 17,4,new Color(0, 0, 0));
@@ -140,6 +139,37 @@ public class BedESP extends Module {
         GlStateManager.popMatrix();
     }
 
+    private List<Block> getBedBlocks(BlockPos bedPos) {
+        List<Block> blocks = new ArrayList<>();
+        int[][] directions = {
+                {0, 1, 0}, // Above
+                {1, 0, 0}, // Right
+                {-1, 0, 0}, // Left
+                {0, 0, 1}, // Front
+                {0, 0, -1}  // Back
+        };
+
+        for (int[] dir : directions) {
+            BlockPos currentPos = bedPos;
+            Block currentBlock;
+
+            while (true) {
+                currentPos = currentPos.add(dir[0], dir[1], dir[2]);
+                currentBlock = mc.theWorld.getBlockState(currentPos).getBlock();
+
+                if (currentBlock.equals(Blocks.air)) {
+                    break;
+                }
+
+                if (isValidBedBlock(currentBlock) && !blocks.contains(currentBlock)) {
+                    blocks.add(currentBlock);
+                }
+            }
+        }
+
+        return blocks;
+    }
+
     private boolean findBed(BlockPos bedPos, int index) {
         Block bedBlock = mc.theWorld.getBlockState(bedPos).getBlock();
         if (beds.contains(bedPos) || !bedBlock.equals(Blocks.bed)) {
@@ -150,34 +180,9 @@ public class BedESP extends Module {
         if (mc.theWorld.getBlockState(bedPos).getValue(BlockBed.PART) != BlockBed.EnumPartType.HEAD) {
             return false;
         }
+        Logger.info("Found bed at: " + bedPos.toString() + " with bed state: " + mc.theWorld.getBlockState(bedPos).getValue(BlockBed.PART));
 
-        bedBlocks.get(index).add(Blocks.bed);
         beds.set(index, bedPos);
-
-        int[][] directions = {
-                {0, 1, 0}, // Above
-                {1, 0, 0}, // Right
-                {-1, 0, 0}, // Left
-                {0, 0, 1}, // Front
-                {0, 0, -1}  // Back
-        };
-
-        int layersCount = layers.getValue().intValue();
-
-        for (int[] dir : directions) {
-            for (int layer = 1; layer <= layersCount; layer++) {
-                BlockPos currentPos = bedPos.add(dir[0] * layer, dir[1] * layer, dir[2] * layer);
-                Block currentBlock = mc.theWorld.getBlockState(currentPos).getBlock();
-
-                if (currentBlock.equals(Blocks.air)) {
-                    break;
-                }
-
-                if (isValidBedBlock(currentBlock) && !bedBlocks.get(index).contains(currentBlock)) {
-                    bedBlocks.get(index).add(currentBlock);
-                }
-            }
-        }
 
         return true;
     }
@@ -187,6 +192,6 @@ public class BedESP extends Module {
                 block.equals(Blocks.stained_glass) || block.equals(Blocks.planks) ||
                 block.equals(Blocks.log) || block.equals(Blocks.log2) ||
                 block.equals(Blocks.end_stone) || block.equals(Blocks.obsidian) ||
-                block.equals(Blocks.water);
+                block.equals(Blocks.water) || block.equals(Blocks.ladder);
     }
 }
