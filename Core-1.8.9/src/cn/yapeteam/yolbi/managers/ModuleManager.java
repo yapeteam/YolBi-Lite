@@ -40,10 +40,10 @@ public final class ModuleManager {
         this.put(AutoClicker.class, new AutoClicker());
         this.put(AimAssist.class, new AimAssist());
         this.put(Reach.class, new Reach());
-        this.put(BedESP.class, new BedESP());
         this.put(ESP2D.class, new ESP2D());
         this.put(CombatSettings.class, new CombatSettings());
         this.put(FakePlayer.class, new FakePlayer());
+        this.put(BedESP.class, new BedESP());
 
         // Automatic initializations
         this.getAll().stream().filter(module -> module.getModuleInfo().autoEnabled()).forEach(module -> module.setEnabled(true));

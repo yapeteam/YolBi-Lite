@@ -11,6 +11,7 @@ import lombok.Getter;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.Timer;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.glu.GLU;
@@ -21,27 +22,31 @@ import java.util.List;
 import java.util.Map;
 
 public class ProjectionUtil implements Accessor {
-    private static final HashMap<Entity, Projection> nextProjections = new HashMap<>();
-    private static HashMap<Entity, Projection> currentProjections = new HashMap<>();
+    private static final HashMap<Object, Projection> nextProjections = new HashMap<>();
+    private static HashMap<Object, Projection> currentProjections = new HashMap<>();
 
     static {
         YolBi.instance.getEventManager().register(new ProjectionUtil());
     }
 
     @Listener
-    public void onRender2d(EventRender2D eventRender2D){
-        final HashMap<Entity, Projection> newProjections = new HashMap<>();
+    public void onRender2d(EventRender2D eventRender2D) {
+        final HashMap<Object, Projection> newProjections = new HashMap<>();
 
-        for (Map.Entry<Entity, Projection> map : nextProjections.entrySet()) {
+        for (Map.Entry<Object, Projection> map : nextProjections.entrySet()) {
             Projection projection = map.getValue();
-            projection.position = project(map.getKey());
+            if (map.getKey() instanceof Entity) {
+                projection.position = project((Entity) map.getKey());
+            } else if (map.getKey() instanceof BlockPos) {
+                projection.position = project((BlockPos) map.getKey());
+            }
 
             newProjections.put(map.getKey(), projection);
         }
 
         currentProjections = newProjections;
         nextProjections.clear();
-    };
+    }
 
     public static Vector4d get(Entity entity) {
         if (entity == null) return null;
@@ -57,6 +62,44 @@ public class ProjectionUtil implements Accessor {
         }
 
         return projection.getPosition();
+    }
+
+    public static Vector4d get(BlockPos blockPos) {
+        if (blockPos == null) return null;
+
+        if (!nextProjections.containsKey(blockPos)) {
+            nextProjections.put(blockPos, new Projection());
+        }
+
+        Projection projection = currentProjections.get(blockPos);
+
+        if (projection == null) {
+            return null;
+        }
+
+        return projection.getPosition();
+    }
+
+    public Vector4d project(BlockPos blockPos) {
+        RenderManager renderManager = mc.getRenderManager();
+        final double renderX = ReflectionManager.GetRenderManager$renderPosX(renderManager);
+        final double renderY = ReflectionManager.GetRenderManager$renderPosY(renderManager);
+        final double renderZ = ReflectionManager.GetRenderManager$renderPosZ(renderManager);
+
+        Timer timer = ReflectionManager.Minecraft$getTimer(mc);
+        float renderPartialTicks = ReflectionManager.GetTimer$renderPartialTicks(timer);
+
+        final double x = blockPos.getX() - renderX;
+        final double y = blockPos.getY() - renderY;
+        final double z = blockPos.getZ() - renderZ;
+
+        Vector3d vector = project(scaledResolution.getScaleFactor(), x, y, z);
+
+        if (vector != null && vector.getZ() >= 0.0D && vector.getZ() < 1.0D) {
+            return new Vector4d(vector.getX(), vector.getY(), vector.getZ(), 0.0D);
+        }
+
+        return null;
     }
 
     private Vector3d project(final int factor, final double x, final double y, final double z) {
@@ -82,8 +125,6 @@ public class ProjectionUtil implements Accessor {
         final double height = entity.height + (entity.isSneaking() ? -0.3D : 0.2D) + 0.05;
         final AxisAlignedBB aabb = new AxisAlignedBB(x - width, y, z - width, x + width, y + height, z + width);
         final List<Vector3d> vectors = Arrays.asList(new Vector3d(aabb.minX, aabb.minY, aabb.minZ), new Vector3d(aabb.minX, aabb.maxY, aabb.minZ), new Vector3d(aabb.maxX, aabb.minY, aabb.minZ), new Vector3d(aabb.maxX, aabb.maxY, aabb.minZ), new Vector3d(aabb.minX, aabb.minY, aabb.maxZ), new Vector3d(aabb.minX, aabb.maxY, aabb.maxZ), new Vector3d(aabb.maxX, aabb.minY, aabb.maxZ), new Vector3d(aabb.maxX, aabb.maxY, aabb.maxZ));
-
-
 
         Vector4d position = null;
         for (Vector3d vector : vectors) {

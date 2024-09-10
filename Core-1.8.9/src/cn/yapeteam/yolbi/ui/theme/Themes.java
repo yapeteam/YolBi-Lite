@@ -51,6 +51,7 @@ public enum Themes{
     WINTER("Winter", Color.WHITE, Color.WHITE, GRAY,Color.WHITE, KeyColors.GRAY, KeyColors.GRAY),
     WOOD("Wood", new Color(79, 109, 81), new Color(170, 139, 87), new Color(240, 235, 206), DARK_GREEN,Color.WHITE, KeyColors.DARK_GREEN);
 
+
     private final String themeName;
     private final Color firstColor, secondColor, thirdColor,textcolor;
     private final EnumChatFormatting chatAccentColor;
