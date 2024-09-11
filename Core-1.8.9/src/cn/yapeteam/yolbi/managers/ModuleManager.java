@@ -3,9 +3,8 @@ package cn.yapeteam.yolbi.managers;
 
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.module.Module;
-import cn.yapeteam.yolbi.module.impl.combat.AntiBot;
-import cn.yapeteam.yolbi.module.impl.combat.CombatSettings;
-import cn.yapeteam.yolbi.module.impl.ghost.*;
+import cn.yapeteam.yolbi.module.impl.combat.*;
+import cn.yapeteam.yolbi.module.impl.movement.WTap;
 import cn.yapeteam.yolbi.module.impl.player.FakePlayer;
 import cn.yapeteam.yolbi.module.impl.render.*;
 import cn.yapeteam.yolbi.ui.standard.components.ModuleComponent;

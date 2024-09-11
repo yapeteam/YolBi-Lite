@@ -1,4 +1,4 @@
-package cn.yapeteam.yolbi.module.impl.ghost;
+package cn.yapeteam.yolbi.module.impl.combat;
 
 import cn.yapeteam.yolbi.event.Listener;
 import cn.yapeteam.yolbi.event.impl.player.EventMouseOver;
@@ -11,7 +11,7 @@ import cn.yapeteam.yolbi.utils.math.MathUtils;
 import java.util.Random;
 
 
-@ModuleInfo(aliases = {"module.ghost.reach.name", "Long Reach", "Extra Reach", "Reach"}, description = "module.ghost.reach.description", category = Category.GHOST)
+@ModuleInfo(aliases = {"module.combat.reach.name", "Long Reach", "Extra Reach", "Reach"}, description = "module.combat.reach.description", category = Category.COMBAT)
 public class Reach extends Module {
     BoundsNumberValue reach = new BoundsNumberValue("Reach", this, 3.2,3.5,3.0,6.0,1);
 

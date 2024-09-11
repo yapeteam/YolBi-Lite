@@ -9,7 +9,7 @@ import net.minecraft.client.entity.EntityOtherPlayerMP;
 import org.lwjgl.input.Keyboard;
 
 
-@ModuleInfo(aliases = {"module.player.fakeplayer.name"}, description = "module.player.fakeplayer.description", category = Category.PLAYER, keyBind = Keyboard.KEY_V)
+@ModuleInfo(aliases = {"module.player.fakeplayer.name"}, description = "module.player.fakeplayer.description", category = Category.PLAYER, keyBind = Keyboard.KEY_V, isblatant = true, isghost = false)
 public class FakePlayer extends Module {
 
     private EntityOtherPlayerMP blinkEntity;

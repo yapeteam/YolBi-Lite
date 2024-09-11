@@ -1,4 +1,4 @@
-package cn.yapeteam.yolbi.module.impl.ghost.wtap;
+package cn.yapeteam.yolbi.module.impl.movement.wtap;
 
 
 import cn.yapeteam.yolbi.event.Listener;
@@ -6,7 +6,7 @@ import cn.yapeteam.yolbi.event.impl.player.EventAttack;
 import cn.yapeteam.yolbi.event.impl.player.EventMotion;
 import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.module.api.value.Mode;
-import cn.yapeteam.yolbi.module.impl.ghost.WTap;
+import cn.yapeteam.yolbi.module.impl.movement.WTap;
 
 public class LegitWTap extends Mode<WTap> {
 

@@ -124,7 +124,7 @@ public class BedESP extends Module {
 
         // Calculate the width of the rounded rectangle based on the number of blocks
         double rectangleWidth = Math.max(17.5, blocks.size() * 16 + 8); // Adjusted to accommodate larger icons
-        RenderManager.roundedRectangle(screenX, screenY - 4, rectangleWidth, 28, 4, new Color(0, 0, 0)); // Adjusted height for larger icons
+        RenderManager.roundedRectangle(screenX, screenY, rectangleWidth, 28, 4, new Color(0, 0, 0)); // Adjusted height for larger icons
 
         // Offset for placing block icons
         double offset = 4;

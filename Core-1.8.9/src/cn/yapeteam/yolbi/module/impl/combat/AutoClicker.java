@@ -1,4 +1,4 @@
-package cn.yapeteam.yolbi.module.impl.ghost;
+package cn.yapeteam.yolbi.module.impl.combat;
 
 
 import cn.yapeteam.loader.Natives;
@@ -14,7 +14,7 @@ import net.minecraft.util.MovingObjectPosition;
 
 import java.util.Random;
 
-@ModuleInfo(aliases = {"module.ghost.autoclicker.name"}, description = "module.ghost.autoclicker.description", category = Category.COMBAT)
+@ModuleInfo(aliases = {"module.combat.autoclicker.name"}, description = "module.combat.autoclicker.description", category = Category.COMBAT)
 public class AutoClicker extends Module {
     private final BoundsNumberValue cps = new BoundsNumberValue("Cps", this, 17,20, 0, 50, 1);
     private final BooleanValue leftClick = new BooleanValue("leftClick",this, true),

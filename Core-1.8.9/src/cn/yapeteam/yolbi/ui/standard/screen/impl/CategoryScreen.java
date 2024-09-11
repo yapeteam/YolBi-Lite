@@ -3,6 +3,7 @@ package cn.yapeteam.yolbi.ui.standard.screen.impl;
 
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.module.api.Category;
+import cn.yapeteam.yolbi.module.impl.render.Interface;
 import cn.yapeteam.yolbi.ui.standard.RiseClickGUI;
 import cn.yapeteam.yolbi.ui.standard.components.ModuleComponent;
 import cn.yapeteam.yolbi.ui.standard.screen.Screen;
@@ -97,11 +98,16 @@ public final class CategoryScreen implements Screen, Accessor {
 
     @Override
     public void onInit() {
+
+        Interface inferface = YolBi.instance.getModuleManager().get(Interface.class);
+
         this.category = this.getCategory();
         if (this.category == null) return;
 
         this.relevantModules = YolBi.instance.getClickGUI().getModuleList().stream()
                 .filter((module) -> module.getModule().getModuleInfo().category() == this.category)
+                // if we only want to show blatant modules or ghost modules
+                .filter((module) -> ((inferface.showCertain.getValue() && inferface.certainModules.getValue().equals("blatant"))  && module.getModule().getModuleInfo().isblatant()) || ((inferface.showCertain.getValue() && inferface.certainModules.getValue().equals("ghost")) && module.getModule().getModuleInfo().isghost()))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 

@@ -21,4 +21,8 @@ public @interface ModuleInfo {
     boolean autoEnabled() default false;
 
     boolean allowDisable() default true;
+
+    boolean isghost() default true;
+
+    boolean isblatant() default false;
 }

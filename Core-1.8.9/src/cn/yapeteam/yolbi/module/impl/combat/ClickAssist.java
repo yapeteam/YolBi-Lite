@@ -1,4 +1,4 @@
-package cn.yapeteam.yolbi.module.impl.ghost;
+package cn.yapeteam.yolbi.module.impl.combat;
 
 import cn.yapeteam.loader.Natives;
 import cn.yapeteam.yolbi.event.Listener;
@@ -13,7 +13,7 @@ import cn.yapeteam.yolbi.module.api.value.impl.NumberValue;
  * @since 29/01/2021
  */
 
-@ModuleInfo(aliases = {"module.ghost.clickassist.name"}, description = "module.ghost.clickassist.description", category = Category.GHOST)
+@ModuleInfo(aliases = {"module.combat.clickassist.name"}, description = "module.combat.clickassist.description", category = Category.COMBAT)
 public class ClickAssist extends Module {
 
     public final NumberValue extraLeftClicks = new NumberValue("Extra Left Clicks", this, 1, 0, 3, 1);

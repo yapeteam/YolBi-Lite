@@ -18,7 +18,6 @@ public enum Category {
     PLAYER("category.player", Fonts.ICONS_1.get(17), "c", 0x4, new CategoryScreen()),
     RENDER("category.render", Fonts.ICONS_1.get(17), "g", 0x5, new CategoryScreen()),
     EXPLOIT("category.exploit", Fonts.ICONS_1.get(17), "a", 0x6, new CategoryScreen()),
-    GHOST("category.ghost", Fonts.ICONS_1.get(17), "f", 0x7, new CategoryScreen()),
     THEME("category.themes", Fonts.ICONS_2.get(17), "U", 0xA, new ThemeScreen()),
     LANGUAGE("category.language", Fonts.ICONS_2.get(17), "U", 0xA, new LanguageScreen());
 
