@@ -1,24 +1,28 @@
 package cn.yapeteam.yolbi.managers;
 
 import cn.yapeteam.yolbi.event.Listener;
+import cn.yapeteam.yolbi.event.Priority;
 import cn.yapeteam.yolbi.event.impl.player.EventJump;
 import cn.yapeteam.yolbi.event.impl.player.EventLook;
 import cn.yapeteam.yolbi.event.impl.player.EventMotion;
 import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
-import cn.yapeteam.yolbi.utils.interfaces.Accessor;
-import cn.yapeteam.yolbi.utils.player.PlayerUtil;
+import cn.yapeteam.yolbi.event.impl.render.EventRotationsRender;
+import cn.yapeteam.yolbi.utils.IMinecraft;
 import cn.yapeteam.yolbi.utils.math.vector.Vector2f;
 import cn.yapeteam.yolbi.utils.math.vector.Vector3d;
+import cn.yapeteam.yolbi.utils.player.PlayerUtil;
+import lombok.experimental.UtilityClass;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 
-public class RotationManager implements Accessor {
-    public boolean active;
-    public Vector2f rotations, lastRotations, targetRotations, lastServerRotations;
-    private double rotationSpeed;
+@UtilityClass
+public class RotationManager implements IMinecraft {
+    public static boolean active;
+    public static Vector2f rotations, lastRotations, targetRotations, lastServerRotations;
+    private static double rotationSpeed;
 
     public float renderPitchHead;
 
@@ -27,15 +31,15 @@ public class RotationManager implements Accessor {
     /*
      * This method must be called on Pre Update Event to work correctly
      */
-    public void setRotations(final Vector2f rotations, final double rotationSpeed) {
-        targetRotations = rotations;
-        this.rotationSpeed = rotationSpeed * 18;
+    public static void setRotations(final Vector2f rotations, final double rotationSpeed) {
+        RotationManager.targetRotations = rotations;
+        RotationManager.rotationSpeed = rotationSpeed * 18;
         active = true;
         smooth(rotations, targetRotations, rotationSpeed);
     }
 
     @Listener
-    public void onPreUpdate(EventUpdate event) {
+    public static void onPreUpdate(EventUpdate event) {
         if (!active || rotations == null || lastRotations == null || targetRotations == null || lastServerRotations == null) {
             rotations = lastRotations = targetRotations = lastServerRotations = new Vector2f(mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch);
         }
@@ -52,13 +56,13 @@ public class RotationManager implements Accessor {
         }
     }
 
-    //  @Listener(Priority.LOWER)
-    //  public void onRender(EventRotationsRender event) {
-    //      if (active && rotations != null) {
-    //          event.setYaw(rotations.x);
-    //          event.setPitch(rotations.y);
-    //      }
-    //  }
+    @Listener(Priority.LOWER)
+    public void onRender(EventRotationsRender event) {
+        if (active && rotations != null) {
+            event.setYaw(rotations.x);
+            event.setPitch(rotations.y);
+        }
+    }
 
     @Listener
     private void onJump(EventJump event) {
@@ -101,17 +105,17 @@ public class RotationManager implements Accessor {
 
     private void correctDisabledRotations() {
         final Vector2f rotations = new Vector2f(mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch);
-        final Vector2f fixedRotations = resetRotation(applySensitivityPatch(rotations));
+        final Vector2f fixedRotations = RotationManager.resetRotation(applySensitivityPatch(rotations));
 
         mc.thePlayer.rotationYaw = fixedRotations.x;
         mc.thePlayer.rotationPitch = fixedRotations.y;
     }
 
-    public void smooth() {
+    public static void smooth() {
         smooth(lastRotations, targetRotations, rotationSpeed);
     }
 
-    public void smooth(final Vector2f lastRotation, final Vector2f targetRotation, final double speed) {
+    public static void smooth(final Vector2f lastRotation, final Vector2f targetRotation, final double speed) {
         float yaw = targetRotation.x;
         float pitch = targetRotation.y;
         final float lastYaw = lastRotation.x;
@@ -148,66 +152,8 @@ public class RotationManager implements Accessor {
         rotations = new Vector2f(yaw, pitch);
     }
 
-    public Vector2f calcSmooth(final Vector2f lastRotation, final Vector2f targetRotation, final double speed) {
-        float yaw = targetRotation.x;
-        float pitch = targetRotation.y;
-        final float lastYaw = lastRotation.x;
-        final float lastPitch = lastRotation.y;
 
-        if (speed != 0) {
-            final float rotationSpeed = (float) speed;
-
-            final double deltaYaw = MathHelper.wrapAngleTo180_float(targetRotation.x - lastRotation.x);
-            final double deltaPitch = pitch - lastPitch;
-
-            final double distance = Math.sqrt(deltaYaw * deltaYaw + deltaPitch * deltaPitch);
-            final double distributionYaw = Math.abs(deltaYaw / distance);
-            final double distributionPitch = Math.abs(deltaPitch / distance);
-
-            final double maxYaw = rotationSpeed * distributionYaw;
-            final double maxPitch = rotationSpeed * distributionPitch;
-
-            final float moveYaw = (float) Math.max(Math.min(deltaYaw, maxYaw), -maxYaw);
-            final float movePitch = (float) Math.max(Math.min(deltaPitch, maxPitch), -maxPitch);
-
-            yaw = lastYaw + moveYaw;
-            pitch = lastPitch + movePitch;
-
-            // Apply gravity and wind
-            yaw += winpos(moveYaw);
-            pitch += winpos(movePitch);
-
-            // Calculate Bezier curve points
-            Vector2f bezierPoint = calculateBezierPoint(new Vector2f(lastYaw, lastPitch), new Vector2f(yaw, pitch), 0.5f);
-            yaw = bezierPoint.x;
-            pitch = bezierPoint.y;
-
-            final Vector2f fixedRotations = applySensitivityPatch(new Vector2f(yaw, pitch));
-
-            /*
-             * Setting rotations
-             */
-            yaw = fixedRotations.x;
-            pitch = Math.max(-90, Math.min(90, fixedRotations.y));
-        }
-
-        return new Vector2f(yaw, pitch);
-    }
-
-    private float winpos(double factor) {
-        // Implementing winpos algorithm to generate a small random offset with gravity and wind
-        return (float) ((Math.random() - 0.5) * 2 * factor); // Random value between -factor and factor
-    }
-
-    private Vector2f calculateBezierPoint(Vector2f start, Vector2f end, float t) {
-        // Simple linear Bezier curve calculation
-        float x = (1 - t) * start.x + t * end.x;
-        float y = (1 - t) * start.y + t * end.y;
-        return new Vector2f(x, y);
-    }
-
-
-    public double[] getDistance(double x, double z, double y) {
+    public static double[] getDistance(double x, double z, double y) {
         final double distance = MathHelper.sqrt_double(x * x + z * z), // @off
                 yaw = Math.atan2(z, x) * 180.0D / Math.PI - 90.0F,
                 pitch = -(Math.atan2(y, distance) * 180.0D / Math.PI); // @on
@@ -217,7 +163,7 @@ public class RotationManager implements Accessor {
                 (float) (pitch - mc.thePlayer.rotationPitch))};
     }
 
-    public double[] getRotationsNeeded(Entity entity) {
+    public static double[] getRotationsNeeded(Entity entity) {
         if (entity == null) return null;
 
         final EntityPlayerSP player = mc.thePlayer;
@@ -238,7 +184,7 @@ public class RotationManager implements Accessor {
         return new Vector2f(yaw, pitch);
     }
 
-    public float clamp(final float n) {
+    public static float clamp(final float n) {
         return MathHelper.clamp_float(n, -90.0f, 90.0f);
     }
 
@@ -306,12 +252,12 @@ public class RotationManager implements Accessor {
         return new Vector2f(yaw, pitch);
     }
 
-    public void reset() {
+    public static void reset() {
         setRotations(new Vector2f(mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch), 100);
         smooth();
     }
 
-    public void stop() {
+    public static void stop() {
         active = false;
         correctDisabledRotations();
     }
