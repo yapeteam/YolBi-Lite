@@ -69,7 +69,7 @@ public class AimAssist extends Module {
         if (target == null) return;
         if (ClickAim.getValue() && !Natives.IsKeyDown(VirtualKeyBoard.VK_LBUTTON))
             return;
-        Vector2f movementcalc = YolBi.instance.getRotationManager().calcSmooth(new Vector2f(mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch), new Vector2f((float) rotationManager.getRotationsNeeded(target)[0], (float) rotationManager.getRotationsNeeded(target)[1]), rotSpeed.getValue().doubleValue() * 0.1);
+        Vector2f movementcalc = YolBi.instance.getRotationManager().calculate(target);
         double deltayaw = movementcalc.getX() - mc.thePlayer.rotationYaw; // we need to wrap this to -180 to 180 and multiply base on the speed
         double deltapitch = MathHelper.wrapAngleTo180_float(movementcalc.getY() - mc.thePlayer.rotationPitch);
         mc.thePlayer.rotationYaw += (float) (deltayaw * rotSpeed.getValue().doubleValue() * 0.1);
@@ -88,7 +88,7 @@ public class AimAssist extends Module {
         else if (TargetPriority.getValue().getName().equals("Health"))
             targets.sort(Comparator.comparingDouble(o -> ((EntityLivingBase) o).getHealth()));
         else if (TargetPriority.getValue().getName().equals("Angle"))
-            targets.sort(Comparator.comparingDouble(entity -> YolBi.instance.getRotationManager().getRotationsNeeded(entity)[0]));
+            targets.sort(Comparator.comparingDouble(entity -> RotationManager.getRotationsNeeded(entity)[0]));
         return targets.isEmpty() ? null : targets.get(0);
     }
 }

@@ -11,14 +11,14 @@ import cn.yapeteam.yolbi.utils.IMinecraft;
 import cn.yapeteam.yolbi.utils.math.vector.Vector2f;
 import cn.yapeteam.yolbi.utils.math.vector.Vector3d;
 import cn.yapeteam.yolbi.utils.player.PlayerUtil;
-import lombok.experimental.UtilityClass;
+
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 
-@UtilityClass
+
 public class RotationManager implements IMinecraft {
     public static boolean active;
     public static Vector2f rotations, lastRotations, targetRotations, lastServerRotations;
@@ -103,7 +103,7 @@ public class RotationManager implements IMinecraft {
         targetRotations = new Vector2f(mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch);
     }
 
-    private void correctDisabledRotations() {
+    private static void correctDisabledRotations() {
         final Vector2f rotations = new Vector2f(mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch);
         final Vector2f fixedRotations = RotationManager.resetRotation(applySensitivityPatch(rotations));
 
@@ -196,7 +196,7 @@ public class RotationManager implements IMinecraft {
         return new Vector3d(entity.posX, entity.posY, entity.posZ);
     }
 
-    private Vector2f getPreviousRotation(EntityPlayerSP playerSP) {
+    private static Vector2f getPreviousRotation(EntityPlayerSP playerSP) {
         return new Vector2f(ReflectionManager.GetLastReportedYaw(playerSP), ReflectionManager.GetLastReportedPitch(playerSP));
     }
 
@@ -220,7 +220,7 @@ public class RotationManager implements IMinecraft {
         return calculate(new Vector3d(x, y, z));
     }
 
-    public Vector2f applySensitivityPatch(final Vector2f rotation) {
+    public static Vector2f applySensitivityPatch(final Vector2f rotation) {
         final Vector2f previousRotation = getPreviousRotation(mc.thePlayer);
         final float mouseSensitivity = (float) (mc.gameSettings.mouseSensitivity * (1 + Math.random() / 10000000) * 0.6F + 0.2F);
         final double multiplier = mouseSensitivity * mouseSensitivity * mouseSensitivity * 8.0F * 0.15D;
@@ -244,7 +244,7 @@ public class RotationManager implements IMinecraft {
         return new Vector2f(yaw, pitch);
     }
 
-    public Vector2f resetRotation(final Vector2f rotation) {
+    public static Vector2f resetRotation(final Vector2f rotation) {
         if (rotation == null)
             return null;
         final float yaw = rotation.x + MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationYaw - rotation.x);

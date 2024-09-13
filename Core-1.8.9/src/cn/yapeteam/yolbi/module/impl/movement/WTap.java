@@ -14,7 +14,7 @@ import cn.yapeteam.yolbi.module.impl.movement.wtap.SilentWTap;
  * @since 29/01/2021
  */
 
-@ModuleInfo(aliases = {"module.ghost.wtap.name", "Extra Knock Back", "Super Knock Back", "Knock Back", "Sprint Reset"}, description = "module.ghost.wtap.description", category = Category.GHOST)
+@ModuleInfo(aliases = {"module.ghost.wtap.name", "Extra Knock Back", "Super Knock Back", "Knock Back", "Sprint Reset"}, description = "module.ghost.wtap.description", category = Category.COMBAT)
 public class WTap extends Module {
     private final ModeValue mode = new ModeValue("Mode", this)
             .add(new LegitWTap("Legit", this))
