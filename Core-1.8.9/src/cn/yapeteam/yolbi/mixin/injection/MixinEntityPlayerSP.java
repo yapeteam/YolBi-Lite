@@ -34,7 +34,6 @@ public class MixinEntityPlayerSP extends EntityPlayerSP {
     )
     public void onPreUpdate() {
         RotationManager rotationManager = YolBi.instance.getRotationManager();
-        rotationManager.prevRenderPitchHead = rotationManager.renderPitchHead;
         rotationManager.renderPitchHead = rotationPitch;
         YolBi.instance.getEventManager().post(new EventUpdate(EventUpdate.Type.Pre));
     }

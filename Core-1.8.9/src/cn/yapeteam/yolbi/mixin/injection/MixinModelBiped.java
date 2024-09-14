@@ -24,7 +24,7 @@ public class MixinModelBiped {
     public void setRotationAngles(@Local(source = "entityIn", index = 7) Entity entityIn) {
         if (entityIn == Minecraft.getMinecraft().thePlayer) {
             RotationManager rotationManager = YolBi.instance.getRotationManager();
-            bipedHead.rotateAngleX = (rotationManager.prevRenderPitchHead + (rotationManager.renderPitchHead - rotationManager.prevRenderPitchHead) * 1) / (180.0F / (float) Math.PI);
+            bipedHead.rotateAngleX = rotationManager.renderPitchHead;
         }
     }
 }
