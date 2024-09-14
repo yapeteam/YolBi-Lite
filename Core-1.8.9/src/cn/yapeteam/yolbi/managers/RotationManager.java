@@ -21,12 +21,10 @@ import net.minecraft.util.Vec3;
 
 public class RotationManager implements IMinecraft {
     public static boolean active;
-    public static Vector2f rotations, lastRotations, targetRotations, lastServerRotations;
+    public static Vector2f rotations, targetRotations;
     private static double rotationSpeed;
 
     public float renderPitchHead;
-
-    public float prevRenderPitchHead;
 
     /*
      * This method must be called on Pre Update Event to work correctly
@@ -35,17 +33,16 @@ public class RotationManager implements IMinecraft {
         RotationManager.targetRotations = rotations;
         RotationManager.rotationSpeed = rotationSpeed * 18;
         active = true;
-        smooth(rotations, targetRotations, rotationSpeed);
+        smooth(targetRotations, rotationSpeed);
     }
 
     @Listener
     public static void onPreUpdate(EventUpdate event) {
-        if (!active || rotations == null || lastRotations == null || targetRotations == null || lastServerRotations == null) {
-            rotations = lastRotations = targetRotations = lastServerRotations = new Vector2f(mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch);
+        if (!active || rotations == null) {
+            rotations = targetRotations = new Vector2f(mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch);
         }
 
-        if (active)
-            smooth(lastRotations, targetRotations, rotationSpeed);
+        if (active) smooth(targetRotations, rotationSpeed);
 
         //backward sprint fix
         if (active) {
@@ -90,14 +87,8 @@ public class RotationManager implements IMinecraft {
             //todo: fix this
             renderPitchHead = pitch;
 
-            lastServerRotations = new Vector2f(yaw, pitch);
-
             if (Math.abs((rotations.x - mc.thePlayer.rotationYaw) % 360) < 1 && Math.abs((rotations.y - mc.thePlayer.rotationPitch)) < 1)
                 stop();
-
-            lastRotations = rotations;
-        } else {
-            lastRotations = new Vector2f(mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch);
         }
 
         targetRotations = new Vector2f(mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch);
@@ -112,20 +103,18 @@ public class RotationManager implements IMinecraft {
     }
 
     public static void smooth() {
-        smooth(lastRotations, targetRotations, rotationSpeed);
+        smooth(targetRotations, rotationSpeed);
     }
 
-    public static void smooth(final Vector2f lastRotation, final Vector2f targetRotation, final double speed) {
+    public static void smooth(final Vector2f targetRotation, final double speed) {
         float yaw = targetRotation.x;
         float pitch = targetRotation.y;
-        final float lastYaw = lastRotation.x;
-        final float lastPitch = lastRotation.y;
 
         if (speed != 0) {
             final float rotationSpeed = (float) speed;
 
-            final double deltaYaw = MathHelper.wrapAngleTo180_float(targetRotation.x - lastRotation.x);
-            final double deltaPitch = pitch - lastPitch;
+            final double deltaYaw = MathHelper.wrapAngleTo180_float(targetRotation.x - rotations.x);
+            final double deltaPitch = pitch - rotations.y;
 
             final double distance = Math.sqrt(deltaYaw * deltaYaw + deltaPitch * deltaPitch);
             final double distributionYaw = Math.abs(deltaYaw / distance);
@@ -136,9 +125,6 @@ public class RotationManager implements IMinecraft {
 
             final float moveYaw = (float) Math.max(Math.min(deltaYaw, maxYaw), -maxYaw);
             final float movePitch = (float) Math.max(Math.min(deltaPitch, maxPitch), -maxPitch);
-
-            yaw = lastYaw + moveYaw;
-            pitch = lastPitch + movePitch;
 
             final Vector2f fixedRotations = applySensitivityPatch(new Vector2f(yaw, pitch));
 
