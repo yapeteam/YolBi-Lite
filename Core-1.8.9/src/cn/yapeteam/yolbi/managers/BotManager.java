@@ -23,6 +23,11 @@ public class BotManager implements Accessor {
             bots.add(entity);
     }
 
+    public static void removeBot(Entity entity) {
+        if (bots.contains(entity))
+            bots.remove(entity);
+    }
+
     @Listener
     public void TickEvent(EventTick e) {
         if (mc.theWorld == null) return;

@@ -1,45 +1,39 @@
 package cn.yapeteam.yolbi.module.impl.combat;
 
-import cn.yapeteam.yolbi.event.Listener;
-import cn.yapeteam.yolbi.event.impl.player.EventUpdate;
+
 import cn.yapeteam.yolbi.managers.BotManager;
 import cn.yapeteam.yolbi.module.Module;
 import cn.yapeteam.yolbi.module.api.Category;
 import cn.yapeteam.yolbi.module.api.ModuleInfo;
-import cn.yapeteam.yolbi.module.api.value.impl.ModeValue;
-import cn.yapeteam.yolbi.module.api.value.impl.SubMode;
-import net.minecraft.client.network.NetworkPlayerInfo;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import cn.yapeteam.yolbi.module.api.value.impl.BooleanValue;
+import cn.yapeteam.yolbi.module.impl.combat.antibot.*;
 
-@ModuleInfo(aliases = {"module.combat.antibot.name"}, description = "module.combat.antibot.description", category = Category.COMBAT)
-public class AntiBot extends Module {
+@ModuleInfo(aliases = {"module.combat.antibot.name"}, description = "module.combat.antibot.description", category = Category.COMBAT, isblatant = true)
+public final class AntiBot extends Module {
 
-    private final ModeValue mode = new ModeValue("Mode", this)
-            .add(new SubMode("Hypixel"))
-            .setDefault("Hypixel");
+    private final BooleanValue funcraftAntiBot = new BooleanValue("Funcraft Check", this, false,
+            new FuncraftAntiBot("", this));
 
-    @Listener
-    private void onUpdate(EventUpdate event) {
-        if (mode.getValue().toString().equalsIgnoreCase("Hypixel")) {
-            for (int i = 0; i < mc.theWorld.getLoadedEntityList().size(); i++) {
-                Entity entity = mc.theWorld.getLoadedEntityList().get(i);
+    private final BooleanValue ncps = new BooleanValue("NPC Detection Check", this, false,
+            new NPCAntiBot("", this));
 
-                if (!(entity instanceof EntityPlayer)) continue;
+    private final BooleanValue duplicate = new BooleanValue("Duplicate Name Check", this, false,
+            new DuplicateNameCheck("", this));
 
-                if (entity.getName().contains("\u00A7") || (entity.hasCustomName() && entity.getCustomNameTag().contains(entity.getName())) || (entity.getName().equals(mc.thePlayer.getName()) && entity != mc.thePlayer)) {
-                    BotManager.addBot(entity);
-                }
-            }
-        }
-    }
+    private final BooleanValue ping = new BooleanValue("No Ping Check", this, false,
+            new PingCheck("", this));
 
-    public static boolean isBot(EntityLivingBase entity) {
-        // must have a player info
-        final NetworkPlayerInfo info = mc.getNetHandler().getPlayerInfo(entity.getUniqueID());
-        return info == null;
-    }
+    private final BooleanValue negativeIDCheck = new BooleanValue("Negative Unique ID Check", this, false,
+            new NegativeIDCheck("", this));
+
+    private final BooleanValue duplicateIDCheck = new BooleanValue("Duplicate Unique ID Check", this, false,
+            new DuplicateIDCheck("", this));
+
+    private final BooleanValue ticksVisible = new BooleanValue("Time Visible Check", this, false,
+            new TicksVisibleCheck("", this));
+
+    private final BooleanValue middleClick = new BooleanValue("Middle Click Bot", this, false,
+            new MiddleClickBot("", this));
 
     @Override
     public void onDisable() {
