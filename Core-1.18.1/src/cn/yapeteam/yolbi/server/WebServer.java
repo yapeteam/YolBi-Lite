@@ -3,6 +3,7 @@
  * @time 2024-07-19  11:53
  */
 
+
 package cn.yapeteam.yolbi.server;
 
 import cn.yapeteam.loader.logger.Logger;
@@ -12,8 +13,9 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
-import java.util.concurrent.Executors;
 import java.util.Random;
+import java.util.concurrent.Executors;
+
 
 public class WebServer {
 
@@ -52,7 +54,7 @@ public class WebServer {
         Random random = new Random();
 
         while (!isPortAvailable(port)) {
-            port = random.nextInt((MAX_PORT - 1024) + 1) + 1024; // Use ports above 1024
+            port = random.nextInt((MAX_PORT - DEFAULT_PORT) + 1) + DEFAULT_PORT;
             Logger.info("Port not available!");
             Logger.info("Found available port {}", port);
         }

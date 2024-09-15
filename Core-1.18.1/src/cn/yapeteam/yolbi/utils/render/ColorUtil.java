@@ -1,8 +1,73 @@
 package cn.yapeteam.yolbi.utils.render;
 
+import cn.yapeteam.yolbi.utils.math.MathUtils;
+import org.lwjgl.opengl.GL11;
+
 import java.awt.*;
 
 public class ColorUtil {
+
+
+    public static Color blendColors(float[] fractions, Color[] colors, float progress) {
+        if (fractions.length == colors.length) {
+            int[] indices = getFractionIndices(fractions, progress);
+            float[] range = new float[]{fractions[indices[0]], fractions[indices[1]]};
+            Color[] colorRange = new Color[]{colors[indices[0]], colors[indices[1]]};
+            float max = range[1] - range[0];
+            float value = progress - range[0];
+            float weight = value / max;
+            return blend(colorRange[0], colorRange[1], 1.0f - weight);
+        }
+        throw new IllegalArgumentException("Fractions and colours must have equal number of elements");
+    }
+
+    public static int[] getFractionIndices(float[] fractions, float progress) {
+        int startPoint;
+        int[] range = new int[2];
+        for (startPoint = 0; startPoint < fractions.length && fractions[startPoint] <= progress; ++startPoint) {
+        }
+        if (startPoint >= fractions.length) {
+            startPoint = fractions.length - 1;
+        }
+        range[0] = startPoint - 1;
+        range[1] = startPoint;
+        return range;
+    }
+
+    /**
+     * Method which colors using a hex code
+     *
+     * @param hex used hex code
+     */
+    public static void glColor(final int hex) {
+        final float a = (hex >> 24 & 0xFF) / 255.0F;
+        final float r = (hex >> 16 & 0xFF) / 255.0F;
+        final float g = (hex >> 8 & 0xFF) / 255.0F;
+        final float b = (hex & 0xFF) / 255.0F;
+        GL11.glColor4f(r, g, b, a);
+    }
+
+    /**
+     * Method which colors using a color
+     *
+     * @param color used color
+     */
+    public static void glColor(final Color color) {
+        GL11.glColor4f(color.getRed() / 255.0F, color.getGreen() / 255.0F, color.getBlue() / 255.0F, color.getAlpha() / 255.0F);
+    }
+
+    public static Color withAlpha(final Color color, final int alpha) {
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) MathUtils.clamp(alpha, 0, 255));
+    }
+
+    public static Color mixColors(final Color color1, final Color color2, final double percent) {
+        final double inverse_percent = 1.0 - percent;
+        final int redPart = (int) (color1.getRed() * percent + color2.getRed() * inverse_percent);
+        final int greenPart = (int) (color1.getGreen() * percent + color2.getGreen() * inverse_percent);
+        final int bluePart = (int) (color1.getBlue() * percent + color2.getBlue() * inverse_percent);
+        return new Color(redPart, greenPart, bluePart);
+    }
+
     public static Color colorFromInt(int color) {
         Color c = new Color(color);
         return new Color(c.getRed(), c.getGreen(), c.getBlue(), 255);
@@ -20,6 +85,10 @@ public class ColorUtil {
 
     public static Color blend(Color color1, Color color2) {
         return ColorUtil.blend(color1, color2, 0.5);
+    }
+
+    public static Color blend(int color1, int color2) {
+        return ColorUtil.blend(ColorUtil.colorFromInt(color1), ColorUtil.colorFromInt(color2), 0.5);
     }
 
     public static int reAlpha(int color, float alpha) {
