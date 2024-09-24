@@ -8,6 +8,9 @@ import net.minecraft.entity.player.EntityPlayer;
 
 @Mixin(EntityPlayer.class)
 public class MixinEntityPlayer {
+
+    private boolean moved;
+
     @Shadow
     public boolean isInvisible() {
         return false;
