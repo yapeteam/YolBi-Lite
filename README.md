@@ -5,6 +5,8 @@
 
 # YolBi Inject - Recode
 
+本仓库没有特征绕过，但是抄袭了一些rise ui
+
 - ***Powered by Yape Development Team***
 
 # Join Us
