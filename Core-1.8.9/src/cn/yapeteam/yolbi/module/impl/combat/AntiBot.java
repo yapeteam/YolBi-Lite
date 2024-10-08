@@ -14,9 +14,6 @@ public final class AntiBot extends Module {
     private final BooleanValue funcraftAntiBot = new BooleanValue("Funcraft Check", this, false,
             new FuncraftAntiBot("", this));
 
-    private final BooleanValue ncps = new BooleanValue("NPC Detection Check", this, false,
-            new NPCAntiBot("", this));
-
     private final BooleanValue duplicate = new BooleanValue("Duplicate Name Check", this, false,
             new DuplicateNameCheck("", this));
 
@@ -28,9 +25,6 @@ public final class AntiBot extends Module {
 
     private final BooleanValue duplicateIDCheck = new BooleanValue("Duplicate Unique ID Check", this, false,
             new DuplicateIDCheck("", this));
-
-    private final BooleanValue ticksVisible = new BooleanValue("Time Visible Check", this, false,
-            new TicksVisibleCheck("", this));
 
     private final BooleanValue middleClick = new BooleanValue("Middle Click Bot", this, false,
             new MiddleClickBot("", this));
