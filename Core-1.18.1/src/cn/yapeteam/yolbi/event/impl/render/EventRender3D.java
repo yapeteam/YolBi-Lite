@@ -8,6 +8,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class EventRender3D extends Event {
-    private final PoseStack poseStack;
-    private final float partialTicks;
+    private PoseStack poseStack;
+    private float partialTicks;
 }

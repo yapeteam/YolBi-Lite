@@ -1,24 +1,53 @@
 package cn.yapeteam.yolbi.utils.player;
 
-import cn.yapeteam.yolbi.utils.IMinecraft;
+import cn.yapeteam.yolbi.YolBi;
+import cn.yapeteam.yolbi.module.impl.combat.CombatSettings;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import com.google.common.base.Predicates;
 import lombok.experimental.UtilityClass;
 import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
-import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemFishingRod;
+import net.minecraft.item.ItemSword;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.*;
+import net.minecraft.util.text.TextComponentString;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 
 @UtilityClass
-public class PlayerUtil implements IMinecraft {
+public class PlayerUtil implements Accessor {
+
+    Frustum frustrum = new Frustum();
+
+    public static boolean isInViewFrustrum(Entity entity) {
+        return isInViewFrustrum(entity.getEntityBoundingBox()) || entity.ignoreFrustumCheck;
+    }
+
+    private static boolean isInViewFrustrum(AxisAlignedBB bb) {
+        Entity current = mc.getRenderViewEntity();
+        frustrum.setPosition(current.posX, current.posY, current.posZ);
+        return frustrum.isBoundingBoxInFrustum(bb);
+    }
+
     private final HashMap<Integer, Integer> GOOD_POTIONS = new HashMap<Integer, Integer>() {{
         put(6, 1); // Instant Health
         put(10, 2); // Regeneration
@@ -35,19 +64,24 @@ public class PlayerUtil implements IMinecraft {
     }};
 
     private int getPing(Entity entity) {
-        val uniqueID = Objects.requireNonNull(mc.getConnection()).getPlayerInfo(entity.getUniqueID());
-        return uniqueID.getResponseTime();
+        val uniqueID = mc.getConnection().getPlayerInfo(entity.getUniqueID());
+        return uniqueID != null ? uniqueID.getResponseTime() : 0;
+    }
+
+    public static void sendMessage(String msg) {
+        if (mc.player != null) {
+            mc.player.sendChatMessage(String.valueOf(new TextComponentString("\247b[Yolbi]\247r " + msg)));
+        }
     }
 
     public static double fovFromEntity(Entity en) {
         return ((((double) (mc.player.rotationYaw - fovToEntity(en)) % 360.0D) + 540.0D) % 360.0D) - 180.0D;
     }
 
-
     public static float fovToEntity(Entity ent) {
-        double x = ent.posX - mc.player.posX;
-        double z = ent.posZ - mc.player.posZ;
-        double yaw = Math.atan2(x, z) * 57.2957795D;
+        double xCoord = ent.posX - mc.player.posX;
+        double zCoord = ent.posZ - mc.player.posZ;
+        double yaw = Math.atan2(xCoord, zCoord) * 57.2957795D;
         return (float) (yaw * -1.0D);
     }
 
@@ -86,57 +120,31 @@ public class PlayerUtil implements IMinecraft {
     }
 
     public static float pitchToEntity(Entity ent, float f) {
-        double x = mc.player.getDistanceToEntity(ent);
-        double y = mc.player.posY - (ent.posY + f);
-        double pitch = (((Math.atan2(x, y) * 180.0D) / 3.141592653589793D));
+        double xCoord = mc.player.getDistance(ent.posX, ent.posY, ent.posZ);
+        double yCoord = mc.player.posY - (ent.posY + f);
+        double pitch = (((Math.atan2(xCoord, yCoord) * 180.0D) / 3.141592653589793D));
         return (float) (90 - pitch);
     }
 
-    /**
-     * Gets the block at a position
-     *
-     * @return block
-     */
-    public Block block(final double x, final double y, final double z) {
-        return mc.world.getBlockState(new BlockPos(x, y, z)).getBlock();
+    public Block block(final double xCoord, final double yCoord, final double zCoord) {
+        return mc.world.getBlockState(new BlockPos(xCoord, yCoord, zCoord)).getBlock();
     }
 
-    /**
-     * Gets the block at a position
-     *
-     * @return block
-     */
     public Block block(final BlockPos blockPos) {
         return mc.world.getBlockState(blockPos).getBlock();
     }
 
-    /**
-     * Gets the distance between 2 positions
-     *
-     * @return distance
-     */
     public double distance(final BlockPos pos1, final BlockPos pos2) {
-        final double x = pos1.getX() - pos2.getX();
-        final double y = pos1.getY() - pos2.getY();
-        final double z = pos1.getZ() - pos2.getZ();
-        return x * x + y * y + z * z;
+        final double xCoord = pos1.getX() - pos2.getX();
+        final double yCoord = pos1.getY() - pos2.getY();
+        final double zCoord = pos1.getZ() - pos2.getZ();
+        return xCoord * xCoord + yCoord * yCoord + zCoord * zCoord;
     }
 
-    /**
-     * Gets the block relative to the player from the offset
-     *
-     * @return block relative to the player
-     */
     public Block blockRelativeToPlayer(final double offsetX, final double offsetY, final double offsetZ) {
         return mc.world.getBlockState(new BlockPos(mc.player).add(offsetX, offsetY, offsetZ)).getBlock();
     }
 
-
-    /**
-     * Checks if another players' team is the same as the players' team
-     *
-     * @return same team
-     */
     public boolean sameTeam(final EntityLivingBase player) {
         if (player.getTeam() != null && mc.player.getTeam() != null) {
             final char c1 = player.getDisplayName().getFormattedText().charAt(1);
@@ -145,7 +153,6 @@ public class PlayerUtil implements IMinecraft {
         }
         return false;
     }
-
 
     public EnumFacingOffset getEnumFacing(final Vec3d position) {
         for (int x2 = -1; x2 <= 1; x2 += 2) {
@@ -179,43 +186,68 @@ public class PlayerUtil implements IMinecraft {
         return null;
     }
 
+    public static double calculateHorizontalAngleDifference(Entity en) {
+        return ((double) (mc.player.rotationYaw - getYaw(en)) % 360.0D + 540.0D) % 360.0D - 180.0D;
+    }
 
-    /**
-     * Finds what block or object the mouse is over at the specified partial tick time. Args: partialTickTime
-     */
+    public static float getYaw(Entity ent) {
+        double xCoord = ent.posX - mc.player.posX;
+        double zCoord = ent.posZ - mc.player.posZ;
+        double yaw = Math.atan2(xCoord, zCoord) * 57.29577951308232;
+        return (float) (yaw * -1.0D);
+    }
+
+    public static boolean holdingWeapon() {
+        CombatSettings settings = YolBi.instance.getModuleManager().get(CombatSettings.class);
+        if (mc.player.getHeldItem(EnumHand.MAIN_HAND) == null) {
+            return false;
+        }
+        Item getItem = mc.player.getHeldItem(EnumHand.MAIN_HAND).getItem();
+        return getItem instanceof ItemSword || (settings.getAxe().getValue() && getItem instanceof ItemAxe) || (settings.getRod().getValue() && getItem instanceof ItemFishingRod) || (settings.getStick().getValue() && getItem == Items.STICK);
+    }
+
+    public static boolean overAir() {
+        return mc.world.isAirBlock(new BlockPos(mc.player.posX, mc.player.posY - 1.0, mc.player.posZ));
+    }
+
+    public static boolean onEdge() {
+        return onEdge(mc.player);
+    }
+
+    public static boolean onEdge(Entity entity) {
+        return mc.world.getCollisionBoxes(entity, entity.getEntityBoundingBox().offset(entity.motionX / 3.0D, -1.0D, entity.motionZ / 3.0D)).isEmpty();
+    }
+
     public static Entity getMouseOver(final float partialTicks, final double Reach) {
         Entity pointedEntity = null;
         final Entity entity = mc.getRenderViewEntity();
 
         if (entity != null && mc.world != null) {
             mc.mcProfiler.startSection("pick");
-            pointedEntity = null;
-            double blockReachDistance = Reach;
-            mc.objectMouseOver = entity.rayTrace(blockReachDistance, partialTicks);
-            double distance = blockReachDistance;
-            final Vec3d vec3 = entity.getPositionEyes(partialTicks);
+            mc.objectMouseOver = entity.rayTrace(Reach, partialTicks);
+            double distance = Reach;
+            final Vec3d Vec3d = entity.getPositionEyes(partialTicks);
 
             if (mc.objectMouseOver != null) {
-                distance = mc.objectMouseOver.hitVec.distanceTo(vec3);
+                distance = mc.objectMouseOver.hitVec.distanceTo(Vec3d);
             }
 
-            final Vec3d vec31 = entity.getLook(partialTicks);
-            final Vec3d vec32 = vec3.addVector(vec31.xCoord * blockReachDistance, vec31.yCoord * blockReachDistance, vec31.zCoord * blockReachDistance);
-            pointedEntity = null;
-            Vec3d vec33 = null;
+            final Vec3d Vec3d1 = entity.getLook(partialTicks);
+            final Vec3d Vec3d2 = Vec3d.addVector(Vec3d1.xCoord * Reach, Vec3d1.yCoord * Reach, Vec3d1.zCoord * Reach);
+            Vec3d Vec3d3 = null;
             final float f = 1.0F;
-            final List<Entity> list = mc.world.getEntitiesInAABBexcluding(entity, entity.getEntityBoundingBox().addCoord(vec31.xCoord * blockReachDistance, vec31.yCoord * blockReachDistance, vec31.zCoord * blockReachDistance), Predicates.and(EntitySelectors.NOT_SPECTATING, Entity::canBeCollidedWith));
+            final List<Entity> list = mc.world.getEntitiesInAABBexcluding(entity, entity.getEntityBoundingBox().expand(Vec3d1.xCoord * Reach, Vec3d1.yCoord * Reach, Vec3d1.zCoord * Reach), Predicates.and(EntitySelectors.NOT_SPECTATING, Entity::canBeCollidedWith));
             double d2 = distance;
 
             for (final Entity entity1 : list) {
                 final float f1 = entity1.getCollisionBorderSize();
                 final AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().expand(f1, f1, f1);
-                final RayTraceResult movingobjectposition = axisalignedbb.calculateIntercept(vec3, vec32);
+                final RayTraceResult movingobjectposition = axisalignedbb.calculateIntercept(Vec3d, Vec3d2);
 
-                if (axisalignedbb.isVecInside(vec3)) {
+                if (axisalignedbb.contains(Vec3d)) {
                     pointedEntity = entity1;
                 } else if (movingobjectposition != null) {
-                    final double d3 = vec3.distanceTo(movingobjectposition.hitVec);
+                    final double d3 = Vec3d.distanceTo(movingobjectposition.hitVec);
 
                     if (d3 < d2 || d2 == 0.0D) {
                         boolean flag1 = false;
@@ -223,11 +255,10 @@ public class PlayerUtil implements IMinecraft {
                         if (!flag1 && entity1 == entity.getRidingEntity()) {
                             if (d2 == 0.0D) {
                                 pointedEntity = entity1;
-                                vec33 = movingobjectposition.hitVec;
                             }
                         } else {
                             pointedEntity = entity1;
-                            vec33 = movingobjectposition.hitVec;
+                            Vec3d3 = movingobjectposition.hitVec;
                             d2 = d3;
                         }
                     }
@@ -240,62 +271,87 @@ public class PlayerUtil implements IMinecraft {
         return null;
     }
 
-    /**
-     * Checks if a potion is good
-     *
-     * @return good potion
-     */
+    public boolean isBlockUnder(final double height) {
+        return isBlockUnder(height, true);
+    }
+
+    public boolean isBlockUnder(final double height, final boolean boundingBox) {
+        if (boundingBox) {
+            for (int offset = 0; offset < height; offset += 2) {
+                final AxisAlignedBB bb = mc.player.getEntityBoundingBox().offset(0, -offset, 0);
+
+                if (!mc.world.getCollisionBoxes(mc.player, bb).isEmpty()) {
+                    return true;
+                }
+            }
+        } else {
+            for (int offset = 0; offset < height; offset++) {
+                if (PlayerUtil.blockRelativeToPlayer(0, -offset, 0).isFullBlock()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isBlockUnder() {
+        return isBlockUnder(mc.player.height);
+    }
+
     public boolean goodPotion(final int id) {
         return GOOD_POTIONS.containsKey(id);
     }
 
-    /**
-     * Gets a potions ranking
-     *
-     * @return potion ranking
-     */
     public int potionRanking(final int id) {
         return GOOD_POTIONS.getOrDefault(id, -1);
     }
 
-    /**
-     * Checks if the player is in a liquid
-     *
-     * @return in liquid
-     */
     public boolean inLiquid() {
-        return mc.player.isInWater() || mc.player.isInLava();
+        final AxisAlignedBB bb = mc.player.getEntityBoundingBox();
+        for (int xCoord = MathHelper.floor(bb.minX); xCoord < MathHelper.floor(bb.maxX) + 1; ++xCoord) {
+            for (int zCoord = MathHelper.floor(bb.minZ); zCoord < MathHelper.floor(bb.maxZ) + 1; ++zCoord) {
+                final BlockPos pos = new BlockPos(xCoord, (int) bb.minY, zCoord);
+                final Block block = mc.world.getBlockState(pos).getBlock();
+                if (!(block instanceof BlockAir)) {
+                    return block.getMaterial(block.getDefaultState()) == Material.WATER || block.getMaterial(block.getDefaultState()) == Material.LAVA;
+                }
+            }
+        }
+        return false;
     }
 
-    /**
-     * Fake damages the player
-     */
-
-
-    /**
-     * Checks if the player is near a block
-     *
-     * @return block near
-     */
     public boolean blockNear(final int range) {
-        for (int x = -range; x <= range; ++x) {
-            for (int y = -range; y <= range; ++y) {
-                for (int z = -range; z <= range; ++z) {
-                    final Block block = blockRelativeToPlayer(x, y, z);
-
+        for (int xCoord = -range; xCoord <= range; ++xCoord) {
+            for (int yCoord = -range; yCoord <= range; ++yCoord) {
+                for (int zCoord = -range; zCoord <= range; ++zCoord) {
+                    final BlockPos pos = new BlockPos(mc.player.posX + xCoord, mc.player.posY + yCoord, mc.player.posZ + zCoord);
+                    final Block block = mc.world.getBlockState(pos).getBlock();
                     if (!(block instanceof BlockAir)) {
                         return true;
                     }
                 }
             }
         }
-
         return false;
     }
 
-    /**
-     * Sends a click to Minecraft legitimately
-     */
+    public boolean insideBlock() {
+        final EntityPlayerSP player = PlayerUtil.mc.player;
+        final WorldClient world = PlayerUtil.mc.world;
+        final AxisAlignedBB bb = player.getEntityBoundingBox();
+        for (int xCoord = MathHelper.floor(bb.minX); xCoord < MathHelper.floor(bb.maxX) + 1; ++xCoord) {
+            for (int yCoord = MathHelper.floor(bb.minY); yCoord < MathHelper.floor(bb.maxY) + 1; ++yCoord) {
+                for (int zCoord = MathHelper.floor(bb.minZ); zCoord < MathHelper.floor(bb.maxZ) + 1; ++zCoord) {
+                    final Block block = world.getBlockState(new BlockPos(xCoord, yCoord, zCoord)).getBlock();
+                    if (!(block instanceof BlockAir)) {
+                        return block.getMaterial(block.getDefaultState()).blocksMovement();
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public void sendClick(final int button, final boolean state) {
         final int keyBind = button == 0 ? mc.gameSettings.keyBindAttack.getKeyCode() : mc.gameSettings.keyBindUseItem.getKeyCode();
 
@@ -310,14 +366,11 @@ public class PlayerUtil implements IMinecraft {
         boolean onLiquid = false;
         final AxisAlignedBB playerBB = PlayerUtil.mc.player.getEntityBoundingBox();
         final WorldClient world = PlayerUtil.mc.world;
-        final int y = (int) playerBB.offset(0.0, -0.01, 0.0).minY;
-        for (int x = MathHelper.floor(playerBB.minX); x < MathHelper.floor(playerBB.maxX) + 1; ++x) {
-            for (int z = MathHelper.floor(playerBB.minZ); z < MathHelper.floor(playerBB.maxZ) + 1; ++z) {
-                final Block block = world.getBlockState(new BlockPos(x, y, z)).getBlock();
-                if (!(block instanceof BlockAir)) {
-                    if (!(block instanceof BlockLiquid)) {
-                        return false;
-                    }
+        final int yCoord = (int) playerBB.offset(0.0, -0.01, 0.0).minY;
+        for (int xCoord = MathHelper.floor(playerBB.minX); xCoord < MathHelper.floor(playerBB.maxX) + 1; ++xCoord) {
+            for (int zCoord = MathHelper.floor(playerBB.minZ); zCoord < MathHelper.floor(playerBB.maxZ) + 1; ++zCoord) {
+                final Block block = world.getBlockState(new BlockPos(xCoord, yCoord, zCoord)).getBlock();
+                if (block.getMaterial(block.getDefaultState()) == Material.WATER || block.getMaterial(block.getDefaultState()) == Material.LAVA) {
                     onLiquid = true;
                 }
             }
@@ -325,49 +378,43 @@ public class PlayerUtil implements IMinecraft {
         return onLiquid;
     }
 
-
-    // This methods purpose is to get block placement possibilities, blocks are 1 unit thick so please don't change it to 0.5 it causes bugs.
-    public Vec3d getPlacePossibility(double offsetX, double offsetY, double offsetZ) {
+    public static @Nullable Vec3d getPlacePossibility(double offsetX, double offsetY, double offsetZ) {
         final List<Vec3d> possibilities = new ArrayList<>();
         final int range = (int) (5 + (Math.abs(offsetX) + Math.abs(offsetZ)));
 
-        for (int x = -range; x <= range; ++x) {
-            for (int y = -range; y <= range; ++y) {
-                for (int z = -range; z <= range; ++z) {
-                    final Block block = PlayerUtil.blockRelativeToPlayer(x, y, z);
-
-                    if (!(block instanceof BlockAir)) {
-                        for (int x2 = -1; x2 <= 1; x2 += 2)
-                            possibilities.add(new Vec3d(mc.player.posX + x + x2, mc.player.posY + y, mc.player.posZ + z));
-
-                        for (int y2 = -1; y2 <= 1; y2 += 2)
-                            possibilities.add(new Vec3d(mc.player.posX + x, mc.player.posY + y + y2, mc.player.posZ + z));
-
-                        for (int z2 = -1; z2 <= 1; z2 += 2)
-                            possibilities.add(new Vec3d(mc.player.posX + x, mc.player.posY + y, mc.player.posZ + z + z2));
+        for (int xCoord = -range; xCoord <= range; ++xCoord) {
+            for (int yCoord = -range; yCoord <= range; ++yCoord) {
+                for (int zCoord = -range; zCoord <= range; ++zCoord) {
+                    final BlockPos pos = new BlockPos(mc.player.posX + xCoord, mc.player.posY + yCoord, mc.player.posZ + zCoord);
+                    final Block block = mc.world.getBlockState(pos).getBlock();
+                    if (block instanceof BlockAir) {
+                        possibilities.add(new Vec3d(pos.getX(), pos.getY(), pos.getZ()));
                     }
                 }
             }
         }
 
-        possibilities.removeIf(vec3 -> mc.player.getDistance(vec3.xCoord, vec3.yCoord, vec3.zCoord) > 5 || !(PlayerUtil.block(vec3.xCoord, vec3.yCoord, vec3.zCoord) instanceof BlockAir));
+        possibilities.removeIf(Vec3d -> mc.player.getDistance(Vec3d.xCoord, Vec3d.yCoord, Vec3d.zCoord) > 5 || !(PlayerUtil.block(Vec3d.xCoord, Vec3d.yCoord, Vec3d.zCoord) instanceof BlockAir));
 
         if (possibilities.isEmpty()) return null;
 
-        possibilities.sort(Comparator.comparingDouble(vec3 -> {
-
-            final double d0 = (mc.player.posX + offsetX) - vec3.xCoord;
-            final double d1 = (mc.player.posY - 1 + offsetY) - vec3.yCoord;
-            final double d2 = (mc.player.posZ + offsetZ) - vec3.zCoord;
-            return MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
-
-        }));
+        possibilities.sort(Comparator.comparingDouble(Vec3d -> mc.player.getDistance(Vec3d.xCoord, Vec3d.yCoord, Vec3d.zCoord)));
 
         return possibilities.get(0);
     }
 
-    public Vec3d getPlacePossibility() {
+    public static Vec3d getPlacePossibility() {
         return getPlacePossibility(0, 0, 0);
     }
 
+    public static boolean replaceable(BlockPos blockPos) {
+        if (mc.player == null || mc.world == null) {
+            return false;
+        }
+        return block(blockPos).isReplaceable(mc.world, blockPos);
+    }
+
+    public static boolean isFluid(@NotNull Block block) {
+        return block.getMaterial(block.getDefaultState()) == Material.WATER || block.getMaterial(block.getDefaultState()) == Material.LAVA;
+    }
 }

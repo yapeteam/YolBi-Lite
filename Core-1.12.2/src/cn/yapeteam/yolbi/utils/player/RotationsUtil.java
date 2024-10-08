@@ -1,15 +1,14 @@
 package cn.yapeteam.yolbi.utils.player;
 
 import cn.yapeteam.yolbi.YolBi;
-import cn.yapeteam.yolbi.managers.RotationManager;
-import cn.yapeteam.yolbi.utils.IMinecraft;
-import cn.yapeteam.yolbi.utils.reflect.ReflectUtil;
-import cn.yapeteam.yolbi.utils.vector.Vector2f;
+import cn.yapeteam.yolbi.managers.ReflectionManager;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
+import cn.yapeteam.yolbi.utils.math.vector.Vector2f;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.Timer;
 import net.minecraft.util.math.BlockPos;
 
-public class RotationsUtil implements IMinecraft {
+public class RotationsUtil implements Accessor {
 
     public static float[] getRotationsToPosition(double x, double y, double z) {
         double deltaX = x - mc.player.posX;
@@ -24,7 +23,7 @@ public class RotationsUtil implements IMinecraft {
         return new float[]{yaw, pitch};
     }
 
-    public static final Timer timer = ReflectUtil.Minecraft$getTimer(mc);
+    public static final Timer timer = ReflectionManager.Minecraft$getTimer(mc);
 
     public static float[] getRotationsToEntity(EntityLivingBase entity, boolean usePartialTicks) {
         if (timer == null) return new float[]{0, 0};
@@ -57,8 +56,7 @@ public class RotationsUtil implements IMinecraft {
     }
 
     public static double getRotationDifference(Vector2f rotation) {
-        RotationManager rotationManager = YolBi.instance.getRotationManager();
-        return rotationManager.targetRotations == null ? 0.0 : getRotationDifference(rotation, rotationManager.targetRotations);
+        return YolBi.instance.getRotationManager().targetRotations == null ? 0.0 : getRotationDifference(rotation, YolBi.instance.getRotationManager().targetRotations);
     }
 
     public static float getAngleDifference(float f1, float f2) {

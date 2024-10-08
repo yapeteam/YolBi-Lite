@@ -1,147 +1,183 @@
 package cn.yapeteam.yolbi.module;
 
-import cn.yapeteam.loader.logger.Logger;
+
 import cn.yapeteam.yolbi.YolBi;
-import cn.yapeteam.yolbi.config.Config;
-import cn.yapeteam.yolbi.managers.RotationManager;
-import cn.yapeteam.yolbi.module.values.Value;
-import cn.yapeteam.yolbi.module.values.impl.*;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import cn.yapeteam.yolbi.event.impl.client.EventModuleToggle;
+import cn.yapeteam.yolbi.module.api.Bindable;
+import cn.yapeteam.yolbi.module.api.Category;
+import cn.yapeteam.yolbi.module.api.ModuleInfo;
+import cn.yapeteam.yolbi.module.api.value.Value;
+import cn.yapeteam.yolbi.module.api.value.impl.BooleanValue;
+import cn.yapeteam.yolbi.module.api.value.impl.ModeValue;
+import cn.yapeteam.yolbi.module.impl.render.ClickGUI;
+import cn.yapeteam.yolbi.module.impl.render.Interface;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
+import cn.yapeteam.yolbi.utils.interfaces.Toggleable;
+import cn.yapeteam.yolbi.utils.profiling.localization.Localization;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.client.Minecraft;
+import org.lwjgl.input.Keyboard;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+/**
+ * @author Patrick
+ * @since 10/19/2021
+ */
 @Getter
 @Setter
-public abstract class Module {
-    protected static final Minecraft mc = Minecraft.getMinecraft();
-    protected static final RotationManager rotationManager = YolBi.instance.getRotationManager();
-    private final String name;
-    private final ModuleCategory category;
+public abstract class Module implements Accessor, Toggleable, Bindable {
+
+    private String[] aliases;
+    private String[] displayName;
+    private final List<Value<?>> values = new ArrayList<>();
+    private ModuleInfo moduleInfo;
+    private boolean enabled;
     private int key;
 
-    protected Module(String name, ModuleCategory category, int key) {
-        this.name = name;
-        this.category = category;
-        this.key = key;
-        YolBi.instance.getConfigManager().registerConfig(getConfig());
-    }
+    public Module() {
+        if (this.getClass().isAnnotationPresent(ModuleInfo.class)) {
+            this.moduleInfo = this.getClass().getAnnotation(ModuleInfo.class);
 
-    protected Module(String name, ModuleCategory category) {
-        this(name, category, 0);
-    }
-
-    protected boolean enabled = false;
-
-    private boolean listening = false;
-
-    private String description = null;
-
-    private final ArrayList<Value<?>> values = new ArrayList<>();
-
-    protected void onEnable() {
-        //invoke on enabled
-    }
-
-    protected void onDisable() {
-        //invoke on disabled
-    }
-
-    public final void setEnabled(boolean enabled) {
-        if (this.enabled != enabled) {
-            this.enabled = enabled;
-
-            if (enabled) {
-                startListening();
-                onEnable();
-            } else {
-                stopListening();
-                onDisable();
-            }
+            this.aliases = Arrays.stream(this.moduleInfo.aliases())
+                    .map(Localization::get).toArray(String[]::new);
+            this.key = getModuleInfo().keyBind();
+        } else {
+            throw new RuntimeException("ModuleInfo annotation not found on " + this.getClass().getSimpleName());
         }
     }
 
-    public final void toggle() {
-        setEnabled(!this.enabled);
+    public Module(final ModuleInfo info) {
+        this.moduleInfo = info;
+
+        this.displayName = this.moduleInfo.aliases();
+        this.aliases = this.moduleInfo.aliases();
+        this.key = getModuleInfo().keyBind();
     }
 
-    protected final void startListening() {
-        if (!listening) {
-            YolBi.instance.getEventManager().register(this);
-            listening = true;
+    @Override
+    public String getName() {
+        return aliases[0];
+    }
+
+    public void onKey() {
+        this.toggle();
+    }
+
+    @Override
+    public int getKey() {
+        return key;
+    }
+
+    public void toggle() {
+        this.setEnabled(!enabled);
+    }
+
+    public void setEnabled(final boolean enabled) {
+        if (this.enabled == enabled || (!this.moduleInfo.allowDisable() && !enabled)) {
+            return;
+        }
+
+        this.enabled = enabled;
+
+        YolBi.instance.getEventManager().post(new EventModuleToggle(this));
+
+//        SoundUtil.toggleSound(enabled);
+
+        if (enabled) {
+            superEnable();
+        } else {
+            superDisable();
         }
     }
 
-    protected final void stopListening() {
-        if (listening) {
-            YolBi.instance.getEventManager().unregister(this);
-            listening = false;
+    /**
+     * Called when a module gets enabled
+     * -> important: whenever you override this method in a subclass
+     * keep the super.onEnable()
+     */
+    public final void superEnable() {
+        YolBi.instance.getEventManager().register(this);
+
+        this.values.stream()
+                .filter(value -> value instanceof ModeValue)
+                .forEach(value -> ((ModeValue) value).getValue().register());
+
+        this.values.stream()
+                .filter(value -> value instanceof BooleanValue)
+                .forEach(value -> {
+                    final BooleanValue booleanValue = (BooleanValue) value;
+                    if (booleanValue.getMode() != null && booleanValue.getValue()) {
+                        booleanValue.getMode().register();
+                    }
+                });
+
+        this.onEnable();
+    }
+
+    /**
+     * Called when a module gets disabled
+     * -> important: whenever you override this method in a subclass
+     * keep the super.onDisable()
+     */
+    public final void superDisable() {
+        YolBi.instance.getEventManager().unregister(this);
+
+        this.values.stream()
+                .filter(value -> value instanceof ModeValue)
+                .forEach(value -> ((ModeValue) value).getValue().unregister());
+
+        this.values.stream()
+                .filter(value -> value instanceof BooleanValue)
+                .forEach(value -> {
+                    final BooleanValue booleanValue = (BooleanValue) value;
+                    if (booleanValue.getMode() != null) {
+                        booleanValue.getMode().unregister();
+                    }
+                });
+
+        this.onDisable();
+    }
+
+    public void onEnable() {
+    }
+
+    public void onDisable() {
+    }
+
+    public List<Value<?>> getAllValues() {
+        ArrayList<Value<?>> allValues = new ArrayList<>();
+
+        values.forEach(value -> {
+            List<Value<?>> subValues = value.getSubValues();
+
+            allValues.add(value);
+
+            if (subValues != null) {
+                allValues.addAll(subValues);
+            }
+        });
+
+        return allValues;
+    }
+
+    public boolean shouldDisplay(Interface instance) {
+        if (this instanceof ClickGUI) return false;
+        if (!this.getModuleInfo().allowDisable()) return false;
+
+        switch (instance.getModulesToShow().getValue().getName()) {
+            case "All": {
+                return true;
+            }
+            case "Exclude render": {
+                return !this.getModuleInfo().category().equals(Category.RENDER);
+            }
+            case "Only bound": {
+                return this.getKey() != Keyboard.KEY_NONE;
+            }
         }
-    }
-
-    public void addValues(Value<?>... values) {
-        this.values.addAll(Arrays.asList(values));
-    }
-
-    public Value<?> getValueByName(String name) {
-        return values.stream().filter(v -> v.getName().equals(name)).findFirst().orElse(null);
-    }
-
-    public String getSuffix() {
-        return null;
-    }
-
-    public Config getConfig() {
-        return new Config(name) {
-            @Override
-            public void save(JsonObject content) {
-                content.addProperty("enabled", enabled);
-                content.addProperty("key", key);
-                for (Value<?> value : values) {
-                    if (value.getValue() != null)
-                        if (value instanceof BooleanValue)
-                            content.addProperty(value.getName(), ((BooleanValue) value).getValue());
-                        else if (value instanceof ColorValue)
-                            content.addProperty(value.getName(), ((ColorValue) value).getColor());
-                        else if (value instanceof ModeValue)
-                            content.addProperty(value.getName(), ((ModeValue<?>) value).getValue().toString());
-                        else if (value instanceof NumberValue)
-                            content.addProperty(value.getName(), ((NumberValue<?>) value).getValue());
-                        else if (value instanceof TextValue)
-                            content.addProperty(value.getName(), ((TextValue) value).getValue());
-                }
-            }
-
-            @Override
-            public void load(JsonObject content) {
-                JsonElement enabled = content.get("enabled");
-                try {
-                    setEnabled(enabled != null && enabled.getAsBoolean());
-                } catch (Throwable e) {
-                    Logger.exception(e);
-                }
-                JsonElement key = content.get("key");
-                if (key != null) setKey(key.getAsInt());
-                for (Value<?> value : values) {
-                    JsonElement val = content.get(value.getName());
-                    if (val == null) continue;
-                    if (value instanceof BooleanValue)
-                        ((BooleanValue) value).setValue(val.getAsBoolean());
-                    else if (value instanceof ColorValue)
-                        ((ColorValue) value).setValue((new Color(val.getAsInt())));
-                    else if (value instanceof ModeValue)
-                        ((ModeValue<?>) value).setMode(val.getAsString());
-                    else if (value instanceof NumberValue)
-                        ((NumberValue<?>) value).setValue(val.getAsNumber(), false);
-                    else if (value instanceof TextValue)
-                        ((TextValue) value).setValue(val.getAsString());
-                }
-            }
-        };
+        return true;
     }
 }

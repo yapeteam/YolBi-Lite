@@ -4,7 +4,7 @@ import cn.yapeteam.yolbi.event.type.CancellableEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 
 /**
  * @author yuxiangll
@@ -16,5 +16,5 @@ import net.minecraft.entity.Entity;
 @Setter
 @AllArgsConstructor
 public class EventAttack extends CancellableEvent {
-    private Entity targetEntity;
+    private EntityLivingBase targetEntity;
 }

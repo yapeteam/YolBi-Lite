@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.util.math.BlockPos;
 
+
 @Getter
 @AllArgsConstructor
 public class EventNote extends Event {

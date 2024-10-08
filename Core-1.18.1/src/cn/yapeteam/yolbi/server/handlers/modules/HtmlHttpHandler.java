@@ -14,6 +14,7 @@ public class HtmlHttpHandler implements HttpHandler {
         String requestedPath = httpExchange.getRequestURI().getPath();
         System.out.println("Requested Path: " + requestedPath); // Debugging log
 
+        // Assuming "/assets/hermes/ui" is at the root of your classpath
         String basePath = "web";
         String resourcePath = basePath + (requestedPath.equals("/") ? "/index.html" : requestedPath);
 

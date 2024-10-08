@@ -2,14 +2,10 @@ package cn.yapeteam.yolbi.managers;
 
 import cn.yapeteam.yolbi.YolBi;
 import cn.yapeteam.yolbi.module.impl.combat.AntiBot;
-import cn.yapeteam.yolbi.module.impl.combat.Target;
-import cn.yapeteam.yolbi.utils.IMinecraft;
+import cn.yapeteam.yolbi.module.impl.combat.CombatSettings;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import cn.yapeteam.yolbi.utils.player.PlayerUtil;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
@@ -17,24 +13,21 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TargetManager implements IMinecraft {
-    private static Target targetModule = null;
+public class TargetManager implements Accessor {
+    private static CombatSettings combatSettingsModule = null;
     private static AntiBot antiBotModule = null;
 
-    public static List<Entity> getTargets(double range) {
-        if (targetModule == null)
-            targetModule = YolBi.instance.getModuleManager().getModule(Target.class);
+    public static List<EntityLivingBase> getTargets(double range) {
+        if (combatSettingsModule == null)
+            combatSettingsModule = YolBi.instance.getModuleManager().get(CombatSettings.class);
         if (antiBotModule == null)
-            antiBotModule = YolBi.instance.getModuleManager().getModule(AntiBot.class);
+            antiBotModule = YolBi.instance.getModuleManager().get(AntiBot.class);
         if (mc.world == null) return new ArrayList<>();
-        return mc.world.loadedEntityList.stream()
+        return mc.world.playerEntities.stream()
                 .filter(entity -> entity instanceof EntityLivingBase)
                 .filter(
-                        entity -> (targetModule.getPlayers().getValue() && entity instanceof EntityPlayer &&
-                                !(targetModule.getNotTeamMates().getValue() && PlayerUtil.sameTeam((EntityPlayer) entity))) ||
-                                (targetModule.getAnimals().getValue() && entity instanceof EntityAnimal) ||
-                                (targetModule.getMobs().getValue() && entity instanceof EntityMob) ||
-                                (targetModule.getVillagers().getValue() && entity instanceof EntityVillager)
+                        entity -> (combatSettingsModule.getPlayers().getValue() && entity instanceof EntityPlayer &&
+                                !(combatSettingsModule.getNotTeamMates().getValue() && PlayerUtil.sameTeam((EntityPlayer) entity)))
                 )
                 // not ourselves
                 .filter(entity -> entity != mc.player)

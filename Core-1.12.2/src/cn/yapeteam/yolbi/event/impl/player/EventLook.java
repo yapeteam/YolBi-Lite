@@ -1,7 +1,7 @@
 package cn.yapeteam.yolbi.event.impl.player;
 
 import cn.yapeteam.yolbi.event.Event;
-import cn.yapeteam.yolbi.utils.vector.Vector2f;
+import cn.yapeteam.yolbi.utils.math.vector.Vector2f;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

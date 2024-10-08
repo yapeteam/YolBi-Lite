@@ -3,7 +3,6 @@ package cn.yapeteam.yolbi.mixin.transformer;
 
 import cn.yapeteam.ymixin.ASMTransformer;
 import cn.yapeteam.yolbi.YolBi;
-import cn.yapeteam.yolbi.event.Event;
 import cn.yapeteam.yolbi.event.impl.network.EventPacketReceive;
 import cn.yapeteam.yolbi.event.type.CancellableEvent;
 import net.minecraft.network.Connection;
@@ -22,13 +21,13 @@ public class NetworkManagerTransFormer extends ASMTransformer {
     }
 
     // MD: ek/a (Lio/netty/channel/ChannelHandlerContext;Lff;)V net/minecraft/network/NetworkManager/channelRead0 (Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/Packet;)V
-    @Inject(method = "genericsFtw",desc = "(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketListener;)V")
+    @Inject(method = "genericsFtw", desc = "(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketListener;)V")
     public void channelRead0(MethodNode mn) {
         InsnList list = new InsnList();
         LabelNode label = new LabelNode();
         list.add(new VarInsnNode(ALOAD, 0));
 
-        list.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(NetworkManagerTransFormer.class),"onPacket","(Ljava/lang/Object;)Z"));
+        list.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(NetworkManagerTransFormer.class), "onPacket", "(Ljava/lang/Object;)Z"));
         list.add(new JumpInsnNode(Opcodes.IFEQ, label));
         list.add(new InsnNode(Opcodes.RETURN));
 
@@ -53,8 +52,8 @@ public class NetworkManagerTransFormer extends ASMTransformer {
 
     // func_179290_a,sendPacket,2,
 
-    public static boolean onPacket(Object packet){
+    public static boolean onPacket(Object packet) {
         //Agent.logger.info(Mappings.getUnobfClass(packet.getClass().getName()));
-        return ((CancellableEvent)YolBi.instance.getEventManager().post(new EventPacketReceive((Packet) packet))).isCancelled();
+        return ((CancellableEvent) YolBi.instance.getEventManager().post(new EventPacketReceive((Packet) packet))).isCancelled();
     }
 }

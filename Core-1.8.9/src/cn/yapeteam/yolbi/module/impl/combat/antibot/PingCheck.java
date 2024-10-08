@@ -19,7 +19,7 @@ public final class PingCheck extends Mode<AntiBot> {
         mc.theWorld.playerEntities.forEach(player -> {
             final NetworkPlayerInfo info = mc.getNetHandler().getPlayerInfo(player.getUniqueID());
 
-            if (info != null && info.getResponseTime() < 0) {
+            if (info != null && info.getResponseTime() <= 0) {
                 BotManager.addBot(player);
             }
         });

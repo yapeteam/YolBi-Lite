@@ -1,10 +1,10 @@
 package cn.yapeteam.yolbi.utils.player;
 
-import cn.yapeteam.yolbi.utils.IMinecraft;
+import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import lombok.Getter;
 
 @Getter
-public class FixedRotations implements IMinecraft {
+public class FixedRotations implements Accessor {
 
     private float yaw, pitch;
     private float lastYaw, lastPitch;

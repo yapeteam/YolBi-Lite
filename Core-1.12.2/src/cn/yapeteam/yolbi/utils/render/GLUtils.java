@@ -91,7 +91,7 @@ public final class GLUtils {
     }
 
     public static void setup2DRendering() {
-        setup2DRendering(true);
+        GLUtils.setup2DRendering(true);
     }
 
     public static void setup2DRendering(boolean blend) {
