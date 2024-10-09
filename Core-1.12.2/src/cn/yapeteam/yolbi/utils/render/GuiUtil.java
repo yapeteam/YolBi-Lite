@@ -6,6 +6,7 @@ import cn.yapeteam.yolbi.utils.math.vector.Vector2f;
 import lombok.experimental.UtilityClass;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 
 
 @UtilityClass
@@ -27,15 +28,15 @@ public class GuiUtil implements Accessor {
     }
 
     public boolean showCrosshair() {
-        if (mc.gameSettings.showDebugInfo && !mc.thePlayer.hasReducedDebug() && !mc.gameSettings.reducedDebugInfo) {
+        if (mc.gameSettings.showDebugInfo && !mc.player.hasReducedDebug() && !mc.gameSettings.reducedDebugInfo) {
             return false;
         } else if (mc.playerController.isSpectator()) {
             if (mc.pointedEntity != null) {
                 return true;
             } else {
-                if (mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+                if (mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
                     BlockPos blockpos = mc.objectMouseOver.getBlockPos();
-                    if (mc.theWorld.getTileEntity(blockpos) instanceof IInventory) {
+                    if (mc.world.getTileEntity(blockpos) instanceof IInventory) {
                         return true;
                     }
                 }

@@ -9,6 +9,7 @@ import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -244,7 +245,7 @@ public class PlayerUtil implements Accessor {
                 final AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().expand(f1, f1, f1);
                 final RayTraceResult movingobjectposition = axisalignedbb.calculateIntercept(Vec3d, Vec3d2);
 
-                if (axisalignedbb.contains(Vec3d)) {
+                if (axisalignedbb.isVecInside(Vec3d)) {
                     pointedEntity = entity1;
                 } else if (movingobjectposition != null) {
                     final double d3 = Vec3d.distanceTo(movingobjectposition.hitVec);
@@ -286,13 +287,15 @@ public class PlayerUtil implements Accessor {
             }
         } else {
             for (int offset = 0; offset < height; offset++) {
-                if (PlayerUtil.blockRelativeToPlayer(0, -offset, 0).isFullBlock()) {
+                IBlockState blockState = mc.world.getBlockState(mc.player.getPosition().add(0, -offset, 0));
+                if (blockState.isFullBlock()) {
                     return true;
                 }
             }
         }
         return false;
     }
+
 
     public boolean isBlockUnder() {
         return isBlockUnder(mc.player.height);

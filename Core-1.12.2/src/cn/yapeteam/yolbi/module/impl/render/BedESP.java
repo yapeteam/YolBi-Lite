@@ -80,7 +80,7 @@ public class BedESP extends Module {
     public void onRender2D(EventRender2D eventRender2D) {
         for (int i = 0; i < beds.size(); i++) {
             BlockPos blockPos = beds.get(i);
-            if (mc.world.getBlockState(blockPos).getBlock() != Blocks.bed) {
+            if (mc.world.getBlockState(blockPos).getBlock() != Blocks.BED) {
                 continue;
             }
 
@@ -206,15 +206,15 @@ public class BedESP extends Module {
                 BlockPos posToCheck = currentPos.add(dir[0], dir[1], dir[2]);
                 Block currentBlock = mc.world.getBlockState(posToCheck).getBlock();
 
-                if (!currentBlock.equals(Blocks.air)) {
+                if (!currentBlock.equals(Blocks.AIR)) {
                     // Check if the block is a valid bed defense block and hasn't already been added
                     if (isValidBedBlock(currentBlock) && !blocks.contains(currentBlock)) {
                         blocks.add(currentBlock);
                     }
 
-                    // Check if there's a ladder attached and add it if not already in the list
-                    if (checkIfLadder(posToCheck) && !blocks.contains(Blocks.ladder)) {
-                        blocks.add(Blocks.ladder);
+                    // Check if there's a LADDER attached and add it if not already in the list
+                    if (checkIfLADDER(posToCheck) && !blocks.contains(Blocks.LADDER)) {
+                        blocks.add(Blocks.LADDER);
                     }
                 }
             }
@@ -242,21 +242,21 @@ public class BedESP extends Module {
 
 
 
-    private boolean checkIfLadder(BlockPos blockPos) {
-        // Define directions to check for ladders: right, left, front, back
-        int[][] ladderDirections = {
+    private boolean checkIfLADDER(BlockPos blockPos) {
+        // Define directions to check for LADDERs: right, left, front, back
+        int[][] LADDERDirections = {
                 {1, 0, 0},   // Right
                 {-1, 0, 0},  // Left
                 {0, 0, 1},   // Front
                 {0, 0, -1}   // Back
         };
 
-        for (int[] dir : ladderDirections) {
+        for (int[] dir : LADDERDirections) {
             BlockPos neighborPos = blockPos.add(dir[0], dir[1], dir[2]);
             Block neighborBlock = mc.world.getBlockState(neighborPos).getBlock();
 
-            // Check if the block is a ladder
-            if (neighborBlock.equals(Blocks.ladder)) {
+            // Check if the block is a LADDER
+            if (neighborBlock.equals(Blocks.LADDER)) {
                 return true;
             }
         }
@@ -267,10 +267,10 @@ public class BedESP extends Module {
 
 
     private boolean isValidBedBlock(Block block) {
-        return block.equals(Blocks.wool) || block.equals(Blocks.stained_hardened_clay) ||
-                block.equals(Blocks.stained_glass) || block.equals(Blocks.planks) ||
-                block.equals(Blocks.log) || block.equals(Blocks.log2) ||
-                block.equals(Blocks.end_stone) || block.equals(Blocks.obsidian) ||
-                block.equals(Blocks.water) || block.equals(Blocks.ladder);
+        return block.equals(Blocks.WOOL) || block.equals(Blocks.STAINED_HARDENED_CLAY) ||
+                block.equals(Blocks.STAINED_GLASS) || block.equals(Blocks.PLANKS) ||
+                block.equals(Blocks.LOG) || block.equals(Blocks.LOG2) ||
+                block.equals(Blocks.END_STONE) || block.equals(Blocks.OBSIDIAN) ||
+                block.equals(Blocks.WATER) || block.equals(Blocks.LADDER);
     }
 }

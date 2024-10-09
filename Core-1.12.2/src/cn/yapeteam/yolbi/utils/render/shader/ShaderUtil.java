@@ -3,18 +3,13 @@ package cn.yapeteam.yolbi.utils.render.shader;
 import cn.yapeteam.loader.ResourceManager;
 import cn.yapeteam.loader.logger.Logger;
 import cn.yapeteam.loader.utils.StreamUtils;
-import cn.yapeteam.yolbi.managers.ReflectionManager;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-
-import static org.lwjgl.opengl.GL11.*;
 
 public class ShaderUtil implements Accessor {
     public static int createShader(final String fragmentResource, final String vertexResource) {
@@ -73,21 +68,5 @@ public class ShaderUtil implements Accessor {
             Logger.exception(e);
             return null;
         }
-    }
-
-    public static void drawQuads(final ScaledResolution sr) {
-        if (ReflectionManager.hasOptifine && Minecraft.getMinecraft().gameSettings.ofFastRender) return;
-        final float width = (float) sr.getScaledWidth_double();
-        final float height = (float) sr.getScaledHeight_double();
-        glBegin(GL_QUADS);
-        glTexCoord2f(0, 1);
-        glVertex2f(0, 0);
-        glTexCoord2f(0, 0);
-        glVertex2f(0, height);
-        glTexCoord2f(1, 0);
-        glVertex2f(width, height);
-        glTexCoord2f(1, 1);
-        glVertex2f(width, 0);
-        glEnd();
     }
 }

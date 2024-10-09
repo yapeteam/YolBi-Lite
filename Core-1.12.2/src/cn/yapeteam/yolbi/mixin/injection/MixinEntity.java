@@ -36,11 +36,10 @@ public class MixinEntity extends Entity {
     @Overwrite(method = "func_191958_b", desc = "(FFFF)V")
     public void moveRelative(float strafe, float up, float forward, float friction) {
         boolean player = ((Entity) this) == Minecraft.getMinecraft().player;
-        EventStrafe event = new EventStrafe(strafe, up, forward, friction, rotationYaw);
+        EventStrafe event = new EventStrafe(forward, strafe, friction, rotationYaw);
         if (player) YolBi.instance.getEventManager().post(event);
         if (event.isCancelled()) return;
         strafe = event.getStrafe();
-        up = event.getUp();
         forward = event.getForward();
         friction = event.getFriction();
         float f = strafe * strafe + up * up + forward * forward;
@@ -52,7 +51,6 @@ public class MixinEntity extends Entity {
 
             f = friction / f;
             strafe *= f;
-            up *= f;
             forward *= f;
             float f1 = MathHelper.sin(event.getYaw() * 0.017453292F);
             float f2 = MathHelper.cos(event.getYaw() * 0.017453292F);

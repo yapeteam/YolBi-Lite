@@ -15,9 +15,6 @@ public final class EventStrafe extends CancellableEvent implements IMinecraft {
     private float friction;
     private float yaw;
 
-    public EventStrafe() {
-    }
-
     public void setSpeed(final double speed, final double motionMultiplier) {
         setFriction((float) (getForward() != 0 && getStrafe() != 0 ? speed * 0.98F : speed));
         mc.player.motionX *= motionMultiplier;

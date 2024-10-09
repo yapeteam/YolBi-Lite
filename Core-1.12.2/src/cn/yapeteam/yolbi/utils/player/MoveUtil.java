@@ -4,7 +4,7 @@ import cn.yapeteam.yolbi.event.impl.player.EventMoveInput;
 import cn.yapeteam.yolbi.utils.interfaces.Accessor;
 import lombok.experimental.UtilityClass;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.potion.Potion;
+import net.minecraft.init.MobEffects;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
@@ -71,11 +71,12 @@ public class MoveUtil implements Accessor {
         return (legit ? mc.player.moveForward >= 0.8F
                 && !mc.player.isCollidedHorizontally
                 && (mc.player.getFoodStats().getFoodLevel() > 6 || mc.player.capabilities.allowFlying)
-                && !mc.player.isPotionActive(Potion.blindness)
-                && !mc.player.isUsingItem()
+                && !mc.player.isPotionActive(MobEffects.BLINDNESS)
+                && !mc.player.isHandActive()
                 && !mc.player.isSneaking()
                 : enoughMovementForSprinting());
     }
+
 
     /**
      * Returns the distance the player moved in the last tick
@@ -87,7 +88,7 @@ public class MoveUtil implements Accessor {
     }
 
     public double speedPotionAmp(final double amp) {
-        return mc.player.isPotionActive(Potion.moveSpeed) ? ((mc.player.getActivePotionEffect(Potion.moveSpeed).getAmplifier() + 1) * amp) : 0;
+        return mc.player.isPotionActive(MobEffects.SPEED) ? ((mc.player.getActivePotionEffect(MobEffects.SPEED).getAmplifier() + 1) * amp) : 0;
     }
 
     /**
@@ -106,12 +107,13 @@ public class MoveUtil implements Accessor {
      * @return modified motion
      */
     public double jumpBoostMotion(final double motionY) {
-        if (mc.player.isPotionActive(Potion.jump)) {
-            return motionY + (mc.player.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F;
+        if (mc.player.isPotionActive(MobEffects.JUMP_BOOST)) {
+            return motionY + (mc.player.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F;
         }
 
         return motionY;
     }
+
 
 
     /**
@@ -126,13 +128,14 @@ public class MoveUtil implements Accessor {
     public static float fallDistanceForDamage() {
         float fallDistanceReq = 3;
 
-        if (mc.player.isPotionActive(Potion.jump)) {
-            int amplifier = mc.player.getActivePotionEffect(Potion.jump).getAmplifier();
+        if (mc.player.isPotionActive(MobEffects.JUMP_BOOST)) {
+            int amplifier = mc.player.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier();
             fallDistanceReq += (float) (amplifier + 1);
         }
 
         return fallDistanceReq;
     }
+
 
     /**
      * Rounds the players' position to a valid ground position
